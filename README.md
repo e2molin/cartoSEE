@@ -1,11 +1,12 @@
-# SIDLIM
+# CARTOSEE
 
-**S**istema de **I**nformación **D**ocumental del Servicio de De**lim**itaciones Territoriales
+Visualizador de la documentación del proyecto GEODOCAT. 
 
-![](documentacion/img/splash.jpg)
+![](documentacion/img/icono-big.png)
+
 ## Documentación
 
-* Ayuda del Programa de gestión documental [🔗 enlace](documentacion/ayuda-siddes.md)
+* Ayuda del Programa de gestión documental [🔗 enlace](documentacion/ayuda-cartosee.md)
 
 
 
