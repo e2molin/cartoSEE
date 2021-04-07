@@ -375,6 +375,27 @@
     <Content Include="resources\docsidcarto-template.html" />
     <Content Include="resources\index-muni-template.html" />
     <Content Include="resources\index-template.html" />
+    <Content Include="resources\Plantilla_Altimetria.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\Plantilla_Conjunta.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\Plantilla_Edificacion.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\Plantilla_HojaKilometrica.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\Plantilla_Planimetria.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\Plantilla_PlanoPoblacion.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\Plantilla_PlanoPoblacionJuntaSI.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="vendor\iTextsharp 5\itextsharp.dll" />
     <Content Include="vendor\Npgsql\Mono.Security.dll" />
     <Content Include="vendor\Npgsql\Npgsql.dll" />

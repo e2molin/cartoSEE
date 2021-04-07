@@ -444,7 +444,7 @@ Module GestionDocumentacion
 
         If PlantillaGIS <> "" Then
             Try
-                System.IO.File.Copy(PlantillaGIS, My.Application.Info.DirectoryPath & "\LaunchGM.gmw", True)
+                System.IO.File.Copy(PlantillaGIS, AppFolderSetting & "\LaunchGM.gmw", True)
             Catch ex As Exception
                 MessageBox.Show("Problema: " & ex.Message, AplicacionTitulo, _
                                 MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
@@ -453,12 +453,12 @@ Module GestionDocumentacion
         End If
 
         If PlantillaGIS <> "" Then
-            sw = New System.IO.StreamWriter(My.Application.Info.DirectoryPath & "\LaunchGM.gmw", _
+            sw = New System.IO.StreamWriter(AppFolderSetting & "\LaunchGM.gmw",
                                     True, System.Text.Encoding.Default)
         Else
-            sw = New System.IO.StreamWriter(My.Application.Info.DirectoryPath & "\LaunchGM.gmw", _
+            sw = New System.IO.StreamWriter(AppFolderSetting & "\LaunchGM.gmw",
                                     False, System.Text.Encoding.Default)
-            sw.WriteLine("GLOBAL_MAPPER_SCRIPT VERSION=""1.00"" FILENAME=""" & My.Application.Info.DirectoryPath & "\LaunchGM.gmw" & """")
+            sw.WriteLine("GLOBAL_MAPPER_SCRIPT VERSION=""1.00"" FILENAME=""" & AppFolderSetting & "\LaunchGM.gmw" & """")
             sw.WriteLine("UNLOAD_ALL")
         End If
 

@@ -1480,7 +1480,7 @@ Public Class frmDocumentacion
                        AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
         Else
             If GenerarProyectoGM(RutasECW, True) = True Then
-                LanzarVisorExterno(My.Application.Info.DirectoryPath & "\LaunchGM.gmw")
+                LanzarVisorExterno(AppFolderSetting & "\LaunchGM.gmw")
             End If
         End If
         RutasECW.Clear()
