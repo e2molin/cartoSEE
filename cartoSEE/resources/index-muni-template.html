@@ -1,0 +1,246 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Instituto Geográfico Nacional" />
+	<meta name="subject" content="Instituto Geográfico Nacional. Centro de Descargas del CNIG. Documentación Límites Jurisdiccionales" />
+	<meta name="title" content="_#NOMBREMUNICIPIO#_ Minutas cartográficas del Archivo Topográfico. Centro de Descargas del CNIG. Instituto Geográfico Nacional" />
+	<meta name="robots" content="index,follow" />
+	<meta name="revisit-after" content="1 weeks"/>
+    <meta name="language" content="es" />
+	<meta name="description" content="_#NOMBREMUNICIPIO#_ Minutas cartográficas del Archivo Topográfico. Centro de Descargas del CNIG. Instituto Geográfico Nacional" />
+	<meta name="keywords" CONTENT="IGN, CNIG, Instituto Geográfico Nacional, Instituto Geografico Nacional, Centro Nacional de Información Geográfica, minutas cartográficas, deslindes, deslindes municipales, límites municipales, documentos siddae _#NOMBREMUNICIPIO#_" />
+	
+	<title>_#NOMBREMUNICIPIO#_ | Minutas cartográficas del Archivo Topográfico | Centro de Descargas del CNIG | Instituto Geográfico Nacional </title>
+    <link rel="icon" type="image/x-icon" href="http://www.ign.es/ign/img/favicon.ico" />
+	<link rel="apple-touch-icon" href="http://www.ign.es/ign/img/favicon.png" />
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+	<!--<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-responsive.css" rel="stylesheet">-->
+	<link rel="stylesheet" href="http://fierytech.appspot.com/css/glyphicons-social.css">
+	<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.css">
+	<!--Reducimos el tamaño del contenedor al de la cabecera del CdD-->
+	<style>
+		body{
+			font: 1.2em 'Helvetica Neue', Helvetica, Arial, Verdana, sans-serif;
+		}
+		.p-descript{
+			font-size: 0.9em;
+			align: justify;
+		}
+		.li-descript{
+			font-size: 0.9em;
+		}
+	
+	@media (min-width: 1200px) {
+		.container {
+			width: 1024px;
+		}
+	}
+	</style>
+
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="//getbootstrap.com/javascript/../assets/js/ie-emulation-modes-warning.js"></script>
+	
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+  </head>
+<!-- NAVBAR
+================================================== -->
+  <body>
+ 
+	<!--Barra de menús-->
+    <div class="navbar-wrapper">
+      <div class="container">
+	  <img src="http://centrodedescargas.cnig.es/CentroDescargas/img/cabecera.jpg" alt="Encabezado de página" class="visible-xs img-thumbnail">
+	  <!--<img src="http://centrodedescargas.cnig.es/CentroDescargas/img/cabecera-mountain-large.jpg" alt="Encabezado de página" class="hidden-xs  img-thumbnail">-->
+	  <img src="http://centrodedescargas.cnig.es/CentroDescargas/img/cabecera.jpg" alt="Encabezado de página" class="hidden-xs  img-thumbnail">
+        <nav class="navbar navbar-inverse navbar-static-top" style="background-color:#323232;">
+		  <div class="container">
+			<div class="navbar-header">
+			  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			  </button>
+			  <a class="navbar-brand" href="#">_#NOMBREMUNICIPIO#_</a>
+			</div>
+			<div id="navbar" class="collapse navbar-collapse">
+			  <ul class="nav navbar-nav">
+				<li><a href="http://centrodedescargas.cnig.es/CentroDescargas/loadActasLineasLim.do">Volver búsqueda Centro de Descargas</a></li>
+				<li><a href="#modalInfo" data-toggle="modal">Acerca de...</a></li>
+			  </ul>
+			</div><!--/.nav-collapse -->
+		  </div>
+        </nav>
+      </div>
+    </div><!--End Barra de menús-->
+
+
+    
+
+    <!-- Marketing messaging and featurettes
+    ================================================== -->
+    <!-- Wrap the rest of the page in another container to center all the content. -->
+
+    <div class="container">
+				<table id="resultData" class="display" cellspacing="0" width="100%">
+				<thead>
+					<tr>
+						<th>Documento</th>
+						<th>Sellado</th>
+						<th>Municipios históricos</th>
+						<th>Fecha</th>
+						<th>Enlaces</th>
+					</tr>
+				</thead>
+				<tbody>
+					_#CONTENIDOTABLA#_
+				</tbody>
+				</table>
+	
+		<!-- FOOTER -->
+		<footer>
+			  <div class="row" style="background-color:#323232;">
+				<div class="col-lg-8">
+					<a href="http://www.ign.es" title="Enlace a la web del IGN">
+					<img src="http://www.ign.es/ign/img/principal/Logo_IGN.png" alt="Logo IGN CNIG" title="Logo IGN CNIG">
+					<img src="http://www.ign.es/ign/img/principal/IGN_instituto.png" alt="Logo Texto IGN CNIG"  title="Logo IGN CNIG">
+					
+					</a>
+				</div>
+				<div class="col-lg-4">
+				<p style="padding-top:20px; color:#CCCCCC;">
+							
+							<a href="http://centrodedescargas.cnig.es/CentroDescargas/rss.do?accion=cargaRss"> 
+								<img src="http://centrodedescargas.cnig.es/CentroDescargas/img/rss.png" title="RSS novedades" alt="RSS Novedades">
+							</a>
+							<a href="http://www.facebook.com/pages/Instituto-Geografico-Nacional-de-Espana-CNIG/156297191073688#%21/pages/Instituto-Geografico-Nacional-de-Espana-CNIG/156297191073688?v=wall" target="_blank">
+								<img src="http://centrodedescargas.cnig.es/CentroDescargas/img/facebook.png" title="IGN Facebook" alt="IGN Facebook"></a>
+							<a target="_blank" href="http://twitter.com/#%21/IGNSpain">
+								<img src="http://centrodedescargas.cnig.es/CentroDescargas/img/twitter.png" title="IGN Twitter" alt="IGN Twitter">
+							</a>
+							<a target="_blank" href="http://www.youtube.com/user/IGNSpain">
+								<img src="http://centrodedescargas.cnig.es/CentroDescargas/img/youtube.png" title="IGN Youtube" alt="IGN Youtube">
+							</a>	
+							<a target="_blank" href="mailto:centrodescargasconsultas@cnig.es">
+								<img src="http://centrodedescargas.cnig.es/CentroDescargas/img/mail v2.png" title="Consultas al Centro de Descargas IGN-CNIG" alt="Consultas al Centro de Descargas IGN-CNIG">
+							</a>	
+
+							
+				</p>
+				</div>
+			  </div>	  
+		</footer>	
+	</div>
+
+
+	
+	
+	
+	<!-- Modal Info -->
+	<div id="modalInfo" class="modal fade"  role="dialog">
+	  <div class="modal-dialog"><div class="modal-content">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<p class="muted credit">
+			<h3>Información sobre los documentos</h3>
+			</p>
+		  </div>
+		  <div class="modal-body">
+			<p class="p-descript">
+			Resumen de los documentos existentes en el Archivo Topográfico del IGN del municipio de <strong>_#NOMBREMUNICIPIO#_</strong>. Archivos ráster correspondientes a la digitalización de los mapas manuscritos en papel conservados en el Archivo Técnico del IGN. 
+			Se trata de los trabajos previos a la realización del Mapa Topográfico Nacional, en algunos casos con varias décadas de diferencia a la publicación de la primera edición del  MTN de la zona. 
+			Este tipo de documentos se realizaron principalmente entre 1870 y 1950. La digitalización de esta documentación que se custodian en el Archivo Topográfico del Instituto Geográfico Nacional y la publicación en el portal de descarga 
+			garantiza la preservación de los documentos y el acceso a una fuente de información indispensable para cualquier estudio de evolución del territorio. 
+			La georreferenciación de estas hojas mejora, además, las consultas geográficas y la realización de estudios comparativos espaciales.
+			</p>
+			<p class="p-descript"><strong>Altimetrías</strong>: 15.835 hojas. Las altimetrías fueron generadas a partir de mediciones topográficas, que se iban anotando en cuadernos, que se encuentran conservados en el Archivo del IGN. Se corresponde con la representación en 
+			papel del curvado altimétrico de cada municipio, que se realizaba posteriormente a la planimetría. Están dibujados a escala 1:25.000 y sirvieron de base para su integración en las Hojas del Mapa Topográfico Nacional a escala 1:50.000. 
+			La unidad de descarga es un archivo zip, que puede incluir tres tipos de archivo: jpg sin georreferenciar con resolución 250 ppp; ecw georreferenciado con resolución 400 ppp (Sistema Geodésico ED50, Proyección UTM huso 30 extendido) y prj 
+			que contiene información sobre la georreferenciación. No existen documentos de todos los municipios.
+			</p>
+			<p class="p-descript"><strong>Planimetrías</strong>: Son 18.975 hojas. Las planimetrías fueron generadas a partir de mediciones topográficas, que se iban anotando en cuadernos, que se encuentran conservados en el Archivo del IGN. Se corresponde con la 
+			representación en papel del levantamiento topográfico (sin altimetría) de cada municipio. Están dibujados a escala 1:25.000 y sirvieron de base para su integración en las Hojas del Mapa Topográfico Nacional a escala 1:50.000. 
+			La unidad de descarga es un archivo zip, que puede incluir tres tipos de archivo: jpg sin georreferenciar con resolución 250 ppp; ecw georreferenciado con resolución 400 ppp (Sistema Geodésico ED50, Proyección UTM huso 30 extendido) 
+			y prj que contiene información sobre la georreferenciación. No existen documentos de todos los municipios.
+			</p>			
+			<p class="p-descript"><strong>Conjuntas</strong>: Son documentos que reunen juntas la planimetría y altimetría del municipio. Se dispone de muy pocos municipios.</p>
+			<p class="p-descript">Simbología utilizada en la tabla de resultados
+				<ul>
+					<li class="li-descript"><span class="glyphicon glyphicon glyphicon-info-sign"> Ficha con la descripción de las características del documento</li>
+					<li class="li-descript"><span class="glyphicon glyphicon glyphicon-link"> Enlace al archivo comprimido con el documento</li>
+					<li class="li-descript"><span class="glyphicon glyphicon glyphicon-globe"> Enlace al archivo de metadatos ISO 19115</li>
+				</ul>
+			</p>
+		  </div>
+		  <div class="modal-footer"><img src="http://www.ign.es/ign/img/principal/Logo_IGN.png" style="height:64px; float:left;" alt ="Logo ign.es"/>
+			<p class="muted credit">
+			<button class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+			</p>
+		  </div>
+		</div>
+	  </div>
+	</div>
+	
+	
+	
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script src="//getbootstrap.com/javascript/../assets/js/docs.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="//getbootstrap.com/javascript/../assets/js/ie10-viewport-bug-workaround.js"></script>
+<script type="text/javascript" language="javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" language="javascript" src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" language="javascript" src="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+<script type="text/javascript" charset="utf-8">
+	$(document).ready(function() {
+		$('#resultData').dataTable({
+					"language": {
+					"sProcessing":     "Procesando...",
+					"sLengthMenu":     "Mostrar _MENU_ resultados",
+					"sZeroRecords":    "No se encontraron resultados",
+					"sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+					"sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+					"sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+					"sSearch":         "Buscar en los resultados:&nbsp;",
+					"sEmptyTable":     "Ningún dato disponible en esta tabla",
+					"sInfoPostFix":    "",
+					"sUrl":            "",
+					"sInfoThousands":  ",",
+					"sLoadingRecords": "Cargando...",
+					"oPaginate": {
+								"sFirst":    "Primero",
+								"sLast":     "Último",
+								"sNext":     "Siguiente",
+								"sPrevious": "Anterior"										
+								}
+					}
+				});
+			});
+</script>
+
+<!--Aplicamos estilos a la tabla-->
+<script type="text/javascript">
+	$('#resultData')
+		.removeClass( 'display' )
+		.addClass('table table-striped table-bordered');
+</script>
+
+</body>
+</html>

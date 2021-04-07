@@ -1,0 +1,152 @@
+﻿<!DOCTYPE html>
+<html lang="es" style="position: relative; min-height: 100%;">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		
+	<title>Resultados de la provincia de _#NOMBREPROVINCIA#_</title>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.css">
+	<style>
+		body{
+			font: 1.2em 'Helvetica Neue', Helvetica, Arial, Verdana, sans-serif;
+		}
+		.p-descript{
+			font-size: 0.9em;
+			align: justify;
+		}
+		.li-descript{
+			font-size: 0.9em;
+		}
+	</style>
+</head>
+<body style="margin-top: 60px; margin-bottom: 50px;">
+		<nav class="navbar navbar-inverse navbar-fixed-top">
+		  <div class="container">
+			<div class="navbar-header">
+			  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			  </button>
+			  <a class="navbar-brand" href="#">Documentación Minutas de _#NOMBREPROVINCIA#_</a>
+			</div>
+			<div id="navbar" class="collapse navbar-collapse">
+			  <ul class="nav navbar-nav">
+				<li><a href="http://10.13.90.93/runtime/sidcartocdd">Volver búsqueda Catálogo</a></li>
+				<li><a href="#modalInfo" data-toggle="modal">Acerca de...</a></li>
+			  </ul>
+			</div><!--/.nav-collapse -->
+		  </div>
+		</nav>	
+		<div class="container">
+				<table id="resultData" class="display" cellspacing="0" width="100%">
+				<thead>
+					<tr>
+						<th>Documento</th>
+						<th>Sellado</th>
+						<th>Municipios históricos</th>
+						<th>Fecha</th>
+						<th>Enlace</th>
+					</tr>
+				</thead>
+				<tbody>
+					_#CONTENIDOTABLA#_
+				</tbody>
+				</table>
+		</div>
+		
+<footer class="footer" style="position:absolute; bottom:0; width:100%; height: 50px; background-color: #f5f5f5; padding:10px;">
+	<div class="container">
+		<p class="text-muted">&copy; IGN-CNIG - Registro Central de Cartografía - Servicio de Documentación Geográfica y Biblioteca - Archivo Topográfico.</p>
+	</div>
+ </footer>			
+		
+	<!-- Modal Info -->
+	<div id="modalInfo" class="modal fade"  role="dialog">
+	  <div class="modal-dialog"><div class="modal-content">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<p class="muted credit">
+			<h3>Información sobre los documentos</h3>
+			</p>
+		  </div>
+		  <div class="modal-body">
+			<p class="p-descript">
+			Resumen de los documentos existentes en el Archivo Topográfico del IGN de la provincia de <strong>_#NOMBREPROVINCIA#_</strong>. Archivos ráster correspondientes a la digitalización de los mapas manuscritos en papel conservados en el Archivo Técnico del IGN. 
+			Se trata de los trabajos previos a la realización del Mapa Topográfico Nacional, en algunos casos con varias décadas de diferencia a la publicación de la primera edición del  MTN de la zona. 
+			Este tipo de documentos se realizaron principalmente entre 1870 y 1950. La digitalización de esta documentación que se custodian en el Archivo Topográfico del Instituto Geográfico Nacional y la publicación en el portal de descarga 
+			garantiza la preservación de los documentos y el acceso a una fuente de información indispensable para cualquier estudio de evolución del territorio. 
+			La georreferenciación de estas hojas mejora, además, las consultas geográficas y la realización de estudios comparativos espaciales.
+			</p>
+			<p class="p-descript"><strong>Altimetrías</strong>: 15.835 hojas. Las altimetrías fueron generadas a partir de mediciones topográficas, que se iban anotando en cuadernos, que se encuentran conservados en el Archivo del IGN. Se corresponde con la representación en 
+			papel del curvado altimétrico de cada municipio, que se realizaba posteriormente a la planimetría. Están dibujados a escala 1:25.000 y sirvieron de base para su integración en las Hojas del Mapa Topográfico Nacional a escala 1:50.000. 
+			La unidad de descarga es un archivo zip, que puede incluir tres tipos de archivo: jpg sin georreferenciar con resolución 250 ppp; ecw georreferenciado con resolución 400 ppp (Sistema Geodésico ED50, Proyección UTM huso 30 extendido) y prj 
+			que contiene información sobre la georreferenciación. No existen documentos de todos los municipios.
+			</p>
+			<p class="p-descript"><strong>Planimetrías</strong>: Son 18.975 hojas. Las planimetrías fueron generadas a partir de mediciones topográficas, que se iban anotando en cuadernos, que se encuentran conservados en el Archivo del IGN. Se corresponde con la 
+			representación en papel del levantamiento topográfico (sin altimetría) de cada municipio. Están dibujados a escala 1:25.000 y sirvieron de base para su integración en las Hojas del Mapa Topográfico Nacional a escala 1:50.000. 
+			La unidad de descarga es un archivo zip, que puede incluir tres tipos de archivo: jpg sin georreferenciar con resolución 250 ppp; ecw georreferenciado con resolución 400 ppp (Sistema Geodésico ED50, Proyección UTM huso 30 extendido) 
+			y prj que contiene información sobre la georreferenciación. No existen documentos de todos los municipios.
+			</p>			
+			<p class="p-descript"><strong>Conjuntas</strong>: Son documentos que reunen juntas la planimetría y altimetría del municipio. Se dispone de muy pocos municipios.</p>
+			<p class="p-descript">Simbología utilizada en la tabla de resultados
+				<ul>
+					<li class="li-descript"><span class="glyphicon glyphicon glyphicon-info-sign"> Ficha con la descripción de las características del documento</li>
+					<li class="li-descript"><span class="glyphicon glyphicon glyphicon-link"> Enlace al archivo comprimido con el documento</li>
+					<li class="li-descript"><span class="glyphicon glyphicon glyphicon-globe"> Enlace al archivo de metadatos ISO 19115</li>
+				</ul>
+			</p>
+		  </div>
+		  <div class="modal-footer"><img src="http://www.ign.es/ign/img/principal/Logo_IGN.png" style="height:64px; float:left;" alt ="Logo ign.es"/>
+			<p class="muted credit">
+			<button class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+			</p>
+		  </div>
+		</div>
+	  </div>
+	</div>
+
+<script type="text/javascript" language="javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" language="javascript" src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script type="text/javascript" language="javascript" src="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+
+<script type="text/javascript" charset="utf-8">
+	$(document).ready(function() {
+		$('#resultData').dataTable({
+					"language": {
+					"sProcessing":     "Procesando...",
+					"sLengthMenu":     "Mostrar _MENU_ resultados",
+					"sZeroRecords":    "No se encontraron resultados",
+					"sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+					"sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+					"sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+					"sSearch":         "Buscar:",
+					"sEmptyTable":     "Ningún dato disponible en esta tabla",
+					"sInfoPostFix":    "",
+					"sUrl":            "",
+					"sInfoThousands":  ",",
+					"sLoadingRecords": "Cargando...",
+					"oPaginate": {
+								"sFirst":    "Primero",
+								"sLast":     "Último",
+								"sNext":     "Siguiente",
+								"sPrevious": "Anterior"										
+								}
+					}
+				});
+			});
+</script>
+
+<!--Aplicamos estilos a la tabla-->
+<script type="text/javascript">
+	$('#resultData')
+		.removeClass( 'display' )
+		.addClass('table table-striped table-bordered');
+</script>
+
+</body>
+</html>
+  
