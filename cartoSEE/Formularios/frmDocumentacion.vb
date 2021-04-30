@@ -804,6 +804,8 @@ Public Class frmDocumentacion
         lvAtributos.Groups.Add(g1)
         g2 = New ListViewGroup("Georreferenciación")
         lvAtributos.Groups.Add(g2)
+        g3 = New ListViewGroup("Centro de descargas")
+        lvAtributos.Groups.Add(g3)
         lvAtributos.Items.Clear()
         'Hoja de características
 
@@ -862,6 +864,20 @@ Public Class frmDocumentacion
         elementoLV = New ListViewItem : elementoLV.Text = "Junta" : elementoLV.ImageIndex = 4
         elementoLV.SubItems.Add(resultsetGeodocat.resultados(NumElemento).JuntaEstadistica) : elementoLV.Group = g1
         lvAtributos.Items.Add(elementoLV) : elementoLV = Nothing
+
+        elementoLV = New ListViewItem : elementoLV.Text = "Producto CdD" : elementoLV.ImageIndex = 4
+        elementoLV.SubItems.Add(resultsetGeodocat.resultados(NumElemento).cddProducto) : elementoLV.Group = g3
+        lvAtributos.Items.Add(elementoLV) : elementoLV = Nothing
+
+        elementoLV = New ListViewItem : elementoLV.Text = "Fichero CdD" : elementoLV.ImageIndex = 4
+        elementoLV.SubItems.Add(resultsetGeodocat.resultados(NumElemento).cddNombreFichero) : elementoLV.Group = g3
+        lvAtributos.Items.Add(elementoLV) : elementoLV = Nothing
+
+        If resultsetGeodocat.resultados(NumElemento).cddurl <> "" Then
+            Button23.Enabled = True
+        Else
+            Button23.Enabled = False
+        End If
 
 
         'Metemos el resto de las propiedades
@@ -2377,11 +2393,19 @@ Public Class frmDocumentacion
     End Sub
 
     Private Sub Button22_Click_1(sender As System.Object, e As System.EventArgs) Handles Button22.Click
-
-        Dim nTomo As String = ListaDocumentos(GroupBox1.Tag).Tomo
-        Dim cProv As Integer = ListaDocumentos(GroupBox1.Tag).MunicipiosINE.Substring(0, 2)
+        Application.DoEvents()
+        Dim nTomo As String
+        Dim cProv As Integer
         Dim fileimagen As String
         Dim folderOutput As String
+
+        Try
+            nTomo = resultsetGeodocat.resultados(GroupBox1.Tag).Tomo
+            cProv = resultsetGeodocat.resultados(GroupBox1.Tag).ProvinciaRepo
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, AplicacionTitulo)
+            Exit Sub
+        End Try
 
         If MessageBox.Show("¿Desea copiar los documentos digitalizados encontrados a un directorio?", AplicacionTitulo, MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
             FolderBrowserDialog1.ShowNewFolderButton = True
@@ -2435,4 +2459,15 @@ Public Class frmDocumentacion
         End If
     End Sub
 
+    Private Sub Button23_Click(sender As Object, e As EventArgs) Handles Button23.Click
+        Dim cddURLdoc As String
+        Try
+            cddURLdoc = resultsetGeodocat.resultados(GroupBox1.Tag).cddURL
+            Process.Start(cddURLdoc)
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, AplicacionTitulo)
+            Exit Sub
+        End Try
+
+    End Sub
 End Class

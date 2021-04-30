@@ -21,25 +21,26 @@
 
     Sub getDocsSIDDAE_ByFiltroSellado(ByVal Filtro As String)
 
-        _consultaSQL = "SELECT archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal," & _
-                    "archivo.fechasmodificaciones,archivo.anejo,archivo.vertical,archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja," & _
-                    "archivo.subtipo,archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.observaciones,tbtipodocumento.tipodoc as Tipo," & _
-                    "tbestadodocumento.estadodoc as Estado, tbobservaciones.observestandar, " & _
-                    "string_agg(munihisto.nombremunicipiohistorico,'#') as listaMuniHisto,string_agg(to_char(munihisto.cod_munihisto, 'FM0000009'::text),'#') as listaCodMuniHisto," & _
-                    "string_agg(listamunicipios.nombre,'#') as listaMuniActual, string_agg(listamunicipios.inecorto,'#') as listaCodMuniActual, string_agg(provincias.nombreprovincia,'#') as nombreprovincia " & _
-                    "FROM archivo " & _
-                    "INNER JOIN tbtipodocumento ON tbtipodocumento.idtipodoc=archivo.tipodoc_id " & _
-                    "INNER JOIN tbestadodocumento ON tbestadodocumento.idestadodoc=archivo.estadodoc_id " & _
-                    "INNER JOIN  archivo2munihisto  ON archivo2munihisto.archivo_id=archivo.idarchivo " & _
-                    "LEFT JOIN  tbobservaciones  ON tbobservaciones.idobservestandar=archivo.observestandar_id " & _
-                    "INNER JOIN munihisto on munihisto.idmunihisto= archivo2munihisto.munihisto_id " & _
-                    "LEFT JOIN ngmepschema.listamunicipios on munihisto.entidad_id= listamunicipios.identidad " & _
-                    "INNER JOIN provincias on munihisto.provincia_id= provincias.idprovincia " & _
-                    "WHERE " & Filtro & " " & _
-                      "group by archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal," & _
-                      "archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, archivo.horizontal, archivo.tipodoc_id, archivo.estadodoc_id, archivo.procecarpeta, " & _
-                      "archivo.procehoja, archivo.subtipo,archivo.juntaestadistica, archivo.signatura, archivo.observestandar_id, archivo.observaciones,tbtipodocumento.tipodoc," & _
-                    "tbestadodocumento.estadodoc, tbobservaciones.observestandar  order by archivo.idarchivo"
+        _consultaSQL = "SELECT archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal," &
+                    "archivo.fechasmodificaciones,archivo.anejo,archivo.vertical,archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja," &
+                    "archivo.subtipo,archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.observaciones," &
+                    "archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto," &
+                    "tbtipodocumento.tipodoc as Tipo,tbestadodocumento.estadodoc as Estado, tbobservaciones.observestandar, " &
+                    "string_agg(munihisto.nombremunicipiohistorico,'#') as listaMuniHisto,string_agg(to_char(munihisto.cod_munihisto, 'FM0000009'::text),'#') as listaCodMuniHisto," &
+                    "string_agg(listamunicipios.nombre,'#') as listaMuniActual, string_agg(listamunicipios.inecorto,'#') as listaCodMuniActual, string_agg(provincias.nombreprovincia,'#') as nombreprovincia " &
+                    "FROM archivo " &
+                    "INNER JOIN tbtipodocumento ON tbtipodocumento.idtipodoc=archivo.tipodoc_id " &
+                    "INNER JOIN tbestadodocumento ON tbestadodocumento.idestadodoc=archivo.estadodoc_id " &
+                    "INNER JOIN  archivo2munihisto  ON archivo2munihisto.archivo_id=archivo.idarchivo " &
+                    "LEFT JOIN  tbobservaciones  ON tbobservaciones.idobservestandar=archivo.observestandar_id " &
+                    "INNER JOIN munihisto on munihisto.idmunihisto= archivo2munihisto.munihisto_id " &
+                    "LEFT JOIN ngmepschema.listamunicipios on munihisto.entidad_id= listamunicipios.identidad " &
+                    "INNER JOIN provincias on munihisto.provincia_id= provincias.idprovincia " &
+                    "WHERE " & Filtro & " " &
+                      "group by archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal," &
+                      "archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, archivo.horizontal, archivo.tipodoc_id, archivo.estadodoc_id, archivo.procecarpeta, " &
+                      "archivo.procehoja, archivo.subtipo,archivo.juntaestadistica, archivo.signatura, archivo.observestandar_id, archivo.observaciones,tbtipodocumento.tipodoc," &
+                    "archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,tbestadodocumento.estadodoc, tbobservaciones.observestandar  order by archivo.idarchivo"
 
 
         rellenarDataset()
@@ -48,31 +49,32 @@
 
     Sub getDocsSIDDAE_ByFiltroSQL(ByVal Filtro As String)
 
-        _consultaSQL = "SELECT archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal," & _
-                    "archivo.fechasmodificaciones,archivo.anejo,archivo.vertical,archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja," & _
-                    "archivo.subtipo,archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.observaciones,tbtipodocumento.tipodoc as Tipo," & _
-                    "tbestadodocumento.estadodoc as Estado, tbobservaciones.observestandar, " & _
-                    "string_agg(munihisto.nombremunicipiohistorico,'#') as listaMuniHisto,string_agg(to_char(munihisto.cod_munihisto, 'FM0000009'::text),'#') as listaCodMuniHisto," & _
-                    "string_agg(listamunicipios.nombre,'#') as listaMuniActual, string_agg(listamunicipios.inecorto,'#') as listaCodMuniActual, string_agg(provincias.nombreprovincia,', ') as nombreprovincia " & _
-                    "FROM archivo " & _
-                    "INNER JOIN tbtipodocumento ON tbtipodocumento.idtipodoc=archivo.tipodoc_id " & _
-                    "INNER JOIN tbestadodocumento ON tbestadodocumento.idestadodoc=archivo.estadodoc_id " & _
-                    "INNER JOIN  archivo2munihisto  ON archivo2munihisto.archivo_id=archivo.idarchivo " & _
-                    "LEFT JOIN  tbobservaciones  ON tbobservaciones.idobservestandar=archivo.observestandar_id " & _
-                    "INNER JOIN munihisto on munihisto.idmunihisto= archivo2munihisto.munihisto_id " & _
-                    "LEFT JOIN ngmepschema.listamunicipios on munihisto.entidad_id= listamunicipios.identidad " & _
-                    "INNER JOIN provincias on munihisto.provincia_id= provincias.idprovincia " & _
-                    "WHERE archivo.idarchivo in (" & _
-                        "SELECT distinct archivo.idarchivo FROM archivo " & _
-                        "INNER JOIN  archivo2munihisto  ON archivo2munihisto.archivo_id=archivo.idarchivo " & _
-                        "INNER JOIN munihisto on munihisto.idmunihisto= archivo2munihisto.munihisto_id " & _
-                        "LEFT JOIN ngmepschema.listamunicipios on munihisto.entidad_id= listamunicipios.identidad " & _
-                        "WHERE " & Filtro & " " & _
-                    ") " & _
-                    "group by archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal," & _
-                    "archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, archivo.horizontal, archivo.tipodoc_id, archivo.estadodoc_id, archivo.procecarpeta, " & _
-                    "archivo.procehoja, archivo.subtipo,archivo.juntaestadistica, archivo.signatura, archivo.observestandar_id, archivo.observaciones,tbtipodocumento.tipodoc," & _
-                    "tbestadodocumento.estadodoc, tbobservaciones.observestandar  order by archivo.idarchivo"
+        _consultaSQL = "SELECT archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal," &
+                    "archivo.fechasmodificaciones,archivo.anejo,archivo.vertical,archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja," &
+                    "archivo.subtipo,archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.observaciones,tbtipodocumento.tipodoc as Tipo," &
+                    "archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto," &
+                    "tbestadodocumento.estadodoc as Estado, tbobservaciones.observestandar, " &
+                    "string_agg(munihisto.nombremunicipiohistorico,'#') as listaMuniHisto,string_agg(to_char(munihisto.cod_munihisto, 'FM0000009'::text),'#') as listaCodMuniHisto," &
+                    "string_agg(listamunicipios.nombre,'#') as listaMuniActual, string_agg(listamunicipios.inecorto,'#') as listaCodMuniActual, string_agg(provincias.nombreprovincia,', ') as nombreprovincia " &
+                    "FROM archivo " &
+                    "INNER JOIN tbtipodocumento ON tbtipodocumento.idtipodoc=archivo.tipodoc_id " &
+                    "INNER JOIN tbestadodocumento ON tbestadodocumento.idestadodoc=archivo.estadodoc_id " &
+                    "INNER JOIN  archivo2munihisto  ON archivo2munihisto.archivo_id=archivo.idarchivo " &
+                    "LEFT JOIN  tbobservaciones  ON tbobservaciones.idobservestandar=archivo.observestandar_id " &
+                    "INNER JOIN munihisto on munihisto.idmunihisto= archivo2munihisto.munihisto_id " &
+                    "LEFT JOIN ngmepschema.listamunicipios on munihisto.entidad_id= listamunicipios.identidad " &
+                    "INNER JOIN provincias on munihisto.provincia_id= provincias.idprovincia " &
+                    "WHERE archivo.idarchivo in (" &
+                        "SELECT distinct archivo.idarchivo FROM archivo " &
+                        "INNER JOIN  archivo2munihisto  ON archivo2munihisto.archivo_id=archivo.idarchivo " &
+                        "INNER JOIN munihisto on munihisto.idmunihisto= archivo2munihisto.munihisto_id " &
+                        "LEFT JOIN ngmepschema.listamunicipios on munihisto.entidad_id= listamunicipios.identidad " &
+                        "WHERE " & Filtro & " " &
+                    ") " &
+                    "group by archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal," &
+                    "archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, archivo.horizontal, archivo.tipodoc_id, archivo.estadodoc_id, archivo.procecarpeta, " &
+                    "archivo.procehoja, archivo.subtipo,archivo.juntaestadistica, archivo.signatura, archivo.observestandar_id, archivo.observaciones,tbtipodocumento.tipodoc," &
+                    "archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,tbestadodocumento.estadodoc, tbobservaciones.observestandar  order by archivo.idarchivo"
 
 
         rellenarDataset()
@@ -157,6 +159,10 @@
             item.Signatura = dR("Signatura").ToString
             item.Coleccion = dR("Coleccion").ToString
             item.Subdivision = dR("Subdivision").ToString
+            item.cddProducto = dR("cdd_producto").ToString
+            item.cddNombreFichero = dR("cdd_nomfich").ToString
+            item.cddURL = dR("cdd_url").ToString
+
             For Each elem As String In dR("listaMuniHisto").ToString.Split("#")
                 item.listaMuniHistorico.Add(elem)
             Next

@@ -36,6 +36,9 @@
     Property Ancho As String
     Property ProvinciaRepo As Integer
     Property subTipoDoc As String
+    Property cddProducto As String
+    Property cddURL As String
+    Property cddNombreFichero As String
 
     Property BBOX4OL3 As String = "POLYGON((-3 42,3 42,0 39,-3 42))"
     Property BBOXCenter4OL3_ByExtent As String = "[-3, 39, 3, 42]"

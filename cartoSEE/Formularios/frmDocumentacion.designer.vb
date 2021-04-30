@@ -137,6 +137,7 @@ Partial Class frmDocumentacion
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Button7 = New System.Windows.Forms.Button()
         Me.Button9 = New System.Windows.Forms.Button()
+        Me.Button23 = New System.Windows.Forms.Button()
         Me.ContextMenuStrip1.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
@@ -297,6 +298,7 @@ Partial Class frmDocumentacion
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.Button23)
         Me.GroupBox1.Controls.Add(Me.Button22)
         Me.GroupBox1.Controls.Add(Me.Label7)
         Me.GroupBox1.Controls.Add(Me.Label1)
@@ -322,7 +324,7 @@ Partial Class frmDocumentacion
         Me.Button22.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button22.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button22.Image = CType(resources.GetObject("Button22.Image"), System.Drawing.Image)
-        Me.Button22.Location = New System.Drawing.Point(520, 18)
+        Me.Button22.Location = New System.Drawing.Point(449, 18)
         Me.Button22.Name = "Button22"
         Me.Button22.Size = New System.Drawing.Size(65, 50)
         Me.Button22.TabIndex = 38
@@ -431,6 +433,7 @@ Partial Class frmDocumentacion
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lvAtributos.ContextMenuStrip = Me.ContextMenuStrip2
         Me.lvAtributos.Font = New System.Drawing.Font("Verdana", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lvAtributos.HideSelection = False
         Me.lvAtributos.Location = New System.Drawing.Point(3, 3)
         Me.lvAtributos.Name = "lvAtributos"
         Me.lvAtributos.Size = New System.Drawing.Size(419, 365)
@@ -512,6 +515,7 @@ Partial Class frmDocumentacion
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ListView2.Font = New System.Drawing.Font("Verdana", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ListView2.HideSelection = False
         Me.ListView2.Location = New System.Drawing.Point(3, 374)
         Me.ListView2.Name = "ListView2"
         Me.ListView2.Size = New System.Drawing.Size(419, 110)
@@ -1111,7 +1115,7 @@ Partial Class frmDocumentacion
         Me.Label14.Name = "Label14"
         Me.Label14.Size = New System.Drawing.Size(667, 13)
         Me.Label14.TabIndex = 3
-        Me.Label14.Text = "Pulsa sobre el nomre del documento para ver los detalles. Haz clic sobre la image" & _
+        Me.Label14.Text = "Pulsa sobre el nomre del documento para ver los detalles. Haz clic sobre la image" &
     "n, para seleccionar la imagen y añadirla al carro de compra"
         '
         'Button18
@@ -1322,6 +1326,19 @@ Partial Class frmDocumentacion
         Me.Button9.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         Me.Button9.UseVisualStyleBackColor = True
         '
+        'Button23
+        '
+        Me.Button23.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Button23.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button23.Image = CType(resources.GetObject("Button23.Image"), System.Drawing.Image)
+        Me.Button23.Location = New System.Drawing.Point(520, 19)
+        Me.Button23.Name = "Button23"
+        Me.Button23.Size = New System.Drawing.Size(65, 50)
+        Me.Button23.TabIndex = 39
+        Me.Button23.Text = "CdD"
+        Me.Button23.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.Button23.UseVisualStyleBackColor = True
+        '
         'frmDocumentacion
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1494,4 +1511,5 @@ Partial Class frmDocumentacion
     Friend WithEvents CheckBox20 As System.Windows.Forms.CheckBox
     Friend WithEvents mnuSetZIndex As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuSetZIndexBulk As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents Button23 As Button
 End Class
