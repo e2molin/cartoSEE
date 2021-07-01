@@ -887,7 +887,7 @@ Public Class frmDocumentacion
 
         Label1.Text = resultsetGeodocat.resultados(NumElemento).Tomo
         Label4.Text = resultsetGeodocat.resultados(NumElemento).Provincias
-        Label5.Text = resultsetGeodocat.resultados(NumElemento).municipiosHistoLiteralFull
+        Label5.Text = resultsetGeodocat.resultados(NumElemento).municipiosHistoLiteral
         Label6.Text = resultsetGeodocat.resultados(NumElemento).Anejo
         Label7.Text = resultsetGeodocat.resultados(NumElemento).fechaPrincipal
         Label19.Text = resultsetGeodocat.resultados(NumElemento).Observaciones

@@ -507,6 +507,90 @@
     End Function
 
 
+    Function exportCdDGenerico(ByVal lista As ArrayList, folderMetadata4CdD As String, folderOUTfilesCopy As String, tiposdocu2CDD As ArrayList, copiarSiExisteEnDestino As Boolean) As Boolean
+
+
+        Dim indexProc As Integer
+        Dim pathOrigen As String
+        Dim pathDestino As String
+
+        Me.Text = "Copia de los ficheros JPG para el Centro de Descargas"
+        Label1.Text = "Copiando los ficheros JPG para el Centro de Descargas"
+        ProgressBar1.Minimum = 0
+        ProgressBar1.Maximum = lista.Count
+        Me.Show()
+
+        If Not System.IO.Directory.Exists(folderOUTfilesCopy) Then
+            MessageBox.Show("La ruta destino de los ficheros no existe", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            Me.Close()
+            Return False
+        End If
+
+        Using archivoLog As System.IO.StreamWriter = New System.IO.StreamWriter(folderMetadata4CdD & "\logCopy.log", True, System.Text.Encoding.UTF8)
+            Using archivoAlias As System.IO.StreamWriter = New System.IO.StreamWriter(folderMetadata4CdD & "\alias.txt", True, System.Text.Encoding.UTF8)
+                Using archivoMunicipios As System.IO.StreamWriter = New System.IO.StreamWriter(folderMetadata4CdD & "\municipios.txt", True, System.Text.Encoding.UTF8)
+                    Using sentenciaSQL As System.IO.StreamWriter = New System.IO.StreamWriter(folderMetadata4CdD & "\actualizCartoSEE.sql", True, System.Text.Encoding.UTF8)
+                        'archivoMunicipios.WriteLine("idProductor;Nombre Fichero JPG;Códigos INE de municipio asociado")
+                        'archivoAlias.WriteLine("idProductor;Fichero;Temática;Alias;Fecha;TipoFichero")
+                        For Each documento As docCartoSEE In lista
+                            Application.DoEvents()
+                            If tiposdocu2CDD.IndexOf(documento.tipoDocumento.idTipodoc) = -1 Then Continue For
+                            indexProc = indexProc + 1
+                            ProgressBar1.Value = indexProc
+                            'Primero copiamos el JPG
+                            pathOrigen = documento.rutaFicheroBajaRes
+                            pathDestino = folderOUTfilesCopy & "\" & documento.nameFile4CDD
+                            Try
+                                If System.IO.File.Exists(pathDestino) = True Then
+                                    If copiarSiExisteEnDestino Then
+                                        System.IO.File.Copy(pathOrigen, pathDestino, True)
+                                        archivoLog.WriteLine("*COPIA CORRECTA*" & pathOrigen & "#" & pathDestino)
+                                    Else
+                                        archivoLog.WriteLine("*COPIA CORRECTA. YA EXISTE*" & pathOrigen & "#" & pathDestino)
+                                    End If
+                                Else
+                                    System.IO.File.Copy(pathOrigen, pathDestino, True)
+                                    archivoLog.WriteLine("*COPIA CORRECTA*" & pathOrigen & "#" & pathDestino)
+                                End If
+                                archivoAlias.WriteLine(documento.getIdProductor4CdD & ";" &
+                                                   documento.nameFile4CDD & ";" &
+                                                   documento.tipoDocumento.NombreTipo & ";" &
+                                                   documento.getCdDAlias & ";" &
+                                                   documento.yearFechaPrincipal & ";" &
+                                                   "JPG")
+                                sentenciaSQL.WriteLine("UPDATE bdsidschema.archivo SET " &
+                                                       "cdd_nomfich = E'" & documento.nameFile4CDD.Replace("'", "\'") & "'," &
+                                                       "cdd_titulo = E'" & documento.getCdDAlias.Replace("'", "\'") & ";" & documento.yearFechaPrincipal & "' " &
+                                                       "WHERE sellado=" & documento.getIdProductor4CdD & ";")
+
+                                'Por cada INE metemos una línea
+                                For Each muni As String In documento.listaCodMuniActual
+                                    Application.DoEvents()
+                                    'Convertimos el codigo INE a INE completo según BDLL
+                                    If muni.Length = 5 Then
+                                        muni = "34" & DameAutonomiaByINEProvincia(muni.Substring(0, 2)) & muni.Substring(0, 2) & muni
+                                    Else
+                                        GenerarLOG("No peude convertirse " & muni & " a código INE largo")
+                                    End If
+                                    archivoMunicipios.WriteLine(documento.Sellado & ";" & documento.nameFile4CDD & ";" & muni)
+                                Next
+                            Catch ex As Exception
+                                archivoLog.WriteLine("#COPIA ERRONEA#" & pathOrigen & "#" & pathDestino & "#" & ex.Message)
+                            End Try
+                        Next
+                    End Using
+                End Using
+            End Using
+        End Using
+
+        ProgressBar1.Value = lista.Count
+        Me.Close()
+        Return True
+
+
+    End Function
+
+
     Function copyFilesJPG2Directory(ByVal lista As ArrayList, folderOUTfilesCopy As String, tiposdocu2CDD As ArrayList) As Boolean
 
 

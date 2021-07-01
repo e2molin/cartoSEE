@@ -26,16 +26,12 @@ Public Class frmExportCdD
         Next
 
         txtDirTarget.Text = My.Computer.FileSystem.SpecialDirectories.Temp
-        txtDirTarget.Text = "Y:\CartoSEE"
+        txtDirTarget.Text = "S:\CdDJE"
         cancelar = False
         ToolStripStatusLabel1.Text = "Seleccione provincia"
 
         For Each tipoDocu As docCartoSEETipoDocu In tiposDocSIDCARTO
-            If tipoDocu.idTipodoc = 1 Or tipoDocu.idTipodoc = 2 Or tipoDocu.idTipodoc = 3 Then
-                CheckedListBox1.Items.Add(New itemData(tipoDocu.NombreTipo, tipoDocu.idTipodoc), True)
-            Else
-                CheckedListBox1.Items.Add(New itemData(tipoDocu.NombreTipo, tipoDocu.idTipodoc), False)
-            End If
+            CheckedListBox1.Items.Add(New itemData(tipoDocu.NombreTipo, tipoDocu.idTipodoc), False)
         Next
 
 
@@ -53,6 +49,9 @@ Public Class frmExportCdD
         'MessageBox.Show("Proceso terminado", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
         'Exit Sub
 
+
+
+
         If cboProvincias.SelectedIndex = -1 Then
             MessageBox.Show("Selecciona una provincia", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
             Exit Sub
@@ -61,6 +60,22 @@ Public Class frmExportCdD
             MessageBox.Show("El directorio no existe", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
             Exit Sub
         End If
+        Try
+            If System.IO.File.Exists(txtDirTarget.Text.Trim & "\logCopy.log") Then System.IO.File.Delete(txtDirTarget.Text.Trim & "\logCopy.log")
+            If System.IO.File.Exists(txtDirTarget.Text.Trim & "\alias.txt") Then System.IO.File.Delete(txtDirTarget.Text.Trim & "\alias.txt")
+            If System.IO.File.Exists(txtDirTarget.Text.Trim & "\municipios.txt") Then System.IO.File.Delete(txtDirTarget.Text.Trim & "\municipios.txt")
+            If System.IO.File.Exists(txtDirTarget.Text.Trim & "\actualizCartoSEE.sql") Then System.IO.File.Delete(txtDirTarget.Text.Trim & "\actualizCartoSEE.sql")
+            Using archivoAlias As System.IO.StreamWriter = New System.IO.StreamWriter(txtDirTarget.Text.Trim & "\alias.txt", False, System.Text.Encoding.UTF8)
+                Using archivoMunicipios As System.IO.StreamWriter = New System.IO.StreamWriter(txtDirTarget.Text.Trim & "\municipios.txt", False, System.Text.Encoding.UTF8)
+                    archivoMunicipios.WriteLine("idProductor;Nombre Fichero JPG;Códigos INE de municipio asociado")
+                    archivoAlias.WriteLine("idProductor;Fichero;Temática;Alias;Fecha;TipoFichero")
+                End Using
+            End Using
+        Catch ex As Exception
+            GenerarLOG("e2m: " & ex.Message)
+            Exit Sub
+        End Try
+
         If cboProvincias.Text = "(Procesar todas)" Then
             ToolStripProgressBar1.Minimum = 0
             ToolStripProgressBar1.Maximum = 50
@@ -75,6 +90,7 @@ Public Class frmExportCdD
             ToolStripProgressBar1.Value = 1
             procesarProvincia4CdD(CType(cboProvincias.SelectedItem, itemData).Valor, txtDirTarget.Text)
         End If
+        ToolStripStatusLabel1.Text = "Proceso terminado"
         MessageBox.Show("Proceso terminado", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
 
     End Sub
@@ -111,18 +127,22 @@ Public Class frmExportCdD
         ToolStripStatusLabel1.Text = "Accediendo a la información de " & DameProvinciaByINE(cProv)
         Application.DoEvents()
 
-        Dim resultDocumentos As New docCartoSEEquery
-        resultDocumentos.flag_ActualizarInfoGeom = True
-        resultDocumentos.flag_CargarFicherosGEO = True
-        resultDocumentos.getDocsSIDDAE_ByFiltroSellado("archivo.provincia_id=" & cProv)
-
+        Dim seqTiposDoc As String = ""
         tiposdocu2CDD.Clear()
         For Each elem As itemData In CheckedListBox1.CheckedItems
             Application.DoEvents()
             tiposdocu2CDD.Add(CType(elem.Valor, Integer))
+            If seqTiposDoc = "" Then seqTiposDoc = CType(elem.Valor, Integer) : Continue For
+            seqTiposDoc = seqTiposDoc & "," & CType(elem.Valor, Integer)
         Next
 
 
+        Dim resultDocumentos As New docCartoSEEquery
+        resultDocumentos.flag_ActualizarInfoGeom = True
+        resultDocumentos.flag_CargarFicherosGEO = True
+        resultDocumentos.getDocsSIDDAE_ByFiltroSellado("archivo.provincia_id=" & cProv & " AND tipodoc_id IN (" & seqTiposDoc & ")")
+
+        If resultDocumentos.resultados.Count = 0 Then Exit Sub
 
         'Aplicamos tareas
         If chkHTML.Checked Then
@@ -139,7 +159,6 @@ Public Class frmExportCdD
             proce.generarHTMLreport(resultDocumentos.resultados, My.Application.Info.DirectoryPath & "\resources\docsidcarto-template.html", folderWork, True, tiposdocu2CDD)
             proce = Nothing
         End If
-
 
         If chkCreateINDEX.Checked Then
             ToolStripStatusLabel1.Text = "Procesando " & DameProvinciaByINE(cProv) & ". Generando índice"
@@ -178,7 +197,6 @@ Public Class frmExportCdD
             proce = Nothing
         End If
 
-
         If chkCreateNEM.Checked Then
             ToolStripStatusLabel1.Text = "Procesando " & DameProvinciaByINE(cProv) & ". Generando metadatos ISO19115"
             folderWork = folderOUT & "\" & String.Format("{0:00}", cProv) & "\xml\"
@@ -195,20 +213,23 @@ Public Class frmExportCdD
         End If
 
         If chkCopiaFicherosImagen.Checked Then
-            Dim folderCopyJPG As String
+            Dim folderDocs4CdD As String
+            Dim folderMetadata4CdD As String
             ToolStripStatusLabel1.Text = "Procesando " & DameProvinciaByINE(cProv) & ". Copiando ficheros para el CdD"
-            folderCopyJPG = folderOUT & "\" & String.Format("{0:00}", cProv) & "\jpg\"
+            folderMetadata4CdD = folderOUT
+            folderDocs4CdD = folderOUT & "\documentos\" & String.Format("{0:00}", cProv)
             Try
-                If Not System.IO.Directory.Exists(folderCopyJPG) Then
-                    System.IO.Directory.CreateDirectory(folderCopyJPG)
+                If Not System.IO.Directory.Exists(folderDocs4CdD) Then
+                    System.IO.Directory.CreateDirectory(folderDocs4CdD)
                 End If
             Catch ex As Exception
                 MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
             End Try
             proce = New procGenerateHTMLReport
-            proce.copyFilesJPG2Directory(resultDocumentos.resultados, folderCopyJPG, tiposdocu2CDD)
+            proce.exportCdDGenerico(resultDocumentos.resultados, folderMetadata4CdD, folderDocs4CdD, tiposdocu2CDD, cboxOverwrite.Checked)
             proce = Nothing
         End If
+
         If chkThumb.Checked Then
             Dim folderCopyThumb As String
             ToolStripStatusLabel1.Text = "Procesando " & DameProvinciaByINE(cProv) & ". Copiando miniaturas para el CdD"
@@ -240,8 +261,6 @@ Public Class frmExportCdD
             proce.copyFiles2DirectoryZIPPED(resultDocumentos.resultados, folderCopyZIP, tiposdocu2CDD)
             proce = Nothing
         End If
-
-
 
         resultDocumentos.resultados.Clear()
         resultDocumentos = Nothing

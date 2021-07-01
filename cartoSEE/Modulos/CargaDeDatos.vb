@@ -50,10 +50,10 @@ Module CargaDeDatos
 
         ListaProvincias = New DataTable
 
-        If CargarDatatable("SELECT idprovincia as INE,nombreprovincia as Nombre,dirrepo " & _
+        If CargarDatatable("SELECT idprovincia as INE,nombreprovincia as Nombre,comautonoma_id as autonomia, dirrepo " &
                             "FROM provincias order by idprovincia", ListaProvincias) = False Then
             'CargarListasMunicipios = False
-            MessageBox.Show("No se puede acceder a la tabla de provincias", _
+            MessageBox.Show("No se puede acceder a la tabla de provincias",
                             My.Application.Info.AssemblyName, MessageBoxButtons.OK, MessageBoxIcon.Error)
         End If
 

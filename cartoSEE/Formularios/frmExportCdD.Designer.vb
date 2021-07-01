@@ -42,6 +42,7 @@ Partial Class frmExportCdD
         Me.chkCopiaFicherosZIP = New System.Windows.Forms.CheckBox()
         Me.CheckedListBox1 = New System.Windows.Forms.CheckedListBox()
         Me.Label3 = New System.Windows.Forms.Label()
+        Me.cboxOverwrite = New System.Windows.Forms.CheckBox()
         Me.StatusStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -113,7 +114,7 @@ Partial Class frmExportCdD
         'ToolStripStatusLabel1
         '
         Me.ToolStripStatusLabel1.Name = "ToolStripStatusLabel1"
-        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(121, 17)
+        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(120, 17)
         Me.ToolStripStatusLabel1.Text = "ToolStripStatusLabel1"
         '
         'ToolStripProgressBar1
@@ -130,6 +131,7 @@ Partial Class frmExportCdD
         Me.chkCreateINDEX.TabIndex = 8
         Me.chkCreateINDEX.Text = "Generar sólo el índice provincial"
         Me.chkCreateINDEX.UseVisualStyleBackColor = True
+        Me.chkCreateINDEX.Visible = False
         '
         'chkThumb
         '
@@ -140,6 +142,7 @@ Partial Class frmExportCdD
         Me.chkThumb.TabIndex = 10
         Me.chkThumb.Text = "Copiar los ficheros de miniaturas"
         Me.chkThumb.UseVisualStyleBackColor = True
+        Me.chkThumb.Visible = False
         '
         'chkCreateNEM
         '
@@ -150,6 +153,7 @@ Partial Class frmExportCdD
         Me.chkCreateNEM.TabIndex = 11
         Me.chkCreateNEM.Text = "Generar metadatos ISO 19115"
         Me.chkCreateNEM.UseVisualStyleBackColor = True
+        Me.chkCreateNEM.Visible = False
         '
         'chkHTML
         '
@@ -160,16 +164,20 @@ Partial Class frmExportCdD
         Me.chkHTML.TabIndex = 12
         Me.chkHTML.Text = "Generar HTML por documento con índice provincial"
         Me.chkHTML.UseVisualStyleBackColor = True
+        Me.chkHTML.Visible = False
         '
         'chkCopiaFicherosImagen
         '
         Me.chkCopiaFicherosImagen.AutoSize = True
+        Me.chkCopiaFicherosImagen.Checked = True
+        Me.chkCopiaFicherosImagen.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkCopiaFicherosImagen.Location = New System.Drawing.Point(15, 225)
         Me.chkCopiaFicherosImagen.Name = "chkCopiaFicherosImagen"
         Me.chkCopiaFicherosImagen.Size = New System.Drawing.Size(207, 17)
         Me.chkCopiaFicherosImagen.TabIndex = 13
         Me.chkCopiaFicherosImagen.Text = "Copiar los ficheros JPG de la provincia"
         Me.chkCopiaFicherosImagen.UseVisualStyleBackColor = True
+        Me.chkCopiaFicherosImagen.Visible = False
         '
         'chkMuniIndex
         '
@@ -180,6 +188,7 @@ Partial Class frmExportCdD
         Me.chkMuniIndex.TabIndex = 14
         Me.chkMuniIndex.Text = "Generar índice para cada municipio histórico y actual"
         Me.chkMuniIndex.UseVisualStyleBackColor = True
+        Me.chkMuniIndex.Visible = False
         '
         'chkCopiaFicherosZIP
         '
@@ -190,6 +199,7 @@ Partial Class frmExportCdD
         Me.chkCopiaFicherosZIP.TabIndex = 15
         Me.chkCopiaFicherosZIP.Text = "Generar paquete ZIP de  los ficheros JPG+ECW "
         Me.chkCopiaFicherosZIP.UseVisualStyleBackColor = True
+        Me.chkCopiaFicherosZIP.Visible = False
         '
         'CheckedListBox1
         '
@@ -209,11 +219,22 @@ Partial Class frmExportCdD
         Me.Label3.TabIndex = 17
         Me.Label3.Text = "Tipos de documentos para exportar"
         '
+        'cboxOverwrite
+        '
+        Me.cboxOverwrite.AutoSize = True
+        Me.cboxOverwrite.Location = New System.Drawing.Point(324, 44)
+        Me.cboxOverwrite.Name = "cboxOverwrite"
+        Me.cboxOverwrite.Size = New System.Drawing.Size(228, 17)
+        Me.cboxOverwrite.TabIndex = 18
+        Me.cboxOverwrite.Text = "Sobrescribir si existen los ficheros de salida"
+        Me.cboxOverwrite.UseVisualStyleBackColor = True
+        '
         'frmExportCdD
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(641, 357)
+        Me.Controls.Add(Me.cboxOverwrite)
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.CheckedListBox1)
         Me.Controls.Add(Me.chkCopiaFicherosZIP)
@@ -258,4 +279,5 @@ Partial Class frmExportCdD
     Friend WithEvents chkCopiaFicherosZIP As System.Windows.Forms.CheckBox
     Friend WithEvents CheckedListBox1 As System.Windows.Forms.CheckedListBox
     Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents cboxOverwrite As CheckBox
 End Class

@@ -210,6 +210,25 @@ Module ConsultasGEO
         fila = Nothing
 
     End Function
+
+    Function DameAutonomiaByINEProvincia(ByVal CodigoINE As String) As String
+
+        Dim cadOUT As String = ""
+        Try
+            Dim fila() As DataRow = ListaProvincias.Select("INE=" & CodigoINE)
+            If fila.Length > 0 Then
+                cadOUT = String.Format("{0:00}", fila(0).ItemArray(2))
+            End If
+            fila = Nothing
+        Catch ex As Exception
+            GenerarLOG("e2m: No se pudo obtener el código de autonomia: " & CodigoINE)
+        End Try
+
+        Return cadOUT
+
+
+    End Function
+
     Function DirRepoProvinciaByINE(ByVal CodigoINE As String) As String
 
         'Solucionamos el caso del Bug de Madrid
@@ -218,7 +237,7 @@ Module ConsultasGEO
         Dim fila() As DataRow = ListaProvincias.Select("INE=" & CodigoINE)
         DirRepoProvinciaByINE = "Desconocida"
         If fila.Length > 0 Then
-            DirRepoProvinciaByINE = fila(0).ItemArray(2).ToString
+            DirRepoProvinciaByINE = fila(0).ItemArray(3).ToString
         End If
         fila = Nothing
 

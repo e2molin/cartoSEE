@@ -47,6 +47,28 @@
     Property BBOX_Ymin As String = "39"
     Property BBOX_Ymax As String = "43"
 
+    ReadOnly Property yearFechaPrincipal As String
+        Get
+            Dim cadOut As String = ""
+            Try
+                If Not fechaPrincipal Is Nothing Then
+                    If fechaPrincipal.Length >= 3 And (fechaPrincipal.Substring(4, 1) = "-" Or fechaPrincipal.Substring(4, 1) = "/") Then
+                        cadOut = fechaPrincipal.Substring(0, 4)
+                    Else
+                        cadOut = "Sin fecha"
+                    End If
+                Else
+                    cadOut = "Sin fecha"
+                End If
+
+                Return cadOut
+            Catch ex As Exception
+                GenerarLOG("e2m: Error en procGenerateHTMLReport -> yearFechaPrincipal -> " & ex.Message)
+            End Try
+            Return ""
+        End Get
+    End Property
+
 
     ReadOnly Property getInfoWMS As String
         Get
@@ -110,7 +132,7 @@
         End Get
     End Property
 
-    ReadOnly Property municipiosHistoLiteralFull() As String
+    ReadOnly Property muniHistoLiteralConINEHistorico() As String
         Get
             Dim cadOut As String = ""
             For iterador As Integer = 0 To listaMuniHistorico.Count - 1
@@ -121,7 +143,23 @@
         End Get
     End Property
 
-
+    ReadOnly Property muniHistoLiteralConMuniActual(Optional soloMuniActualSiIguales As Boolean = False) As String
+        Get
+            Dim cadOut As String = ""
+            Dim elem As String
+            For iterador As Integer = 0 To listaMuniHistorico.Count - 1
+                elem = listaMuniHistorico.Item(iterador).ToString & " (" & listaMuniActual.Item(iterador).ToString & ")"
+                If soloMuniActualSiIguales Then
+                    If listaMuniHistorico.Item(iterador).ToString = listaMuniActual.Item(iterador).ToString Then
+                        elem = listaMuniActual.Item(iterador).ToString
+                    End If
+                End If
+                If cadOut = "" Then cadOut = elem : Continue For
+                cadOut = cadOut & ", " & elem
+            Next
+            Return cadOut
+        End Get
+    End Property
 
     ReadOnly Property municipiosHistoLiteralHTML() As String
         Get
@@ -177,7 +215,7 @@
     ReadOnly Property nameFile4CDD() As String
 
         Get
-            Return _tipoDocumento.NombreTipo.Substring(0, 5).Replace("ñ", "n").ToUpper & "_" & String.Format("{0:000000}", Sellado) & "_" & _fechaPrincipal.Substring(0, 4) & ".jpg"
+            Return _tipoDocumento.prefijoNombreCDD & "_" & String.Format("{0:000000}", Sellado) & ".jpg"
         End Get
     End Property
 
@@ -242,17 +280,58 @@
         End Get
     End Property
 
+    ReadOnly Property getCdDAlias() As String
+        Get
+            If tipoDocumento.NombreTipo = "Directorio" Then
+                Return Trim("nº " & Sellado & ". " &
+                        muniHistoLiteralConMuniActual(True) &
+                        IIf(subTipoDoc <> "", ". " & subTipoDoc, "") &
+                        IIf(Coleccion <> "", ". Colección " & Coleccion, ""))
+            ElseIf tipoDocumento.NombreTipo = "Hoja kilométrica" Then
+                Return Trim("nº " & Sellado & ". " &
+                        muniHistoLiteralConMuniActual(True) &
+                        IIf(subTipoDoc <> "", ". " & subTipoDoc, "") &
+                        IIf(Coleccion <> "", ". Colección " & Coleccion, "") &
+                        IIf(Subdivision <> "", ". " & Subdivision, ""))
+            ElseIf tipoDocumento.NombreTipo = "Parcelario urbano JE" Then
+                Return Trim("nº " & Sellado & ". " &
+                        muniHistoLiteralConMuniActual(True) &
+                        IIf(subTipoDoc <> "", ". " & subTipoDoc, "") &
+                        IIf(Coleccion <> "", ". Colección " & Coleccion, "") &
+                        IIf(Subdivision <> "", ". " & Subdivision, ""))
+            Else
+                Return "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. " &
+                       "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+            End If
+
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Formatea el número de sellado con seis caracteres
+    ''' </summary>
+    ''' <returns></returns>
+    ReadOnly Property getIdProductor4CdD() As String
+
+        Get
+            Return String.Format("{0:000000}", Sellado)
+        End Get
+
+    End Property
+
+
+
     ReadOnly Property SEODescription() As String
         Get
             If tipoDocumento.NombreTipo = "Planimetría" Then
-                Return "Mapa manuscrito a escala 1:25000 que recoge la información planimétrica necesaria para la realización del M.T.N. 1/50.000 " & _
-                        "(vías de comunicación, núcleos de población, hidrografía, mojones de delimitación municipal...). " & _
+                Return "Mapa manuscrito a escala 1:25000 que recoge la información planimétrica necesaria para la realización del M.T.N. 1/50.000 " &
+                        "(vías de comunicación, núcleos de población, hidrografía, mojones de delimitación municipal...). " &
                         "Se crearon para la formación del Mapa Topográfico Nacional a escala 1/50.000 y fueron base fundamental para el conocimiento de la riqueza catastral de España."
             ElseIf tipoDocumento.NombreTipo = "Altimetría" Then
-                Return "Mapa manuscrito que recoge la información altimétrica, especialmente las curvas de nivel a una equidistancia normalmente de 10 metros, necesaria para la realización " & _
+                Return "Mapa manuscrito que recoge la información altimétrica, especialmente las curvas de nivel a una equidistancia normalmente de 10 metros, necesaria para la realización " &
                         "del M.T.N. 1/50.000. Se crearon para la formación del Mapa Topográfico Nacional a escala 1/50.000 y fueron base fundamental para el conocimiento de la riqueza catastral de España."
             Else
-                Return "Mapas manuscritos que recoge la información altimétrica y planimétrica, necesaria para la realización del M.T.N. 1/50.000. " & _
+                Return "Mapas manuscritos que recoge la información altimétrica y planimétrica, necesaria para la realización del M.T.N. 1/50.000. " &
                     "Se crearon para la formación del Mapa Topográfico Nacional a escala 1/50.000 y fueron base fundamental para el conocimiento de la riqueza catastral de España."
             End If
 
@@ -279,10 +358,10 @@
         'Comprobamos el más simple de todos
 
         For Each Muni As String In listaCodMuniHistorico
-            RutaDOC = rutaRepoGeorref & _
-                             "\" & DirRepoProvinciaByTipodoc(tipoDocumento.idTipodoc) & _
-                             "\" & Muni.Substring(0, 2) & _
-                             "\" & Muni & _
+            RutaDOC = rutaRepoGeorref &
+                             "\" & DirRepoProvinciaByTipodoc(tipoDocumento.idTipodoc) &
+                             "\" & Muni.Substring(0, 2) &
+                             "\" & Muni &
                             "\" & Sellado & ".ecw"
             If System.IO.File.Exists(RutaDOC) = True Then
                 listaFicherosGeo.Add(RutaDOC)
@@ -292,10 +371,10 @@
         'Si llegamos aquí, es porque el nombre del documento es compuesto
 
         For Each Muni As String In listaCodMuniHistorico
-            RutaDOC = rutaRepoGeorref & _
-                             "\" & DirRepoProvinciaByTipodoc(tipoDocumento.idTipodoc) & _
-                             "\" & Muni.Substring(0, 2) & _
-                             "\" & Muni & _
+            RutaDOC = rutaRepoGeorref &
+                             "\" & DirRepoProvinciaByTipodoc(tipoDocumento.idTipodoc) &
+                             "\" & Muni.Substring(0, 2) &
+                             "\" & Muni &
                             "\" & Sellado & "_01.ecw"
             If System.IO.File.Exists(RutaDOC) = True Then
                 listaFicherosGeo.Add(RutaDOC)
@@ -332,11 +411,11 @@
         Dim y2_tmp As Double
         Dim contador As Integer = -1
 
-        cadSQL = "SELECT st_xmin(ST_box2d(ST_Transform(geom,4230))) as xmin," & _
-                        "st_xmax(ST_box2d(ST_Transform(geom,4230))) as xmax," & _
-                        "st_ymin(ST_box2d(ST_Transform(geom,4230))) as ymin," & _
-                        "st_ymax(ST_box2d(ST_Transform(geom,4230))) as ymax " & _
-                        "FROM contornos WHERE archivo_id=" & docIndex
+        cadSQL = "SELECT st_xmin(ST_box2d(ST_Transform(geom,4230))) as xmin," &
+                        "st_xmax(ST_box2d(ST_Transform(geom,4230))) as xmax," &
+                        "st_ymin(ST_box2d(ST_Transform(geom,4230))) as ymin," &
+                        "st_ymax(ST_box2d(ST_Transform(geom,4230))) as ymax " &
+                        "FROM contornos WHERE not geom is null and archivo_id=" & docIndex
         rcdTMP = New DataTable
         If CargarRecordset(cadSQL, rcdTMP) = True Then
             filas = rcdTMP.Select
