@@ -24,8 +24,8 @@
         _consultaSQL = "SELECT archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal," &
                     "archivo.fechasmodificaciones,archivo.anejo,archivo.vertical,archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja," &
                     "archivo.subtipo,archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.observaciones," &
-                    "archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto," &
-                    "tbtipodocumento.tipodoc as Tipo,tbestadodocumento.estadodoc as Estado, tbobservaciones.observestandar, " &
+                    "archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.titn,archivo.autor," &
+                    "tbtipodocumento.tipodoc as Tipo,tbestadodocumento.estadodoc as Estado, tbobservaciones.observestandar," &
                     "string_agg(munihisto.nombremunicipiohistorico,'#') as listaMuniHisto,string_agg(to_char(munihisto.cod_munihisto, 'FM0000009'::text),'#') as listaCodMuniHisto," &
                     "string_agg(listamunicipios.nombre,'#') as listaMuniActual, string_agg(listamunicipios.inecorto,'#') as listaCodMuniActual, string_agg(provincias.nombreprovincia,'#') as nombreprovincia " &
                     "FROM archivo " &
@@ -40,7 +40,7 @@
                       "group by archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal," &
                       "archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, archivo.horizontal, archivo.tipodoc_id, archivo.estadodoc_id, archivo.procecarpeta, " &
                       "archivo.procehoja, archivo.subtipo,archivo.juntaestadistica, archivo.signatura, archivo.observestandar_id, archivo.observaciones,tbtipodocumento.tipodoc," &
-                    "archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,tbestadodocumento.estadodoc, tbobservaciones.observestandar  order by archivo.idarchivo"
+                    "archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.titn,archivo.autor,tbestadodocumento.estadodoc, tbobservaciones.observestandar order by archivo.idarchivo"
 
 
         rellenarDataset()
@@ -52,7 +52,7 @@
         _consultaSQL = "SELECT archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal," &
                     "archivo.fechasmodificaciones,archivo.anejo,archivo.vertical,archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja," &
                     "archivo.subtipo,archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.observaciones,tbtipodocumento.tipodoc as Tipo," &
-                    "archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto," &
+                    "archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.titn,archivo.autor," &
                     "tbestadodocumento.estadodoc as Estado, tbobservaciones.observestandar, " &
                     "string_agg(munihisto.nombremunicipiohistorico,'#') as listaMuniHisto,string_agg(to_char(munihisto.cod_munihisto, 'FM0000009'::text),'#') as listaCodMuniHisto," &
                     "string_agg(listamunicipios.nombre,'#') as listaMuniActual, string_agg(listamunicipios.inecorto,'#') as listaCodMuniActual, string_agg(provincias.nombreprovincia,', ') as nombreprovincia " &
@@ -74,7 +74,7 @@
                     "group by archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal," &
                     "archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, archivo.horizontal, archivo.tipodoc_id, archivo.estadodoc_id, archivo.procecarpeta, " &
                     "archivo.procehoja, archivo.subtipo,archivo.juntaestadistica, archivo.signatura, archivo.observestandar_id, archivo.observaciones,tbtipodocumento.tipodoc," &
-                    "archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,tbestadodocumento.estadodoc, tbobservaciones.observestandar  order by archivo.idarchivo"
+                    "archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.titn,archivo.autor,tbestadodocumento.estadodoc, tbobservaciones.observestandar  order by archivo.idarchivo"
 
 
         rellenarDataset()
@@ -162,6 +162,8 @@
             item.cddProducto = dR("cdd_producto").ToString
             item.cddNombreFichero = dR("cdd_nomfich").ToString
             item.cddURL = dR("cdd_url").ToString
+            item.titnDocumento = dR("titn")
+            item.autorDocumento = dR("autor").ToString
 
             For Each elem As String In dR("listaMuniHisto").ToString.Split("#")
                 item.listaMuniHistorico.Add(elem)

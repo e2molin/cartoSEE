@@ -40,6 +40,10 @@
     Property cddURL As String
     Property cddNombreFichero As String
 
+    'Namespace ABSYS
+    Property autorDocumento As String
+    Property titnDocumento As Integer
+
     Property BBOX4OL3 As String = "POLYGON((-3 42,3 42,0 39,-3 42))"
     Property BBOXCenter4OL3_ByExtent As String = "[-3, 39, 3, 42]"
     Property BBOX_Xmin As String = "-10"

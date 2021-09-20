@@ -554,8 +554,9 @@
                                 End If
                                 archivoAlias.WriteLine(documento.getIdProductor4CdD & ";" &
                                                    documento.nameFile4CDD & ";" &
-                                                   documento.tipoDocumento.NombreTipo & ";" &
+                                                   documento.tipoDocumento.tematicaCdD & ";" &
                                                    documento.getCdDAlias & ";" &
+                                                   documento.Escala & ";" &
                                                    documento.yearFechaPrincipal & ";" &
                                                    "JPG")
                                 sentenciaSQL.WriteLine("UPDATE bdsidschema.archivo SET " &
