@@ -26,7 +26,7 @@ Public Class frmExportCdD
         Next
 
         txtDirTarget.Text = My.Computer.FileSystem.SpecialDirectories.Temp
-        txtDirTarget.Text = "S:\CdDJE"
+        txtDirTarget.Text = "S:\CdDJE" '\\sbdignmad651\INTERCAMBIO\User_Esteban\CdDJE
         cancelar = False
         ToolStripStatusLabel1.Text = "Seleccione provincia"
 
@@ -48,10 +48,6 @@ Public Class frmExportCdD
         'procesarProvincia4CdD(50, txtDirTarget.Text)
         'MessageBox.Show("Proceso terminado", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
         'Exit Sub
-
-
-
-
         If cboProvincias.SelectedIndex = -1 Then
             MessageBox.Show("Selecciona una provincia", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
             Exit Sub
@@ -68,7 +64,7 @@ Public Class frmExportCdD
             Using archivoAlias As System.IO.StreamWriter = New System.IO.StreamWriter(txtDirTarget.Text.Trim & "\alias.txt", False, System.Text.Encoding.UTF8)
                 Using archivoMunicipios As System.IO.StreamWriter = New System.IO.StreamWriter(txtDirTarget.Text.Trim & "\municipios.txt", False, System.Text.Encoding.UTF8)
                     archivoMunicipios.WriteLine("idProductor;Nombre Fichero JPG;Códigos INE de municipio asociado")
-                    archivoAlias.WriteLine("idProductor;Fichero;Temática;Alias;Fecha;TipoFichero")
+                    archivoAlias.WriteLine("idProductor;Fichero;Temática;Alias;Escala;Autor;Fecha;TipoFichero")
                 End Using
             End Using
         Catch ex As Exception

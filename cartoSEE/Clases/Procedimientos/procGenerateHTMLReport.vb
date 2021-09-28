@@ -531,7 +531,7 @@
                 Using archivoMunicipios As System.IO.StreamWriter = New System.IO.StreamWriter(folderMetadata4CdD & "\municipios.txt", True, System.Text.Encoding.UTF8)
                     Using sentenciaSQL As System.IO.StreamWriter = New System.IO.StreamWriter(folderMetadata4CdD & "\actualizCartoSEE.sql", True, System.Text.Encoding.UTF8)
                         'archivoMunicipios.WriteLine("idProductor;Nombre Fichero JPG;Códigos INE de municipio asociado")
-                        'archivoAlias.WriteLine("idProductor;Fichero;Temática;Alias;Fecha;TipoFichero")
+                        'archivoAlias.WriteLine("idProductor;Fichero;Temática;Alias;Escala;Autor;Fecha;TipoFichero")
                         For Each documento As docCartoSEE In lista
                             Application.DoEvents()
                             If tiposdocu2CDD.IndexOf(documento.tipoDocumento.idTipodoc) = -1 Then Continue For
@@ -556,9 +556,11 @@
                                                    documento.nameFile4CDD & ";" &
                                                    documento.tipoDocumento.tematicaCdD & ";" &
                                                    documento.getCdDAlias & ";" &
-                                                   documento.Escala & ";" &
-                                                   documento.yearFechaPrincipal & ";" &
-                                                   "JPG")
+                                                   IIf(documento.Escala = 0, "Sin escala", documento.Escala.ToString) & ";" &
+                                                   IIf(documento.autorDocumento = "", "Desconocido", documento.autorDocumento.ToString) & ";" &
+                                                   documento.yearFechaPrincipal & ";" & "JPG")
+
+
                                 sentenciaSQL.WriteLine("UPDATE bdsidschema.archivo SET " &
                                                        "cdd_nomfich = E'" & documento.nameFile4CDD.Replace("'", "\'") & "'," &
                                                        "cdd_titulo = E'" & documento.getCdDAlias.Replace("'", "\'") & ";" & documento.yearFechaPrincipal & "' " &
