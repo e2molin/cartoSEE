@@ -2,7 +2,16 @@
 
 📂 _e2molin-documentacion-cartosee.md
 
-## ⏳ 20200721 - Ficheros preparados para su entrega al CdD
+## ⏳ 20210928 - Añadimos campos de Escala y Autor al fichero Alias para el CdD
+
+* Hemos añadido el campo **Escala** al fichero alias. En los documentos en los que la **Escala** es cero, aparece el texto *Sin escala*.
+* Hemos añadido el campo **Autor** al fichero alias. En los documentos en los que la **Autor** es nulo o está vacío, aparece el texto *Desconocido*.
+
+Se ha variado la definición del campo escala en la tabla Archivo. Es obligatorio rellenarla con un valor , 0 o superior.
+Se han mandado informes de los documentos sin escala. Respecto al campo autor, los documentos que no tienen asignado el autor y pertenecen a Hojas Km, Parcelario urbano o Directorio, se les ha asignado el texto Junta general de Estadística, a la espera de un análisi más exhaustivo.
+
+
+## ⏳ 20210721 - Ficheros preparados para su entrega al CdD
 
 Se han generado los ficheros de los documentos producidos por la Junta General de Estadística correspondientes a los siguientes grupos:
 
@@ -16,7 +25,7 @@ en la carpeta
 \\sbdignmad651.ign.fomento.es\INTERCAMBIO\User_Esteban\CdDJE
 ```
 
-## ⏳ 20200701 - Procedimiento actualizado para la exportación al CdD - Documentos de la JGE
+## ⏳ 20210701 - Procedimiento actualizado para la exportación al CdD - Documentos de la JGE
 
 ![](img/ventana-export-cdd.jpg)
 
