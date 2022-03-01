@@ -606,13 +606,13 @@
         Dim Ejecucion As Boolean
         BorrarElemento = False
 
-        cadDelBase = "DELETE FROM contornos WHERE archivo_id=" & documentoDel.docIndex
+        cadDelBase = "DELETE FROM bdsidschema.contornos WHERE archivo_id=" & documentoDel.docIndex
         GenerarLOG(cadDelBase)
         ListaSQL.Add(cadDelBase)
-        cadDelBase = "DELETE FROM archivo2munihisto WHERE archivo_id=" & documentoDel.docIndex
+        cadDelBase = "DELETE FROM bdsidschema.archivo2munihisto WHERE archivo_id=" & documentoDel.docIndex
         GenerarLOG(cadDelBase)
         ListaSQL.Add(cadDelBase)
-        cadDelBase = "DELETE FROM archivo WHERE idarchivo=" & documentoDel.docIndex
+        cadDelBase = "DELETE FROM bdsidschema.archivo WHERE idarchivo=" & documentoDel.docIndex
         GenerarLOG(cadDelBase)
         ListaSQL.Add(cadDelBase)
 
@@ -707,11 +707,11 @@
         'y se introducen las nuevas
         For Each itemLV As ListViewItem In ListView1.Items
             Application.DoEvents()
-            GenerarLOG("INSERT INTO archivo2munihisto (idarchivo2muni,munihisto_id,archivo_id) " & _
-                        "VALUES (nextval('archivo2munihisto_idarchivo2muni_seq')," & _
+            GenerarLOG("INSERT INTO bdsidschema.archivo2munihisto (idarchivo2muni,munihisto_id,archivo_id) " &
+                        "VALUES (nextval('archivo2munihisto_idarchivo2muni_seq')," &
                         itemLV.SubItems(3).Text & "," & nuevoDoc.Indice & ")")
-            ListaSQL.Add("INSERT INTO archivo2munihisto (idarchivo2muni,munihisto_id,archivo_id) " & _
-                        "VALUES (nextval('archivo2munihisto_idarchivo2muni_seq')," & _
+            ListaSQL.Add("INSERT INTO bdsidschema.archivo2munihisto (idarchivo2muni,munihisto_id,archivo_id) " &
+                        "VALUES (nextval('archivo2munihisto_idarchivo2muni_seq')," &
                         itemLV.SubItems(3).Text & "," & nuevoDoc.Indice & ")")
         Next
 
@@ -835,7 +835,7 @@
 
 
         Dim Resultado As String = ""
-        ObtenerEscalar("SELECT idarchivo from archivo where numdoc='" & TextBox22.Text.Trim & "'", _
+        ObtenerEscalar("SELECT idarchivo from bdsidschema.archivo where numdoc='" & TextBox22.Text.Trim & "'",
                         Resultado)
         Application.DoEvents()
         If CType(Resultado, Integer) > 0 Then
@@ -985,7 +985,7 @@
             elementoInsert.ProvinciaRepo = CType(ComboBox6.SelectedItem, itemData).Valor
         End If
         Dim Result As String
-        ObtenerEscalar("SELECT nextval('archivo_idarchivo_seq')", Result)
+        ObtenerEscalar("SELECT nextval('bdsidschema.archivo_idarchivo_seq')", Result)
         elementoInsert.Indice = IIf(IsNumeric(Result), CType(Result, Integer), 0)
         If elementoInsert.Indice = 0 Then
             MessageBox.Show("No se puede asignar un índice al documento", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
@@ -993,31 +993,31 @@
         End If
         indiceDoc = elementoInsert
 
-        GenerarCadInsertBase = "INSERT INTO archivo " & _
-                "(idarchivo,numdoc,tipodoc_id,estadodoc_id,escala,tomo,procehoja,procecarpeta,subtipo,fechaprincipal," & _
-                "fechasmodificaciones,signatura,coleccion,subdivision,vertical,horizontal,juntaestadistica," & _
-                "anejo,observaciones,observestandar_id,provincia_id,fechacreacion) VALUES (" & _
-                "" & elementoInsert.Indice & "," & _
-                "'" & elementoInsert.Sellado & "'," & _
-                "" & elementoInsert.CodTipo & "," & _
-                "" & elementoInsert.CodEstado & "," & _
-                "" & elementoInsert.Escala & "," & _
-                "" & elementoInsert.Tomo & "," & _
-                "" & IIf(elementoInsert.proceHoja = "-1", "Null", elementoInsert.proceHoja) & "," & _
-                "" & IIf(elementoInsert.proceCarpeta = "", "Null", "'" & elementoInsert.proceCarpeta & "'") & "," & _
-                "" & IIf(elementoInsert.subTipoDoc = "", "Null", "E'" & elementoInsert.subTipoDoc.Replace("'", "\'") & "'") & "," & _
-                "'" & cadFechaDoc & "'," & _
-                "" & elementoInsert.fechasModificaciones & "," & _
-                "" & elementoInsert.Signatura & "," & _
-                "" & elementoInsert.Coleccion & "," & _
-                "" & elementoInsert.Subdivision & "," & _
-                "" & elementoInsert.Vertical & "," & _
-                "" & elementoInsert.Horizontal & "," & _
-                "" & elementoInsert.JuntaEstadistica & "," & _
-                "" & elementoInsert.Anejo & "," & _
-                "" & elementoInsert.Observaciones & "," & _
-                "" & IIf(elementoInsert.ObservacionesStandard = -1, "Null", elementoInsert.ObservacionesStandard) & "," & _
-                "" & elementoInsert.ProvinciaRepo & "," & _
+        GenerarCadInsertBase = "INSERT INTO bdsidschema.archivo " &
+                "(idarchivo,numdoc,tipodoc_id,estadodoc_id,escala,tomo,procehoja,procecarpeta,subtipo,fechaprincipal," &
+                "fechasmodificaciones,signatura,coleccion,subdivision,vertical,horizontal,juntaestadistica," &
+                "anejo,observaciones,observestandar_id,provincia_id,fechacreacion) VALUES (" &
+                "" & elementoInsert.Indice & "," &
+                "'" & elementoInsert.Sellado & "'," &
+                "" & elementoInsert.CodTipo & "," &
+                "" & elementoInsert.CodEstado & "," &
+                "" & elementoInsert.Escala & "," &
+                "" & elementoInsert.Tomo & "," &
+                "" & IIf(elementoInsert.proceHoja = "-1", "Null", elementoInsert.proceHoja) & "," &
+                "" & IIf(elementoInsert.proceCarpeta = "", "Null", "'" & elementoInsert.proceCarpeta & "'") & "," &
+                "" & IIf(elementoInsert.subTipoDoc = "", "Null", "E'" & elementoInsert.subTipoDoc.Replace("'", "\'") & "'") & "," &
+                "'" & cadFechaDoc & "'," &
+                "" & elementoInsert.fechasModificaciones & "," &
+                "" & elementoInsert.Signatura & "," &
+                "" & elementoInsert.Coleccion & "," &
+                "" & elementoInsert.Subdivision & "," &
+                "" & elementoInsert.Vertical & "," &
+                "" & elementoInsert.Horizontal & "," &
+                "" & elementoInsert.JuntaEstadistica & "," &
+                "" & elementoInsert.Anejo & "," &
+                "" & elementoInsert.Observaciones & "," &
+                "" & IIf(elementoInsert.ObservacionesStandard = -1, "Null", elementoInsert.ObservacionesStandard) & "," &
+                "" & elementoInsert.ProvinciaRepo & "," &
                 "'" & cadFechaCreacion & "')"
 
 
@@ -1038,7 +1038,7 @@
                         String.Format("{0:00}", CInt(FechaActualizacion.Hour.ToString)) & ":" & _
                         String.Format("{0:00}", CInt(FechaActualizacion.Minute.ToString)) & ":00.00"
 
-        CadenaUpdateLote = "UPDATE archivo SET "
+        CadenaUpdateLote = "UPDATE bdsidschema.archivo SET "
         If CheckBox22.Checked And TextBox22.Text.Trim <> "" Then
             If TextBox22.Text.Trim.Length <> 6 Then
                 MessageBox.Show("El número de sellado debe tener seis dígitos", _
@@ -1055,7 +1055,7 @@
 
 
             Dim Resultado As String = ""
-            ObtenerEscalar("SELECT idarchivo from archivo where numdoc='" & TextBox22.Text.Trim & "'", _
+            ObtenerEscalar("SELECT idarchivo from bdsidschema.archivo where numdoc='" & TextBox22.Text.Trim & "'",
                             Resultado)
             Application.DoEvents()
             If CType(Resultado, Integer) > 0 Then
@@ -1177,7 +1177,7 @@
         End If
 
         'Si cambia el estado de esta cadena, es que se han definido algunas modificaciones
-        If CadenaUpdateLote <> "UPDATE archivo SET " Then
+        If CadenaUpdateLote <> "UPDATE bdsidschema.archivo SET " Then
             CadenaUpdateLote = CadenaUpdateLote & "fechamodificacion='" & cadFechaActualizacion & "' "
         Else
             Exit Function

@@ -183,8 +183,8 @@ Public Class MDIPrincipal
         Dim Filtros As DataTable
 
         Filtros = New DataTable
-        If CargarDatatable("Select idestadodoc,estadodoc FROM tbestadodocumento", Filtros) = False Then
-            MessageBox.Show("No se puede acceder a la tabla de Estados de la documentación", _
+        If CargarDatatable("Select idestadodoc,estadodoc FROM bdsidschema.tbestadodocumento", Filtros) = False Then
+            MessageBox.Show("No se puede acceder a la tabla de Estados de la documentación",
                             AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Error)
         Else
             CheckedListBox2.Items.Clear()
@@ -196,8 +196,8 @@ Public Class MDIPrincipal
         Filtros = Nothing
 
         Filtros = New DataTable
-        If CargarDatatable("Select idtipodoc,tipodoc from tbtipodocumento", Filtros) = False Then
-            MessageBox.Show("No se puede acceder a la tabla de Tipos de documentación", _
+        If CargarDatatable("Select idtipodoc,tipodoc from bdsidschema.tbtipodocumento", Filtros) = False Then
+            MessageBox.Show("No se puede acceder a la tabla de Tipos de documentación",
                             AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Error)
         Else
             CheckedListBox1.Items.Clear()
@@ -209,8 +209,8 @@ Public Class MDIPrincipal
         Filtros = Nothing
 
         Filtros = New DataTable
-        If CargarDatatable("Select idobservestandar,observestandar from tbobservaciones", Filtros) = False Then
-            MessageBox.Show("No se puede acceder a la tabla de Tipos de documentación", _
+        If CargarDatatable("Select idobservestandar,observestandar from bdsidschema.tbobservaciones", Filtros) = False Then
+            MessageBox.Show("No se puede acceder a la tabla de Tipos de documentación",
                             AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Error)
         Else
             ComboBox7.Items.Clear()

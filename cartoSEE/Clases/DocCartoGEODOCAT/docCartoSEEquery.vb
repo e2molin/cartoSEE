@@ -28,14 +28,14 @@
                     "tbtipodocumento.tipodoc as Tipo,tbestadodocumento.estadodoc as Estado, tbobservaciones.observestandar," &
                     "string_agg(munihisto.nombremunicipiohistorico,'#') as listaMuniHisto,string_agg(to_char(munihisto.cod_munihisto, 'FM0000009'::text),'#') as listaCodMuniHisto," &
                     "string_agg(listamunicipios.nombre,'#') as listaMuniActual, string_agg(listamunicipios.inecorto,'#') as listaCodMuniActual, string_agg(provincias.nombreprovincia,'#') as nombreprovincia " &
-                    "FROM archivo " &
-                    "INNER JOIN tbtipodocumento ON tbtipodocumento.idtipodoc=archivo.tipodoc_id " &
-                    "INNER JOIN tbestadodocumento ON tbestadodocumento.idestadodoc=archivo.estadodoc_id " &
-                    "INNER JOIN  archivo2munihisto  ON archivo2munihisto.archivo_id=archivo.idarchivo " &
-                    "LEFT JOIN  tbobservaciones  ON tbobservaciones.idobservestandar=archivo.observestandar_id " &
-                    "INNER JOIN munihisto on munihisto.idmunihisto= archivo2munihisto.munihisto_id " &
+                    "FROM bdsidschema.archivo " &
+                    "INNER JOIN bdsidschema.tbtipodocumento ON tbtipodocumento.idtipodoc=archivo.tipodoc_id " &
+                    "INNER JOIN bdsidschema.tbestadodocumento ON tbestadodocumento.idestadodoc=archivo.estadodoc_id " &
+                    "INNER JOIN  bdsidschema.archivo2munihisto  ON archivo2munihisto.archivo_id=archivo.idarchivo " &
+                    "LEFT JOIN  bdsidschema.tbobservaciones  ON tbobservaciones.idobservestandar=archivo.observestandar_id " &
+                    "INNER JOIN bdsidschema.munihisto on munihisto.idmunihisto= archivo2munihisto.munihisto_id " &
                     "LEFT JOIN ngmepschema.listamunicipios on munihisto.entidad_id= listamunicipios.identidad " &
-                    "INNER JOIN provincias on munihisto.provincia_id= provincias.idprovincia " &
+                    "INNER JOIN bdsidschema.provincias on munihisto.provincia_id= provincias.idprovincia " &
                     "WHERE " & Filtro & " " &
                       "group by archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal," &
                       "archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, archivo.horizontal, archivo.tipodoc_id, archivo.estadodoc_id, archivo.procecarpeta, " &
@@ -56,18 +56,18 @@
                     "tbestadodocumento.estadodoc as Estado, tbobservaciones.observestandar, " &
                     "string_agg(munihisto.nombremunicipiohistorico,'#') as listaMuniHisto,string_agg(to_char(munihisto.cod_munihisto, 'FM0000009'::text),'#') as listaCodMuniHisto," &
                     "string_agg(listamunicipios.nombre,'#') as listaMuniActual, string_agg(listamunicipios.inecorto,'#') as listaCodMuniActual, string_agg(provincias.nombreprovincia,', ') as nombreprovincia " &
-                    "FROM archivo " &
-                    "INNER JOIN tbtipodocumento ON tbtipodocumento.idtipodoc=archivo.tipodoc_id " &
-                    "INNER JOIN tbestadodocumento ON tbestadodocumento.idestadodoc=archivo.estadodoc_id " &
-                    "INNER JOIN  archivo2munihisto  ON archivo2munihisto.archivo_id=archivo.idarchivo " &
-                    "LEFT JOIN  tbobservaciones  ON tbobservaciones.idobservestandar=archivo.observestandar_id " &
-                    "INNER JOIN munihisto on munihisto.idmunihisto= archivo2munihisto.munihisto_id " &
+                    "FROM bdsidschema.archivo " &
+                    "INNER JOIN bdsidschema.tbtipodocumento ON tbtipodocumento.idtipodoc=archivo.tipodoc_id " &
+                    "INNER JOIN bdsidschema.tbestadodocumento ON tbestadodocumento.idestadodoc=archivo.estadodoc_id " &
+                    "INNER JOIN bdsidschema.archivo2munihisto  ON archivo2munihisto.archivo_id=archivo.idarchivo " &
+                    "LEFT JOIN  bdsidschema.tbobservaciones  ON tbobservaciones.idobservestandar=archivo.observestandar_id " &
+                    "INNER JOIN bdsidschema.munihisto on munihisto.idmunihisto= archivo2munihisto.munihisto_id " &
                     "LEFT JOIN ngmepschema.listamunicipios on munihisto.entidad_id= listamunicipios.identidad " &
-                    "INNER JOIN provincias on munihisto.provincia_id= provincias.idprovincia " &
+                    "INNER JOIN bdsidschema.provincias on munihisto.provincia_id= provincias.idprovincia " &
                     "WHERE archivo.idarchivo in (" &
-                        "SELECT distinct archivo.idarchivo FROM archivo " &
-                        "INNER JOIN  archivo2munihisto  ON archivo2munihisto.archivo_id=archivo.idarchivo " &
-                        "INNER JOIN munihisto on munihisto.idmunihisto= archivo2munihisto.munihisto_id " &
+                        "SELECT distinct archivo.idarchivo FROM bdsidschema.archivo " &
+                        "INNER JOIN bdsidschema.archivo2munihisto ON archivo2munihisto.archivo_id=archivo.idarchivo " &
+                        "INNER JOIN bdsidschema.munihisto on munihisto.idmunihisto= archivo2munihisto.munihisto_id " &
                         "LEFT JOIN ngmepschema.listamunicipios on munihisto.entidad_id= listamunicipios.identidad " &
                         "WHERE " & Filtro & " " &
                     ") " &

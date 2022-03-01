@@ -18,7 +18,7 @@ Module CargaDeDatos
         ListaTiposDocumento = New DataTable
         tiposDocSIDCARTO = Nothing
         tiposDocSIDCARTO = New ArrayList
-        If CargarDatatable("SELECT idtipodoc,tipodoc,dirrepo,nombrecdd,prefijometadato FROM tbtipodocumento", ListaTiposDocumento) = False Then
+        If CargarDatatable("SELECT idtipodoc,tipodoc,dirrepo,nombrecdd,prefijometadato FROM bdsidschema.tbtipodocumento", ListaTiposDocumento) = False Then
             MessageBox.Show("No se puede acceder a la tabla de tipos de documentos", My.Application.Info.AssemblyName, MessageBoxButtons.OK, MessageBoxIcon.Error)
         End If
 
@@ -51,7 +51,7 @@ Module CargaDeDatos
         ListaProvincias = New DataTable
 
         If CargarDatatable("SELECT idprovincia as INE,nombreprovincia as Nombre,comautonoma_id as autonomia, dirrepo " &
-                            "FROM provincias order by idprovincia", ListaProvincias) = False Then
+                            "FROM bdsidschema.provincias order by idprovincia", ListaProvincias) = False Then
             'CargarListasMunicipios = False
             MessageBox.Show("No se puede acceder a la tabla de provincias",
                             My.Application.Info.AssemblyName, MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -66,11 +66,11 @@ Module CargaDeDatos
 
         ListaMunicipiosHisto = New DataTable
 
-        If CargarDatatableMuni("SELECT idmunihisto,nombremunicipiohistorico as nombre,provincia_id,cod_munihisto," & _
-                               "translate(nombremunicipiohistorico,'·ÈÌÛ˙‡ËÏÚ˘¡…Õ”⁄¿»Ã“Ÿ','aeiouaeiouAEIOUAEIOU') as nombreSearch,cod_muni as inecortoActual " & _
-                            "FROM munihisto " & _
+        If CargarDatatableMuni("SELECT idmunihisto,nombremunicipiohistorico as nombre,provincia_id,cod_munihisto," &
+                               "translate(nombremunicipiohistorico,'·ÈÌÛ˙‡ËÏÚ˘¡…Õ”⁄¿»Ã“Ÿ','aeiouaeiouAEIOUAEIOU') as nombreSearch,cod_muni as inecortoActual " &
+                            "FROM bdsidschema.munihisto " &
                             " ", ListaMunicipiosHisto) = False Then
-            MessageBox.Show("No se puede acceder a la tabla de municipios histÛricos", _
+            MessageBox.Show("No se puede acceder a la tabla de municipios histÛricos",
                             My.Application.Info.AssemblyName, MessageBoxButtons.OK, MessageBoxIcon.Error)
         End If
 

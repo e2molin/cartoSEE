@@ -121,21 +121,21 @@ Module Documentacion
     Sub DameDocumentacionSIDCARTO_ByFiltro(ByVal Filtro As String, _
                                 ByRef ListaDoc() As docSIDCARTO, ByRef CadenaSQL As String)
 
-        CadenaSQL = "SELECT archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion," & _
-                    "archivo.subdivision,archivo.fechaprincipal,archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, " & _
-                    "archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja,archivo.subtipo," & _
-                    "archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.observaciones," & _
-                    "tbtipodocumento.tipodoc as Tipo," & _
-                    "tbestadodocumento.estadodoc as Estado," & _
-                    "tbobservaciones.observestandar," & _
-                    "munihisto.cod_munihisto,munihisto.nombremunicipiohistorico,munihisto.provincia_id as CodProv,provincias.nombreprovincia " & _
-                    "FROM archivo " & _
-                    "INNER JOIN tbtipodocumento ON tbtipodocumento.idtipodoc=archivo.tipodoc_id " & _
-                    "INNER JOIN tbestadodocumento ON tbestadodocumento.idestadodoc=archivo.estadodoc_id " & _
-                    "INNER JOIN  archivo2munihisto  ON archivo2munihisto.archivo_id=archivo.idarchivo " & _
-                    "LEFT JOIN  tbobservaciones  ON tbobservaciones.idobservestandar=archivo.observestandar_id " & _
-                    "INNER JOIN munihisto on munihisto.idmunihisto= archivo2munihisto.munihisto_id " & _
-                    "INNER JOIN provincias on munihisto.provincia_id= provincias.idprovincia " & _
+        CadenaSQL = "SELECT archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion," &
+                    "archivo.subdivision,archivo.fechaprincipal,archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, " &
+                    "archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja,archivo.subtipo," &
+                    "archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.observaciones," &
+                    "tbtipodocumento.tipodoc as Tipo," &
+                    "tbestadodocumento.estadodoc as Estado," &
+                    "tbobservaciones.observestandar," &
+                    "munihisto.cod_munihisto,munihisto.nombremunicipiohistorico,munihisto.provincia_id as CodProv,provincias.nombreprovincia " &
+                    "FROM bdsidschema.archivo " &
+                    "INNER JOIN bdsidschema.tbtipodocumento ON tbtipodocumento.idtipodoc=archivo.tipodoc_id " &
+                    "INNER JOIN bdsidschema.tbestadodocumento ON tbestadodocumento.idestadodoc=archivo.estadodoc_id " &
+                    "INNER JOIN bdsidschema.archivo2munihisto  ON archivo2munihisto.archivo_id=archivo.idarchivo " &
+                    "LEFT JOIN  bdsidschema.tbobservaciones  ON tbobservaciones.idobservestandar=archivo.observestandar_id " &
+                    "INNER JOIN bdsidschema.munihisto on munihisto.idmunihisto= archivo2munihisto.munihisto_id " &
+                    "INNER JOIN bdsidschema.provincias on munihisto.provincia_id= provincias.idprovincia " &
                     "WHERE archivo.idarchivo>0 " & Filtro & " order by archivo.idarchivo"
         CargarListaDocumentosSIDCARTO(CadenaSQL, ListaDoc)
 
@@ -145,26 +145,26 @@ Module Documentacion
                                 ByRef ListaDoc() As docSIDCARTO, ByRef CadenaSQL As String, _
                                 Optional ByVal Filtro As String = "")
 
-        CadenaSQL = "SELECT archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion," & _
-                        "archivo.subdivision,archivo.fechaprincipal,archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, " & _
-                        "archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja,archivo.subtipo," & _
-                        "archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.observaciones," & _
-                        "tbtipodocumento.tipodoc as Tipo," & _
-                        "tbestadodocumento.estadodoc as Estado," & _
-                        "tbobservaciones.observestandar," & _
-                        "munihisto.cod_munihisto,munihisto.nombremunicipiohistorico,munihisto.provincia_id as CodProv,provincias.nombreprovincia " & _
-                        "FROM archivo " & _
-                        "INNER JOIN tbtipodocumento ON tbtipodocumento.idtipodoc=archivo.tipodoc_id " & _
-                        "INNER JOIN tbestadodocumento ON tbestadodocumento.idestadodoc=archivo.estadodoc_id " & _
-                        "INNER JOIN archivo2munihisto  ON archivo2munihisto.archivo_id=archivo.idarchivo " & _
-                        "LEFT JOIN  tbobservaciones  ON tbobservaciones.idobservestandar=archivo.observestandar_id " & _
-                        "INNER JOIN munihisto ON munihisto.idmunihisto= archivo2munihisto.munihisto_id " & _
-                        "INNER JOIN provincias on munihisto.provincia_id= provincias.idprovincia " & _
-                        "WHERE archivo.idarchivo IN " & _
-                        "(SELECT archivo_id FROM archivo2munihisto " & _
-                        "INNER JOIN munihisto ON munihisto.idmunihisto= archivo2munihisto.munihisto_id " & _
-                        "WHERE munihisto.cod_Muni=" & CodigoINEMuni.ToString & ") " & _
-                        IIf(Filtro = "", "", " " & Filtro & "") & " " & _
+        CadenaSQL = "SELECT archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion," &
+                        "archivo.subdivision,archivo.fechaprincipal,archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, " &
+                        "archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja,archivo.subtipo," &
+                        "archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.observaciones," &
+                        "tbtipodocumento.tipodoc as Tipo," &
+                        "tbestadodocumento.estadodoc as Estado," &
+                        "tbobservaciones.observestandar," &
+                        "munihisto.cod_munihisto,munihisto.nombremunicipiohistorico,munihisto.provincia_id as CodProv,provincias.nombreprovincia " &
+                        "FROM bdsidschema.archivo " &
+                        "INNER JOIN bdsidschema.tbtipodocumento ON tbtipodocumento.idtipodoc=archivo.tipodoc_id " &
+                        "INNER JOIN bdsidschema.tbestadodocumento ON tbestadodocumento.idestadodoc=archivo.estadodoc_id " &
+                        "INNER JOIN bdsidschema.archivo2munihisto  ON archivo2munihisto.archivo_id=archivo.idarchivo " &
+                        "LEFT JOIN bdsidschema.tbobservaciones  ON tbobservaciones.idobservestandar=archivo.observestandar_id " &
+                        "INNER JOIN bdsidschema.munihisto ON munihisto.idmunihisto= archivo2munihisto.munihisto_id " &
+                        "INNER JOIN bdsidschema.provincias on munihisto.provincia_id= provincias.idprovincia " &
+                        "WHERE archivo.idarchivo IN " &
+                        "(SELECT archivo_id FROM bdsidschema.archivo2munihisto " &
+                        "INNER JOIN bdsidschema.munihisto ON munihisto.idmunihisto= archivo2munihisto.munihisto_id " &
+                        "WHERE munihisto.cod_Muni=" & CodigoINEMuni.ToString & ") " &
+                        IIf(Filtro = "", "", " " & Filtro & "") & " " &
                         "order by archivo.idarchivo"
 
         CargarListaDocumentosSIDCARTO(CadenaSQL, ListaDoc)
@@ -183,26 +183,26 @@ Module Documentacion
                                 ByRef ListaDoc() As docSIDCARTO, ByRef CadenaSQL As String, _
                                 Optional ByVal Filtro As String = "")
 
-        CadenaSQL = "SELECT archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion," & _
-                        "archivo.subdivision,archivo.fechaprincipal,archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, " & _
-                        "archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja,archivo.subtipo," & _
-                        "archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.observaciones," & _
-                        "tbtipodocumento.tipodoc as Tipo," & _
-                        "tbestadodocumento.estadodoc as Estado," & _
-                        "tbobservaciones.observestandar," & _
-                        "munihisto.cod_munihisto,munihisto.nombremunicipiohistorico,munihisto.provincia_id as CodProv,provincias.nombreprovincia " & _
-                        "FROM archivo " & _
-                        "INNER JOIN tbtipodocumento on tbtipodocumento.idtipodoc=archivo.tipodoc_id " & _
-                        "INNER JOIN tbestadodocumento on tbestadodocumento.idestadodoc=archivo.estadodoc_id " & _
-                        "INNER JOIN  archivo2munihisto  on archivo2munihisto.archivo_id=archivo.idarchivo " & _
-                        "LEFT JOIN  tbobservaciones  on tbobservaciones.idobservestandar=archivo.observestandar_id " & _
-                        "INNER JOIN munihisto on munihisto.idmunihisto= archivo2munihisto.munihisto_id " & _
-                        "INNER JOIN provincias on munihisto.provincia_id = provincias.idprovincia " & _
-                        "WHERE archivo.idarchivo IN " & _
-                        "(SELECT archivo_id from archivo2munihisto " & _
-                        "INNER JOIN munihisto on munihisto.idmunihisto= archivo2munihisto.munihisto_id " & _
-                        "WHERE munihisto.idmunihisto=" & CodigoMuni.ToString & ") " & _
-                        IIf(Filtro = "", "", " " & Filtro & "") & " " & _
+        CadenaSQL = "SELECT archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion," &
+                        "archivo.subdivision,archivo.fechaprincipal,archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, " &
+                        "archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja,archivo.subtipo," &
+                        "archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.observaciones," &
+                        "tbtipodocumento.tipodoc as Tipo," &
+                        "tbestadodocumento.estadodoc as Estado," &
+                        "tbobservaciones.observestandar," &
+                        "munihisto.cod_munihisto,munihisto.nombremunicipiohistorico,munihisto.provincia_id as CodProv,provincias.nombreprovincia " &
+                        "FROM bdsidschema.archivo " &
+                        "INNER JOIN bdsidschema.tbtipodocumento on tbtipodocumento.idtipodoc=archivo.tipodoc_id " &
+                        "INNER JOIN bdsidschema.tbestadodocumento on tbestadodocumento.idestadodoc=archivo.estadodoc_id " &
+                        "INNER JOIN bdsidschema.archivo2munihisto  on archivo2munihisto.archivo_id=archivo.idarchivo " &
+                        "LEFT JOIN bdsidschema.tbobservaciones  on tbobservaciones.idobservestandar=archivo.observestandar_id " &
+                        "INNER JOIN bdsidschema.munihisto on munihisto.idmunihisto= archivo2munihisto.munihisto_id " &
+                        "INNER JOIN bdsidschema.provincias on munihisto.provincia_id = provincias.idprovincia " &
+                        "WHERE archivo.idarchivo IN " &
+                        "(SELECT archivo_id from bdsidschema.archivo2munihisto " &
+                        "INNER JOIN bdsidschema.munihisto on munihisto.idmunihisto= archivo2munihisto.munihisto_id " &
+                        "WHERE munihisto.idmunihisto=" & CodigoMuni.ToString & ") " &
+                        IIf(Filtro = "", "", " " & Filtro & "") & " " &
                         "order by archivo.idarchivo"
 
         CargarListaDocumentosSIDCARTO(CadenaSQL, ListaDoc)
@@ -220,23 +220,23 @@ Module Documentacion
                                 ByRef ListaDoc() As docSIDCARTO, ByRef CadenaSQL As String, _
                                 Optional ByVal Filtro As String = "")
 
-        CadenaSQL = "SELECT archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion," & _
-                        "archivo.subdivision,archivo.fechaprincipal,archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, " & _
-                        "archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja,archivo.subtipo," & _
-                        "archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.observaciones," & _
-                        "tbtipodocumento.tipodoc as Tipo," & _
-                        "tbestadodocumento.estadodoc as Estado," & _
-                        "tbobservaciones.observestandar," & _
-                        "munihisto.cod_munihisto,munihisto.nombremunicipiohistorico,munihisto.provincia_id as CodProv,provincias.nombreprovincia " & _
-                        "FROM archivo " & _
-                        "INNER JOIN tbtipodocumento on tbtipodocumento.idtipodoc=archivo.tipodoc_id " & _
-                        "INNER JOIN tbestadodocumento on tbestadodocumento.idestadodoc=archivo.estadodoc_id " & _
-                        "INNER JOIN  archivo2munihisto  on archivo2munihisto.archivo_id=archivo.idarchivo " & _
-                        "LEFT JOIN  tbobservaciones  on tbobservaciones.idobservestandar=archivo.observestandar_id " & _
-                        "INNER JOIN munihisto on munihisto.idmunihisto= archivo2munihisto.munihisto_id " & _
-                        "INNER JOIN provincias on munihisto.provincia_id = provincias.idprovincia " & _
-                        "WHERE archivo.provincia_id=" & CodigoProvincia & " " & _
-                        IIf(Filtro = "", "", " " & Filtro & "") & " " & _
+        CadenaSQL = "SELECT archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion," &
+                        "archivo.subdivision,archivo.fechaprincipal,archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, " &
+                        "archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja,archivo.subtipo," &
+                        "archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.observaciones," &
+                        "tbtipodocumento.tipodoc as Tipo," &
+                        "tbestadodocumento.estadodoc as Estado," &
+                        "tbobservaciones.observestandar," &
+                        "munihisto.cod_munihisto,munihisto.nombremunicipiohistorico,munihisto.provincia_id as CodProv,provincias.nombreprovincia " &
+                        "FROM bdsidschema.archivo " &
+                        "INNER JOIN bdsidschema.tbtipodocumento on tbtipodocumento.idtipodoc=archivo.tipodoc_id " &
+                        "INNER JOIN bdsidschema.tbestadodocumento on tbestadodocumento.idestadodoc=archivo.estadodoc_id " &
+                        "INNER JOIN bdsidschema.archivo2munihisto  on archivo2munihisto.archivo_id=archivo.idarchivo " &
+                        "LEFT JOIN bdsidschema.tbobservaciones  on tbobservaciones.idobservestandar=archivo.observestandar_id " &
+                        "INNER JOIN bdsidschema.munihisto on munihisto.idmunihisto= archivo2munihisto.munihisto_id " &
+                        "INNER JOIN bdsidschema.provincias on munihisto.provincia_id = provincias.idprovincia " &
+                        "WHERE archivo.provincia_id=" & CodigoProvincia & " " &
+                        IIf(Filtro = "", "", " " & Filtro & "") & " " &
                         "order by archivo.idarchivo"
         CargarListaDocumentosSIDCARTO(CadenaSQL, ListaDoc)
 
@@ -251,21 +251,21 @@ Module Documentacion
     Sub DameDocumentacionSIDCARTO_byIndice(ByVal nIndice As Integer, _
                                 ByRef Docu() As docSIDCARTO, ByRef CadenaSQL As String)
 
-        CadenaSQL = "SELECT archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion," & _
-                        "archivo.subdivision,archivo.fechaprincipal,archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, " & _
-                        "archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja,archivo.subtipo," & _
-                        "archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.observaciones," & _
-                        "tbtipodocumento.tipodoc as Tipo," & _
-                        "tbestadodocumento.estadodoc as Estado," & _
-                        "tbobservaciones.observestandar," & _
-                        "munihisto.cod_munihisto,munihisto.nombremunicipiohistorico,munihisto.provincia_id as CodProv,provincias.nombreprovincia " & _
-                        "FROM archivo " & _
-                        "INNER JOIN tbtipodocumento on tbtipodocumento.idtipodoc=archivo.tipodoc_id " & _
-                        "INNER JOIN tbestadodocumento on tbestadodocumento.idestadodoc=archivo.estadodoc_id " & _
-                        "INNER JOIN  archivo2munihisto  on archivo2munihisto.archivo_id=archivo.idarchivo " & _
-                        "LEFT JOIN  tbobservaciones  on tbobservaciones.idobservestandar=archivo.observestandar_id " & _
-                        "INNER JOIN munihisto on munihisto.idmunihisto= archivo2munihisto.munihisto_id " & _
-                        "INNER JOIN provincias on munihisto.provincia_id = provincias.idprovincia " & _
+        CadenaSQL = "SELECT archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion," &
+                        "archivo.subdivision,archivo.fechaprincipal,archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, " &
+                        "archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja,archivo.subtipo," &
+                        "archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.observaciones," &
+                        "tbtipodocumento.tipodoc as Tipo," &
+                        "tbestadodocumento.estadodoc as Estado," &
+                        "tbobservaciones.observestandar," &
+                        "munihisto.cod_munihisto,munihisto.nombremunicipiohistorico,munihisto.provincia_id as CodProv,provincias.nombreprovincia " &
+                        "FROM bdsidschema.archivo " &
+                        "INNER JOIN bdsidschema.tbtipodocumento on tbtipodocumento.idtipodoc=archivo.tipodoc_id " &
+                        "INNER JOIN bdsidschema.tbestadodocumento on tbestadodocumento.idestadodoc=archivo.estadodoc_id " &
+                        "INNER JOIN bdsidschema.archivo2munihisto  on archivo2munihisto.archivo_id=archivo.idarchivo " &
+                        "LEFT JOIN bdsidschema.tbobservaciones  on tbobservaciones.idobservestandar=archivo.observestandar_id " &
+                        "INNER JOIN bdsidschema.munihisto on munihisto.idmunihisto= archivo2munihisto.munihisto_id " &
+                        "INNER JOIN bdsidschema.provincias on munihisto.provincia_id = provincias.idprovincia " &
                         "WHERE archivo.idarchivo =" & nIndice
 
         CargarListaDocumentosSIDCARTO(CadenaSQL, Docu)
@@ -283,21 +283,21 @@ Module Documentacion
         Dim SelloFormato As String
         SelloFormato = String.Format("{0:000000}", nSello)
 
-        CadenaSQL = "SELECT archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion," & _
-                    "archivo.subdivision,archivo.fechaprincipal,archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, " & _
-                    "archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja,archivo.subtipo," & _
-                    "archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.observaciones," & _
-                    "tbtipodocumento.tipodoc as Tipo," & _
-                    "tbestadodocumento.estadodoc as Estado," & _
-                    "tbobservaciones.observestandar," & _
-                    "munihisto.cod_munihisto,munihisto.nombremunicipiohistorico,munihisto.provincia_id as CodProv,provincias.nombreprovincia " & _
-                    "FROM archivo " & _
-                    "INNER JOIN tbtipodocumento on tbtipodocumento.idtipodoc=archivo.tipodoc_id " & _
-                    "INNER JOIN tbestadodocumento on tbestadodocumento.idestadodoc=archivo.estadodoc_id " & _
-                    "INNER JOIN  archivo2munihisto  on archivo2munihisto.archivo_id=archivo.idarchivo " & _
-                    "LEFT JOIN  tbobservaciones  on tbobservaciones.idobservestandar=archivo.observestandar_id " & _
-                    "INNER JOIN munihisto on munihisto.idmunihisto= archivo2munihisto.munihisto_id " & _
-                    "INNER JOIN provincias on munihisto.provincia_id = provincias.idprovincia " & _
+        CadenaSQL = "SELECT archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion," &
+                    "archivo.subdivision,archivo.fechaprincipal,archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, " &
+                    "archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja,archivo.subtipo," &
+                    "archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.observaciones," &
+                    "tbtipodocumento.tipodoc as Tipo," &
+                    "tbestadodocumento.estadodoc as Estado," &
+                    "tbobservaciones.observestandar," &
+                    "munihisto.cod_munihisto,munihisto.nombremunicipiohistorico,munihisto.provincia_id as CodProv,provincias.nombreprovincia " &
+                    "FROM bdsidschema.archivo " &
+                    "INNER JOIN bdsidschema.tbtipodocumento on tbtipodocumento.idtipodoc=archivo.tipodoc_id " &
+                    "INNER JOIN bdsidschema.tbestadodocumento on tbestadodocumento.idestadodoc=archivo.estadodoc_id " &
+                    "INNER JOIN bdsidschema.archivo2munihisto  on archivo2munihisto.archivo_id=archivo.idarchivo " &
+                    "LEFT JOIN bdsidschema.tbobservaciones  on tbobservaciones.idobservestandar=archivo.observestandar_id " &
+                    "INNER JOIN bdsidschema.munihisto on munihisto.idmunihisto= archivo2munihisto.munihisto_id " &
+                    "INNER JOIN bdsidschema.provincias on munihisto.provincia_id = provincias.idprovincia " &
                     "WHERE archivo.numdoc='" & SelloFormato & "' order by archivo.idarchivo"
         CargarListaDocumentosSIDCARTO(CadenaSQL, ListaDoc)
 
@@ -318,21 +318,21 @@ Module Documentacion
         SelloFormato1 = String.Format("{0:000000}", nSello1)
         SelloFormato2 = String.Format("{0:000000}", nSello2)
 
-        CadenaSQL = "SELECT archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion," & _
-                    "archivo.subdivision,archivo.fechaprincipal,archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, " & _
-                    "archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja,archivo.subtipo," & _
-                    "archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.observaciones," & _
-                    "tbtipodocumento.tipodoc as Tipo," & _
-                    "tbestadodocumento.estadodoc as Estado," & _
-                    "tbobservaciones.observestandar," & _
-                    "munihisto.cod_munihisto,munihisto.nombremunicipiohistorico,munihisto.provincia_id as CodProv,provincias.nombreprovincia " & _
-                    "FROM archivo " & _
-                    "INNER JOIN tbtipodocumento on tbtipodocumento.idtipodoc=archivo.tipodoc_id " & _
-                    "INNER JOIN tbestadodocumento on tbestadodocumento.idestadodoc=archivo.estadodoc_id " & _
-                    "INNER JOIN  archivo2munihisto  on archivo2munihisto.archivo_id=archivo.idarchivo " & _
-                    "LEFT JOIN  tbobservaciones  on tbobservaciones.idobservestandar=archivo.observestandar_id " & _
-                    "INNER JOIN munihisto on munihisto.idmunihisto= archivo2munihisto.munihisto_id " & _
-                    "INNER JOIN provincias on munihisto.provincia_id = provincias.idprovincia " & _
+        CadenaSQL = "SELECT archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion," &
+                    "archivo.subdivision,archivo.fechaprincipal,archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, " &
+                    "archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja,archivo.subtipo," &
+                    "archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.observaciones," &
+                    "tbtipodocumento.tipodoc as Tipo," &
+                    "tbestadodocumento.estadodoc as Estado," &
+                    "tbobservaciones.observestandar," &
+                    "munihisto.cod_munihisto,munihisto.nombremunicipiohistorico,munihisto.provincia_id as CodProv,provincias.nombreprovincia " &
+                    "FROM bdsidschema.archivo " &
+                    "INNER JOIN bdsidschema.tbtipodocumento on tbtipodocumento.idtipodoc=archivo.tipodoc_id " &
+                    "INNER JOIN bdsidschema.tbestadodocumento on tbestadodocumento.idestadodoc=archivo.estadodoc_id " &
+                    "INNER JOIN bdsidschema.archivo2munihisto  on archivo2munihisto.archivo_id=archivo.idarchivo " &
+                    "LEFT JOIN bdsidschema.tbobservaciones  on tbobservaciones.idobservestandar=archivo.observestandar_id " &
+                    "INNER JOIN bdsidschema.munihisto on munihisto.idmunihisto= archivo2munihisto.munihisto_id " &
+                    "INNER JOIN bdsidschema.provincias on munihisto.provincia_id = provincias.idprovincia " &
                     "WHERE archivo.numdoc>='" & SelloFormato1 & "' and archivo.numdoc<='" & SelloFormato2 & "' order by archivo.idarchivo"
         CargarListaDocumentosSIDCARTO(CadenaSQL, ListaDoc)
 
@@ -344,21 +344,21 @@ Module Documentacion
         Dim listadoc() As docSIDCARTO
         Dim cadenaSQL As String
         SelloFormato = String.Format("{0:000000}", nSello)
-        cadenaSQL = "SELECT archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion," & _
-                    "archivo.subdivision,archivo.fechaprincipal,archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, " & _
-                    "archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja,archivo.subtipo," & _
-                    "archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.observaciones," & _
-                    "tbtipodocumento.tipodoc as Tipo," & _
-                    "tbestadodocumento.estadodoc as Estado," & _
-                    "tbobservaciones.observestandar," & _
-                    "munihisto.cod_munihisto,munihisto.nombremunicipiohistorico,munihisto.provincia_id as CodProv,provincias.nombreprovincia " & _
-                    "FROM archivo " & _
-                    "INNER JOIN tbtipodocumento on tbtipodocumento.idtipodoc=archivo.tipodoc_id " & _
-                    "INNER JOIN tbestadodocumento on tbestadodocumento.idestadodoc=archivo.estadodoc_id " & _
-                    "INNER JOIN  archivo2munihisto  on archivo2munihisto.archivo_id=archivo.idarchivo " & _
-                    "LEFT JOIN  tbobservaciones  on tbobservaciones.idobservestandar=archivo.observestandar_id " & _
-                    "INNER JOIN munihisto on munihisto.idmunihisto= archivo2munihisto.munihisto_id " & _
-                    "INNER JOIN provincias on munihisto.provincia_id = provincias.idprovincia " & _
+        cadenaSQL = "SELECT archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion," &
+                    "archivo.subdivision,archivo.fechaprincipal,archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, " &
+                    "archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja,archivo.subtipo," &
+                    "archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.observaciones," &
+                    "tbtipodocumento.tipodoc as Tipo," &
+                    "tbestadodocumento.estadodoc as Estado," &
+                    "tbobservaciones.observestandar," &
+                    "munihisto.cod_munihisto,munihisto.nombremunicipiohistorico,munihisto.provincia_id as CodProv,provincias.nombreprovincia " &
+                    "FROM bdsidschema.archivo " &
+                    "INNER JOIN bdsidschema.tbtipodocumento on tbtipodocumento.idtipodoc=archivo.tipodoc_id " &
+                    "INNER JOIN bdsidschema.tbestadodocumento on tbestadodocumento.idestadodoc=archivo.estadodoc_id " &
+                    "INNER JOIN bdsidschema.archivo2munihisto  on archivo2munihisto.archivo_id=archivo.idarchivo " &
+                    "LEFT JOIN bdsidschema.tbobservaciones  on tbobservaciones.idobservestandar=archivo.observestandar_id " &
+                    "INNER JOIN bdsidschema.munihisto on munihisto.idmunihisto= archivo2munihisto.munihisto_id " &
+                    "INNER JOIN bdsidschema.provincias on munihisto.provincia_id = provincias.idprovincia " &
                     "WHERE archivo.numdoc='" & SelloFormato & "' order by archivo.idarchivo"
         CargarListaDocumentosSIDCARTO(CadenaSQL, listadoc)
         If listadoc.Length = 1 Then
@@ -381,21 +381,21 @@ Module Documentacion
             selloFormato = selloFormato & ",'" & String.Format("{0:000000}", elemSello) & "'"
         Next
         If selloFormato = "" Then Exit Sub
-        CadenaSQL = "SELECT archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion," & _
-                    "archivo.subdivision,archivo.fechaprincipal,archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, " & _
-                    "archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja,archivo.subtipo," & _
-                    "archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.observaciones," & _
-                    "tbtipodocumento.tipodoc as Tipo," & _
-                    "tbestadodocumento.estadodoc as Estado," & _
-                    "tbobservaciones.observestandar," & _
-                    "munihisto.cod_munihisto,munihisto.nombremunicipiohistorico,munihisto.provincia_id as CodProv,provincias.nombreprovincia " & _
-                    "FROM archivo " & _
-                    "INNER JOIN tbtipodocumento on tbtipodocumento.idtipodoc=archivo.tipodoc_id " & _
-                    "INNER JOIN tbestadodocumento on tbestadodocumento.idestadodoc=archivo.estadodoc_id " & _
-                    "INNER JOIN  archivo2munihisto  on archivo2munihisto.archivo_id=archivo.idarchivo " & _
-                    "LEFT JOIN  tbobservaciones  on tbobservaciones.idobservestandar=archivo.observestandar_id " & _
-                    "INNER JOIN munihisto on munihisto.idmunihisto= archivo2munihisto.munihisto_id " & _
-                    "INNER JOIN provincias on munihisto.provincia_id = provincias.idprovincia " & _
+        CadenaSQL = "SELECT archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion," &
+                    "archivo.subdivision,archivo.fechaprincipal,archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, " &
+                    "archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja,archivo.subtipo," &
+                    "archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.observaciones," &
+                    "tbtipodocumento.tipodoc as Tipo," &
+                    "tbestadodocumento.estadodoc as Estado," &
+                    "tbobservaciones.observestandar," &
+                    "munihisto.cod_munihisto,munihisto.nombremunicipiohistorico,munihisto.provincia_id as CodProv,provincias.nombreprovincia " &
+                    "FROM bdsidschema.archivo " &
+                    "INNER JOIN bdsidschema.tbtipodocumento on tbtipodocumento.idtipodoc=archivo.tipodoc_id " &
+                    "INNER JOIN bdsidschema.tbestadodocumento on tbestadodocumento.idestadodoc=archivo.estadodoc_id " &
+                    "INNER JOIN bdsidschema.archivo2munihisto  on archivo2munihisto.archivo_id=archivo.idarchivo " &
+                    "LEFT JOIN bdsidschema.tbobservaciones  on tbobservaciones.idobservestandar=archivo.observestandar_id " &
+                    "INNER JOIN bdsidschema.munihisto on munihisto.idmunihisto= archivo2munihisto.munihisto_id " &
+                    "INNER JOIN bdsidschema.provincias on munihisto.provincia_id = provincias.idprovincia " &
                     "WHERE archivo.numdoc in (" & selloFormato & ") order by archivo.idarchivo"
         CargarListaDocumentosSIDCARTO(CadenaSQL, ListaDoc)
     End Sub
@@ -414,21 +414,21 @@ Module Documentacion
                             Xmin & " " & Ymin & "," & _
                             Xmin & " " & Ymax & "))',23030))"
 
-        CadenaSQL = "SELECT archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion," & _
-                    "archivo.subdivision,archivo.fechaprincipal,archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, " & _
-                    "archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja,archivo.subtipo," & _
-                    "archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.observaciones," & _
-                    "tbtipodocumento.tipodoc as Tipo," & _
-                    "tbestadodocumento.estadodoc as Estado," & _
-                    "tbobservaciones.observestandar," & _
-                    "munihisto.cod_munihisto,munihisto.nombremunicipiohistorico,munihisto.provincia_id as CodProv,provincias.nombreprovincia " & _
-                    "FROM archivo " & _
-                    "INNER JOIN tbtipodocumento on tbtipodocumento.idtipodoc=archivo.tipodoc_id " & _
-                    "INNER JOIN tbestadodocumento on tbestadodocumento.idestadodoc=archivo.estadodoc_id " & _
-                    "INNER JOIN  archivo2munihisto  on archivo2munihisto.archivo_id=archivo.idarchivo " & _
-                    "LEFT JOIN  tbobservaciones  on tbobservaciones.idobservestandar=archivo.observestandar_id " & _
-                    "INNER JOIN munihisto on munihisto.idmunihisto= archivo2munihisto.munihisto_id " & _
-                    "INNER JOIN provincias on munihisto.provincia_id = provincias.idprovincia " & _
+        CadenaSQL = "SELECT archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion," &
+                    "archivo.subdivision,archivo.fechaprincipal,archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, " &
+                    "archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja,archivo.subtipo," &
+                    "archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.observaciones," &
+                    "tbtipodocumento.tipodoc as Tipo," &
+                    "tbestadodocumento.estadodoc as Estado," &
+                    "tbobservaciones.observestandar," &
+                    "munihisto.cod_munihisto,munihisto.nombremunicipiohistorico,munihisto.provincia_id as CodProv,provincias.nombreprovincia " &
+                    "FROM bdsidschema.archivo " &
+                    "INNER JOIN bdsidschema.tbtipodocumento on tbtipodocumento.idtipodoc=archivo.tipodoc_id " &
+                    "INNER JOIN bdsidschema.tbestadodocumento on tbestadodocumento.idestadodoc=archivo.estadodoc_id " &
+                    "INNER JOIN bdsidschema.archivo2munihisto  on archivo2munihisto.archivo_id=archivo.idarchivo " &
+                    "LEFT JOIN bdsidschema.tbobservaciones  on tbobservaciones.idobservestandar=archivo.observestandar_id " &
+                    "INNER JOIN bdsidschema.munihisto on munihisto.idmunihisto= archivo2munihisto.munihisto_id " &
+                    "INNER JOIN bdsidschema.provincias on munihisto.provincia_id = provincias.idprovincia " &
                     "WHERE archivo.numdoc in (" & CadenaSQLSpacial & ") order by archivo.idarchivo LIMIT 1000"
         CargarListaDocumentosSIDCARTO(CadenaSQL, ListaDoc)
         Application.DoEvents()
@@ -438,21 +438,21 @@ Module Documentacion
     'Obtener los últimos 100 documentos introducidos
     Sub DameDocumentacionSIDCARTO_UltimosRegistros(ByRef ListaDoc() As docSIDCARTO, ByVal NumeroReg As Integer, ByRef cadenaSQL As String)
 
-        cadenaSQL = "SELECT archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion," & _
-                    "archivo.subdivision,archivo.fechaprincipal,archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, " & _
-                    "archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja,archivo.subtipo," & _
-                    "archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.observaciones," & _
-                    "tbtipodocumento.tipodoc as Tipo," & _
-                    "tbestadodocumento.estadodoc as Estado," & _
-                    "tbobservaciones.observestandar," & _
-                    "munihisto.cod_munihisto,munihisto.nombremunicipiohistorico,munihisto.provincia_id as CodProv,provincias.nombreprovincia " & _
-                    "FROM archivo " & _
-                    "INNER JOIN tbtipodocumento on tbtipodocumento.idtipodoc=archivo.tipodoc_id " & _
-                    "INNER JOIN tbestadodocumento on tbestadodocumento.idestadodoc=archivo.estadodoc_id " & _
-                    "INNER JOIN  archivo2munihisto  on archivo2munihisto.archivo_id=archivo.idarchivo " & _
-                    "LEFT JOIN  tbobservaciones  on tbobservaciones.idobservestandar=archivo.observestandar_id " & _
-                    "INNER JOIN munihisto on munihisto.idmunihisto= archivo2munihisto.munihisto_id " & _
-                    "INNER JOIN provincias on munihisto.provincia_id = provincias.idprovincia " & _
+        cadenaSQL = "SELECT archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion," &
+                    "archivo.subdivision,archivo.fechaprincipal,archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, " &
+                    "archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja,archivo.subtipo," &
+                    "archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.observaciones," &
+                    "tbtipodocumento.tipodoc as Tipo," &
+                    "tbestadodocumento.estadodoc as Estado," &
+                    "tbobservaciones.observestandar," &
+                    "munihisto.cod_munihisto,munihisto.nombremunicipiohistorico,munihisto.provincia_id as CodProv,provincias.nombreprovincia " &
+                    "FROM bdsidschema.archivo " &
+                    "INNER JOIN bdsidschema.tbtipodocumento on tbtipodocumento.idtipodoc=archivo.tipodoc_id " &
+                    "INNER JOIN bdsidschema.tbestadodocumento on tbestadodocumento.idestadodoc=archivo.estadodoc_id " &
+                    "INNER JOIN bdsidschema.archivo2munihisto  on archivo2munihisto.archivo_id=archivo.idarchivo " &
+                    "LEFT JOIN bdsidschema.tbobservaciones  on tbobservaciones.idobservestandar=archivo.observestandar_id " &
+                    "INNER JOIN bdsidschema.munihisto on munihisto.idmunihisto= archivo2munihisto.munihisto_id " &
+                    "INNER JOIN bdsidschema.provincias on munihisto.provincia_id = provincias.idprovincia " &
                     "ORDER BY archivo.idarchivo DESC LIMIT " & NumeroReg
         CargarListaDocumentosSIDCARTO(CadenaSQL, ListaDoc)
 

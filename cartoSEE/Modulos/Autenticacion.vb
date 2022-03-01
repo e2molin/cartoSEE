@@ -41,10 +41,10 @@ Module Autenticacion
         Dim Permiso As Integer = 0
 
         If Passw.ToLower.Trim = "" Then
-            ObtenerEscalar("SELECT codigo_permiso FROM usuarios WHERE loginuser='" & App_User & "'", Permiso)
+            ObtenerEscalar("SELECT codigo_permiso FROM bdsidschema.usuarios WHERE loginuser='" & App_User & "'", Permiso)
         Else
-            ObtenerEscalar("SELECT codigo_permiso FROM usuarios WHERE loginuser='" & App_User & "' " & _
-                            "AND " & _
+            ObtenerEscalar("SELECT codigo_permiso FROM bdsidschema.usuarios WHERE loginuser='" & App_User & "' " &
+                            "AND " &
                             "loginpassw=md5('" & Passw.Trim.ToLower & "'||'" & App_User & "'||'dvmap')", Permiso)
         End If
         If Permiso = 0 Then

@@ -2426,7 +2426,7 @@ Public Class frmDocumentacion
             nTomo = nTomo.Replace("tris", "ter")
 
             Try
-                If CargarRecordset("SELECT * from inventario where codprov=" & cProv & " AND lower(tomo)='" & nTomo.ToLower & "'", rcdInventario) Then
+                If CargarRecordset("SELECT * from bdsidschema.inventario where codprov=" & cProv & " AND lower(tomo)='" & nTomo.ToLower & "'", rcdInventario) Then
                     If rcdInventario.Rows.Count = 0 Then
                         MessageBox.Show("No hay información del tomo " & nTomo & " de la provincia " & DameProvinciaByINE(cProv), AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                     Else
