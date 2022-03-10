@@ -45,6 +45,7 @@ Partial Class frmDocumentacion
         Me.PrintDialog1 = New System.Windows.Forms.PrintDialog()
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.Button23 = New System.Windows.Forms.Button()
         Me.Button22 = New System.Windows.Forms.Button()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
@@ -137,7 +138,6 @@ Partial Class frmDocumentacion
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Button7 = New System.Windows.Forms.Button()
         Me.Button9 = New System.Windows.Forms.Button()
-        Me.Button23 = New System.Windows.Forms.Button()
         Me.ContextMenuStrip1.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
@@ -172,43 +172,43 @@ Partial Class frmDocumentacion
         '
         Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem3, Me.ToolStripMenuItem4, Me.ToolStripMenuItem5, Me.ToolStripMenuItem1, Me.ToolStripMenuItem2, Me.mnuOnOffWMS, Me.menuTipoWMSRoot, Me.mnuSetZIndexBulk})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
-        Me.ContextMenuStrip1.Size = New System.Drawing.Size(283, 180)
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(284, 180)
         '
         'ToolStripMenuItem3
         '
         Me.ToolStripMenuItem3.Name = "ToolStripMenuItem3"
-        Me.ToolStripMenuItem3.Size = New System.Drawing.Size(282, 22)
+        Me.ToolStripMenuItem3.Size = New System.Drawing.Size(283, 22)
         Me.ToolStripMenuItem3.Text = "Añadir Carrito"
         '
         'ToolStripMenuItem4
         '
         Me.ToolStripMenuItem4.Name = "ToolStripMenuItem4"
-        Me.ToolStripMenuItem4.Size = New System.Drawing.Size(282, 22)
+        Me.ToolStripMenuItem4.Size = New System.Drawing.Size(283, 22)
         Me.ToolStripMenuItem4.Text = "Generar metadatos"
         '
         'ToolStripMenuItem5
         '
         Me.ToolStripMenuItem5.Name = "ToolStripMenuItem5"
-        Me.ToolStripMenuItem5.Size = New System.Drawing.Size(282, 22)
+        Me.ToolStripMenuItem5.Size = New System.Drawing.Size(283, 22)
         Me.ToolStripMenuItem5.Text = "Guardar en carpeta"
         '
         'ToolStripMenuItem1
         '
         Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
-        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(282, 22)
+        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(283, 22)
         Me.ToolStripMenuItem1.Text = "Edición en lote"
         '
         'ToolStripMenuItem2
         '
         Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
-        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(282, 22)
+        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(283, 22)
         Me.ToolStripMenuItem2.Text = "Editar elemento"
         '
         'mnuOnOffWMS
         '
         Me.mnuOnOffWMS.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuOnWMS, Me.mnuOffWMS})
         Me.mnuOnOffWMS.Name = "mnuOnOffWMS"
-        Me.mnuOnOffWMS.Size = New System.Drawing.Size(282, 22)
+        Me.mnuOnOffWMS.Size = New System.Drawing.Size(283, 22)
         Me.mnuOnOffWMS.Text = "Mostrar en WMS"
         '
         'mnuOnWMS
@@ -227,7 +227,7 @@ Partial Class frmDocumentacion
         '
         Me.menuTipoWMSRoot.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.menuTipoWMS1, Me.menuTipoWMS2, Me.menuTipoWMS3, Me.menuTipoWMS4, Me.menuTipoWMS0})
         Me.menuTipoWMSRoot.Name = "menuTipoWMSRoot"
-        Me.menuTipoWMSRoot.Size = New System.Drawing.Size(282, 22)
+        Me.menuTipoWMSRoot.Size = New System.Drawing.Size(283, 22)
         Me.menuTipoWMSRoot.Text = "Definir tipo de WMS"
         '
         'menuTipoWMS1
@@ -263,7 +263,7 @@ Partial Class frmDocumentacion
         'mnuSetZIndexBulk
         '
         Me.mnuSetZIndexBulk.Name = "mnuSetZIndexBulk"
-        Me.mnuSetZIndexBulk.Size = New System.Drawing.Size(282, 22)
+        Me.mnuSetZIndexBulk.Size = New System.Drawing.Size(283, 22)
         Me.mnuSetZIndexBulk.Text = "Definir Z-Index del documento (1-1000)"
         '
         'Button3
@@ -318,6 +318,19 @@ Partial Class frmDocumentacion
         Me.GroupBox1.TabIndex = 11
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "GroupBox1"
+        '
+        'Button23
+        '
+        Me.Button23.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Button23.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button23.Image = CType(resources.GetObject("Button23.Image"), System.Drawing.Image)
+        Me.Button23.Location = New System.Drawing.Point(520, 19)
+        Me.Button23.Name = "Button23"
+        Me.Button23.Size = New System.Drawing.Size(65, 50)
+        Me.Button23.TabIndex = 39
+        Me.Button23.Text = "CdD"
+        Me.Button23.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.Button23.UseVisualStyleBackColor = True
         '
         'Button22
         '
@@ -444,13 +457,13 @@ Partial Class frmDocumentacion
         '
         Me.ContextMenuStrip2.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MostrarEnWMSToolStripMenuItem, Me.DefinirTipoDeWMSToolStripMenuItem1, Me.mnuSetZIndex})
         Me.ContextMenuStrip2.Name = "ContextMenuStrip2"
-        Me.ContextMenuStrip2.Size = New System.Drawing.Size(283, 70)
+        Me.ContextMenuStrip2.Size = New System.Drawing.Size(284, 70)
         '
         'MostrarEnWMSToolStripMenuItem
         '
         Me.MostrarEnWMSToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuDetailMostrarWMS, Me.mnuDetailOcultarWMS})
         Me.MostrarEnWMSToolStripMenuItem.Name = "MostrarEnWMSToolStripMenuItem"
-        Me.MostrarEnWMSToolStripMenuItem.Size = New System.Drawing.Size(282, 22)
+        Me.MostrarEnWMSToolStripMenuItem.Size = New System.Drawing.Size(283, 22)
         Me.MostrarEnWMSToolStripMenuItem.Text = "Mostrar en WMS"
         '
         'mnuDetailMostrarWMS
@@ -469,7 +482,7 @@ Partial Class frmDocumentacion
         '
         Me.DefinirTipoDeWMSToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuDetailTipoWMS1, Me.mnuDetailTipoWMS2, Me.mnuDetailTipoWMS3, Me.mnuDetailTipoWMS4, Me.mnuDetailTipoWMS0})
         Me.DefinirTipoDeWMSToolStripMenuItem1.Name = "DefinirTipoDeWMSToolStripMenuItem1"
-        Me.DefinirTipoDeWMSToolStripMenuItem1.Size = New System.Drawing.Size(282, 22)
+        Me.DefinirTipoDeWMSToolStripMenuItem1.Size = New System.Drawing.Size(283, 22)
         Me.DefinirTipoDeWMSToolStripMenuItem1.Text = "Definir tipo de WMS"
         '
         'mnuDetailTipoWMS1
@@ -505,7 +518,7 @@ Partial Class frmDocumentacion
         'mnuSetZIndex
         '
         Me.mnuSetZIndex.Name = "mnuSetZIndex"
-        Me.mnuSetZIndex.Size = New System.Drawing.Size(282, 22)
+        Me.mnuSetZIndex.Size = New System.Drawing.Size(283, 22)
         Me.mnuSetZIndex.Text = "Definir Z-Index del documento (1-1000)"
         '
         'ListView2
@@ -1056,7 +1069,7 @@ Partial Class frmDocumentacion
         'ToolStripStatusLabel2
         '
         Me.ToolStripStatusLabel2.Name = "ToolStripStatusLabel2"
-        Me.ToolStripStatusLabel2.Size = New System.Drawing.Size(120, 17)
+        Me.ToolStripStatusLabel2.Size = New System.Drawing.Size(119, 17)
         Me.ToolStripStatusLabel2.Text = "ToolStripStatusLabel2"
         '
         'Button15
@@ -1325,19 +1338,6 @@ Partial Class frmDocumentacion
         Me.Button9.Text = "CSV"
         Me.Button9.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         Me.Button9.UseVisualStyleBackColor = True
-        '
-        'Button23
-        '
-        Me.Button23.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Button23.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button23.Image = CType(resources.GetObject("Button23.Image"), System.Drawing.Image)
-        Me.Button23.Location = New System.Drawing.Point(520, 19)
-        Me.Button23.Name = "Button23"
-        Me.Button23.Size = New System.Drawing.Size(65, 50)
-        Me.Button23.TabIndex = 39
-        Me.Button23.Text = "CdD"
-        Me.Button23.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
-        Me.Button23.UseVisualStyleBackColor = True
         '
         'frmDocumentacion
         '

@@ -64,16 +64,18 @@ Partial Class frmInformes
         'Button7
         '
         Me.Button7.Image = CType(resources.GetObject("Button7.Image"), System.Drawing.Image)
-        Me.Button7.Location = New System.Drawing.Point(239, 12)
+        Me.Button7.Location = New System.Drawing.Point(316, 12)
         Me.Button7.Name = "Button7"
         Me.Button7.Size = New System.Drawing.Size(70, 55)
         Me.Button7.TabIndex = 10
         Me.Button7.Text = "Imprimir"
         Me.Button7.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         Me.Button7.UseVisualStyleBackColor = True
+        Me.Button7.Visible = False
         '
         'ListView1
         '
+        Me.ListView1.HideSelection = False
         Me.ListView1.Location = New System.Drawing.Point(419, 12)
         Me.ListView1.Name = "ListView1"
         Me.ListView1.Size = New System.Drawing.Size(67, 27)
@@ -92,13 +94,13 @@ Partial Class frmInformes
         'ToolStripStatusLabel1
         '
         Me.ToolStripStatusLabel1.Name = "ToolStripStatusLabel1"
-        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(121, 17)
+        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(119, 17)
         Me.ToolStripStatusLabel1.Text = "ToolStripStatusLabel1"
         '
         'ToolStripStatusLabel2
         '
         Me.ToolStripStatusLabel2.Name = "ToolStripStatusLabel2"
-        Me.ToolStripStatusLabel2.Size = New System.Drawing.Size(121, 17)
+        Me.ToolStripStatusLabel2.Size = New System.Drawing.Size(119, 17)
         Me.ToolStripStatusLabel2.Text = "ToolStripStatusLabel2"
         '
         'PrintPreviewDialog1
@@ -131,7 +133,7 @@ Partial Class frmInformes
         'Button1
         '
         Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
-        Me.Button1.Location = New System.Drawing.Point(315, 12)
+        Me.Button1.Location = New System.Drawing.Point(240, 12)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(70, 55)
         Me.Button1.TabIndex = 16

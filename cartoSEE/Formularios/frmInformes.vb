@@ -55,11 +55,9 @@ Public Class frmInformes
         ListView1.Tag = 1
 
         If fecha1 = "" Or fecha2 = "" Then
-            cadSQL = "SELECT provincia_id,tipodoc_id,count(*) AS Numero FROM archivo " & _
-                    "GROUP BY provincia_id,tipodoc_id ORDER BY provincia_id,tipodoc_id"
+            cadSQL = "SELECT provincia_id,tipodoc_id,count(*) AS Numero FROM bdsidschema.archivo GROUP BY provincia_id,tipodoc_id ORDER BY provincia_id,tipodoc_id"
         Else
-            cadSQL = "SELECT provincia_id,tipodoc_id,count(*) AS Numero FROM archivo " & _
-                "WHERE fechacreacion between '" & fecha1 & "' AND '" & fecha2 & "' " & _
+            cadSQL = "SELECT provincia_id,tipodoc_id,count(*) AS Numero FROM bdsidschema.archivo WHERE fechacreacion between '" & fecha1 & "' AND '" & fecha2 & "' " &
                     "GROUP BY provincia_id,tipodoc_id ORDER BY provincia_id,tipodoc_id"
         End If
 
@@ -183,7 +181,7 @@ Public Class frmInformes
         ListView1.Columns.Add("Provincia", "Provincia", 150, HorizontalAlignment.Left, 0)
 
         reportData = New DataTable
-        If CargarRecordset("SELECT idestadodoc,estadodoc from tbestadodocumento", reportData) = True Then
+        If CargarRecordset("SELECT idestadodoc,estadodoc from bdsidschema.tbestadodocumento", reportData) = True Then
             TiposDoc = reportData.Select
             For Each fila As DataRow In TiposDoc
                 NTipos = NTipos + 1
@@ -192,8 +190,7 @@ Public Class frmInformes
         End If
 
         ListView1.Tag = 2
-        cadSQL = "SELECT provincia_id,estadodoc_id,count(*) AS Numero FROM archivo " & _
-                "GROUP BY provincia_id,estadodoc_id ORDER BY provincia_id,estadodoc_id"
+        cadSQL = "SELECT provincia_id,estadodoc_id,count(*) AS Numero FROM bdsidschema.archivo GROUP BY provincia_id,estadodoc_id ORDER BY provincia_id,estadodoc_id"
 
         reportData = New DataTable
         If CargarRecordset(cadSQL, reportData) = True Then
@@ -264,11 +261,10 @@ Public Class frmInformes
         ListView1.Columns.Clear()
         ListView1.Items.Clear()
         ListView1.Columns.Add("Provincia", "Provincia", 150, HorizontalAlignment.Left, 0)
-        ListView1.Columns.Add("Sellado", "Sellado", 150, HorizontalAlignment.Right, 0)
+        ListView1.Columns.Add("Sellado", "Último nº asignado", 250, HorizontalAlignment.Right, 0)
 
         ListView1.Tag = 3
-        cadSQL = "SELECT provincia_id,max(numdoc) as UltimoSello FROM archivo " & _
-                "GROUP BY provincia_id order by provincia_id"
+        cadSQL = "SELECT provincia_id,max(numdoc) as ultimosello FROM bdsidschema.archivo GROUP BY provincia_id order by provincia_id"
 
         reportData = New DataTable
         If CargarRecordset(cadSQL, reportData) = True Then
@@ -278,7 +274,7 @@ Public Class frmInformes
                 For Each registro As DataRow In filas
                     elementoLV = New ListViewItem
                     elementoLV.Text = DameProvinciaByINE(registro("provincia_id").ToString)
-                    elementoLV.SubItems.Add(registro("UltimoSello").ToString)
+                    elementoLV.SubItems.Add(registro("ultimosello").ToString)
                     If ListView1.Items.Count Mod 2 = 0 Then
                         elementoLV.BackColor = Color.White
                     Else
@@ -298,6 +294,52 @@ Public Class frmInformes
 
 
     End Sub
+
+    Sub ListarPPCnoGeo()
+
+        Dim resultsetGeodocat As docCartoSEEquery
+        'Preparo el LV para mostrar los resultados
+        ListView1.FullRowSelect = True
+        ListView1.GridLines = False
+        ListView1.View = View.Details
+        ListView1.SmallImageList = MDIPrincipal.ImageList2
+        ListView1.Columns.Clear()
+        ListView1.Items.Clear()
+        ListView1.Columns.Add("Provincia", "Provincia", 150, HorizontalAlignment.Left, 0)
+        ListView1.Columns.Add("Sellado", "Sellado", 150, HorizontalAlignment.Right, 0)
+
+        ListView1.Tag = 3
+        cadSQL = "SELECT provincia_id,max(numdoc) as ultimosello FROM bdsidschema.archivo GROUP BY provincia_id order by provincia_id"
+
+
+        resultsetGeodocat = New docCartoSEEquery
+        resultsetGeodocat.flag_CargarFicherosGEO = True
+        resultsetGeodocat.getDocsSIDDAE_ByFiltroSQL("archivo.tipodoc_id=8")
+
+        Application.DoEvents()
+
+        For Each doc As docCartoSEE In resultsetGeodocat.resultados
+            Application.DoEvents()
+            If doc.listaFicherosGeo.Count = 0 Then
+                elementoLV = New ListViewItem
+                elementoLV.Text = doc.Provincias
+                elementoLV.SubItems.Add(doc.Sellado)
+                If ListView1.Items.Count Mod 2 = 0 Then
+                    elementoLV.BackColor = Color.White
+                Else
+                    elementoLV.BackColor = Color.WhiteSmoke
+                End If
+                ListView1.Items.Add(elementoLV)
+                elementoLV = Nothing
+            End If
+        Next
+
+
+        ToolStripStatusLabel1.Text = "Nº total de documentos " & ListView1.Items.Count.ToString
+        ToolStripStatusLabel2.Text = ""
+
+    End Sub
+
 
     Private Sub ListView1_ColumnClick(ByVal sender As Object, ByVal e As System.Windows.Forms.ColumnClickEventArgs) Handles ListView1.ColumnClick
         '
@@ -607,4 +649,6 @@ Public Class frmInformes
 
         MessageBox.Show("Fichero de exportación generado", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
     End Sub
+
+
 End Class

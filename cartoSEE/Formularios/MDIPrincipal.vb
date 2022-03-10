@@ -290,8 +290,12 @@ Public Class MDIPrincipal
             mnuExportCdD.Enabled = False
             ToolStripButton19.Visible = False
         End If
+
         mnuDeveloper.Visible = usuario_ISTARI
         ToolStripButton1.Visible = usuario_ISTARI
+        mnuGenerarRejilla.Visible = usuario_ISTARI
+        mnuLanzarPlantilla.Visible = usuario_ISTARI
+
         If usuario_ISTARI = False Then
             If LeeIni("Visores", "MostrarVisorCarto") <> "SI" Then
                 Button7.Visible = False
@@ -864,12 +868,54 @@ Public Class MDIPrincipal
     End Sub
 
     Sub LanzarInformes(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _
-                    mnuTool_Informes01.Click, mnuTool_Informes02.Click, mnuTool_Informes03.Click, _
-                    mnuTool_Informes04.Click, mnuTool_Informes05.Click, mnuTool_Informes06.Click
+                    mnuTool_Informes01.Click, mnuTool_Informes02.Click, mnuTool_Informes03.Click, mnuReportDocsNoContornos.Click, mnuPPCnoGeo.Click
 
-        Dim FormularioInformes As New frmInformes
+
         Dim Fecha_ini As String
         Dim Fecha_fin As String
+        Dim codProv As Integer
+        Dim textoInforme As String = ""
+
+        If sender.name = "mnuReportDocsNoContornos" Then
+            Try
+                codProv = CType(InputDialog.InputBox("Introduce el código INE  (1-50) de la provincia para elaborar el informe." & System.Environment.NewLine &
+                                                     "Introduce 0 para hacer todas", AplicacionTitulo, ""), Integer)
+            Catch ex As Exception
+                MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Exit Sub
+            End Try
+            If codProv < 0 Or codProv > 50 Then
+                MessageBox.Show("Código de provincia no válido", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                Exit Sub
+            End If
+            If codProv = 0 Then
+                If MessageBox.Show("Un informe de todas las provincias puede resultar lento. Aún así, ¿desea continuar?", AplicacionTitulo, MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.No Then
+                    Exit Sub
+                End If
+                textoInforme = "Documentos de todas las provincias sin georreerenciar"
+            Else
+                textoInforme = "Documentos de " & DameProvinciaByINE(codProv) & " sin georreerenciar"
+            End If
+
+            LanzarSpinner()
+
+            Me.Cursor = Cursors.WaitCursor
+            Dim frmResult As New frmDocumentacion
+            frmResult.MdiParent = Me
+            frmResult.Text = textoInforme
+            If codProv = 0 Then
+                frmResult.getGeodocatDocsWithoutContour("geom Is null")
+            Else
+                frmResult.getGeodocatDocsWithoutContour("geom Is null And provincias.idprovincia=" & codProv)
+            End If
+
+            frmResult.Show()
+            Me.Cursor = Cursors.Default
+            Exit Sub
+        End If
+
+
+        Dim FormularioInformes As New frmInformes
         FormularioInformes.MdiParent = Me
         FormularioInformes.Show()
 
@@ -891,6 +937,11 @@ Public Class MDIPrincipal
         ElseIf sender.name = "mnuTool_Informes03" Then
             FormularioInformes.Text = "Último número de sellado asignado por provincia"
             FormularioInformes.Informe_UltimoDocumentoSellado()
+        ElseIf sender.name = "mnuPPCnoGeo" Then
+            FormularioInformes.Text = "Planos de población en cuaderno no georreferenciados"
+            FormularioInformes.ListarPPCnoGeo()
+        Else
+
         End If
 
 
@@ -1064,7 +1115,7 @@ Public Class MDIPrincipal
 
         If sender.name = "Query_Advance01" Then
             'Documentos modificados en los últimos 30 días
-            Filtro = " and archivo.fechamodificacion between '" & fechaActual.AddDays(-30).Year & "-" & _
+            Filtro = " And archivo.fechamodificacion between '" & fechaActual.AddDays(-30).Year & "-" & _
                             String.Format("{0:00}", fechaActual.AddDays(-30).Month) & "-" & _
                             String.Format("{0:00}", fechaActual.AddDays(-30).Day) & "' AND '" & fechaActual.AddDays(1).Year & "-" & _
                             String.Format("{0:00}", fechaActual.AddDays(1).Month) & "-" & _
@@ -1291,5 +1342,6 @@ Public Class MDIPrincipal
         'visor.MdiParent = Me
         'visor.Show()
     End Sub
+
 
 End Class

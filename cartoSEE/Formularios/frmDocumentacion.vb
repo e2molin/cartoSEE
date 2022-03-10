@@ -11,6 +11,8 @@ Public Class frmDocumentacion
     Dim filtroTiposDoc As String = ""
     Dim filtroEstadoDoc As String = ""
 
+    Dim vistaInforme As String
+
     'Variables para la impresion
     Dim FontPrint As Font
     Dim TableFont As Font
@@ -241,8 +243,8 @@ Public Class frmDocumentacion
         TabINI = PrintDocument1.DefaultPageSettings.Margins.Left
 
         'Calculamos la anchura de la que disponemos para escribir
-        AnchuraMax = PrintDocument1.DefaultPageSettings.Bounds.Width - _
-                    PrintDocument1.DefaultPageSettings.Margins.Left - _
+        AnchuraMax = PrintDocument1.DefaultPageSettings.Bounds.Width -
+                    PrintDocument1.DefaultPageSettings.Margins.Left -
                     PrintDocument1.DefaultPageSettings.Margins.Right
 
         'En este array guardamos las sucesivas
@@ -253,14 +255,14 @@ Public Class frmDocumentacion
         Application.DoEvents()
 
         'Titulo del Informe
-        e.Graphics.DrawString(Me.Text, _
+        e.Graphics.DrawString(Me.Text,
                             New Font("Arial", 18), Brushes.Blue, TabINI, Y)
         Y = Y + 40
 
         'Cabeceras del informe
         For iBucle = 0 To ListView1.Columns.Count - 1
             TabGAP(iBucle) = CType(AnchuraMax / ListView1.Columns.Count, Integer)
-            e.Graphics.DrawString(ListView1.Columns(iBucle).Text, _
+            e.Graphics.DrawString(ListView1.Columns(iBucle).Text,
                                 FontPrint, Brushes.Blue, TabINI + TabGAP(iBucle) * (iBucle), Y)
         Next
 
@@ -282,7 +284,7 @@ Public Class frmDocumentacion
             If LineasV = 1 Then
                 e.Graphics.DrawString(str, TableFont, Brushes.Black, TabINI, Y)
             Else
-                e.Graphics.DrawString(str, TableFont, Brushes.Black, _
+                e.Graphics.DrawString(str, TableFont, Brushes.Black,
                             New RectangleF(TabINI, Y, TabGAP(0), LineasV * TableFont.Height), NuevoFormato)
             End If
             If MaxLineasV < LineasV Then MaxLineasV = LineasV
@@ -297,7 +299,7 @@ Public Class frmDocumentacion
                 If LineasV = 1 Then
                     e.Graphics.DrawString(str, TableFont, Brushes.Black, TabINI + TabGAP(iBucle) * (iBucle), Y)
                 Else
-                    e.Graphics.DrawString(str, TableFont, Brushes.Black, _
+                    e.Graphics.DrawString(str, TableFont, Brushes.Black,
                                 New RectangleF(TabINI + TabGAP(iBucle) * (iBucle), Y, TabGAP(iBucle), LineasV * TableFont.Height), NuevoFormato)
                 End If
                 If MaxLineasV < LineasV Then MaxLineasV = LineasV
@@ -332,8 +334,8 @@ Public Class frmDocumentacion
 
     End Sub
 
-    Function CalcularAlturaCajetin(ByVal cadena As String, ByVal Fuente As Font, _
-                                ByVal AnchoTabular As Integer, _
+    Function CalcularAlturaCajetin(ByVal cadena As String, ByVal Fuente As Font,
+                                ByVal AnchoTabular As Integer,
                                 ByVal e As System.Drawing.Printing.PrintPageEventArgs) As Integer
 
         Dim SizeString As SizeF
@@ -414,8 +416,8 @@ Public Class frmDocumentacion
 
     End Sub
 
-    Sub CargarDatosSIDCARTO_By_Filtro(ByVal filterSQL As String, _
-                                    Optional ByVal estadosDoc As String = "", _
+    Sub CargarDatosSIDCARTO_By_Filtro(ByVal filterSQL As String,
+                                    Optional ByVal estadosDoc As String = "",
                                     Optional ByVal tiposDoc As String = "")
 
         registrarDatabaseLog("CargarDatosSIDCARTO_By_Filtro:" & filterSQL)
@@ -492,9 +494,9 @@ Public Class frmDocumentacion
 
     End Sub
 
-    Sub CargarDatosSIDCARTO_By_Provincia(ByVal codProv As Integer, _
-                                    Optional ByVal tiposDoc As String = "", _
-                                    Optional ByVal estadosDoc As String = "", _
+    Sub CargarDatosSIDCARTO_By_Provincia(ByVal codProv As Integer,
+                                    Optional ByVal tiposDoc As String = "",
+                                    Optional ByVal estadosDoc As String = "",
                                     Optional ByVal filterSQL As String = "")
 
         If tiposDoc <> "" Then
@@ -515,9 +517,9 @@ Public Class frmDocumentacion
 
     End Sub
 
-    Sub CargarDatosSIDCARTO_By_MunicipioID(ByVal codMuniHisto As Integer, _
-                                    Optional ByVal tiposDoc As String = "", _
-                                    Optional ByVal estadosDoc As String = "", _
+    Sub CargarDatosSIDCARTO_By_MunicipioID(ByVal codMuniHisto As Integer,
+                                    Optional ByVal tiposDoc As String = "",
+                                    Optional ByVal estadosDoc As String = "",
                                     Optional ByVal filterSQL As String = "")
 
 
@@ -539,9 +541,9 @@ Public Class frmDocumentacion
 
     End Sub
 
-    Sub CargarDatosSIDCARTO_By_MunicipioINEActual(ByVal codINEActual As Integer, _
-                                    Optional ByVal tiposDoc As String = "", _
-                                    Optional ByVal estadosDoc As String = "", _
+    Sub CargarDatosSIDCARTO_By_MunicipioINEActual(ByVal codINEActual As Integer,
+                                    Optional ByVal tiposDoc As String = "",
+                                    Optional ByVal estadosDoc As String = "",
                                     Optional ByVal filterSQL As String = "")
 
 
@@ -565,7 +567,7 @@ Public Class frmDocumentacion
 
 
 
-    Sub CargarDatosSIDCARTO_By_Entorno(ByVal Xmax As Integer, ByVal Ymax As Integer, _
+    Sub CargarDatosSIDCARTO_By_Entorno(ByVal Xmax As Integer, ByVal Ymax As Integer,
                                 ByVal Xmin As Integer, ByVal Ymin As Integer)
 
         resizingElements()
@@ -584,9 +586,33 @@ Public Class frmDocumentacion
         RellenarLisview(ListaDocumentos)
     End Sub
 
+    Sub getDataBySQL(ByVal cadSQL As String)
 
-    Private Sub RellenarLisview(ByRef ListaDocumentos() As docSIDCARTO, _
-                                    Optional ByVal EstadoDocumento As String = "", _
+
+        registrarDatabaseLog("Informe documentos sin contorno", cadSQL)
+        resultsetGeodocat = New docCartoSEEquery
+        resultsetGeodocat.flag_CargarFicherosGEO = True
+        resultsetGeodocat.getDocsCartoSEE_BySQLSentence(cadSQL)
+        resizingElements()
+        populateListView()
+
+    End Sub
+
+    Sub getGeodocatDocsWithoutContour(filter As String)
+
+        registrarDatabaseLog("Informe documentos sin contorno", filter)
+        resultsetGeodocat = New docCartoSEEquery
+        resultsetGeodocat.flag_CargarFicherosGEO = True
+        resultsetGeodocat.getDocsGEODOCAT_WithoutContour(filter)
+        resizingElements()
+        populateListView()
+
+    End Sub
+
+
+
+    Private Sub RellenarLisview(ByRef ListaDocumentos() As docSIDCARTO,
+                                    Optional ByVal EstadoDocumento As String = "",
                                     Optional ByVal TipoDocumento As String = "")
 
         Dim elementoLV As ListViewItem
@@ -742,6 +768,7 @@ Public Class frmDocumentacion
         End If
         ToolStripStatusLabel1.Text = "Resultados : " & ListView1.Items.Count.ToString & " documentos"
         CerrarSpinner()
+        Me.Parent.Cursor = DefaultCursor
 
     End Sub
 
@@ -797,7 +824,7 @@ Public Class frmDocumentacion
         Button5.Tag = NumElemento + 1
         GroupBox1.Visible = True
         GroupBox1.Tag = NumElemento
-        GroupBox1.Text = resultsetGeodocat.resultados(NumElemento).Tipo & _
+        GroupBox1.Text = resultsetGeodocat.resultados(NumElemento).Tipo &
                             IIf(resultsetGeodocat.resultados(NumElemento).subTipoDoc = "", "", " - " & resultsetGeodocat.resultados(NumElemento).subTipoDoc) & " " & resultsetGeodocat.resultados(NumElemento).Sellado
 
         g1 = New ListViewGroup("Hoja de características")
@@ -1009,8 +1036,8 @@ Public Class frmDocumentacion
 
         'Diapo1
         RutaImagen = rutaRepo & "\_Miniaturas\" & resultsetGeodocat.resultados(DiapoInicio).FicheroJPG
-        Label2.Text = resultsetGeodocat.resultados(DiapoInicio).Tipo & _
-                        IIf(resultsetGeodocat.resultados(DiapoInicio).subTipoDoc = "", "", "/" & resultsetGeodocat.resultados(DiapoInicio).subTipoDoc) & _
+        Label2.Text = resultsetGeodocat.resultados(DiapoInicio).Tipo &
+                        IIf(resultsetGeodocat.resultados(DiapoInicio).subTipoDoc = "", "", "/" & resultsetGeodocat.resultados(DiapoInicio).subTipoDoc) &
                         ": " & resultsetGeodocat.resultados(DiapoInicio).Sellado
         Label2.Tag = DiapoInicio
         CargarImagen(PictureBox2, RutaImagen)
@@ -1018,8 +1045,8 @@ Public Class frmDocumentacion
         'Diapo2
         If DiapoInicio + 1 > resultsetGeodocat.resultados.Count - 1 Then Exit Sub
         RutaImagen = rutaRepo & "\_Miniaturas\" & resultsetGeodocat.resultados(DiapoInicio + 1).FicheroJPG
-        Label3.Text = resultsetGeodocat.resultados(DiapoInicio + 1).Tipo & _
-                        IIf(resultsetGeodocat.resultados(DiapoInicio + 1).subTipoDoc = "", "", "/" & resultsetGeodocat.resultados(DiapoInicio + 1).subTipoDoc) & _
+        Label3.Text = resultsetGeodocat.resultados(DiapoInicio + 1).Tipo &
+                        IIf(resultsetGeodocat.resultados(DiapoInicio + 1).subTipoDoc = "", "", "/" & resultsetGeodocat.resultados(DiapoInicio + 1).subTipoDoc) &
                         ": " & resultsetGeodocat.resultados(DiapoInicio + 1).Sellado
         Label3.Tag = DiapoInicio + 1
         CargarImagen(PictureBox3, RutaImagen)
@@ -1027,8 +1054,8 @@ Public Class frmDocumentacion
         'Diapo3
         If DiapoInicio + 2 > resultsetGeodocat.resultados.Count - 1 Then Exit Sub
         RutaImagen = rutaRepo & "\_Miniaturas\" & resultsetGeodocat.resultados(DiapoInicio + 2).FicheroJPG
-        Label8.Text = resultsetGeodocat.resultados(DiapoInicio + 2).Tipo & _
-                        IIf(resultsetGeodocat.resultados(DiapoInicio + 2).subTipoDoc = "", "", "/" & resultsetGeodocat.resultados(DiapoInicio + 2).subTipoDoc) & _
+        Label8.Text = resultsetGeodocat.resultados(DiapoInicio + 2).Tipo &
+                        IIf(resultsetGeodocat.resultados(DiapoInicio + 2).subTipoDoc = "", "", "/" & resultsetGeodocat.resultados(DiapoInicio + 2).subTipoDoc) &
                         ": " & resultsetGeodocat.resultados(DiapoInicio + 2).Sellado
         Label8.Tag = DiapoInicio + 2
         CargarImagen(PictureBox4, RutaImagen)
@@ -1036,8 +1063,8 @@ Public Class frmDocumentacion
         'Diapo4
         If DiapoInicio + 3 > resultsetGeodocat.resultados.Count - 1 Then Exit Sub
         RutaImagen = rutaRepo & "\_Miniaturas\" & resultsetGeodocat.resultados(DiapoInicio + 3).FicheroJPG
-        Label9.Text = resultsetGeodocat.resultados(DiapoInicio + 3).Tipo & _
-                        IIf(resultsetGeodocat.resultados(DiapoInicio + 3).subTipoDoc = "", "", "/" & resultsetGeodocat.resultados(DiapoInicio + 3).subTipoDoc) & _
+        Label9.Text = resultsetGeodocat.resultados(DiapoInicio + 3).Tipo &
+                        IIf(resultsetGeodocat.resultados(DiapoInicio + 3).subTipoDoc = "", "", "/" & resultsetGeodocat.resultados(DiapoInicio + 3).subTipoDoc) &
                         ": " & resultsetGeodocat.resultados(DiapoInicio + 3).Sellado
         Label9.Tag = DiapoInicio + 3
         CargarImagen(PictureBox5, RutaImagen)
@@ -1045,8 +1072,8 @@ Public Class frmDocumentacion
         'Diapo5
         If DiapoInicio + 4 > resultsetGeodocat.resultados.Count - 1 Then Exit Sub
         RutaImagen = rutaRepo & "\_Miniaturas\" & resultsetGeodocat.resultados(DiapoInicio + 4).FicheroJPG
-        Label39.Text = resultsetGeodocat.resultados(DiapoInicio + 4).Tipo & _
-                        IIf(resultsetGeodocat.resultados(DiapoInicio + 4).subTipoDoc = "", "", "/" & resultsetGeodocat.resultados(DiapoInicio + 4).subTipoDoc) & _
+        Label39.Text = resultsetGeodocat.resultados(DiapoInicio + 4).Tipo &
+                        IIf(resultsetGeodocat.resultados(DiapoInicio + 4).subTipoDoc = "", "", "/" & resultsetGeodocat.resultados(DiapoInicio + 4).subTipoDoc) &
                         ": " & resultsetGeodocat.resultados(DiapoInicio + 4).Sellado
         Label39.Tag = DiapoInicio + 4
         CargarImagen(PictureBox6, RutaImagen)
@@ -1054,8 +1081,8 @@ Public Class frmDocumentacion
         'Diapo6
         If DiapoInicio + 5 > resultsetGeodocat.resultados.Count - 1 Then Exit Sub
         RutaImagen = rutaRepo & "\_Miniaturas\" & resultsetGeodocat.resultados(DiapoInicio + 5).FicheroJPG
-        Label40.Text = resultsetGeodocat.resultados(DiapoInicio + 5).Tipo & _
-                        IIf(resultsetGeodocat.resultados(DiapoInicio + 5).subTipoDoc = "", "", "/" & resultsetGeodocat.resultados(DiapoInicio + 5).subTipoDoc) & _
+        Label40.Text = resultsetGeodocat.resultados(DiapoInicio + 5).Tipo &
+                        IIf(resultsetGeodocat.resultados(DiapoInicio + 5).subTipoDoc = "", "", "/" & resultsetGeodocat.resultados(DiapoInicio + 5).subTipoDoc) &
                         ": " & resultsetGeodocat.resultados(DiapoInicio + 5).Sellado
         Label40.Tag = DiapoInicio + 5
         CargarImagen(PictureBox7, RutaImagen)
@@ -1149,7 +1176,7 @@ Public Class frmDocumentacion
             End If
 
         Catch ex As Exception
-            MessageBox.Show("Error:" & ex.Message & System.Environment.NewLine & _
+            MessageBox.Show("Error:" & ex.Message & System.Environment.NewLine &
                             RutaDoc, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
         End Try
         Me.Cursor = Cursors.Default
@@ -1194,13 +1221,13 @@ Public Class frmDocumentacion
         NoCopiados = 0
         Copiados = 0
         'Creamos un fichero de texto con el resultado de nuestra copia
-        Dim sw As New System.IO.StreamWriter(FolderBrowserDialog1.SelectedPath & "\_Lista.csv", _
+        Dim sw As New System.IO.StreamWriter(FolderBrowserDialog1.SelectedPath & "\_Lista.csv",
                                 False, System.Text.Encoding.Unicode)
 
         CadenaLOG = "Nº de sellado" & ";" & "Tipo" & ";" & "Municipios" & ";" & "Fecha principal"
         sw.WriteLine(CadenaLOG)
         NumSelect = ListView1.SelectedItems.Count
-        If MessageBox.Show("¿Desa crear un link para cada archivo?", AplicacionTitulo, _
+        If MessageBox.Show("¿Desa crear un link para cada archivo?", AplicacionTitulo,
                            MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
             generarLink = True
         End If
@@ -1231,15 +1258,15 @@ Public Class frmDocumentacion
                     Fichero = ""
                 End If
                 RutaSalida = FolderBrowserDialog1.SelectedPath & "\" & SacarFileDeRuta(Fichero)
-                CadenaLOG = resultsetGeodocat.resultados(nCopy).Sellado & ";" & _
-                            resultsetGeodocat.resultados(nCopy).Tipo & ";" & _
-                            resultsetGeodocat.resultados(nCopy).municipiosHistoLiteral & ";" & _
+                CadenaLOG = resultsetGeodocat.resultados(nCopy).Sellado & ";" &
+                            resultsetGeodocat.resultados(nCopy).Tipo & ";" &
+                            resultsetGeodocat.resultados(nCopy).municipiosHistoLiteral & ";" &
                             resultsetGeodocat.resultados(nCopy).fechaPrincipal & ";"
                 If System.IO.File.Exists(Fichero) = True Then
                     Try
                         System.IO.File.Copy(Fichero, RutaSalida, True)
                         If generarLink = True Then
-                            CreateLink(FolderBrowserDialog1.SelectedPath & "\" & SacarFileDeRuta(Fichero) & ".lnk", _
+                            CreateLink(FolderBrowserDialog1.SelectedPath & "\" & SacarFileDeRuta(Fichero) & ".lnk",
                                             Fichero)
                         End If
                         Copiados = Copiados + 1
@@ -1247,7 +1274,7 @@ Public Class frmDocumentacion
                         sw.WriteLine(CadenaLOG)
                     Catch ex As Exception
                         Me.Cursor = Cursors.Default
-                        MessageBox.Show("Se han producido errores en la transferencia de ficheros", _
+                        MessageBox.Show("Se han producido errores en la transferencia de ficheros",
                                     AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                         okProc = False
                         CadenaLOG = CadenaLOG & "Error.Proceso finalizado"
@@ -1267,12 +1294,12 @@ Public Class frmDocumentacion
         Me.Cursor = Cursors.Default
         If okProc = True Then
             If NoCopiados > 0 Then
-                MessageBox.Show("Se han transferido " & Copiados.ToString & " documentos." & _
-                                System.Environment.NewLine & NoCopiados.ToString & " ficheros no se copiaron.", _
+                MessageBox.Show("Se han transferido " & Copiados.ToString & " documentos." &
+                                System.Environment.NewLine & NoCopiados.ToString & " ficheros no se copiaron.",
                                 AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
 
             Else
-                MessageBox.Show("Se han transferido " & Copiados.ToString & " documentos.", _
+                MessageBox.Show("Se han transferido " & Copiados.ToString & " documentos.",
                                 AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         End If
@@ -1342,7 +1369,7 @@ Public Class frmDocumentacion
                     Handles Button16.Click
 
         If Me.Tag = "Carrito de la Compra" Then
-            MessageBox.Show("Función no disponible en el carrito", AplicacionTitulo, _
+            MessageBox.Show("Función no disponible en el carrito", AplicacionTitulo,
                             MessageBoxButtons.OK, MessageBoxIcon.Information)
             Exit Sub
         End If
@@ -1373,13 +1400,13 @@ Public Class frmDocumentacion
             Button8.Enabled = True
         End If
         CerrarSpinner()
-        Me.Cursor = Cursors.Default
+
 
     End Sub
 
     Private Sub CambiarColumnas(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-                        Handles CheckBox1.Click, CheckBox2.Click, CheckBox3.Click, CheckBox4.Click, CheckBox5.Click, CheckBox6.Click, _
-                        CheckBox7.Click, CheckBox8.Click, CheckBox9.Click, CheckBox10.Click, CheckBox11.Click, CheckBox12.Click, _
+                        Handles CheckBox1.Click, CheckBox2.Click, CheckBox3.Click, CheckBox4.Click, CheckBox5.Click, CheckBox6.Click,
+                        CheckBox7.Click, CheckBox8.Click, CheckBox9.Click, CheckBox10.Click, CheckBox11.Click, CheckBox12.Click,
                         CheckBox13.Click, CheckBox14.Click, CheckBox15.Click, CheckBox16.Click, CheckBox17.Click, CheckBox18.Click
 
         If sender.name = "CheckBox1" Then
@@ -1449,7 +1476,7 @@ Public Class frmDocumentacion
             Next
         End If
         Me.Cursor = Cursors.Default
-        MessageBox.Show("Metadatos generados en " & System.Environment.NewLine & _
+        MessageBox.Show("Metadatos generados en " & System.Environment.NewLine &
                         FolderBrowserDialog1.SelectedPath, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
     End Sub
 
@@ -1492,7 +1519,7 @@ Public Class frmDocumentacion
         End If
 
         If RutasECW.Count = 0 Then
-            MessageBox.Show("No se ha localizado ningún documento georreferenciado", _
+            MessageBox.Show("No se ha localizado ningún documento georreferenciado",
                        AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
         Else
             If GenerarProyectoGM(RutasECW, True) = True Then
@@ -1540,7 +1567,7 @@ Public Class frmDocumentacion
         End If
 
         If RutasECW.Count = 0 Then
-            MessageBox.Show("No se ha localizado ningún documento georreferenciado", _
+            MessageBox.Show("No se ha localizado ningún documento georreferenciado",
                        AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
         ElseIf RutasECW.Count = 1 Then
             LanzarVisorExterno(RutasECW.Item(0).ToString)
@@ -1617,7 +1644,7 @@ Public Class frmDocumentacion
             If Encabezados(iCab).Visible = True Then listaCampos = listaCampos & Encabezados(iCab).NombreEncabezado & ","
         Next
         If GroupBox1.Visible = True Then
-            ExportarCentroidesDocumento2XYZ(ListaDocumentos(GroupBox1.Tag), _
+            ExportarCentroidesDocumento2XYZ(ListaDocumentos(GroupBox1.Tag),
                                             FolderBrowserDialog1.SelectedPath & "\" & ListaDocumentos(GroupBox1.Tag).Sellado & ".xyz", False, listaCampos)
         Else
             NomFich = FolderBrowserDialog1.SelectedPath & "\" & DameAutoNomFichero(".xyz")
@@ -2113,7 +2140,7 @@ Public Class frmDocumentacion
 
 #End Region
 
-    Private Sub GestionDetailContextMenu(ByVal sender As Object, ByVal e As System.EventArgs) Handles mnuDetailMostrarWMS.Click, mnuDetailOcultarWMS.Click, _
+    Private Sub GestionDetailContextMenu(ByVal sender As Object, ByVal e As System.EventArgs) Handles mnuDetailMostrarWMS.Click, mnuDetailOcultarWMS.Click,
         mnuDetailTipoWMS0.Click, mnuDetailTipoWMS1.Click, mnuDetailTipoWMS2.Click, mnuDetailTipoWMS3.Click, mnuDetailTipoWMS4.Click, mnuSetZIndex.Click
 
         If lvAtributos.SelectedItems.Count <> 1 Then
@@ -2200,7 +2227,7 @@ Public Class frmDocumentacion
     End Sub
 
     Private Sub GestionContextMenu(ByVal sender As Object, ByVal e As System.EventArgs) _
-                Handles ToolStripMenuItem1.Click, ToolStripMenuItem2.Click, mnuOffWMS.Click, mnuOnWMS.Click, menuTipoWMS0.Click, menuTipoWMS1.Click, menuTipoWMS2.Click, menuTipoWMS3.Click, menuTipoWMS4.Click, _
+                Handles ToolStripMenuItem1.Click, ToolStripMenuItem2.Click, mnuOffWMS.Click, mnuOnWMS.Click, menuTipoWMS0.Click, menuTipoWMS1.Click, menuTipoWMS2.Click, menuTipoWMS3.Click, menuTipoWMS4.Click,
                 mnuSetZIndexBulk.Click
 
         Dim listaSQLs As ArrayList
@@ -2211,7 +2238,7 @@ Public Class frmDocumentacion
                 If ChildForm.Tag = "Carrito de la Compra" Then Continue For
                 If ChildForm.Tag = -1 Then
                     ChildForm.Focus()
-                    MessageBox.Show("No pueden abrirse varios procesos de edición de lote simultáneamente", _
+                    MessageBox.Show("No pueden abrirse varios procesos de edición de lote simultáneamente",
                                     AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
                     Exit Sub
                 End If
@@ -2361,7 +2388,7 @@ Public Class frmDocumentacion
         sw.Close()
         sw.Dispose()
 
-        MessageBox.Show("SQL sentence guardada", AplicacionTitulo, _
+        MessageBox.Show("SQL sentence guardada", AplicacionTitulo,
                         MessageBoxButtons.OK, MessageBoxIcon.Information)
 
     End Sub
@@ -2470,4 +2497,5 @@ Public Class frmDocumentacion
         End Try
 
     End Sub
+
 End Class

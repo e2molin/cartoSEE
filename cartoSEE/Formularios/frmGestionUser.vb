@@ -50,8 +50,7 @@
 
         CodigoPermiso = CType(ComboBox1.SelectedItem, itemData).Valor
         If CodigoPermiso = 3 Then
-            MessageBox.Show("El usuario de consulta no tiene asignada password", AplicacionTitulo, _
-                            MessageBoxButtons.OK, MessageBoxIcon.Information)
+            MessageBox.Show("El usuario de consulta no tiene asignada password", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
             LoginPass = "tera"
         ElseIf CodigoPermiso = 1 Then
             If TextBox4.Text.Trim = "" Then
@@ -66,14 +65,14 @@
         End If
         If LoginPass = "" Then Exit Sub
 
-        cadInsert = "INSERT INTO usuarios (iduser,nombre,apellidos,telefono,loginuser,loginpass,codigo_permiso) " & _
-                    "VALUES (" & _
-                    "nextval('usuarios_iduser_seq')," & _
-                    "'" & TextBox1.Text.Trim & "'," & _
-                    "'" & TextBox2.Text.Trim & "'," & _
-                    "'" & TextBox5.Text.Trim & "'," & _
-                    "'" & TextBox3.Text.Trim & "'," & _
-                    "md5('" & LoginPass & "' || '" & TextBox3.Text.Trim & "' || 'dvmap')," & _
+        cadInsert = "INSERT INTO bdsidschema.usuarios (iduser,nombre,apellidos,telefono,loginuser,loginpass,codigo_permiso) " &
+                    "VALUES (" &
+                    "nextval('bdsidschema.usuarios_iduser_seq')," &
+                    "'" & TextBox1.Text.Trim & "'," &
+                    "'" & TextBox2.Text.Trim & "'," &
+                    "'" & TextBox5.Text.Trim & "'," &
+                    "'" & TextBox3.Text.Trim & "'," &
+                    "md5('" & LoginPass & "' || '" & TextBox3.Text.Trim & "' || 'dvmap')," &
                     CodigoPermiso & ")"
 
         Dim okProc As Boolean = ExeSinTran(cadInsert)
@@ -94,7 +93,7 @@
         Dim contador As Integer
 
         rcdUsuarios = New DataTable
-        If CargarRecordset("SELECT * from usuarios ORDER BY iduser", rcdUsuarios) = True Then
+        If CargarRecordset("SELECT * from bdsidschema.usuarios ORDER BY iduser", rcdUsuarios) = True Then
             filas = rcdUsuarios.Select
             ReDim ListaUsuarios(filas.Length - 1)
             contador = -1
@@ -214,13 +213,13 @@
         End If
         If LoginPass = "" Then Exit Sub
 
-        cadUpdate = "UPDATE usuarios SET " & _
-                    "nombre='" & TextBox6.Text.Trim & "'," & _
-                    "apellidos='" & TextBox7.Text.Trim & "'," & _
-                    "telefono='" & TextBox8.Text.Trim & "'," & _
-                    "loginuser='" & TextBox9.Text.Trim & "'," & _
-                    "loginpass=md5('" & LoginPass & "' || '" & TextBox9.Text.Trim & "' || 'dvmap')," & _
-                    "codigo_permiso=" & CodigoPermiso & " " & _
+        cadUpdate = "UPDATE bdsidschema.usuarios SET " &
+                    "nombre='" & TextBox6.Text.Trim & "'," &
+                    "apellidos='" & TextBox7.Text.Trim & "'," &
+                    "telefono='" & TextBox8.Text.Trim & "'," &
+                    "loginuser='" & TextBox9.Text.Trim & "'," &
+                    "loginpass=md5('" & LoginPass & "' || '" & TextBox9.Text.Trim & "' || 'dvmap')," &
+                    "codigo_permiso=" & CodigoPermiso & " " &
                     "WHERE iduser=" & GroupBox1.Tag.ToString
 
         Dim okProc As Boolean = ExeSinTran(cadUpdate)
@@ -241,7 +240,7 @@
                         AplicacionTitulo, MessageBoxButtons.YesNo, MessageBoxIcon.Question) = _
                         Windows.Forms.DialogResult.No Then Exit Sub
 
-        cadDelete = "DELETE FROM usuarios WHERE iduser=" & GroupBox1.Tag.ToString
+        cadDelete = "DELETE FROM bdsidschema.usuarios WHERE iduser=" & GroupBox1.Tag.ToString
         Dim okProc As Boolean = ExeSinTran(cadDelete)
         If okProc = True Then
             MessageBox.Show("Usuario eliminado", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)

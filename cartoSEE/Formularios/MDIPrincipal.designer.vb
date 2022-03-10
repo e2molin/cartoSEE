@@ -76,9 +76,8 @@ Partial Class MDIPrincipal
         Me.mnuTool_Informes01 = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuTool_Informes02 = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuTool_Informes03 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuTool_Informes04 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuTool_Informes05 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuTool_Informes06 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuReportDocsNoContornos = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuPPCnoGeo = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuGenerarRejilla = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuCarrito = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuLanzarPlantilla = New System.Windows.Forms.ToolStripMenuItem()
@@ -571,7 +570,7 @@ Partial Class MDIPrincipal
         '
         'mnuTool_Informes
         '
-        Me.mnuTool_Informes.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuTool_Informes01, Me.mnuTool_Informes02, Me.mnuTool_Informes03, Me.mnuTool_Informes04, Me.mnuTool_Informes05, Me.mnuTool_Informes06})
+        Me.mnuTool_Informes.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuTool_Informes01, Me.mnuTool_Informes02, Me.mnuTool_Informes03, Me.mnuReportDocsNoContornos, Me.mnuPPCnoGeo})
         Me.mnuTool_Informes.Image = CType(resources.GetObject("mnuTool_Informes.Image"), System.Drawing.Image)
         Me.mnuTool_Informes.Name = "mnuTool_Informes"
         Me.mnuTool_Informes.Size = New System.Drawing.Size(307, 22)
@@ -580,41 +579,32 @@ Partial Class MDIPrincipal
         'mnuTool_Informes01
         '
         Me.mnuTool_Informes01.Name = "mnuTool_Informes01"
-        Me.mnuTool_Informes01.Size = New System.Drawing.Size(416, 22)
-        Me.mnuTool_Informes01.Text = "Inventario SIDCarto clasificado por tipo de documento"
+        Me.mnuTool_Informes01.Size = New System.Drawing.Size(428, 22)
+        Me.mnuTool_Informes01.Text = "Inventario GEODOCAT clasificado por tipo de documento"
         '
         'mnuTool_Informes02
         '
         Me.mnuTool_Informes02.Name = "mnuTool_Informes02"
-        Me.mnuTool_Informes02.Size = New System.Drawing.Size(416, 22)
-        Me.mnuTool_Informes02.Text = "Inventario SIDCarto clasificado por estado de conservación"
+        Me.mnuTool_Informes02.Size = New System.Drawing.Size(428, 22)
+        Me.mnuTool_Informes02.Text = "Inventario GEODOCAT clasificado por estado de conservación"
         '
         'mnuTool_Informes03
         '
         Me.mnuTool_Informes03.Name = "mnuTool_Informes03"
-        Me.mnuTool_Informes03.Size = New System.Drawing.Size(416, 22)
+        Me.mnuTool_Informes03.Size = New System.Drawing.Size(428, 22)
         Me.mnuTool_Informes03.Text = "Últimos números de sellado asignados por provincia"
         '
-        'mnuTool_Informes04
+        'mnuReportDocsNoContornos
         '
-        Me.mnuTool_Informes04.Name = "mnuTool_Informes04"
-        Me.mnuTool_Informes04.Size = New System.Drawing.Size(416, 22)
-        Me.mnuTool_Informes04.Text = "Análisis relación Acta - Cuaderno"
-        Me.mnuTool_Informes04.Visible = False
+        Me.mnuReportDocsNoContornos.Name = "mnuReportDocsNoContornos"
+        Me.mnuReportDocsNoContornos.Size = New System.Drawing.Size(428, 22)
+        Me.mnuReportDocsNoContornos.Text = "Documentos GEODOCAT sin contorno definido"
         '
-        'mnuTool_Informes05
+        'mnuPPCnoGeo
         '
-        Me.mnuTool_Informes05.Name = "mnuTool_Informes05"
-        Me.mnuTool_Informes05.Size = New System.Drawing.Size(416, 22)
-        Me.mnuTool_Informes05.Text = "Análisis de vecindad entre municipios v1"
-        Me.mnuTool_Informes05.Visible = False
-        '
-        'mnuTool_Informes06
-        '
-        Me.mnuTool_Informes06.Name = "mnuTool_Informes06"
-        Me.mnuTool_Informes06.Size = New System.Drawing.Size(416, 22)
-        Me.mnuTool_Informes06.Text = "Analisis de vecindad entre municipios"
-        Me.mnuTool_Informes06.Visible = False
+        Me.mnuPPCnoGeo.Name = "mnuPPCnoGeo"
+        Me.mnuPPCnoGeo.Size = New System.Drawing.Size(428, 22)
+        Me.mnuPPCnoGeo.Text = "Planos de población en cuaderno no georreferenciados"
         '
         'mnuGenerarRejilla
         '
@@ -1040,13 +1030,13 @@ Partial Class MDIPrincipal
         '
         Me.ToolStripStatusLabel1.Image = CType(resources.GetObject("ToolStripStatusLabel1.Image"), System.Drawing.Image)
         Me.ToolStripStatusLabel1.Name = "ToolStripStatusLabel1"
-        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(136, 17)
+        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(135, 17)
         Me.ToolStripStatusLabel1.Text = "ToolStripStatusLabel1"
         '
         'ToolStripStatusLabel
         '
         Me.ToolStripStatusLabel.Name = "ToolStripStatusLabel"
-        Me.ToolStripStatusLabel.Size = New System.Drawing.Size(805, 17)
+        Me.ToolStripStatusLabel.Size = New System.Drawing.Size(1013, 17)
         Me.ToolStripStatusLabel.Spring = True
         Me.ToolStripStatusLabel.Text = "Status"
         Me.ToolStripStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -1055,7 +1045,7 @@ Partial Class MDIPrincipal
         '
         Me.ToolStripStatusLabel2.Image = CType(resources.GetObject("ToolStripStatusLabel2.Image"), System.Drawing.Image)
         Me.ToolStripStatusLabel2.Name = "ToolStripStatusLabel2"
-        Me.ToolStripStatusLabel2.Size = New System.Drawing.Size(136, 17)
+        Me.ToolStripStatusLabel2.Size = New System.Drawing.Size(135, 17)
         Me.ToolStripStatusLabel2.Text = "ToolStripStatusLabel2"
         '
         'Panel1
@@ -1950,13 +1940,10 @@ Partial Class MDIPrincipal
     Friend WithEvents ToolStripButton14 As System.Windows.Forms.ToolStripButton
     Friend WithEvents mnuTool_Informes02 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuTool_Informes03 As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuTool_Informes04 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents Query_Advance03 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents Query_Advance04 As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuTool_Informes05 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents RadioButton1 As System.Windows.Forms.RadioButton
     Friend WithEvents RadioButton2 As System.Windows.Forms.RadioButton
-    Friend WithEvents mnuTool_Informes06 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents TextBox14 As System.Windows.Forms.TextBox
     Friend WithEvents Label9 As System.Windows.Forms.Label
     Friend WithEvents TextBox8 As System.Windows.Forms.TextBox
@@ -2041,5 +2028,6 @@ Partial Class MDIPrincipal
     Friend WithEvents mnuOpenPreferenceFolder As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents btnExportCdD As System.Windows.Forms.ToolStripButton
     Friend WithEvents mnuExportCdD As System.Windows.Forms.ToolStripMenuItem
-
+    Friend WithEvents mnuReportDocsNoContornos As ToolStripMenuItem
+    Friend WithEvents mnuPPCnoGeo As ToolStripMenuItem
 End Class
