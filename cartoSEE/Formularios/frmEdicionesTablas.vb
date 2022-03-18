@@ -57,7 +57,7 @@ Public Class frmEdicionesTablas
         ListView1.Items.Clear()
         If TipoElemento = 1 Then
             'Carga de los tipos de documento
-            cadSQL = "SELECT idtipodoc,tipodoc,dirrepo FROM tbtipodocumento"
+            cadSQL = "SELECT idtipodoc,tipodoc,dirrepo FROM bdsidschema.tbtipodocumento"
             reportData = New DataTable
             If CargarRecordset(cadSQL, reportData) = True Then
                 filas = reportData.Select
@@ -81,7 +81,7 @@ Public Class frmEdicionesTablas
             End If
         ElseIf TipoElemento = 2 Then
             'Carga de las observaciones standard
-            cadSQL = "SELECT idobservestandar,observestandar FROM tbobservaciones"
+            cadSQL = "SELECT idobservestandar,observestandar FROM bdsidschema.tbobservaciones"
             reportData = New DataTable
             If CargarRecordset(cadSQL, reportData) = True Then
                 filas = reportData.Select
@@ -104,7 +104,7 @@ Public Class frmEdicionesTablas
             End If
         ElseIf TipoElemento = 3 Then
             'Carga de los estados de conservación
-            cadSQL = "SELECT idestadodoc,estadodoc FROM tbestadodocumento"
+            cadSQL = "SELECT idestadodoc,estadodoc FROM bdsidschema.tbestadodocumento"
             reportData = New DataTable
             If CargarRecordset(cadSQL, reportData) = True Then
                 filas = reportData.Select
@@ -127,7 +127,7 @@ Public Class frmEdicionesTablas
             End If
         ElseIf TipoElemento = 4 Then
             'Carga de las equivalencias de medidas
-            cadSQL = "SELECT idequivalencia,nombre,sup_m2,comentario FROM tbequivalencias"
+            cadSQL = "SELECT idequivalencia,nombre,sup_m2,comentario FROM bdsidschema.tbequivalencias"
             reportData = New DataTable
             If CargarRecordset(cadSQL, reportData) = True Then
                 filas = reportData.Select
@@ -291,8 +291,7 @@ Public Class frmEdicionesTablas
             ObtenerEscalar("SELECT count(*) FROM archivo where tipodoc_id=" & ElemBorrar, Result)
             NumElementos = IIf(IsNumeric(Result), CType(Result, Integer), 0)
             If NumElementos > 0 Then
-                MessageBox.Show("Hay elementos asociados a este tipo de documento. No se puede eliminar.", _
-                                        AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+                MessageBox.Show("Hay elementos asociados a este tipo de documento. No se puede eliminar.", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
                 Exit Function
             End If
             If MessageBox.Show("¿Desea eliminar este tipo de documento:" & ListView1.SelectedItems(0).Text & "?", AplicacionTitulo, MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.No Then Exit Function
@@ -304,8 +303,7 @@ Public Class frmEdicionesTablas
             ObtenerEscalar("SELECT count(*) FROM archivo where idobservestandar=" & ElemBorrar, Result)
             NumElementos = IIf(IsNumeric(Result), CType(Result, Integer), 0)
             If NumElementos > 0 Then
-                MessageBox.Show("Hay elementos asociados con esta observación. No se puede eliminar.", _
-                                        AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+                MessageBox.Show("Hay elementos asociados con esta observación. No se puede eliminar.", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
                 Exit Function
             End If
             If MessageBox.Show("¿Desea eliminar esta observación:" & ListView1.SelectedItems(0).Text & "?", AplicacionTitulo, MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.No Then Exit Function
@@ -317,8 +315,7 @@ Public Class frmEdicionesTablas
             ObtenerEscalar("SELECT count(*) FROM archivo where idestadodoc=" & ElemBorrar, Result)
             NumElementos = IIf(IsNumeric(Result), CType(Result, Integer), 0)
             If NumElementos > 0 Then
-                MessageBox.Show("Hay elementos asociados con este estado de conservación. No se puede eliminar.", _
-                                        AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+                MessageBox.Show("Hay elementos asociados con este estado de conservación. No se puede eliminar.", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
                 Exit Function
             End If
             If MessageBox.Show("¿Desea eliminar este estado de conservación:" & ListView1.SelectedItems(0).Text & "?", AplicacionTitulo, MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.No Then Exit Function

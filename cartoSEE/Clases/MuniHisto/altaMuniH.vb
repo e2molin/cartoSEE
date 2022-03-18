@@ -442,7 +442,7 @@
             Exit Sub
         End If
         'Comprobamos que el código histórico no se encuentre asignado
-        ObtenerEscalar("SELECT idmunihisto FROM munihisto where cod_munihisto='" & codigoINEHisto & "'", Resultado)
+        ObtenerEscalar("SELECT idmunihisto FROM bdsidschema.munihisto where cod_munihisto='" & codigoINEHisto & "'", resultado)
         If resultado <> "" Then
             MessageBox.Show("El código histórico ya se encuentra asignado", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
             Exit Sub
@@ -450,22 +450,14 @@
 
         If MessageBox.Show("Desea crear el nuevo municipio histórico", AplicacionTitulo, MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.No Then Exit Sub
         listaSQL = New ArrayList
-        'listaSQL.Add("INSERT INTO munihisto(idmunihisto,nombremunicipiohistorico,provincia_id,cod_muni,cod_munihisto,muni_id) " & _
-        '            " VALUES (" & _
-        '            "nextval('munihisto_idmunihisto_seq')," & _
-        '            "E'" & txtNombre.Text.Trim.Replace("'", "\'") & "'," & _
-        '            "" & codProv & "," & _
-        '            "" & codMuni & "," & _
-        '            "" & codigoINEHisto & "," & _
-        '            "" & idMuni & ")")
-        listaSQL.Add("INSERT INTO munihisto(nombremunicipiohistorico,provincia_id,cod_muni,cod_munihisto,entidad_id) " & _
-                    " VALUES (E'" & txtNombre.Text.Trim.Replace("'", "\'") & "'," & _
-                    "" & codProv & "," & _
-                    "" & codMuni & "," & _
-                    "" & codigoINEHisto & "," & _
+
+        listaSQL.Add("INSERT INTO bdsidschema.munihisto(nombremunicipiohistorico,provincia_id,cod_muni,cod_munihisto,entidad_id) " &
+                    " VALUES (E'" & txtNombre.Text.Trim.Replace("'", "\'") & "'," &
+                    "" & codProv & "," &
+                    "" & codMuni & "," &
+                    "" & codigoINEHisto & "," &
                     "" & idMuni & ")")
-        Application.DoEvents()
-        Application.DoEvents()
+
         Me.Cursor = Cursors.WaitCursor
         Me.dialogResp = ExeTran(listaSQL)
         Me.Cursor = Cursors.Default
@@ -510,24 +502,24 @@
 
         listaSQL = New ArrayList
         If muniHEdit.nombreMuniHisto <> txtNombre.Text.Trim Then
-            listaSQL.Add("UPDATE munihisto SET nombremunicipiohistorico=E'" & txtNombre.Text.Replace("'", "\'").Trim & "' WHERE idmunihisto=" & muniHEdit.indice)
+            listaSQL.Add("UPDATE bdsidschema.munihisto SET nombremunicipiohistorico=E'" & txtNombre.Text.Replace("'", "\'").Trim & "' WHERE idmunihisto=" & muniHEdit.indice)
         End If
         If muniHEdit.entidadID <> idMuni Then
-            listaSQL.Add("UPDATE munihisto SET entidad_id=" & idMuni & " WHERE idmunihisto=" & muniHEdit.indice)
+            listaSQL.Add("UPDATE bdsidschema.munihisto SET entidad_id=" & idMuni & " WHERE idmunihisto=" & muniHEdit.indice)
         End If
         If muniHEdit.codineMuniActual <> codMuniActual Then
-            listaSQL.Add("UPDATE munihisto SET cod_muni=" & codMuniActual & " WHERE idmunihisto=" & muniHEdit.indice)
+            listaSQL.Add("UPDATE bdsidschema.munihisto SET cod_muni=" & codMuniActual & " WHERE idmunihisto=" & muniHEdit.indice)
         End If
         If muniHEdit.codineMuniHisto <> codigoINEHisto Then
             If muniHEdit.codineMuniHisto.ToString.Substring(0, 2) = "28" Then
                 MessageBox.Show("El cambio de INE puede afectar al funcionamiento del SIDCECA. Contacte antes con el administrador", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                 Exit Sub
             End If
-            listaSQL.Add("UPDATE munihisto SET cod_munihisto=" & codigoINEHisto & " WHERE idmunihisto=" & muniHEdit.indice)
+            listaSQL.Add("UPDATE bdsidschema.munihisto SET cod_munihisto=" & codigoINEHisto & " WHERE idmunihisto=" & muniHEdit.indice)
             renombrarDirectorios = True
         End If
         If muniHEdit.codineMuniHisto <> codigoINEHisto Then
-            listaSQL.Add("UPDATE munihisto SET cod_munihisto=" & codigoINEHisto & " WHERE idmunihisto=" & muniHEdit.indice)
+            listaSQL.Add("UPDATE bdsidschema.munihisto SET cod_munihisto=" & codigoINEHisto & " WHERE idmunihisto=" & muniHEdit.indice)
         End If
 
         Application.DoEvents()
@@ -549,8 +541,8 @@
         If MessageBox.Show("Confirma borrado del municipio histórico?", AplicacionTitulo, MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.No Then Exit Sub
 
         Dim listaSQL As New ArrayList
-        GenerarLOG("DELETE FROM munihisto WHERE idmunihisto=" & muniHEdit.indice & ". Eliminado " & muniHEdit.nombreMuniHisto)
-        listaSQL.Add("DELETE FROM munihisto WHERE idmunihisto=" & muniHEdit.indice)
+        GenerarLOG("DELETE FROM bdsidschema.munihisto WHERE idmunihisto=" & muniHEdit.indice & ". Eliminado " & muniHEdit.nombreMuniHisto)
+        listaSQL.Add("DELETE FROM bdsidschema.munihisto WHERE idmunihisto=" & muniHEdit.indice)
 
         Me.Cursor = Cursors.WaitCursor
         Me.dialogResp = ExeTran(listaSQL)
@@ -576,7 +568,7 @@
         End If
 
         rcdTipos = New DataTable
-        If CargarDatatable("Select idtipodoc,tipodoc from tbtipodocumento", rcdTipos) = False Then
+        If CargarDatatable("Select idtipodoc,tipodoc from bdsidschema.tbtipodocumento", rcdTipos) = False Then
             Return False
             rcdTipos = Nothing
         End If
@@ -585,10 +577,8 @@
         rcdTipos = Nothing
 
         For Each tipo As DataRow In listTipos
-            rutaBase = rutaRepoGeorref & "\" & DirRepoProvinciaByTipodoc(tipo.Item("idtipodoc")) & _
-                             "\" & Antiguo.Substring(0, 2) & "\" & Antiguo
-            rutaNueva = rutaRepoGeorref & "\" & DirRepoProvinciaByTipodoc(tipo.Item("idtipodoc")) & _
-                             "\" & Nuevo.Substring(0, 2) & "\" & Nuevo
+            rutaBase = rutaRepoGeorref & "\" & DirRepoProvinciaByTipodoc(tipo.Item("idtipodoc")) & "\" & Antiguo.Substring(0, 2) & "\" & Antiguo
+            rutaNueva = rutaRepoGeorref & "\" & DirRepoProvinciaByTipodoc(tipo.Item("idtipodoc")) & "\" & Nuevo.Substring(0, 2) & "\" & Nuevo
             Try
                 If System.IO.Directory.Exists(RutaBase) Then
                     System.IO.Directory.Move(rutaBase, rutaNueva)

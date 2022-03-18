@@ -54,8 +54,8 @@
         'Carga del Combo de Estado de documentos
         Dim Filtros As DataTable
         Filtros = New DataTable
-        If CargarDatatable("Select idestadodoc,estadodoc FROM tbestadodocumento", Filtros) = False Then
-            MessageBox.Show("No se puede acceder a la tabla de Estados de la documentación", _
+        If CargarDatatable("Select idestadodoc,estadodoc FROM bdsidschema.tbestadodocumento", Filtros) = False Then
+            MessageBox.Show("No se puede acceder a la tabla de Estados de la documentación",
                             AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Error)
         Else
             ComboBox2.Items.Clear()
@@ -68,8 +68,8 @@
 
         'Carga del Combo de Tipos de documento
         Filtros = New DataTable
-        If CargarDatatable("Select idtipodoc,tipodoc from tbtipodocumento", Filtros) = False Then
-            MessageBox.Show("No se puede acceder a la tabla de Tipos de documentación", _
+        If CargarDatatable("Select idtipodoc,tipodoc from bdsidschema.tbtipodocumento", Filtros) = False Then
+            MessageBox.Show("No se puede acceder a la tabla de Tipos de documentación",
                             AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Error)
         Else
             ComboBox1.Items.Clear()
@@ -82,8 +82,8 @@
 
         'Carga del combo de Observaciones
         Filtros = New DataTable
-        If CargarDatatable("Select idobservestandar,observestandar from tbobservaciones", Filtros) = False Then
-            MessageBox.Show("No se puede acceder a la tabla de Tipos de documentación", _
+        If CargarDatatable("Select idobservestandar,observestandar from bdsidschema.tbobservaciones", Filtros) = False Then
+            MessageBox.Show("No se puede acceder a la tabla de Tipos de documentación",
                             AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Error)
         Else
             ComboBox3.Items.Clear()
@@ -445,16 +445,17 @@
                         Exit Sub
                     End If
                 End If
-                GenerarLOG("DELETE FROM archivo2munihisto where archivo_id=" & item.docIndex)
-                ListaSQL.Add("DELETE FROM archivo2munihisto where archivo_id=" & item.docIndex)
+
+                ListaSQL.Add("DELETE FROM bdsidschema.archivo2munihisto where archivo_id=" & item.docIndex)
+                ListaSQL.Add("INSERT INTO bdsidschema.archivolog (archivo_id, sellado, usuario_update, tabla, tipo_variacion, valor_old, valor_new) " &
+                                 "VALUES (" & item.docIndex & ",'" & item.Sellado & "','" & App_User & "','archivo2munihisto','Desasignación municipio histórico',E'" & item.muniHistoLiteralConINEHistorico.Replace("'", "\'") & "',null)")
                 For Each itemLV As ListViewItem In ListView1.Items
-                    Application.DoEvents()
-                    'GenerarLOG("INSERT INTO archivo2munihisto (idarchivo2muni,munihisto_id,archivo_id) " & _
-                    '            "VALUES (nextval('archivo2munihisto_idarchivo2muni_seq')," & _
-                    '            itemLV.SubItems(3).Text & "," & item.docIndex & ")")
-                    ListaSQL.Add("INSERT INTO archivo2munihisto (idarchivo2muni,munihisto_id,archivo_id) " & _
-                                "VALUES (nextval('archivo2munihisto_idarchivo2muni_seq')," & _
+                    ListaSQL.Add("INSERT INTO bdsidschema.archivo2munihisto (idarchivo2muni,munihisto_id,archivo_id) " &
+                                "VALUES (nextval('bdsidschema.archivo2munihisto_idarchivo2muni_seq')," &
                                 itemLV.SubItems(3).Text & "," & item.docIndex & ")")
+                    ListaSQL.Add("INSERT INTO bdsidschema.archivolog (archivo_id, sellado, usuario_update, tabla, tipo_variacion, valor_old, valor_new) " &
+                                "VALUES (" & item.docIndex & ",'" & item.Sellado & "','" & App_User & "','archivo2munihisto','Asignación municipio histórico',null," &
+                                "E'" & itemLV.SubItems(0).Text.Replace("'", "\'") & "(" & itemLV.SubItems(2).Text & ")" & "')")
                 Next
             End If
             'Si se han producido cambios en el tipo de documento o en los municipios o en el número de sellado
@@ -532,8 +533,7 @@
                         Exit For
                     End Try
                 Next
-                MessageBox.Show("No se realizaron los cambios correctamente", _
-                                    AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                MessageBox.Show("No se realizaron los cambios correctamente", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                 Me.Cursor = Cursors.Default
                 Exit Sub
             End If
@@ -564,8 +564,7 @@
                         Exit For
                     End Try
                 Next
-                MessageBox.Show("No se realizaron los cambios correctamente", _
-                                    AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                MessageBox.Show("No se realizaron los cambios correctamente", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                 Exit Sub
             Else
                 contador = 0
@@ -577,8 +576,7 @@
                         Ejecucion = True
                     Catch ex As Exception
                         MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-                        MessageBox.Show("Algunos documentos no se eliminaron de su ubicación original", _
-                                        AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                        MessageBox.Show("Algunos documentos no se eliminaron de su ubicación original", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                         Ejecucion = False
                         Exit For
                     End Try
@@ -588,8 +586,7 @@
 
         Me.Cursor = Cursors.Default
         If Ejecucion = True Then
-            MessageBox.Show("Los cambios se realizaron correctamente en la base de datos y en el disco.", _
-                                AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+            MessageBox.Show("Los cambios se realizaron correctamente en la base de datos y en el disco.", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
         End If
 
 
@@ -779,8 +776,7 @@
         Application.DoEvents()
         Me.Cursor = Cursors.Default
         If Ejecucion = True Then
-            MessageBox.Show("El documento se ha cargado correctamente en la base de datos.", _
-                                AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+            MessageBox.Show("El documento se ha cargado correctamente en la base de datos.", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
         End If
         LimpiarCampos(sender, e)
 
@@ -839,22 +835,19 @@
                         Resultado)
         Application.DoEvents()
         If CType(Resultado, Integer) > 0 Then
-            MessageBox.Show("El número de sellado ya existe", _
-                            AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            MessageBox.Show("El número de sellado ya existe", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
             Exit Function
         Else
             elementoInsert.Sellado = TextBox22.Text.Trim
         End If
         If ComboBox1.SelectedIndex = -1 Then
-            MessageBox.Show("Seleccione un tipo de documento.", _
-                            AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            MessageBox.Show("Seleccione un tipo de documento.", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
             Exit Function
         Else
             elementoInsert.CodTipo = CType(ComboBox1.SelectedItem, itemData).Valor
         End If
         If ComboBox2.SelectedIndex = -1 Then
-            MessageBox.Show("Asocie un estado de conservación al documento.", _
-                            AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            MessageBox.Show("Asocie un estado de conservación al documento.", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
             Exit Function
         Else
             elementoInsert.CodEstado = CType(ComboBox2.SelectedItem, itemData).Valor
@@ -882,8 +875,7 @@
             If IsNumeric(TextBox10.Text.Trim) Then
                 elementoInsert.proceHoja = CType(TextBox10.Text.Trim, Integer)
             Else
-                MessageBox.Show("El campo Hoja debe de ser un número", AplicacionTitulo, _
-                                MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                MessageBox.Show("El campo Hoja debe de ser un número", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                 Exit Function
             End If
         Else
@@ -911,8 +903,7 @@
                                 String.Format("{0:00}", CInt(fechaDoc.Month.ToString)) & "/" & _
                                 String.Format("{0:00}", CInt(fechaDoc.Day.ToString))
         Else
-            MessageBox.Show("Fecha no válida. Introduzca una fecha correcta", _
-                            AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            MessageBox.Show("Fecha no válida. Introduzca una fecha correcta", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
             Exit Function
         End If
         'Fechas Modificaciones
@@ -1118,8 +1109,7 @@
                 fechadoc = CType(MaskedTextBox1.Text, Date)
                 'MessageBox.Show("Fecha válida")
             Else
-                MessageBox.Show("Fecha no válida. Introduzca una fecha correcta", _
-                                AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                MessageBox.Show("Fecha no válida. Introduzca una fecha correcta", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                 Exit Function
             End If
             Application.DoEvents()
@@ -1163,13 +1153,11 @@
         End If
         If CheckBox20.Checked And ComboBox6.SelectedIndex <> -1 Then
             If CheckBox18.Checked = False Then
-                MessageBox.Show("Si realiza cambios en la provincia, debe reasignar municipios.", _
-                                AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                MessageBox.Show("Si realiza cambios en la provincia, debe reasignar municipios.", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                 Exit Function
             Else
                 If CType(ComboBox6.SelectedItem, itemData).Valor <> ListView1.Items(0).SubItems(4).Text Then
-                    MessageBox.Show("La provincia no coincide con la del primer municipio asociado.", _
-                                    AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                    MessageBox.Show("La provincia no coincide con la del primer municipio asociado.", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                     Exit Function
                 End If
             End If

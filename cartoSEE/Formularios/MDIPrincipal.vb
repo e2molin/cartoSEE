@@ -150,8 +150,7 @@ Public Class MDIPrincipal
                 ToolStripStatusLabel.ToolTipText = "Conectado a " & DB_Instancia & " en " & DB_Servidor & ""
             End If
         Else
-            MessageBox.Show("No es posible conectarse a la base de datos", My.Application.Info.AssemblyName, _
-                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            MessageBox.Show("No es posible conectarse a la base de datos", My.Application.Info.AssemblyName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
             ResizingElements()
             Button6.Enabled = False
             Button7.Enabled = False
