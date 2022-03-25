@@ -977,15 +977,13 @@ Public Class MDIPrincipal
             '    YCentro = CType(TextBox12.Text.Replace(".", ","), Double)
             'End If
             Radio = CType(TextBox13.Text, Integer)
-            Xmax = XCentro + Radio * 1000
-            Ymax = YCentro + Radio * 1000
-            Xmin = XCentro - Radio * 1000
-            Ymin = YCentro - Radio * 1000
-            TituloConsulta = "Búsqueda por entorno. " & _
-                                "(" & XCentro.ToString & "," & YCentro.ToString & ") " & _
-                                " y  radio " & Radio.ToString & " Km"
-        ElseIf TextBox7.Text <> "" And TextBox3.Text <> "" And TextBox9.Text <> "" And TextBox10.Text <> "" Then
-            Xmax = CType(TextBox7.Text.Replace(".", ","), Double)
+                Xmax = XCentro + Radio * 1000
+                Ymax = YCentro + Radio * 1000
+                Xmin = XCentro - Radio * 1000
+                Ymin = YCentro - Radio * 1000
+                TituloConsulta = "Búsqueda por entorno. (" & XCentro.ToString & "," & YCentro.ToString & ") y  radio " & Radio.ToString & " Km"
+            ElseIf TextBox7.Text <> "" And TextBox3.Text <> "" And TextBox9.Text <> "" And TextBox10.Text <> "" Then
+                Xmax = CType(TextBox7.Text.Replace(".", ","), Double)
             Ymax = CType(TextBox3.Text.Replace(".", ","), Double)
             Xmin = CType(TextBox9.Text.Replace(".", ","), Double)
             Ymin = CType(TextBox10.Text.Replace(".", ","), Double)
@@ -1002,9 +1000,7 @@ Public Class MDIPrincipal
             '    Xmin = CType(TextBox9.Text.Replace(".", ","), Double)
             '    Ymin = CType(TextBox10.Text.Replace(".", ","), Double)
             'End If
-            TituloConsulta = "Búsqueda por entorno. " & _
-                                "(" & Xmax.ToString & "," & Ymax.ToString & ") " & _
-                                "(" & Xmin.ToString & "," & Ymin.ToString & ")"
+            TituloConsulta = "Búsqueda por entorno. (" & Xmax.ToString & "," & Ymax.ToString & ") (" & Xmin.ToString & "," & Ymin.ToString & ")"
         End If
         If Xmax = 0 Or Ymax = 0 Or Xmin = 0 Or Ymin = 0 Then Exit Sub
         If Xmax - Xmin > 200000 Or Ymax - Ymin > 200000 Then

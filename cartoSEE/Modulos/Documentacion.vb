@@ -405,13 +405,13 @@ Module Documentacion
                                             ByRef ListaDoc() As docSIDCARTO, ByRef CadenaSQL As String)
         Dim CadenaSQLSpacial As String
         'Obtenemos las líneas límite dentro del entorno
-        CadenaSQLSpacial = "SELECT sellado FROM contornos WHERE ST_Intersects(" & _
-                            "contornos.geom," & _
-                            "ST_GeomFromText('POLYGON((" & _
-                            Xmin & " " & Ymax & "," & _
-                            Xmax & " " & Ymax & "," & _
-                            Xmax & " " & Ymin & "," & _
-                            Xmin & " " & Ymin & "," & _
+        CadenaSQLSpacial = "SELECT sellado FROM bdsidschema.contornos WHERE ST_Intersects(" &
+                            "contornos.geom," &
+                            "ST_GeomFromText('POLYGON((" &
+                            Xmin & " " & Ymax & "," &
+                            Xmax & " " & Ymax & "," &
+                            Xmax & " " & Ymin & "," &
+                            Xmin & " " & Ymin & "," &
                             Xmin & " " & Ymax & "))',23030))"
 
         CadenaSQL = "SELECT archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion," &

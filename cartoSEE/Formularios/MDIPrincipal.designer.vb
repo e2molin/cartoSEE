@@ -1020,7 +1020,7 @@ Partial Class MDIPrincipal
         'StatusStrip
         '
         Me.StatusStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1, Me.ToolStripStatusLabel, Me.ToolStripStatusLabel2})
-        Me.StatusStrip.Location = New System.Drawing.Point(0, 618)
+        Me.StatusStrip.Location = New System.Drawing.Point(0, 849)
         Me.StatusStrip.Name = "StatusStrip"
         Me.StatusStrip.Size = New System.Drawing.Size(1298, 22)
         Me.StatusStrip.TabIndex = 7
@@ -1057,7 +1057,7 @@ Partial Class MDIPrincipal
         Me.Panel1.Dock = System.Windows.Forms.DockStyle.Left
         Me.Panel1.Location = New System.Drawing.Point(0, 55)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(200, 563)
+        Me.Panel1.Size = New System.Drawing.Size(200, 794)
         Me.Panel1.TabIndex = 13
         '
         'Panel_DocSearch
@@ -1535,7 +1535,7 @@ Partial Class MDIPrincipal
         Me.RadioButton2.Appearance = System.Windows.Forms.Appearance.Button
         Me.RadioButton2.Font = New System.Drawing.Font("Verdana", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.RadioButton2.Image = CType(resources.GetObject("RadioButton2.Image"), System.Drawing.Image)
-        Me.RadioButton2.Location = New System.Drawing.Point(0, 479)
+        Me.RadioButton2.Location = New System.Drawing.Point(0, 710)
         Me.RadioButton2.Name = "RadioButton2"
         Me.RadioButton2.Size = New System.Drawing.Size(200, 41)
         Me.RadioButton2.TabIndex = 21
@@ -1550,7 +1550,7 @@ Partial Class MDIPrincipal
         Me.RadioButton1.Appearance = System.Windows.Forms.Appearance.Button
         Me.RadioButton1.Font = New System.Drawing.Font("Verdana", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.RadioButton1.Image = CType(resources.GetObject("RadioButton1.Image"), System.Drawing.Image)
-        Me.RadioButton1.Location = New System.Drawing.Point(0, 519)
+        Me.RadioButton1.Location = New System.Drawing.Point(0, 750)
         Me.RadioButton1.Name = "RadioButton1"
         Me.RadioButton1.Size = New System.Drawing.Size(200, 41)
         Me.RadioButton1.TabIndex = 20
@@ -1607,6 +1607,7 @@ Partial Class MDIPrincipal
         Me.Button7.Text = "Visor cartografico"
         Me.Button7.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
         Me.Button7.UseVisualStyleBackColor = True
+        Me.Button7.Visible = False
         '
         'Label17
         '
@@ -1808,7 +1809,7 @@ Partial Class MDIPrincipal
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1298, 640)
+        Me.ClientSize = New System.Drawing.Size(1298, 871)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.ToolStrip)
         Me.Controls.Add(Me.MenuStrip)
