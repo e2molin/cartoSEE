@@ -29,11 +29,14 @@ Public Class frmEdicionesTablas
         ListView1.View = View.Details
         ListView1.FullRowSelect = True
         If TipoElemento = 1 Then
+            ListView1.Columns.Add("ID", "ID", 70, HorizontalAlignment.Left, 0)
             ListView1.Columns.Add("Tipo de Documento", "Tipo de Documento", 280, HorizontalAlignment.Left, 0)
             ListView1.Columns.Add("Carpeta en Repositorio", "Carpeta en Repositorio", 200, HorizontalAlignment.Left, 0)
         ElseIf TipoElemento = 2 Then
+            ListView1.Columns.Add("ID", "ID", 70, HorizontalAlignment.Left, 0)
             ListView1.Columns.Add("Observación standard", "Observación standard", 480, HorizontalAlignment.Left, 0)
         ElseIf TipoElemento = 3 Then
+            ListView1.Columns.Add("ID", "ID", 70, HorizontalAlignment.Left, 0)
             ListView1.Columns.Add("Estado del documento", "Estado del documento", 480, HorizontalAlignment.Left, 0)
         ElseIf TipoElemento = 4 Then
             ListView1.Columns.Add("Unidad", "Unidad", 250, HorizontalAlignment.Left, 0)
@@ -57,7 +60,7 @@ Public Class frmEdicionesTablas
         ListView1.Items.Clear()
         If TipoElemento = 1 Then
             'Carga de los tipos de documento
-            cadSQL = "SELECT idtipodoc,tipodoc,dirrepo FROM bdsidschema.tbtipodocumento"
+            cadSQL = "SELECT idtipodoc,tipodoc,dirrepo FROM bdsidschema.tbtipodocumento ORDER BY idtipodoc"
             reportData = New DataTable
             If CargarRecordset(cadSQL, reportData) = True Then
                 filas = reportData.Select
@@ -66,7 +69,8 @@ Public Class frmEdicionesTablas
                     For Each registro As DataRow In filas
                         iRegistro = iRegistro + 1
                         elementoLV = New ListViewItem
-                        elementoLV.Text = registro.Item("tipodoc").ToString
+                        elementoLV.Text = registro.Item("idtipodoc").ToString
+                        elementoLV.SubItems.Add(registro("tipodoc").ToString)
                         elementoLV.SubItems.Add(registro("dirrepo").ToString)
                         If iRegistro Mod 2 = 0 Then
                             elementoLV.BackColor = Color.White
@@ -81,7 +85,7 @@ Public Class frmEdicionesTablas
             End If
         ElseIf TipoElemento = 2 Then
             'Carga de las observaciones standard
-            cadSQL = "SELECT idobservestandar,observestandar FROM bdsidschema.tbobservaciones"
+            cadSQL = "SELECT idobservestandar,observestandar FROM bdsidschema.tbobservaciones ORDER BY idobservestandar"
             reportData = New DataTable
             If CargarRecordset(cadSQL, reportData) = True Then
                 filas = reportData.Select
@@ -90,7 +94,8 @@ Public Class frmEdicionesTablas
                     For Each registro As DataRow In filas
                         iRegistro = iRegistro + 1
                         elementoLV = New ListViewItem
-                        elementoLV.Text = registro.Item("observestandar").ToString
+                        elementoLV.Text = registro.Item("idobservestandar").ToString
+                        elementoLV.SubItems.Add(registro("observestandar").ToString)
                         If iRegistro Mod 2 = 0 Then
                             elementoLV.BackColor = Color.White
                         Else
@@ -104,7 +109,7 @@ Public Class frmEdicionesTablas
             End If
         ElseIf TipoElemento = 3 Then
             'Carga de los estados de conservación
-            cadSQL = "SELECT idestadodoc,estadodoc FROM bdsidschema.tbestadodocumento"
+            cadSQL = "SELECT idestadodoc,estadodoc FROM bdsidschema.tbestadodocumento ORDER BY idestadodoc"
             reportData = New DataTable
             If CargarRecordset(cadSQL, reportData) = True Then
                 filas = reportData.Select
@@ -113,7 +118,8 @@ Public Class frmEdicionesTablas
                     For Each registro As DataRow In filas
                         iRegistro = iRegistro + 1
                         elementoLV = New ListViewItem
-                        elementoLV.Text = registro.Item("estadodoc").ToString
+                        elementoLV.Text = registro.Item("idestadodoc").ToString
+                        elementoLV.SubItems.Add(registro("estadodoc").ToString)
                         If iRegistro Mod 2 = 0 Then
                             elementoLV.BackColor = Color.White
                         Else
@@ -264,12 +270,12 @@ Public Class frmEdicionesTablas
     Sub RellenarCampos(ByVal TipoElemento As Integer)
 
         If TipoElemento = 1 Then
-            TextBox1.Text = ListView1.SelectedItems(0).Text
-            TextBox2.Text = ListView1.SelectedItems(0).SubItems(1).Text
+            TextBox1.Text = ListView1.SelectedItems(0).SubItems(1).Text
+            TextBox2.Text = ListView1.SelectedItems(0).SubItems(2).Text
         ElseIf TipoElemento = 2 Then
-            TextBox1.Text = ListView1.SelectedItems(0).Text
+            TextBox1.Text = ListView1.SelectedItems(0).SubItems(1).Text
         ElseIf TipoElemento = 3 Then
-            TextBox1.Text = ListView1.SelectedItems(0).Text
+            TextBox1.Text = ListView1.SelectedItems(0).SubItems(1).Text
         ElseIf TipoElemento = 4 Then
             TextBox1.Text = ListView1.SelectedItems(0).Text
             TextBox2.Text = ListView1.SelectedItems(0).SubItems(1).Text

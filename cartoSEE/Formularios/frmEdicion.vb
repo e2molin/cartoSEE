@@ -705,10 +705,10 @@
         For Each itemLV As ListViewItem In ListView1.Items
             Application.DoEvents()
             GenerarLOG("INSERT INTO bdsidschema.archivo2munihisto (idarchivo2muni,munihisto_id,archivo_id) " &
-                        "VALUES (nextval('archivo2munihisto_idarchivo2muni_seq')," &
+                        "VALUES (nextval('bdsidschema.archivo2munihisto_idarchivo2muni_seq')," &
                         itemLV.SubItems(3).Text & "," & nuevoDoc.Indice & ")")
             ListaSQL.Add("INSERT INTO bdsidschema.archivo2munihisto (idarchivo2muni,munihisto_id,archivo_id) " &
-                        "VALUES (nextval('archivo2munihisto_idarchivo2muni_seq')," &
+                        "VALUES (nextval('bdsidschema.archivo2munihisto_idarchivo2muni_seq')," &
                         itemLV.SubItems(3).Text & "," & nuevoDoc.Indice & ")")
         Next
 

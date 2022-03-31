@@ -566,13 +566,14 @@ Module ConsultasGEO
     Function DamePuntosContorno(ByVal Sellado As String, ByRef ListaP As ArrayList)
 
         Dim reportTMP As DataTable
-        Dim CadSQL As String
+        Dim cadSQL As String
         Dim filas() As DataRow
         Dim cadVertex As String
 
         Dim Vertice As Point
 
-        CadSQL = "SELECT nombre,dv_dumppoints(ST_AsText(ST_Buffer(geom,1))) as vertice FROM contornos WHERE nombre like '" & Sellado & "%'"
+        'CadSQL = "SELECT nombre,dv_dumppoints(ST_AsText(ST_Buffer(geom,1))) as vertice FROM bdsidschema.contornos WHERE nombre like '" & Sellado & "%'"
+        cadSQL = "SELECT nombre,ST_AsText((ST_DumpPoints(ST_Buffer(geom,1))).geom) as vertice FROM bdsidschema.contornos WHERE nombre like '" & Sellado & "%'"
         reportTMP = New DataTable
         If CargarRecordset(CadSQL, reportTMP) = True Then
             filas = reportTMP.Select
@@ -580,8 +581,8 @@ Module ConsultasGEO
                 Application.DoEvents()
             Else
                 For Each fila As DataRow In filas
-                    cadVertex = fila.Item("vertice").ToString.Replace("(", "").Replace(")", "")
-                    Dim vertexList() As String = cadVertex.Split(",")
+                    cadVertex = fila.Item("vertice").ToString.Replace("(", "").Replace(")", "").Replace("POINT", "")
+                    Dim vertexList() As String = cadVertex.Split(" ")
                     If vertexList.Length > 1 Then
                         Vertice.X = CType(vertexList(0).ToString.Replace(".", ","), Integer)
                         Vertice.Y = CType(vertexList(1).ToString.Replace(".", ","), Integer)
