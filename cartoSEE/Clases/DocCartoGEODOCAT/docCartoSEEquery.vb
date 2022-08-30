@@ -12,6 +12,42 @@
     Property DocAdicional As String = ""
     Property Comentario As String = ""
 
+    Const consultaSQLBaseWithContour As String =
+        "SELECT archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal," &
+                "archivo.fechasmodificaciones,archivo.anejo,archivo.vertical,archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja," &
+                "archivo.subtipo,archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.extraprops,archivo.observaciones," &
+                "archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.titn,archivo.autor,archivo.encabezado," &
+                "tbtipodocumento.tipodoc as Tipo,tbestadodocumento.estadodoc as Estado, tbobservaciones.observestandar," &
+                "string_agg(munihisto.nombremunicipiohistorico,'#') as listaMuniHisto,string_agg(to_char(munihisto.cod_munihisto, 'FM0000009'::text),'#') as listaCodMuniHisto," &
+                "string_agg(listamunicipios.nombre,'#') as listaMuniActual, string_agg(listamunicipios.inecorto,'#') as listaCodMuniActual, string_agg(provincias.nombreprovincia,'#') as nombreprovincia " &
+        "FROM bdsidschema.archivo " &
+            "INNER JOIN bdsidschema.tbtipodocumento ON tbtipodocumento.idtipodoc=archivo.tipodoc_id " &
+            "INNER JOIN bdsidschema.tbestadodocumento ON tbestadodocumento.idestadodoc=archivo.estadodoc_id " &
+            "INNER JOIN  bdsidschema.archivo2munihisto  ON archivo2munihisto.archivo_id=archivo.idarchivo " &
+            "LEFT JOIN  bdsidschema.tbobservaciones  ON tbobservaciones.idobservestandar=archivo.observestandar_id " &
+            "INNER JOIN bdsidschema.munihisto on munihisto.idmunihisto= archivo2munihisto.munihisto_id " &
+            "LEFT JOIN ngmepschema.listamunicipios on munihisto.entidad_id= listamunicipios.identidad " &
+            "INNER JOIN bdsidschema.provincias on munihisto.provincia_id= provincias.idprovincia " &
+            "LEFT JOIN bdsidschema.contornos ON archivo.idarchivo=contornos.archivo_id "
+
+    Const consultaSQLBaseWithoutContour As String =
+        "SELECT archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal," &
+                "archivo.fechasmodificaciones,archivo.anejo,archivo.vertical,archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja," &
+                "archivo.subtipo,archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.extraprops,archivo.observaciones," &
+                "archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.titn,archivo.autor,archivo.encabezado," &
+                "tbtipodocumento.tipodoc as Tipo,tbestadodocumento.estadodoc as Estado, tbobservaciones.observestandar," &
+                "string_agg(munihisto.nombremunicipiohistorico,'#') as listaMuniHisto,string_agg(to_char(munihisto.cod_munihisto, 'FM0000009'::text),'#') as listaCodMuniHisto," &
+                "string_agg(listamunicipios.nombre,'#') as listaMuniActual, string_agg(listamunicipios.inecorto,'#') as listaCodMuniActual, string_agg(provincias.nombreprovincia,'#') as nombreprovincia " &
+        "FROM bdsidschema.archivo " &
+            "INNER JOIN bdsidschema.tbtipodocumento ON tbtipodocumento.idtipodoc=archivo.tipodoc_id " &
+            "INNER JOIN bdsidschema.tbestadodocumento ON tbestadodocumento.idestadodoc=archivo.estadodoc_id " &
+            "INNER JOIN  bdsidschema.archivo2munihisto  ON archivo2munihisto.archivo_id=archivo.idarchivo " &
+            "LEFT JOIN  bdsidschema.tbobservaciones  ON tbobservaciones.idobservestandar=archivo.observestandar_id " &
+            "INNER JOIN bdsidschema.munihisto on munihisto.idmunihisto= archivo2munihisto.munihisto_id " &
+            "LEFT JOIN ngmepschema.listamunicipios on munihisto.entidad_id= listamunicipios.identidad " &
+            "INNER JOIN bdsidschema.provincias on munihisto.provincia_id= provincias.idprovincia "
+
+
 
     Sub New()
 
@@ -21,27 +57,12 @@
 
     Sub getDocsGEODOCAT_WithoutContour(ByVal Filtro As String)
 
-        _consultaSQL = "SELECT archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal," &
-                    "archivo.fechasmodificaciones,archivo.anejo,archivo.vertical,archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja," &
-                    "archivo.subtipo,archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.observaciones," &
-                    "archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.titn,archivo.autor," &
-                    "tbtipodocumento.tipodoc as Tipo,tbestadodocumento.estadodoc as Estado, tbobservaciones.observestandar," &
-                    "string_agg(munihisto.nombremunicipiohistorico,'#') as listaMuniHisto,string_agg(to_char(munihisto.cod_munihisto, 'FM0000009'::text),'#') as listaCodMuniHisto," &
-                    "string_agg(listamunicipios.nombre,'#') as listaMuniActual, string_agg(listamunicipios.inecorto,'#') as listaCodMuniActual, string_agg(provincias.nombreprovincia,'#') as nombreprovincia " &
-                    "FROM bdsidschema.archivo " &
-                    "INNER JOIN bdsidschema.tbtipodocumento ON tbtipodocumento.idtipodoc=archivo.tipodoc_id " &
-                    "INNER JOIN bdsidschema.tbestadodocumento ON tbestadodocumento.idestadodoc=archivo.estadodoc_id " &
-                    "INNER JOIN  bdsidschema.archivo2munihisto  ON archivo2munihisto.archivo_id=archivo.idarchivo " &
-                    "LEFT JOIN  bdsidschema.tbobservaciones  ON tbobservaciones.idobservestandar=archivo.observestandar_id " &
-                    "INNER JOIN bdsidschema.munihisto on munihisto.idmunihisto= archivo2munihisto.munihisto_id " &
-                    "LEFT JOIN ngmepschema.listamunicipios on munihisto.entidad_id= listamunicipios.identidad " &
-                    "INNER JOIN bdsidschema.provincias on munihisto.provincia_id= provincias.idprovincia " &
-                    "LEFT JOIN bdsidschema.contornos ON archivo.idarchivo=contornos.archivo_id " &
+        _consultaSQL = consultaSQLBaseWithoutContour &
                     "WHERE " & Filtro & " " &
                       "group by archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal," &
                       "archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, archivo.horizontal, archivo.tipodoc_id, archivo.estadodoc_id, archivo.procecarpeta, " &
-                      "archivo.procehoja, archivo.subtipo,archivo.juntaestadistica, archivo.signatura, archivo.observestandar_id, archivo.observaciones,tbtipodocumento.tipodoc," &
-                    "archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.titn,archivo.autor,tbestadodocumento.estadodoc, tbobservaciones.observestandar order by archivo.idarchivo"
+                      "archivo.procehoja, archivo.subtipo,archivo.juntaestadistica, archivo.signatura, archivo.observestandar_id,archivo.extraprops , archivo.observaciones,tbtipodocumento.tipodoc," &
+                    "archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.titn,archivo.autor,archivo.encabezado,tbestadodocumento.estadodoc, tbobservaciones.observestandar order by archivo.idarchivo"
 
 
         rellenarDataset()
@@ -52,26 +73,12 @@
 
     Sub getDocsSIDDAE_ByFiltroSellado(ByVal Filtro As String)
 
-        _consultaSQL = "SELECT archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal," &
-                    "archivo.fechasmodificaciones,archivo.anejo,archivo.vertical,archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja," &
-                    "archivo.subtipo,archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.observaciones," &
-                    "archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.titn,archivo.autor," &
-                    "tbtipodocumento.tipodoc as Tipo,tbestadodocumento.estadodoc as Estado, tbobservaciones.observestandar," &
-                    "string_agg(munihisto.nombremunicipiohistorico,'#') as listaMuniHisto,string_agg(to_char(munihisto.cod_munihisto, 'FM0000009'::text),'#') as listaCodMuniHisto," &
-                    "string_agg(listamunicipios.nombre,'#') as listaMuniActual, string_agg(listamunicipios.inecorto,'#') as listaCodMuniActual, string_agg(provincias.nombreprovincia,'#') as nombreprovincia " &
-                    "FROM bdsidschema.archivo " &
-                    "INNER JOIN bdsidschema.tbtipodocumento ON tbtipodocumento.idtipodoc=archivo.tipodoc_id " &
-                    "INNER JOIN bdsidschema.tbestadodocumento ON tbestadodocumento.idestadodoc=archivo.estadodoc_id " &
-                    "INNER JOIN  bdsidschema.archivo2munihisto  ON archivo2munihisto.archivo_id=archivo.idarchivo " &
-                    "LEFT JOIN  bdsidschema.tbobservaciones  ON tbobservaciones.idobservestandar=archivo.observestandar_id " &
-                    "INNER JOIN bdsidschema.munihisto on munihisto.idmunihisto= archivo2munihisto.munihisto_id " &
-                    "LEFT JOIN ngmepschema.listamunicipios on munihisto.entidad_id= listamunicipios.identidad " &
-                    "INNER JOIN bdsidschema.provincias on munihisto.provincia_id= provincias.idprovincia " &
+        _consultaSQL = consultaSQLBaseWithoutContour &
                     "WHERE " & Filtro & " " &
                       "group by archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal," &
                       "archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, archivo.horizontal, archivo.tipodoc_id, archivo.estadodoc_id, archivo.procecarpeta, " &
-                      "archivo.procehoja, archivo.subtipo,archivo.juntaestadistica, archivo.signatura, archivo.observestandar_id, archivo.observaciones,tbtipodocumento.tipodoc," &
-                    "archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.titn,archivo.autor,tbestadodocumento.estadodoc, tbobservaciones.observestandar order by archivo.idarchivo"
+                      "archivo.procehoja, archivo.subtipo,archivo.juntaestadistica, archivo.signatura, archivo.observestandar_id,archivo.extraprops, archivo.observaciones,tbtipodocumento.tipodoc," &
+                    "archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.titn,archivo.autor,archivo.encabezado,tbestadodocumento.estadodoc, tbobservaciones.observestandar order by archivo.idarchivo"
 
 
         rellenarDataset()
@@ -80,21 +87,7 @@
 
     Sub getDocsSIDDAE_ByFiltroSQL(ByVal Filtro As String)
 
-        _consultaSQL = "SELECT archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal," &
-                    "archivo.fechasmodificaciones,archivo.anejo,archivo.vertical,archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja," &
-                    "archivo.subtipo,archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.observaciones,tbtipodocumento.tipodoc as Tipo," &
-                    "archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.titn,archivo.autor," &
-                    "tbestadodocumento.estadodoc as Estado, tbobservaciones.observestandar, " &
-                    "string_agg(munihisto.nombremunicipiohistorico,'#') as listaMuniHisto,string_agg(to_char(munihisto.cod_munihisto, 'FM0000009'::text),'#') as listaCodMuniHisto," &
-                    "string_agg(listamunicipios.nombre,'#') as listaMuniActual, string_agg(listamunicipios.inecorto,'#') as listaCodMuniActual, string_agg(provincias.nombreprovincia,', ') as nombreprovincia " &
-                    "FROM bdsidschema.archivo " &
-                    "INNER JOIN bdsidschema.tbtipodocumento ON tbtipodocumento.idtipodoc=archivo.tipodoc_id " &
-                    "INNER JOIN bdsidschema.tbestadodocumento ON tbestadodocumento.idestadodoc=archivo.estadodoc_id " &
-                    "INNER JOIN bdsidschema.archivo2munihisto  ON archivo2munihisto.archivo_id=archivo.idarchivo " &
-                    "LEFT JOIN  bdsidschema.tbobservaciones  ON tbobservaciones.idobservestandar=archivo.observestandar_id " &
-                    "INNER JOIN bdsidschema.munihisto on munihisto.idmunihisto= archivo2munihisto.munihisto_id " &
-                    "LEFT JOIN ngmepschema.listamunicipios on munihisto.entidad_id= listamunicipios.identidad " &
-                    "INNER JOIN bdsidschema.provincias on munihisto.provincia_id= provincias.idprovincia " &
+        _consultaSQL = consultaSQLBaseWithoutContour &
                     "WHERE archivo.idarchivo in (" &
                         "SELECT distinct archivo.idarchivo FROM bdsidschema.archivo " &
                         "INNER JOIN bdsidschema.archivo2munihisto ON archivo2munihisto.archivo_id=archivo.idarchivo " &
@@ -104,13 +97,42 @@
                     ") " &
                     "group by archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal," &
                     "archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, archivo.horizontal, archivo.tipodoc_id, archivo.estadodoc_id, archivo.procecarpeta, " &
-                    "archivo.procehoja, archivo.subtipo,archivo.juntaestadistica, archivo.signatura, archivo.observestandar_id, archivo.observaciones,tbtipodocumento.tipodoc," &
-                    "archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.titn,archivo.autor,tbestadodocumento.estadodoc, tbobservaciones.observestandar  order by archivo.idarchivo"
+                    "archivo.procehoja, archivo.subtipo,archivo.juntaestadistica, archivo.signatura, archivo.observestandar_id,archivo.extraprops, archivo.observaciones,tbtipodocumento.tipodoc," &
+                    "archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.titn,archivo.autor,archivo.encabezado,tbestadodocumento.estadodoc, tbobservaciones.observestandar  order by archivo.idarchivo"
 
 
         rellenarDataset()
-
     End Sub
+
+    Sub getDocsSIDDAE_ByFiltroSQLwithPatron(ByVal Filtro As String, propsPatron As String)
+
+
+        _consultaSQL = consultaSQLBaseWithoutContour &
+                    "WHERE archivo.idarchivo in (" &
+                        "with dataprops as (" &
+                                    "select idarchivo," &
+                                    "CASE" &
+                                        "WHEN bdsidschema.number_to_base(extraprops,2) is null THEN repeat('0',16)" &
+                                        "ELSE repeat('0',16 - length(bdsidschema.number_to_base(extraprops,2))) || bdsidschema.number_to_base(extraprops,2)" &
+                                    "END as patron" &
+                                    "from bdsidschema.archivo " &
+                                    "INNER JOIN bdsidschema.archivo2munihisto ON archivo2munihisto.archivo_id=archivo.idarchivo " &
+                                    "INNER JOIN bdsidschema.munihisto on munihisto.idmunihisto= archivo2munihisto.munihisto_id " &
+                                    "LEFT JOIN ngmepschema.listamunicipios on munihisto.entidad_id= listamunicipios.identidad " &
+                                    "WHERE " & Filtro & " " &
+                        ") select idarchivo from dataprops where patron like '" & propsPatron & "'" &
+                    ")" &
+                    "group by archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal," &
+                    "archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, archivo.horizontal, archivo.tipodoc_id, archivo.estadodoc_id, archivo.procecarpeta, " &
+                    "archivo.procehoja, archivo.subtipo,archivo.juntaestadistica, archivo.signatura, archivo.observestandar_id,archivo.extraprops, archivo.observaciones,tbtipodocumento.tipodoc," &
+                    "archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.titn,archivo.autor,archivo.encabezado,tbestadodocumento.estadodoc, tbobservaciones.observestandar  order by archivo.idarchivo"
+
+
+
+        rellenarDataset()
+    End Sub
+
+
 
     Sub getDocsCartoSEE_BySQLSentence(ByVal cadSQL As String)
 
@@ -199,8 +221,16 @@
             item.cddProducto = dR("cdd_producto").ToString
             item.cddNombreFichero = dR("cdd_nomfich").ToString
             item.cddURL = dR("cdd_url").ToString
-            item.titnDocumento = dR("titn")
+            item.titnABSYSdoc = dR("titn")
+            If item.titnABSYSdoc > 0 Then
+                item.cargaABSYS = True
+                item.urlABSYSdoc = "https://www.ign.es/web/biblioteca_cartoteca/abnetcl.cgi?TITN=" & item.titnABSYSdoc
+            Else
+                item.cargaABSYS = False
+                item.urlABSYSdoc = ""
+            End If
             item.autorDocumento = dR("autor").ToString
+            item.encabezadoABSYSdoc = dR("encabezado").ToString
 
             For Each elem As String In dR("listaMuniHisto").ToString.Split("#")
                 item.listaMuniHistorico.Add(elem)
@@ -214,16 +244,15 @@
             For Each elem As String In dR("listaCodMuniActual").ToString.Split("#")
                 item.listaCodMuniActual.Add(elem)
             Next
-            'item.Municipios = dR("nombremunicipiohistorico").ToString
-            'item.MunicipiosINE = dR("listaCodMuniHisto").ToString
-            'item.MunicipiosLiteral = dR("nombremunicipiohistorico").ToString & " (" & String.Format("{0:0000000}", dR("cod_munihisto")) & ")"
+
             item.Provincias = dR("nombreprovincia").ToString
             item.ProvinciaRepo = CType(dR("numdoc").ToString.Substring(0, 2), Integer)
             item.FicheroJPG = DirRepoProvinciaByINE(item.ProvinciaRepo) & "\" & dR("numdoc").ToString & ".jpg"
             item.JuntaEstadistica = IIf(dR("JuntaEstadistica").ToString = "1", "Sí", "No")
             item.ObservacionesStandard = dR("observestandar").ToString
             item.Observaciones = dR("observaciones").ToString
-            'If flag_CargarFicherosGEO Then item.getGeoFiles()
+            item.extraProps.propertyCode = dR("extraprops")
+
             If flag_CargarFicherosGEO Then
                 item.getGeoFiles()
                 item.getGeoFilesFromDatabase()

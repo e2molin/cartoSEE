@@ -21,6 +21,7 @@
     Property Horizontal As String
     Property Observaciones As String
     Property ObservacionesStandard As String
+    Property extraProps As New FlagsProperties
     Property listaMuniHistorico As New ArrayList
     Property listaMuniActual As New ArrayList
     Property listaCodMuniHistorico As New ArrayList
@@ -42,7 +43,10 @@
 
     'Namespace ABSYS
     Property autorDocumento As String
-    Property titnDocumento As Integer
+    Property cargaABSYS As Boolean
+    Property titnABSYSdoc As Integer
+    Property encabezadoABSYSdoc As String
+    Property urlABSYSdoc As String
 
     Property BBOX4OL3 As String = "POLYGON((-3 42,3 42,0 39,-3 42))"
     Property BBOXCenter4OL3_ByExtent As String = "[-3, 39, 3, 42]"

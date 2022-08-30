@@ -100,10 +100,27 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Clases\Autenticacion\GestionUserForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Clases\Autenticacion\GestionUserNotificacion.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Clases\Autenticacion\LoginForm.designer.vb">
+      <DependentUpon>LoginForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Clases\Autenticacion\LoginForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Clases\Autenticacion\myAppProfile.vb" />
+    <Compile Include="Clases\Autenticacion\myAppUser.vb" />
+    <Compile Include="Clases\Autenticacion\Notificacion.vb" />
     <Compile Include="Clases\Destildator.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\docCartoSEE.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\docCartoSEEquery.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\docCartoSEETipoDocu.vb" />
+    <Compile Include="Clases\DocCartoGEODOCAT\FlagsProperties.vb" />
+    <Compile Include="Clases\Genericas\BaseConversor.vb" />
     <Compile Include="Clases\InputDialog.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -118,7 +135,9 @@
     <Compile Include="Clases\MuniHisto\frmMuniHisto.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Clases\MuniHisto\MunicipioActual.vb" />
     <Compile Include="Clases\MuniHisto\MuniHisto.vb" />
+    <Compile Include="Clases\MuniHisto\TerritorioBDSID.vb" />
     <Compile Include="Clases\OptionDialog.Designer.vb">
       <DependentUpon>OptionDialog.vb</DependentUpon>
     </Compile>
@@ -185,18 +204,6 @@
     <Compile Include="Formularios\frmExportCdD.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Formularios\frmGestionUser.Designer.vb">
-      <DependentUpon>frmGestionUser.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Formularios\frmGestionUser.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formularios\frmIncidencias.Designer.vb">
-      <DependentUpon>frmIncidencias.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Formularios\frmIncidencias.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Formularios\frmInformes.designer.vb">
       <DependentUpon>frmInformes.vb</DependentUpon>
     </Compile>
@@ -221,12 +228,6 @@
     <Compile Include="Formularios\ImportECW.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Formularios\LoginForm.designer.vb">
-      <DependentUpon>LoginForm.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Formularios\LoginForm.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Formularios\MDIPrincipal.designer.vb">
       <DependentUpon>MDIPrincipal.vb</DependentUpon>
     </Compile>
@@ -239,7 +240,6 @@
     <Compile Include="Formularios\SplashScreen.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Modulos\Autenticacion.vb" />
     <Compile Include="Modulos\Basics.vb" />
     <Compile Include="Modulos\CargaDeDatos.vb" />
     <Compile Include="Modulos\ConexionBD.vb" />
@@ -267,6 +267,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Clases\Autenticacion\GestionUserForm.resx">
+      <DependentUpon>GestionUserForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Clases\Autenticacion\GestionUserNotificacion.resx">
+      <DependentUpon>GestionUserNotificacion.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Clases\Autenticacion\LoginForm.resx">
+      <DependentUpon>LoginForm.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Clases\InputDialog.resx">
       <DependentUpon>InputDialog.vb</DependentUpon>
     </EmbeddedResource>
@@ -309,12 +318,6 @@
     <EmbeddedResource Include="Formularios\frmExportCdD.resx">
       <DependentUpon>frmExportCdD.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Formularios\frmGestionUser.resx">
-      <DependentUpon>frmGestionUser.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formularios\frmIncidencias.resx">
-      <DependentUpon>frmIncidencias.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Formularios\frmInformes.resx">
       <DependentUpon>frmInformes.vb</DependentUpon>
     </EmbeddedResource>
@@ -326,9 +329,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formularios\ImportECW.resx">
       <DependentUpon>ImportECW.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formularios\LoginForm.resx">
-      <DependentUpon>LoginForm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formularios\MDIPrincipal.resx">
       <DependentUpon>MDIPrincipal.vb</DependentUpon>

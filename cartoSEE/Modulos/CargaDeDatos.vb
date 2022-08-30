@@ -100,17 +100,13 @@ Module CargaDeDatos
 
     Sub registrarDatabaseLog(mensaje As String, Optional statementSQL As String = "")
 
-        If App_User = "superadmin" Or App_User = "e2molin" Then Exit Sub
+        If usuarioMyApp.permisosLista.isUserISTARI Then Exit Sub
         If statementSQL <> "" Then
-            ExeSinTran("INSERT INTO bdsidschema.logactivity (usuario, maquina, fecha,aplicacion,descrip,consulta) VALUES ('" & App_User & "','" & App_Machine & "','" & _
+            ExeSinTran("INSERT INTO bdsidschema.logactivity (usuario, maquina, fecha,aplicacion,descrip,consulta) VALUES ('" & usuarioMyApp.loginUser & "','" & usuarioMyApp.machineIP & "','" &
                                 FormatearFechaHora(Now, "GERMAN") & "','" & AplicacionTitulo & "',E'" & mensaje.Replace("'", "\'") & "',E'" & statementSQL.Replace("'", "\'") & "')")
         Else
-            ExeSinTran("INSERT INTO bdsidschema.logactivity (usuario, maquina, fecha,aplicacion,descrip) VALUES ('" & App_User & "','" & App_Machine & "','" & FormatearFechaHora(Now, "GERMAN") & "','" & AplicacionTitulo & "','" & mensaje & "')")
+            ExeSinTran("INSERT INTO bdsidschema.logactivity (usuario, maquina, fecha,aplicacion,descrip) VALUES ('" & usuarioMyApp.loginUser & "','" & usuarioMyApp.machineName & "','" & FormatearFechaHora(Now, "GERMAN") & "','" & AplicacionTitulo & "','" & mensaje & "')")
         End If
-
-
-
-
 
     End Sub
 

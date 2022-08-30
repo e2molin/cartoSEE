@@ -24,8 +24,13 @@ Partial Class frmEdicion
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEdicion))
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.CheckedListBox1 = New System.Windows.Forms.CheckedListBox()
+        Me.TextBox9 = New System.Windows.Forms.TextBox()
+        Me.Label24 = New System.Windows.Forms.Label()
+        Me.CheckBox24 = New System.Windows.Forms.CheckBox()
         Me.CheckBox23 = New System.Windows.Forms.CheckBox()
         Me.Button9 = New System.Windows.Forms.Button()
+        Me.CheckBox21 = New System.Windows.Forms.CheckBox()
         Me.ListBox1 = New System.Windows.Forms.ListBox()
         Me.Label21 = New System.Windows.Forms.Label()
         Me.TextBox13 = New System.Windows.Forms.TextBox()
@@ -96,7 +101,6 @@ Partial Class frmEdicion
         Me.CheckBox3 = New System.Windows.Forms.CheckBox()
         Me.CheckBox2 = New System.Windows.Forms.CheckBox()
         Me.CheckBox1 = New System.Windows.Forms.CheckBox()
-        Me.CheckBox21 = New System.Windows.Forms.CheckBox()
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
         Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
         Me.ToolStripStatusLabel2 = New System.Windows.Forms.ToolStripStatusLabel()
@@ -110,9 +114,7 @@ Partial Class frmEdicion
         Me.Label22 = New System.Windows.Forms.Label()
         Me.TextBox2 = New System.Windows.Forms.TextBox()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
-        Me.CheckBox24 = New System.Windows.Forms.CheckBox()
-        Me.Label24 = New System.Windows.Forms.Label()
-        Me.TextBox9 = New System.Windows.Forms.TextBox()
+        Me.Button10 = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.StatusStrip1.SuspendLayout()
@@ -121,11 +123,13 @@ Partial Class frmEdicion
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.CheckedListBox1)
         Me.GroupBox1.Controls.Add(Me.TextBox9)
         Me.GroupBox1.Controls.Add(Me.Label24)
         Me.GroupBox1.Controls.Add(Me.CheckBox24)
         Me.GroupBox1.Controls.Add(Me.CheckBox23)
         Me.GroupBox1.Controls.Add(Me.Button9)
+        Me.GroupBox1.Controls.Add(Me.CheckBox21)
         Me.GroupBox1.Controls.Add(Me.ListBox1)
         Me.GroupBox1.Controls.Add(Me.Label21)
         Me.GroupBox1.Controls.Add(Me.TextBox13)
@@ -198,10 +202,46 @@ Partial Class frmEdicion
         Me.GroupBox1.Controls.Add(Me.CheckBox1)
         Me.GroupBox1.Location = New System.Drawing.Point(12, 56)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(718, 396)
+        Me.GroupBox1.Size = New System.Drawing.Size(970, 400)
         Me.GroupBox1.TabIndex = 0
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "GroupBox1"
+        '
+        'CheckedListBox1
+        '
+        Me.CheckedListBox1.CheckOnClick = True
+        Me.CheckedListBox1.FormattingEnabled = True
+        Me.CheckedListBox1.Location = New System.Drawing.Point(735, 75)
+        Me.CheckedListBox1.Name = "CheckedListBox1"
+        Me.CheckedListBox1.Size = New System.Drawing.Size(217, 304)
+        Me.CheckedListBox1.TabIndex = 78
+        '
+        'TextBox9
+        '
+        Me.TextBox9.Location = New System.Drawing.Point(161, 52)
+        Me.TextBox9.Name = "TextBox9"
+        Me.TextBox9.Size = New System.Drawing.Size(206, 20)
+        Me.TextBox9.TabIndex = 76
+        '
+        'Label24
+        '
+        Me.Label24.AutoSize = True
+        Me.Label24.Location = New System.Drawing.Point(34, 55)
+        Me.Label24.Name = "Label24"
+        Me.Label24.Size = New System.Drawing.Size(99, 13)
+        Me.Label24.TabIndex = 75
+        Me.Label24.Text = "Subtipo documento"
+        '
+        'CheckBox24
+        '
+        Me.CheckBox24.AutoSize = True
+        Me.CheckBox24.ForeColor = System.Drawing.SystemColors.ActiveCaption
+        Me.CheckBox24.Location = New System.Drawing.Point(15, 54)
+        Me.CheckBox24.Name = "CheckBox24"
+        Me.CheckBox24.Size = New System.Drawing.Size(118, 17)
+        Me.CheckBox24.TabIndex = 74
+        Me.CheckBox24.Text = "Subtipo documento"
+        Me.CheckBox24.UseVisualStyleBackColor = True
         '
         'CheckBox23
         '
@@ -223,6 +263,17 @@ Partial Class frmEdicion
         Me.Button9.Text = "Borrar"
         Me.Button9.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
         Me.Button9.UseVisualStyleBackColor = True
+        '
+        'CheckBox21
+        '
+        Me.CheckBox21.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CheckBox21.Location = New System.Drawing.Point(404, 298)
+        Me.CheckBox21.Name = "CheckBox21"
+        Me.CheckBox21.Size = New System.Drawing.Size(296, 28)
+        Me.CheckBox21.TabIndex = 49
+        Me.CheckBox21.Text = "Simulación sin efectuar cambios en disco o en base"
+        Me.CheckBox21.UseVisualStyleBackColor = True
+        Me.CheckBox21.Visible = False
         '
         'ListBox1
         '
@@ -403,7 +454,7 @@ Partial Class frmEdicion
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(34, 109)
+        Me.Label4.Location = New System.Drawing.Point(753, 52)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(78, 13)
         Me.Label4.TabIndex = 54
@@ -539,6 +590,7 @@ Partial Class frmEdicion
         '
         'ListView1
         '
+        Me.ListView1.HideSelection = False
         Me.ListView1.Location = New System.Drawing.Point(404, 173)
         Me.ListView1.Name = "ListView1"
         Me.ListView1.Size = New System.Drawing.Size(249, 98)
@@ -735,6 +787,7 @@ Partial Class frmEdicion
         Me.ComboBox3.Name = "ComboBox3"
         Me.ComboBox3.Size = New System.Drawing.Size(205, 21)
         Me.ComboBox3.TabIndex = 4
+        Me.ComboBox3.Visible = False
         '
         'ComboBox2
         '
@@ -846,7 +899,7 @@ Partial Class frmEdicion
         '
         Me.CheckBox3.AutoSize = True
         Me.CheckBox3.ForeColor = System.Drawing.SystemColors.ActiveCaption
-        Me.CheckBox3.Location = New System.Drawing.Point(15, 108)
+        Me.CheckBox3.Location = New System.Drawing.Point(735, 51)
         Me.CheckBox3.Name = "CheckBox3"
         Me.CheckBox3.Size = New System.Drawing.Size(97, 17)
         Me.CheckBox3.TabIndex = 41
@@ -875,23 +928,12 @@ Partial Class frmEdicion
         Me.CheckBox1.UseVisualStyleBackColor = True
         Me.CheckBox1.Visible = False
         '
-        'CheckBox21
-        '
-        Me.CheckBox21.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CheckBox21.Location = New System.Drawing.Point(596, 12)
-        Me.CheckBox21.Name = "CheckBox21"
-        Me.CheckBox21.Size = New System.Drawing.Size(139, 28)
-        Me.CheckBox21.TabIndex = 49
-        Me.CheckBox21.Text = "Generar LOG sin efectuar cambios en disco o en base"
-        Me.CheckBox21.UseVisualStyleBackColor = True
-        Me.CheckBox21.Visible = False
-        '
         'StatusStrip1
         '
         Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1, Me.ToolStripStatusLabel2})
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 722)
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 955)
         Me.StatusStrip1.Name = "StatusStrip1"
-        Me.StatusStrip1.Size = New System.Drawing.Size(1437, 22)
+        Me.StatusStrip1.Size = New System.Drawing.Size(1008, 22)
         Me.StatusStrip1.TabIndex = 25
         Me.StatusStrip1.Text = "StatusStrip1"
         '
@@ -899,13 +941,13 @@ Partial Class frmEdicion
         '
         Me.ToolStripStatusLabel1.Image = CType(resources.GetObject("ToolStripStatusLabel1.Image"), System.Drawing.Image)
         Me.ToolStripStatusLabel1.Name = "ToolStripStatusLabel1"
-        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(137, 17)
+        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(135, 17)
         Me.ToolStripStatusLabel1.Text = "ToolStripStatusLabel1"
         '
         'ToolStripStatusLabel2
         '
         Me.ToolStripStatusLabel2.Name = "ToolStripStatusLabel2"
-        Me.ToolStripStatusLabel2.Size = New System.Drawing.Size(121, 17)
+        Me.ToolStripStatusLabel2.Size = New System.Drawing.Size(119, 17)
         Me.ToolStripStatusLabel2.Text = "ToolStripStatusLabel2"
         '
         'Button5
@@ -938,7 +980,7 @@ Partial Class frmEdicion
         Me.GroupBox2.Controls.Add(Me.TextBox3)
         Me.GroupBox2.Controls.Add(Me.Label22)
         Me.GroupBox2.Controls.Add(Me.TextBox2)
-        Me.GroupBox2.Location = New System.Drawing.Point(761, 56)
+        Me.GroupBox2.Location = New System.Drawing.Point(12, 473)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(643, 379)
         Me.GroupBox2.TabIndex = 52
@@ -1003,44 +1045,26 @@ Partial Class frmEdicion
         '
         Me.OpenFileDialog1.FileName = "OpenFileDialog1"
         '
-        'CheckBox24
+        'Button10
         '
-        Me.CheckBox24.AutoSize = True
-        Me.CheckBox24.ForeColor = System.Drawing.SystemColors.ActiveCaption
-        Me.CheckBox24.Location = New System.Drawing.Point(15, 54)
-        Me.CheckBox24.Name = "CheckBox24"
-        Me.CheckBox24.Size = New System.Drawing.Size(118, 17)
-        Me.CheckBox24.TabIndex = 74
-        Me.CheckBox24.Text = "Subtipo documento"
-        Me.CheckBox24.UseVisualStyleBackColor = True
-        '
-        'Label24
-        '
-        Me.Label24.AutoSize = True
-        Me.Label24.Location = New System.Drawing.Point(34, 55)
-        Me.Label24.Name = "Label24"
-        Me.Label24.Size = New System.Drawing.Size(99, 13)
-        Me.Label24.TabIndex = 75
-        Me.Label24.Text = "Subtipo documento"
-        '
-        'TextBox9
-        '
-        Me.TextBox9.Location = New System.Drawing.Point(161, 52)
-        Me.TextBox9.Name = "TextBox9"
-        Me.TextBox9.Size = New System.Drawing.Size(206, 20)
-        Me.TextBox9.TabIndex = 76
+        Me.Button10.Location = New System.Drawing.Point(281, 18)
+        Me.Button10.Name = "Button10"
+        Me.Button10.Size = New System.Drawing.Size(75, 23)
+        Me.Button10.TabIndex = 53
+        Me.Button10.Text = "Button10"
+        Me.Button10.UseVisualStyleBackColor = True
         '
         'frmEdicion
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1437, 744)
+        Me.ClientSize = New System.Drawing.Size(1008, 977)
+        Me.Controls.Add(Me.Button10)
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.Button6)
         Me.Controls.Add(Me.Button5)
         Me.Controls.Add(Me.StatusStrip1)
         Me.Controls.Add(Me.GroupBox1)
-        Me.Controls.Add(Me.CheckBox21)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "frmEdicion"
         Me.Text = "frmEdicion"
@@ -1145,4 +1169,6 @@ Partial Class frmEdicion
     Friend WithEvents TextBox9 As System.Windows.Forms.TextBox
     Friend WithEvents Label24 As System.Windows.Forms.Label
     Friend WithEvents CheckBox24 As System.Windows.Forms.CheckBox
+    Friend WithEvents CheckedListBox1 As CheckedListBox
+    Friend WithEvents Button10 As Button
 End Class

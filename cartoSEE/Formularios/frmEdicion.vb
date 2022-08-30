@@ -8,15 +8,17 @@
     Private Sub frmEdicion_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
         'Colocamos elementos
-        Me.Size = New Point(770, 530)
+        Me.Size = New Point(1024, 600)
         ListBox1.Location = New Point(404, 127)
         ListBox1.Size = New Point(249, 150)
         ListBox1.Visible = False
+
         GroupBox1.Location = New Point(12, 53)
-        GroupBox1.Size = New Point(720, 400)
-        GroupBox2.Location = New Point(12, 53)
-        GroupBox2.Size = New Point(720, 400)
+        GroupBox1.Size = New Point(970, 400)
         GroupBox1.Visible = True
+
+        GroupBox2.Location = New Point(12, 53)
+        GroupBox2.Size = New Point(970, 400)
         GroupBox2.Visible = False
 
         ListView1.FullRowSelect = True
@@ -33,9 +35,8 @@
         Autocompletar_municipios = True
         ToolStripStatusLabel2.Text = ""
 
-        If usuario_ISTARI = True Then
-            CheckBox21.Visible = True
-        End If
+        CheckBox21.Visible = usuarioMyApp.permisosLista.isUserISTARI
+
 
     End Sub
 
@@ -96,6 +97,13 @@
 
         ComboBox5.Items.Add(New itemData("No", 0))
         ComboBox5.Items.Add(New itemData("Sí", 1))
+
+        Dim listFragProps As New FlagsProperties
+
+        For Each propItem In listFragProps.propertyList
+            CheckedListBox1.Items.Add(propItem, CheckState.Unchecked)
+        Next
+
 
     End Sub
 
@@ -288,6 +296,19 @@
                 End If
             End If
             CheckBox23.Visible = False
+
+            Application.DoEvents()
+            'Rellenamos los items de propiedades
+
+            Dim propPatron As String = elementsInEdition.resultados(0).extraProps.propertyPatron.ToString
+            For itemCheck As Integer = 0 To CheckedListBox1.Items.Count - 1
+                If propPatron.Substring(propPatron.Length - 1 - itemCheck, 1) = "1" Then
+                    CheckedListBox1.SetItemChecked(itemCheck, True)
+                Else
+                    CheckedListBox1.SetItemChecked(itemCheck, False)
+                End If
+            Next
+
         ElseIf modo = "NUEVO" Then
             Me.Tag = indice
             Me.Text = "Nuevo documento"
@@ -448,13 +469,13 @@
 
                 ListaSQL.Add("DELETE FROM bdsidschema.archivo2munihisto where archivo_id=" & item.docIndex)
                 ListaSQL.Add("INSERT INTO bdsidschema.archivolog (archivo_id, sellado, usuario_update, tabla, tipo_variacion, valor_old, valor_new) " &
-                                 "VALUES (" & item.docIndex & ",'" & item.Sellado & "','" & App_User & "','archivo2munihisto','Desasignación municipio histórico',E'" & item.muniHistoLiteralConINEHistorico.Replace("'", "\'") & "',null)")
+                                 "VALUES (" & item.docIndex & ",'" & item.Sellado & "','" & usuarioMyApp.loginUser & "','archivo2munihisto','Desasignación municipio histórico',E'" & item.muniHistoLiteralConINEHistorico.Replace("'", "\'") & "',null)")
                 For Each itemLV As ListViewItem In ListView1.Items
                     ListaSQL.Add("INSERT INTO bdsidschema.archivo2munihisto (idarchivo2muni,munihisto_id,archivo_id) " &
                                 "VALUES (nextval('bdsidschema.archivo2munihisto_idarchivo2muni_seq')," &
                                 itemLV.SubItems(3).Text & "," & item.docIndex & ")")
                     ListaSQL.Add("INSERT INTO bdsidschema.archivolog (archivo_id, sellado, usuario_update, tabla, tipo_variacion, valor_old, valor_new) " &
-                                "VALUES (" & item.docIndex & ",'" & item.Sellado & "','" & App_User & "','archivo2munihisto','Asignación municipio histórico',null," &
+                                "VALUES (" & item.docIndex & ",'" & item.Sellado & "','" & usuarioMyApp.loginUser & "','archivo2munihisto','Asignación municipio histórico',null," &
                                 "E'" & itemLV.SubItems(0).Text.Replace("'", "\'") & "(" & itemLV.SubItems(2).Text & ")" & "')")
                 Next
             End If
@@ -592,60 +613,55 @@
 
     End Sub
 
-    Private Function BorrarElemento(ByVal documentoDel As docCartoSEE) As Boolean
+    Private Function borrarElementosEnEdicion() As Boolean
         'Compuebo que tengamos permiso de escritura en disco de datos, ya que modificar estos campos
         'seguramente implica mover documentos.
 
 
         Dim ListaSQL As New ArrayList
-        Dim cadDelBase As String
-        Dim RutasDoc() As String
-        Dim Ejecucion As Boolean
-        BorrarElemento = False
+        Dim ficherosDelete As New ArrayList
 
-        cadDelBase = "DELETE FROM bdsidschema.contornos WHERE archivo_id=" & documentoDel.docIndex
-        GenerarLOG(cadDelBase)
-        ListaSQL.Add(cadDelBase)
-        cadDelBase = "DELETE FROM bdsidschema.archivo2munihisto WHERE archivo_id=" & documentoDel.docIndex
-        GenerarLOG(cadDelBase)
-        ListaSQL.Add(cadDelBase)
-        cadDelBase = "DELETE FROM bdsidschema.archivo WHERE idarchivo=" & documentoDel.docIndex
-        GenerarLOG(cadDelBase)
-        ListaSQL.Add(cadDelBase)
+        For Each elem As docCartoSEE In elementsInEdition.resultados
+            ListaSQL.Add("DELETE FROM bdsidschema.contornos WHERE archivo_id=" & elem.docIndex)
+            ListaSQL.Add("DELETE FROM bdsidschema.archivo2munihisto WHERE archivo_id=" & elem.docIndex)
+            ListaSQL.Add("DELETE FROM bdsidschema.archivo WHERE idarchivo=" & elem.docIndex)
 
-        'Obtenemos las rutas de los documentos asociados
+            ficherosDelete.Add(elem.rutaFicheroAltaRes)
+            ficherosDelete.Add(elem.rutaFicheroBajaRes)
+            ficherosDelete.Add(elem.rutaFicheroThumb)
 
-        'DameRutasFicherosECW(documentoDel, RutasDoc)
-        'Añadimos a Rutasdoc las rutas con las imágenes JPG si se modifica el númeo de sellado
-        ReDim Preserve RutasDoc(RutasDoc.Length - 1 + 2)
-        RutasDoc(RutasDoc.Length - 2) = rutaRepo & "\_Scan400\" & documentoDel.FicheroJPG
-        RutasDoc(RutasDoc.Length - 1) = rutaRepo & "\_Scan250\" & documentoDel.FicheroJPG.Replace("\", "250\")
+            For Each fileGEO As String In elem.listaFicherosGeo
+                Application.DoEvents()
+                ficherosDelete.Add(fileGEO)
+            Next
+
+        Next
 
         If CheckBox21.Checked = True Then
-            Exit Function
+            For Each sentenciaSQL As String In ListaSQL
+                GenerarLOG(sentenciaSQL)
+            Next
+            For Each ficheroParaBorrar As String In ficherosDelete
+                GenerarLOG("Se borrará el fichero: " & ficheroParaBorrar)
+            Next
+            Return True
         End If
-        For Each Rutageo As String In RutasDoc
-            If IsNothing(Rutageo) Then Continue For
+        For Each pathFileGeo As String In ficherosDelete
+            If IsNothing(pathFileGeo) Then Continue For
             Try
-                System.IO.File.Delete(Rutageo)
+                System.IO.File.Delete(pathFileGeo)
             Catch ex As Exception
-                MessageBox.Show("Se han producido errores al eliminar la información gráfica del documento.No se eliminó el documento." & _
+                MessageBox.Show("Se han producido errores al eliminar la información gráfica del documento.No se eliminó el documento." &
                                 System.Environment.NewLine & ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                 Exit Function
             End Try
         Next
 
-        'Ahora borramos atributos de la base de datos
-        Dim cadListaSQL() As String
-        ReDim cadListaSQL(ListaSQL.Count - 1)
-        ListaSQL.CopyTo(cadListaSQL)
-        Application.DoEvents()
-        Ejecucion = ExeTran(cadListaSQL)
-        Application.DoEvents()
-        If Ejecucion = True Then
-            BorrarElemento = True
+        If ExeTran(ListaSQL) Then
+            Return True
         Else
-            MessageBox.Show("No se eliminó el documento nº " & documentoDel.Sellado, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            MessageBox.Show("No se han podido elimnar los documentos", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            Return False
         End If
 
 
@@ -969,12 +985,23 @@
             elementoInsert.ProvinciaRepo = CType(ListView1.Items(0).SubItems(4).Text, Integer)
         Else
             If CType(ComboBox6.SelectedItem, itemData).Valor <> ListView1.Items(0).SubItems(4).Text Then
-                MessageBox.Show("La provincia no coincide con la del primer municipio asociado.", _
+                MessageBox.Show("La provincia no coincide con la del primer municipio asociado.",
                                 AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                 Exit Function
             End If
             elementoInsert.ProvinciaRepo = CType(ComboBox6.SelectedItem, itemData).Valor
         End If
+
+        'FlagProperties
+        elementoInsert.extraProps = 0
+        Dim flagPropos As New FlagsProperties()
+        If flagPropos.assignByContainer(CheckedListBox1) Then
+            elementoInsert.extraProps = flagPropos.propertyCode
+        Else
+            MessageBox.Show("Propiedades no aceptadas", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            Exit Function
+        End If
+
         Dim Result As String
         ObtenerEscalar("SELECT nextval('bdsidschema.archivo_idarchivo_seq')", Result)
         elementoInsert.Indice = IIf(IsNumeric(Result), CType(Result, Integer), 0)
@@ -1050,8 +1077,7 @@
                             Resultado)
             Application.DoEvents()
             If CType(Resultado, Integer) > 0 Then
-                MessageBox.Show("El número de sellado ya existe", _
-                                AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                MessageBox.Show("El número de sellado ya existe", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                 Exit Function
             End If
             CadenaUpdateLote = CadenaUpdateLote & "numdoc='" & TextBox22.Text.Trim & "',"
@@ -1064,16 +1090,18 @@
         If CheckBox2.Checked And ComboBox2.SelectedIndex <> -1 Then
             CadenaUpdateLote = CadenaUpdateLote & "estadodoc_id=" & CType(ComboBox2.SelectedItem, itemData).Valor & ","
         End If
-        If CheckBox3.Checked And ComboBox3.SelectedIndex <> -1 Then
-            If ComboBox3.Text = "SIN OBSERVACIONES" Then
-                CadenaUpdateLote = CadenaUpdateLote & _
-                                    "observestandar_id=Null" & ","
-            Else
-                CadenaUpdateLote = CadenaUpdateLote & _
-                                    "observestandar_id=" & CType(ComboBox3.SelectedItem, itemData).Valor & ","
-            End If
 
+
+        If CheckBox3.Checked Then
+            Dim flagPropos As New FlagsProperties()
+            If flagPropos.assignByContainer(CheckedListBox1) Then
+                CadenaUpdateLote = CadenaUpdateLote & "extraprops=" & flagPropos.propertyCode & ","
+            Else
+                MessageBox.Show("Combinación de propiedades no aceptadas", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                Exit Function
+            End If
         End If
+
         If CheckBox4.Checked And TextBox4.Text.Trim <> "" Then
             CadenaUpdateLote = CadenaUpdateLote & "vertical=" & CType(TextBox4.Text.Trim.Replace(".", ","), Integer) & ","
         End If
@@ -1239,30 +1267,55 @@
                             AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
             Exit Sub
         End Try
-        If MessageBox.Show("Desea borrar este documento y su información asociada", _
-                        AplicacionTitulo, MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.No Then
-            Exit Sub
-        End If
-        Application.DoEvents()
         If elementsInEdition.resultados.Count > 50 Then
             MessageBox.Show("No se pueden eliminar más de 50 documentos a la vez", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
             Exit Sub
         End If
-
+        If MessageBox.Show("¿Desea eliminar " & elementsInEdition.resultados.Count & " documentos y sus imágenes asociadas",
+                        AplicacionTitulo, MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.No Then
+            Exit Sub
+        End If
+        Application.DoEvents()
 
         Me.Cursor = Cursors.WaitCursor
-        For Each docuDel As docCartoSEE In elementsInEdition.resultados
-            okProc = BorrarElemento(docuDel)
-            GenerarLOG("Borrado elemento: " & docuDel.Sellado)
-            If okProc = False Then
-                If MessageBox.Show("Se han encontrado problemas en el proceso de borrado.¿Detener proceso?", _
-                                AplicacionTitulo, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) = Windows.Forms.DialogResult.Yes Then Exit For
+        If borrarElementosEnEdicion() Then
+            If CheckBox1.Checked Then
+                MessageBox.Show("Resultado del simulacro de eliminación en el fichero LOG." & System.Environment.NewLine & "No se han eliminado ni ficheros ni registros.", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+            Else
+                MessageBox.Show("Proceso de eliminación terminado", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
-        Next
-        Me.Cursor = Cursors.Default
-        MessageBox.Show("Proceso de eliminación concluido.", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
-        Me.Close()
+            Me.Cursor = Cursors.Default
+            Me.Close()
+        Else
+            MessageBox.Show("Se han encontrado problemas en el proceso de borrado. Consultar LOG", AplicacionTitulo, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation)
+            Me.Cursor = Cursors.Default
+        End If
+
 
     End Sub
 
+    Private Sub Button10_Click(sender As Object, e As EventArgs) Handles Button10.Click
+        'FlagProperties
+        'Dim cadProperties As String = ""
+        'For iPropCheck As Integer = 0 To CheckedListBox1.Items.Count - 1
+        '    Application.DoEvents()
+        '    If cadProperties = "" Then
+        '        cadProperties = IIf(CheckedListBox1.GetItemChecked(iPropCheck) = True, "1", "0")
+        '        Continue For
+        '    End If
+        '    cadProperties = IIf(CheckedListBox1.GetItemChecked(iPropCheck) = True, "1", "0") & cadProperties
+
+        'Next
+
+        Dim flagPropos As New FlagsProperties()
+        If flagPropos.assignByContainer(CheckedListBox1) Then
+            MessageBox.Show(flagPropos.propertyCode)
+        End If
+        'flagPropos.propertyBinary = cadProperties
+
+        'If flagPropos.validate Then
+        '    MessageBox.Show(flagPropos.propertyCode)
+        'End If
+
+    End Sub
 End Class

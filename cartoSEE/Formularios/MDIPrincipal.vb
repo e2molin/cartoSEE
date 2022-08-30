@@ -56,7 +56,7 @@ Public Class MDIPrincipal
 
 
 
-    Private Sub ToolStripButton1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolStripButton1.Click, ToolStripButton19.Click, _
+    Private Sub ToolStripButton1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolStripButton1.Click, ToolStripButton19.Click,
                             mnuDeveloperTools.Click, mnuOpenAppFolderSetting.Click, mnuAdminTools.Click
 
         If sender.name = "ToolStripButton1" Or sender.name = "mnuDeveloperTools" Then
@@ -88,12 +88,8 @@ Public Class MDIPrincipal
         '-------------------------------------Leemos parametros del INI
         LeerConfiguracionINI()
         '-------------------------------------Autenticación del usuario
-        If modoDelegaciones = True Then
-            Application.DoEvents()
-            App_User = ""
-            App_Pass = ""
-        Else
-            Try
+
+        Try
                 My.Forms.LoginForm.ShowDialog()
             Catch
                 Application.DoEvents()
@@ -108,7 +104,7 @@ Public Class MDIPrincipal
                 End
             End If
             Me.Hide()
-        End If
+
         '-------------------------------------Resizing inicial
         If Screen.PrimaryScreen.Bounds.Width > 1025 Then
             Me.Size = New Point(1200, 800)
@@ -118,14 +114,14 @@ Public Class MDIPrincipal
         Dim startTicks As Long = DateTime.Now.Ticks
         If ConectarBD(TiposBase.PostgreSQL, DB_Servidor, DB_Port, DB_User, DB_Pass, DB_Instancia, "") = True Then
             'Validamos el usuario para conocer sus permisos
-            App_Permiso = AutenticarUsuario(App_User, App_Pass)
-            If App_Permiso = 0 Then
-                If MainConex.State <> ConnectionState.Closed Then DesconectarBD()
-                Application.DoEvents()
-                MessageBox.Show("El usuario [" & App_User & "] no dispone de acceso a la aplicación. " & System.Environment.NewLine & _
-                                "Consulte con el administrador del sistema.", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            usuarioMyApp = New myAppUser
+            If usuarioMyApp.permisosLista.AutenticarUsuario(accessUser, accessPass) = 0 Then
+                MessageBox.Show("No dispone de acceso al programa" &
+                                System.Environment.NewLine &
+                                "Consulte con el administrador del sistema", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                 End
             End If
+
             GenerarLOG("Inicio sesión en " & DB_Servidor)
             CargarListasProvincias()
             CargarListaTiposDocumento()
@@ -143,7 +139,7 @@ Public Class MDIPrincipal
             ResizingElements()
             CargarFiltros()
             Me.Show()
-            If App_Permiso = 2 Then
+            If usuarioMyApp.permisosLista.editarDocumentacion Then
                 ToolStripStatusLabel.Text = "Conectado a " & DB_Instancia & " en " & DB_Servidor & ". Usuario de administración."
             Else
                 ToolStripStatusLabel.Text = "Conectado al sistema. Usuario de consulta."
@@ -164,7 +160,9 @@ Public Class MDIPrincipal
 
         'Dim endTicks As Long = DateTime.Now.Ticks
         'ToolStripStatusLabel.Text = "Tiempo: " & (endTicks - startTicks) / 100 & " ns."
-        ToolStripStatusLabel1.Text = App_User
+        ToolStripStatusLabel.Text = "Usuario: " & usuarioMyApp.loginUser &
+                            ". " & usuarioMyApp.permisosLista.getNombrePermiso &
+                            IIf(usuarioMyApp.permisosLista.isUserISTARI = True, ". Conectado a " & DB_Servidor & " en la database " & DB_Instancia & " .EXE:" & My.Application.Info.DirectoryPath, "")
         ToolStripStatusLabel2.Text = Now.ToLongDateString.ToString
         My.Forms.SplashScreen.Dispose()
         TextBox7.Text = "575438"
@@ -172,8 +170,10 @@ Public Class MDIPrincipal
         TextBox9.Text = "617612"
         TextBox3.Text = "4540893"
 
-        mnuOpenPreferenceFolder.Visible = usuario_ISTARI
-        mnuOpenLoggerFile.Visible = usuario_ISTARI
+        mnuOpenPreferenceFolder.Visible = usuarioMyApp.permisosLista.isUserISTARI
+        mnuOpenLoggerFile.Visible = usuarioMyApp.permisosLista.isUserISTARI
+
+
     End Sub
 
     Sub CargarFiltros()
@@ -220,11 +220,18 @@ Public Class MDIPrincipal
         Filtros.Dispose()
         Filtros = Nothing
 
+        ComboBox8.Items.Clear()
+        ComboBox8.Items.Add("Indistinto")
+        ComboBox8.Items.Add("Cargados")
+        ComboBox8.Items.Add("Faltan")
+
+
+
         'Plantilla de metadatos
         For iBucle As Integer = 0 To RutasPlantillasMetadatos.Length - 1
-            RutasPlantillasMetadatos(iBucle).RutaMetadatosTipo = _
+            RutasPlantillasMetadatos(iBucle).RutaMetadatosTipo =
                         LeeIni("Metadatos", "RutaPlantilla" & RutasPlantillasMetadatos(iBucle).idTipodoc.ToString)
-            RutasPlantillasMetadatos(iBucle).PrefijoNom = _
+            RutasPlantillasMetadatos(iBucle).PrefijoNom =
                         LeeIni("Metadatos", "PrefijoNom" & RutasPlantillasMetadatos(iBucle).idTipodoc.ToString)
         Next
 
@@ -233,30 +240,30 @@ Public Class MDIPrincipal
 
 
     Sub ResizingElements()
+
+        Panel1.Width = 200
+
+
         '--------------------------Resizing de elementos
-        ListBox1.Location = New Point(6, 104)
+        ListBox1.Location = New Point(6, 116)
         ListBox1.Size = New Point(189, 120)
         ListBox1.Visible = False
 
-        RadioButton1.Size = New Point(200, 41)
-        RadioButton1.Location = New Point(0, 645)
-        RadioButton2.Size = New Point(200, 41)
-        RadioButton2.Location = New Point(0, 605)
+        'RadioButton1.Size = New Point(200, 41)
+        'RadioButton1.Location = New Point(0, 645)
+        'RadioButton2.Size = New Point(200, 41)
+        'RadioButton2.Location = New Point(0, 605)
 
         PictureBox1.Visible = False
         PictureBox3.Visible = False
         PictureBox4.Visible = False
         Panel_DocSearch.Location = New Point(0, 0)
         Panel_GeoSearch.Location = New Point(0, 0)
-        Panel_DocSearch.Size = New Point(200, 700)
-        Panel_GeoSearch.Size = New Point(200, 700)
+        Panel_DocSearch.Size = New Point(200, 800)
+        Panel_GeoSearch.Size = New Point(200, 800)
         Panel_DocSearch.Visible = True
         Panel_GeoSearch.Visible = False
         RadioButton1.Checked = True
-
-        GroupBox5.Location = New Point(3, 260)
-        Button3.Location = New Point(108, 660)
-        Button4.Location = New Point(3, 660)
         PictureBox3.Location = New Point(89, Button3.Top)
         PictureBox3.Visible = False
 
@@ -274,28 +281,26 @@ Public Class MDIPrincipal
         Panel_GeoSearch.BackColor = Panel1.BackColor
 
         'Si el usuario no es administrador
-        If App_Permiso <> 2 Then
-            ToolStripButton9.Enabled = False
-            mnuTool_AltaDoc.Enabled = False
-            mnuTool_EditAtrib.Enabled = False
-            mnuModDocuTiposDoc.Enabled = False
-            mnuModDocuEstados.Enabled = False
-            mnuModDocuObservaciones.Enabled = False
-            mnuModDocuMedidas.Enabled = False
-            itemGestionUser.Enabled = False
-            mnuAddECW.Enabled = False
-            mnuAddContornos.Enabled = False
-            btnExportCdD.Enabled = False
-            mnuExportCdD.Enabled = False
-            ToolStripButton19.Visible = False
-        End If
+        ToolStripButton9.Enabled = usuarioMyApp.permisosLista.editarDocumentacion
+        mnuTool_AltaDoc.Enabled = usuarioMyApp.permisosLista.editarDocumentacion
+        mnuTool_EditAtrib.Enabled = usuarioMyApp.permisosLista.editarDocumentacion
+        mnuModDocuTiposDoc.Enabled = usuarioMyApp.permisosLista.editarDocumentacion
+        mnuModDocuEstados.Enabled = usuarioMyApp.permisosLista.editarDocumentacion
+        mnuModDocuObservaciones.Enabled = usuarioMyApp.permisosLista.editarDocumentacion
+        mnuModDocuMedidas.Enabled = usuarioMyApp.permisosLista.editarDocumentacion
+        itemGestionUser.Enabled = usuarioMyApp.permisosLista.asignarPermisosUsuarios
+        mnuAddECW.Enabled = usuarioMyApp.permisosLista.editarDocumentacion
+        mnuAddContornos.Enabled = usuarioMyApp.permisosLista.editarDocumentacion
+        btnExportCdD.Enabled = usuarioMyApp.permisosLista.generarVersionCdD
+        mnuExportCdD.Enabled = usuarioMyApp.permisosLista.generarVersionCdD
+        ToolStripButton19.Visible = usuarioMyApp.permisosLista.editarDocumentacion
 
-        mnuDeveloper.Visible = usuario_ISTARI
-        ToolStripButton1.Visible = usuario_ISTARI
-        mnuGenerarRejilla.Visible = usuario_ISTARI
-        mnuLanzarPlantilla.Visible = usuario_ISTARI
+        mnuDeveloper.Visible = usuarioMyApp.permisosLista.isUserISTARI
+        ToolStripButton1.Visible = usuarioMyApp.permisosLista.isUserISTARI
+        mnuGenerarRejilla.Visible = usuarioMyApp.permisosLista.isUserISTARI
+        mnuLanzarPlantilla.Visible = usuarioMyApp.permisosLista.isUserISTARI
 
-        If usuario_ISTARI = False Then
+        If Not usuarioMyApp.permisosLista.isUserISTARI Then
             If LeeIni("Visores", "MostrarVisorCarto") <> "SI" Then
                 Button7.Visible = False
             End If
@@ -326,17 +331,7 @@ Public Class MDIPrincipal
         ComboBox4.Text = "-----"
         ComboBox5.Text = "-----"
         ComboBox6.Text = "-----"
-        If modoDelegaciones Then
-            ToolStripButton5.Visible = False
-            ToolStripButton6.Visible = False
-            btnVisorMosaicos.Visible = False
-            mnuBuscador.Visible = False
-            mnuBuscadorGeo.Visible = False
-            mnuVisorMosaicos.Visible = False
-            mnuTool_Informes.Visible = False
-            RadioButton1.Visible = False
-            RadioButton2.Visible = False
-        End If
+
 
 
 
@@ -406,7 +401,7 @@ Public Class MDIPrincipal
                 Else
                     ListBox1.Items.Add(New itemData(dR("nombre").ToString, dR("cod_munihisto") & "|" & dR("idmunihisto") & "|" & dR("inecortoActual")))
                 End If
-        ListBox1.Visible = True
+                ListBox1.Visible = True
             Next
             If ListBox1.Items.Count = 1 Then
                 Try
@@ -541,7 +536,7 @@ Public Class MDIPrincipal
             Dim FrmResult As New frmDocumentacion
             FrmResult.MdiParent = Me
             FrmResult.Text = "Provincia: " & DameProvinciaByINE(cProv.ToString) & DescripFiltro
-            FrmResult.CargarDatosSIDCARTO_By_Provincia(cProv, TiposDocumento, _
+            FrmResult.CargarDatosSIDCARTO_By_Provincia(cProv, TiposDocumento,
                                                             EstadosDocumento, CadFiltro)
             FrmResult.Show()
         ElseIf nSellado <> "" Then
@@ -568,7 +563,7 @@ Public Class MDIPrincipal
             Dim FrmResult As New frmDocumentacion
             FrmResult.MdiParent = Me
             FrmResult.Text = "Todas las provincias. " & DescripFiltro
-            FrmResult.CargarDatosSIDCARTO_By_Filtro(CadFiltro, EstadosDocumento, _
+            FrmResult.CargarDatosSIDCARTO_By_Filtro(CadFiltro, EstadosDocumento,
                                                             TiposDocumento)
             FrmResult.Show()
         End If
@@ -665,6 +660,14 @@ Public Class MDIPrincipal
                 cadenaSQLini = cadenaSQLini & " AND idobservestandar=" & CType(ComboBox7.SelectedItem, itemData).Valor
             End If
         End If
+
+        If ComboBox8.SelectedIndex = 1 Then
+            cadenaSQLini = cadenaSQLini & " AND subidoabsys=true"
+        ElseIf ComboBox8.SelectedIndex = 2 Then
+            cadenaSQLini = cadenaSQLini & " AND subidoabsys=false"
+        End If
+
+
         'Filtro Por Anejo
         If TextBox19.Text.Trim <> "" Then
             cadenaSQLini = cadenaSQLini & " AND UPPER(anejo) like '%" & TextBox19.Text.ToUpper & "%'"
@@ -715,6 +718,7 @@ Public Class MDIPrincipal
         ComboBox5.Text = "-----"
         ComboBox6.Text = "-----"
         ComboBox7.Text = "-----"
+        ComboBox8.SelectedIndex = -1
         ListBox1.Visible = False
         CheckBox1.Checked = False
         TextBox3.Text = ""
@@ -727,9 +731,7 @@ Public Class MDIPrincipal
 
     End Sub
 
-    Sub FuncionesMenuBusqueda(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-                                    Handles mnuEjecutar.Click, mnuLimpiar.Click, _
-                                    ToolStripButton12.Click, ToolStripButton17.Click
+    Sub FuncionesMenuBusqueda(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuEjecutar.Click, mnuLimpiar.Click, ToolStripButton12.Click, ToolStripButton17.Click
 
         If sender.name = "mnuEjecutar" Or sender.name = "ToolStripButton12" Then
             If Panel_DocSearch.Visible = True Then
@@ -763,7 +765,19 @@ Public Class MDIPrincipal
         Panel_GeoSearch.Visible = False
         RadioButton1.Checked = True
 
+    End Sub
 
+    Private Sub toogleFilterOptions(sender As Object, e As EventArgs) Handles ToolStripButton15.Click, Button1.Click, Button2.Click
+        If Panel1.Width = 200 Then
+            Panel1.Width = 400
+            RadioButton1.Width = 400
+            RadioButton2.Width = 400
+        Else
+            Panel1.Width = 200
+            RadioButton1.Width = 200
+            RadioButton2.Width = 200
+
+        End If
     End Sub
 
 
@@ -977,13 +991,13 @@ Public Class MDIPrincipal
             '    YCentro = CType(TextBox12.Text.Replace(".", ","), Double)
             'End If
             Radio = CType(TextBox13.Text, Integer)
-                Xmax = XCentro + Radio * 1000
-                Ymax = YCentro + Radio * 1000
-                Xmin = XCentro - Radio * 1000
-                Ymin = YCentro - Radio * 1000
-                TituloConsulta = "Búsqueda por entorno. (" & XCentro.ToString & "," & YCentro.ToString & ") y  radio " & Radio.ToString & " Km"
-            ElseIf TextBox7.Text <> "" And TextBox3.Text <> "" And TextBox9.Text <> "" And TextBox10.Text <> "" Then
-                Xmax = CType(TextBox7.Text.Replace(".", ","), Double)
+            Xmax = XCentro + Radio * 1000
+            Ymax = YCentro + Radio * 1000
+            Xmin = XCentro - Radio * 1000
+            Ymin = YCentro - Radio * 1000
+            TituloConsulta = "Búsqueda por entorno. (" & XCentro.ToString & "," & YCentro.ToString & ") y  radio " & Radio.ToString & " Km"
+        ElseIf TextBox7.Text <> "" And TextBox3.Text <> "" And TextBox9.Text <> "" And TextBox10.Text <> "" Then
+            Xmax = CType(TextBox7.Text.Replace(".", ","), Double)
             Ymax = CType(TextBox3.Text.Replace(".", ","), Double)
             Xmin = CType(TextBox9.Text.Replace(".", ","), Double)
             Ymin = CType(TextBox10.Text.Replace(".", ","), Double)
@@ -1022,7 +1036,8 @@ Public Class MDIPrincipal
 
 
     Sub LanzarConfiguraciones(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolConfig.Click, mnuConfiguracion.Click
-        frmSettings.ShowDialog()
+        Dim frmSettings As New frmSettings
+        frmSettings.Show()
     End Sub
 
 
@@ -1040,16 +1055,16 @@ Public Class MDIPrincipal
     End Sub
 
     Sub LanzarTareasfrmDocumentacion(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-                    Handles mnuExtraerContornos.Click, mnuExtraerCentroide.Click, _
-                            ToolStripButton3.Click, mnuResConsulta1.Click, _
-                            ToolMiniaturas.Click, mnuResconsulta3.Click, _
-                            ToolStripButton4.Click, mnuResconsulta2.Click, _
-                            ToolStripButton7.Click, mnuResconsulta4.Click, _
-                            ToolStripButton16.Click, mnuResconsulta5.Click, _
-                            ToolStripButton14.Click, mnuGenerarMetadatos.Click, _
-                            ToolStripButton11.Click, mnuResconsulta7.Click, _
-                            ToolStripButton10.Click, mnuResconsulta6.Click, _
-                            ToolStripButton8.Click, mnuResconsulta8.Click, _
+                    Handles mnuExtraerContornos.Click, mnuExtraerCentroide.Click,
+                            ToolStripButton3.Click, mnuResConsulta1.Click,
+                            ToolMiniaturas.Click, mnuResconsulta3.Click,
+                            ToolStripButton4.Click, mnuResconsulta2.Click,
+                            ToolStripButton7.Click, mnuResconsulta4.Click,
+                            ToolStripButton16.Click, mnuResconsulta5.Click,
+                            ToolStripButton14.Click, mnuGenerarMetadatos.Click,
+                            ToolStripButton11.Click, mnuResconsulta7.Click,
+                            ToolStripButton10.Click, mnuResconsulta6.Click,
+                            ToolStripButton8.Click, mnuResconsulta8.Click,
                             ToolStripButton18.Click, mnuResconsulta9.Click, mnuGenMiniatura.Click
 
         Dim frmAccion As frmDocumentacion
@@ -1099,8 +1114,8 @@ Public Class MDIPrincipal
     End Sub
 
     Sub LanzarConsultaAvanzada(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-                        Handles Query_Advance01.Click, Query_Advance02.Click, Query_Advance03.Click, _
-                        Query_Advance04.Click, Query_Advance05.Click, Query_Advance06.Click, _
+                        Handles Query_Advance01.Click, Query_Advance02.Click, Query_Advance03.Click,
+                        Query_Advance04.Click, Query_Advance05.Click, Query_Advance06.Click,
                         Query_Advance07.Click, Query_Advance08.Click
 
 
@@ -1110,20 +1125,20 @@ Public Class MDIPrincipal
 
         If sender.name = "Query_Advance01" Then
             'Documentos modificados en los últimos 30 días
-            Filtro = " And archivo.fechamodificacion between '" & fechaActual.AddDays(-30).Year & "-" & _
-                            String.Format("{0:00}", fechaActual.AddDays(-30).Month) & "-" & _
-                            String.Format("{0:00}", fechaActual.AddDays(-30).Day) & "' AND '" & fechaActual.AddDays(1).Year & "-" & _
-                            String.Format("{0:00}", fechaActual.AddDays(1).Month) & "-" & _
+            Filtro = " And archivo.fechamodificacion between '" & fechaActual.AddDays(-30).Year & "-" &
+                            String.Format("{0:00}", fechaActual.AddDays(-30).Month) & "-" &
+                            String.Format("{0:00}", fechaActual.AddDays(-30).Day) & "' AND '" & fechaActual.AddDays(1).Year & "-" &
+                            String.Format("{0:00}", fechaActual.AddDays(1).Month) & "-" &
                             String.Format("{0:00}", fechaActual.AddDays(1).Day) & "'"
             FrmResult.Text = "Documentos modificados en los últimos 30 días"
             FrmResult.CargarDatosSIDCARTO_By_Filtro(Filtro)
         ElseIf sender.name = "Query_Advance02" Then
             'Lanzar consulta documentos creados hoy
-            Filtro = " and archivo.fechacreacion between '" & fechaActual.Year & "-" & _
-                            String.Format("{0:00}", fechaActual.Month) & "-" & _
-                            String.Format("{0:00}", fechaActual.Day) & " 00:00:00' AND '" & _
-                            fechaActual.AddDays(1).Year & "-" & _
-                            String.Format("{0:00}", fechaActual.AddDays(1).Month) & "-" & _
+            Filtro = " and archivo.fechacreacion between '" & fechaActual.Year & "-" &
+                            String.Format("{0:00}", fechaActual.Month) & "-" &
+                            String.Format("{0:00}", fechaActual.Day) & " 00:00:00' AND '" &
+                            fechaActual.AddDays(1).Year & "-" &
+                            String.Format("{0:00}", fechaActual.AddDays(1).Month) & "-" &
                             String.Format("{0:00}", fechaActual.AddDays(1).Day) & " 00:00:00'"
             FrmResult.Text = "Documentos creados hoy"
             FrmResult.CargarDatosSIDCARTO_By_Filtro(Filtro)
@@ -1155,10 +1170,10 @@ Public Class MDIPrincipal
             Exit Sub
         ElseIf sender.name = "Query_Advance06" Then
             'Documentos creados en los últimos 30 días
-            Filtro = " and archivo.fechacreacion between '" & fechaActual.AddDays(-30).Year & "-" & _
-                String.Format("{0:00}", fechaActual.AddDays(-30).Month) & "-" & _
-                String.Format("{0:00}", fechaActual.AddDays(-30).Day) & "' AND '" & fechaActual.AddDays(1).Year & "-" & _
-                String.Format("{0:00}", fechaActual.AddDays(1).Month) & "-" & _
+            Filtro = " and archivo.fechacreacion between '" & fechaActual.AddDays(-30).Year & "-" &
+                String.Format("{0:00}", fechaActual.AddDays(-30).Month) & "-" &
+                String.Format("{0:00}", fechaActual.AddDays(-30).Day) & "' AND '" & fechaActual.AddDays(1).Year & "-" &
+                String.Format("{0:00}", fechaActual.AddDays(1).Month) & "-" &
                 String.Format("{0:00}", fechaActual.AddDays(1).Day) & "'"
             FrmResult.Text = "Documentos creados en los últimos 30 días"
             FrmResult.CargarDatosSIDCARTO_By_Filtro(Filtro)
@@ -1177,7 +1192,7 @@ Public Class MDIPrincipal
         ElseIf sender.name = "Query_Advance08" Then
             Dim fechaQuery As String = InputDialog.InputBox("Fecha de la búsqueda AAAA-MM-DD", "Consultas avanzadas", "")
             If fechaQuery = "" Then Exit Sub
-            Filtro = " and archivo.fechacreacion between '" & fechaQuery & " 00:00:00' AND '" & _
+            Filtro = " and archivo.fechacreacion between '" & fechaQuery & " 00:00:00' AND '" &
                             fechaQuery & " 23:59:59'"
             FrmResult.Text = "Documentos creados el día " & fechaQuery
             FrmResult.CargarDatosSIDCARTO_By_Filtro(Filtro)
@@ -1240,8 +1255,8 @@ Public Class MDIPrincipal
     End Sub
 
     Private Sub ModificarAtributosDocumentos(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-                        Handles mnuModDocuMedidas.Click, mnuModDocuTiposDoc.Click, _
-                        mnuModDocuEstados.Click, mnuModDocuObservaciones.Click, mnuVisorMosaicos.Click, _
+                        Handles mnuModDocuMedidas.Click, mnuModDocuTiposDoc.Click,
+                        mnuModDocuEstados.Click, mnuModDocuObservaciones.Click, mnuVisorMosaicos.Click,
                         btnVisorMosaicos.Click, btnExportCdD.Click, mnuExportCdD.Click
 
 
@@ -1286,17 +1301,22 @@ Public Class MDIPrincipal
     End Sub
 
 
-    Private Sub itemUsermenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles itemUsermenu.Click
+    Private Sub itemUsermenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles itemUsermenu.Click, ToolStripButton2.Click
 
-        frmIncidencias.MdiParent = Me
-        frmIncidencias.Show()
+        Dim frmUser As GestionUserNotificacion
+        frmUser = New GestionUserNotificacion
+        frmUser.MdiParent = Me
+        frmUser.Show()
 
     End Sub
 
     Private Sub itemGestionUser_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles itemGestionUser.Click
 
-        frmGestionUser.MdiParent = Me
-        frmGestionUser.Show()
+        If usuarioMyApp.permisosLista.asignarPermisosUsuarios = False Then Exit Sub
+        Dim frmUser As GestionUserForm
+        frmUser = New GestionUserForm
+        frmUser.MdiParent = Me
+        frmUser.Show()
 
     End Sub
 
@@ -1336,6 +1356,57 @@ Public Class MDIPrincipal
         'visor.Tag = "visorcarto"
         'visor.MdiParent = Me
         'visor.Show()
+    End Sub
+
+    Private Sub mnuLinkCdDMinutas_Click(sender As Object, e As EventArgs) Handles mnuLinkCdDMIPAC.Click, mnuLinkCdDPLPOB.Click, mnuLinkCdDPLEDI.Click, mnuLinkCdDHKPUP.Click, mnuLinkCdDAT.Click
+
+
+        If sender.name = "mnuLinkCdDAT" Then
+            Try
+                Process.Start("https://centrodedescargas.cnig.es/CentroDescargas/catalogo.do?Serie=HKPUP")
+            Catch ex As Exception
+                MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Exit Sub
+            End Try
+            Exit Sub
+        End If
+        If String.IsNullOrEmpty(TextBox1.Tag) Then
+            MessageBox.Show("Seleccione un municipio", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Exit Sub
+        End If
+
+        Dim CodigosMuni() As String = TextBox1.Tag.ToString.Split("|")
+        Dim terriLink As TerritorioBSID
+        Dim CodMunicipioINEHistorico As String
+        Dim MunicipioID As String
+        Dim linkCdD As String = ""
+
+        CodMunicipioINEHistorico = CodigosMuni(0)
+        MunicipioID = CodigosMuni(1)
+        Dim CodMunicipioINEActual As String = CodigosMuni(2)
+        terriLink = New TerritorioBSID(CodMunicipioINEActual)
+        Application.DoEvents()
+        If sender.name = "mnuLinkCdDMIPAC" Then
+            linkCdD = "https://centrodedescargas.cnig.es/CentroDescargas/buscar.do?filtro.codFamilia=MIPAC&filtro.codIne=" & terriLink.getCodigoINEFull
+        ElseIf sender.name = "mnuLinkCdDPLPOB" Then
+            linkCdD = "https://centrodedescargas.cnig.es/CentroDescargas/buscar.do?filtro.codFamilia=PLPOB&filtro.codIne=" & terriLink.getCodigoINEFull
+        ElseIf sender.name = "mnuLinkCdDPLEDI" Then
+            linkCdD = "https://centrodedescargas.cnig.es/CentroDescargas/buscar.do?filtro.codFamilia=PLEDI&filtro.codIne=" & terriLink.getCodigoINEFull
+        ElseIf sender.name = "mnuLinkCdDHKPUP" Then
+            linkCdD = "https://centrodedescargas.cnig.es/CentroDescargas/buscar.do?filtro.codFamilia=HKPUP&filtro.codIne=" & terriLink.getCodigoINEFull
+        End If
+
+        If linkCdD = "" Then
+            MessageBox.Show("Enlace no disponible", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Exit Sub
+        End If
+        Try
+            Process.Start(linkCdD)
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Exit Sub
+        End Try
+
     End Sub
 
 

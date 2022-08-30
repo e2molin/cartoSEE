@@ -20,22 +20,30 @@ Public Class frmDocumentacion
     Dim Y As Integer
     Dim itm As Integer
 
+    Const initialWidth As Integer = 1280
+    Const initialHeight As Integer = 800
+
     Dim ListaDocumentos() As docSIDCARTO
 
     Private Sub frmDocumentacion_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
-        Me.Size = New Point(1024, 700)
+
+        Me.Size = New Point(initialWidth, initialHeight)
         ListView1.Location = New Point(5, 66)
-        GroupBox1.Location = New Point(5, 66)
-        GroupBox3.Location = New Point(5, 66)
+        ListView1.Size = New Point(initialWidth - 30, initialHeight - 135)
         ListView1.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Bottom Or AnchorStyles.Right
-        GroupBox1.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Bottom Or AnchorStyles.Right
-        GroupBox3.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Bottom Or AnchorStyles.Right
-        GroupBox1.Visible = False
-        GroupBox3.Visible = False
-        GroupBox2.Visible = False
         ListView1.Visible = True
+        GroupBox1.Location = New Point(5, 66)
+        GroupBox1.Size = New Point(initialWidth - 30, initialHeight - 135)
+        GroupBox1.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Bottom Or AnchorStyles.Right
+        GroupBox1.Visible = False
         GroupBox2.Location = New Point(243, 72)
+        GroupBox2.Visible = False
+        GroupBox3.Location = New Point(5, 66)
+        GroupBox3.Size = New Point(initialWidth - 30, initialHeight - 135)
+        GroupBox3.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Bottom Or AnchorStyles.Right
+        GroupBox3.Visible = False
+
         Label14.Text = "Para ver los detalles de la imagen, pulsa sobre el nombre. Para añadirla al carro de compra, seleccione primero la imagen haciendo clic sobre ella"
 
         ' Si el resultado es único, muestro directamente los datos completos
@@ -52,24 +60,23 @@ Public Class frmDocumentacion
             Button2.Enabled = True
             Button8.Enabled = True
         End If
-        If App_Permiso <> 2 Then
-            Button13.Enabled = False
-            mnuOnWMS.Enabled = False
-            mnuOffWMS.Enabled = False
-            menuTipoWMS0.Enabled = False
-            menuTipoWMS1.Enabled = False
-            menuTipoWMS2.Enabled = False
-            menuTipoWMS3.Enabled = False
-            menuTipoWMS4.Enabled = False
-            mnuDetailMostrarWMS.Enabled = False
-            mnuDetailOcultarWMS.Enabled = False
-            mnuDetailTipoWMS0.Enabled = False
-            mnuDetailTipoWMS1.Enabled = False
-            mnuDetailTipoWMS2.Enabled = False
-            mnuDetailTipoWMS3.Enabled = False
-            mnuDetailTipoWMS4.Enabled = False
-        End If
-        If usuario_ISTARI = True Then
+
+        Button13.Enabled = usuarioMyApp.permisosLista.asignarParamsWMS
+        mnuOnWMS.Enabled = usuarioMyApp.permisosLista.asignarParamsWMS
+        mnuOffWMS.Enabled = usuarioMyApp.permisosLista.asignarParamsWMS
+        menuTipoWMS0.Enabled = usuarioMyApp.permisosLista.asignarParamsWMS
+        menuTipoWMS1.Enabled = usuarioMyApp.permisosLista.asignarParamsWMS
+        menuTipoWMS2.Enabled = usuarioMyApp.permisosLista.asignarParamsWMS
+        menuTipoWMS3.Enabled = usuarioMyApp.permisosLista.asignarParamsWMS
+        menuTipoWMS4.Enabled = usuarioMyApp.permisosLista.asignarParamsWMS
+        mnuDetailMostrarWMS.Enabled = usuarioMyApp.permisosLista.asignarParamsWMS
+        mnuDetailOcultarWMS.Enabled = usuarioMyApp.permisosLista.asignarParamsWMS
+        mnuDetailTipoWMS0.Enabled = usuarioMyApp.permisosLista.asignarParamsWMS
+        mnuDetailTipoWMS1.Enabled = usuarioMyApp.permisosLista.asignarParamsWMS
+        mnuDetailTipoWMS2.Enabled = usuarioMyApp.permisosLista.asignarParamsWMS
+        mnuDetailTipoWMS3.Enabled = usuarioMyApp.permisosLista.asignarParamsWMS
+        mnuDetailTipoWMS4.Enabled = usuarioMyApp.permisosLista.asignarParamsWMS
+        If usuarioMyApp.permisosLista.isUserISTARI Then
             Button20.Visible = True
         End If
 
@@ -121,14 +128,14 @@ Public Class frmDocumentacion
 
     Private Sub frmDocumentacion_Resize(sender As Object, e As System.EventArgs) Handles Me.Resize
 
-        ListView1.Size = New Point(Me.Width - 25, Me.Height - 150)
-        GroupBox1.Size = New Point(Me.Width - 25, Me.Height - 150)
-        GroupBox3.Size = New Point(Me.Width - 25, Me.Height - 150)
-        If Me.Height < 700 Then
-            picThumb.Visible = False
-        Else
-            picThumb.Visible = True
-        End If
+        'ListView1.Size = New Point(Me.Width - 25, Me.Height - 150)
+        'GroupBox1.Size = New Point(Me.Width - 25, Me.Height - 150)
+        'GroupBox3.Size = New Point(Me.Width - 25, Me.Height - 150)
+        'If Me.Height < 700 Then
+        '    picThumb.Visible = False
+        'Else
+        '    picThumb.Visible = True
+        'End If
 
     End Sub
 
@@ -801,12 +808,18 @@ Public Class frmDocumentacion
 
     End Sub
 
+
+    ''' <summary>
+    ''' Rellena las pestañas de detalle del documento.
+    ''' </summary>
+    ''' <param name="NumElemento"></param>
     Sub MostrarDetalle(ByVal NumElemento As Integer)
 
         Dim elementoLV As ListViewItem
         Dim g1 As ListViewGroup
         Dim g2 As ListViewGroup
         Dim g3 As ListViewGroup
+        Dim g4 As ListViewGroup
 
         If NumElemento < 0 Or NumElemento > resultsetGeodocat.resultados.Count - 1 Then Exit Sub
         Label4.Text = ""
@@ -833,6 +846,9 @@ Public Class frmDocumentacion
         lvAtributos.Groups.Add(g2)
         g3 = New ListViewGroup("Centro de descargas")
         lvAtributos.Groups.Add(g3)
+        g4 = New ListViewGroup("Catalogación en ABSYS")
+        lvAtributos.Groups.Add(g4)
+
         lvAtributos.Items.Clear()
         'Hoja de características
 
@@ -856,9 +872,13 @@ Public Class frmDocumentacion
         elementoLV.SubItems.Add(resultsetGeodocat.resultados(NumElemento).Estado) : elementoLV.Group = g1
         lvAtributos.Items.Add(elementoLV) : elementoLV = Nothing
 
-        elementoLV = New ListViewItem : elementoLV.Text = "Standard" : elementoLV.ImageIndex = 4
-        elementoLV.SubItems.Add(resultsetGeodocat.resultados(NumElemento).ObservacionesStandard) : elementoLV.Group = g1
+        elementoLV = New ListViewItem : elementoLV.Text = "Observaciones" : elementoLV.ImageIndex = 4
+        elementoLV.SubItems.Add(resultsetGeodocat.resultados(NumElemento).extraProps.getTruePropertiesDescript) : elementoLV.Group = g1
         lvAtributos.Items.Add(elementoLV) : elementoLV = Nothing
+
+        'elementoLV = New ListViewItem : elementoLV.Text = "Standard" : elementoLV.ImageIndex = 4
+        'elementoLV.SubItems.Add(resultsetGeodocat.resultados(NumElemento).ObservacionesStandard) : elementoLV.Group = g1
+        'lvAtributos.Items.Add(elementoLV) : elementoLV = Nothing
 
         elementoLV = New ListViewItem : elementoLV.Text = "Carpeta" : elementoLV.ImageIndex = 4
         elementoLV.SubItems.Add(resultsetGeodocat.resultados(NumElemento).proceCarpeta) : elementoLV.Group = g1
@@ -899,6 +919,27 @@ Public Class frmDocumentacion
         elementoLV = New ListViewItem : elementoLV.Text = "Fichero CdD" : elementoLV.ImageIndex = 4
         elementoLV.SubItems.Add(resultsetGeodocat.resultados(NumElemento).cddNombreFichero) : elementoLV.Group = g3
         lvAtributos.Items.Add(elementoLV) : elementoLV = Nothing
+
+        elementoLV = New ListViewItem : elementoLV.Text = "URL CdD" : elementoLV.ImageIndex = 4
+        elementoLV.SubItems.Add(resultsetGeodocat.resultados(NumElemento).cddurl) : elementoLV.Group = g3
+        lvAtributos.Items.Add(elementoLV) : elementoLV = Nothing
+
+        elementoLV = New ListViewItem : elementoLV.Text = "Cargado ABSYS" : elementoLV.ImageIndex = 4
+        elementoLV.SubItems.Add(IIf(resultsetGeodocat.resultados(NumElemento).cargaABSYS = True, "Sí", "No")) : elementoLV.Group = g4
+        lvAtributos.Items.Add(elementoLV) : elementoLV = Nothing
+
+        elementoLV = New ListViewItem : elementoLV.Text = "Título ABSYS" : elementoLV.ImageIndex = 4
+        elementoLV.SubItems.Add(resultsetGeodocat.resultados(NumElemento).encabezadoABSYSdoc) : elementoLV.Group = g4
+        lvAtributos.Items.Add(elementoLV) : elementoLV = Nothing
+
+        elementoLV = New ListViewItem : elementoLV.Text = "TITN en ABSYS" : elementoLV.ImageIndex = 4
+        elementoLV.SubItems.Add(resultsetGeodocat.resultados(NumElemento).titnABSYSdoc) : elementoLV.Group = g4
+        lvAtributos.Items.Add(elementoLV) : elementoLV = Nothing
+
+        elementoLV = New ListViewItem : elementoLV.Text = "URL ABSYS" : elementoLV.ImageIndex = 4
+        elementoLV.SubItems.Add(resultsetGeodocat.resultados(NumElemento).urlABSYSdoc.ToString) : elementoLV.Group = g4
+        lvAtributos.Items.Add(elementoLV) : elementoLV = Nothing
+
 
         If resultsetGeodocat.resultados(NumElemento).cddurl <> "" Then
             Button23.Enabled = True
@@ -950,14 +991,8 @@ Public Class frmDocumentacion
         'Repositorio de documento georreferenciado asociado
         '-----------------------------------------------------------------------------------------------------------------
         'Dim RutasDoc() As String
-        Dim iECW As Integer
-        'DameRutasFicherosECW(resultsetGeodocat.resultados(NumElemento), RutasDoc)
-        'If RutasDoc.Length > 0 Then
-        '    Button10.Tag = SacarDirDeRuta(RutasDoc(0))
-        'End If
+        Dim iECW As Integer = 0
 
-        Application.DoEvents()
-        iECW = 0
         For Each fila As DataRow In resultsetGeodocat.resultados(NumElemento).rcdgeoFiles.Select()
             iECW = iECW + 1
 
@@ -1369,8 +1404,7 @@ Public Class frmDocumentacion
                     Handles Button16.Click
 
         If Me.Tag = "Carrito de la Compra" Then
-            MessageBox.Show("Función no disponible en el carrito", AplicacionTitulo,
-                            MessageBoxButtons.OK, MessageBoxIcon.Information)
+            MessageBox.Show("Función no disponible en el carrito", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
             Exit Sub
         End If
         Me.Cursor = Cursors.WaitCursor
@@ -1378,13 +1412,7 @@ Public Class frmDocumentacion
         resultsetGeodocat.dataRefresh()
         resizingElements()
         populateListView()
-        Application.DoEvents()
         GroupBox2.Visible = False
-        'Erase ListaDocumentos
-        'DameDocumentacionSIDCARTO_ByConsulta(qryLoaded, ListaDocumentos)
-        'resizingElements()
-        'RellenarLisview(ListaDocumentos)
-        'GuardarEncabezados()
         ToolStripStatusLabel1.Text = "Resultados : " & ListView1.Items.Count.ToString & " documentos"
         If ListView1.Items.Count = 1 Then
             ListView1.Visible = False
@@ -1399,6 +1427,7 @@ Public Class frmDocumentacion
             Button2.Enabled = True
             Button8.Enabled = True
         End If
+        Me.Cursor = Cursors.Default
         CerrarSpinner()
 
 
@@ -1703,6 +1732,7 @@ Public Class frmDocumentacion
 
 
     Private Sub ListView1_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles ListView1.MouseUp
+
         If ListView1.SelectedItems.Count = 0 Then
             ToolStripMenuItem1.Enabled = False
             ToolStripMenuItem2.Enabled = False
@@ -1713,12 +1743,12 @@ Public Class frmDocumentacion
             ToolStripMenuItem1.Enabled = True
             ToolStripMenuItem2.Enabled = False
         End If
-        If App_Permiso <> 2 Then
-            ToolStripMenuItem1.Enabled = False
-            ToolStripMenuItem2.Enabled = False
-            mnuOnOffWMS.Enabled = False
-            menuTipoWMSRoot.Enabled = False
-        End If
+
+        'ToolStripMenuItem1.Enabled = False
+        'ToolStripMenuItem2.Enabled = False
+        mnuOnOffWMS.Enabled = usuarioMyApp.permisosLista.asignarParamsWMS
+        menuTipoWMSRoot.Enabled = usuarioMyApp.permisosLista.asignarParamsWMS
+
         If e.Button = MouseButtons.Right Then
             ContextMenuStrip1.Show()
         End If
@@ -2420,6 +2450,7 @@ Public Class frmDocumentacion
     End Sub
 
     Private Sub Button22_Click_1(sender As System.Object, e As System.EventArgs) Handles Button22.Click
+
         Application.DoEvents()
         Dim nTomo As String
         Dim cProv As Integer
@@ -2439,8 +2470,6 @@ Public Class frmDocumentacion
             If FolderBrowserDialog1.ShowDialog = Windows.Forms.DialogResult.Cancel Then Exit Sub
             folderOutput = FolderBrowserDialog1.SelectedPath
         End If
-
-
 
         If (cProv >= 1 And cProv <= 50) And nTomo <> "" Then
             Dim rcdInventario As New DataTable
@@ -2486,6 +2515,11 @@ Public Class frmDocumentacion
         End If
     End Sub
 
+    ''' <summary>
+    ''' Lanza la URL del CdD
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub Button23_Click(sender As Object, e As EventArgs) Handles Button23.Click
         Dim cddURLdoc As String
         Try
@@ -2498,4 +2532,27 @@ Public Class frmDocumentacion
 
     End Sub
 
+    ''' <summary>
+    ''' Al seleccionar algunos elementos del LV de Atributos, sus valores se copian al portapapeles
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub lvAtributos_Click(sender As Object, e As EventArgs) Handles lvAtributos.Click
+        If Not lvAtributos.SelectedItems Is Nothing Then
+            For Each li As ListViewItem In lvAtributos.SelectedItems
+                If li.SubItems(0).Text = "URL CdD" Then
+                    If li.SubItems(1).Text <> "" Then
+                        My.Computer.Clipboard.SetText(li.SubItems(1).Text)
+                        MessageBox.Show("URL del Centro de Descargas copiada al portapapeles", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    End If
+                End If
+                If li.SubItems(0).Text = "URL ABSYS" Then
+                    If li.SubItems(1).Text <> "" Then
+                        My.Computer.Clipboard.SetText(li.SubItems(1).Text)
+                        MessageBox.Show("URL del Catálogo ABSYS copiada al portapapeles", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    End If
+                End If
+            Next
+        End If
+    End Sub
 End Class

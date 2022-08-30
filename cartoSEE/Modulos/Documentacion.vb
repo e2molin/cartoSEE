@@ -91,6 +91,7 @@ Module Documentacion
         Dim Horizontal As String
         Dim Observaciones As String
         Dim ObservacionesStandard As String
+        Dim extraProps As Integer
         Dim Municipios As String
         Dim MunicipiosINE As String
         Dim MunicipiosLiteral As String

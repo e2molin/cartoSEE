@@ -12,7 +12,6 @@ Partial Class LoginForm
         End If
         MyBase.Dispose(disposing)
     End Sub
-    Friend WithEvents LogoPictureBox As System.Windows.Forms.PictureBox
     Friend WithEvents UsernameLabel As System.Windows.Forms.Label
     Friend WithEvents PasswordLabel As System.Windows.Forms.Label
     Friend WithEvents UsernameTextBox As System.Windows.Forms.TextBox
@@ -29,7 +28,6 @@ Partial Class LoginForm
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(LoginForm))
-        Me.LogoPictureBox = New System.Windows.Forms.PictureBox
         Me.UsernameLabel = New System.Windows.Forms.Label
         Me.PasswordLabel = New System.Windows.Forms.Label
         Me.UsernameTextBox = New System.Windows.Forms.TextBox
@@ -37,23 +35,14 @@ Partial Class LoginForm
         Me.OK = New System.Windows.Forms.Button
         Me.Cancel = New System.Windows.Forms.Button
         Me.Button1 = New System.Windows.Forms.Button
-        CType(Me.LogoPictureBox, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
-        '
-        'LogoPictureBox
-        '
-        Me.LogoPictureBox.Image = CType(resources.GetObject("LogoPictureBox.Image"), System.Drawing.Image)
-        Me.LogoPictureBox.Location = New System.Drawing.Point(0, 0)
-        Me.LogoPictureBox.Name = "LogoPictureBox"
-        Me.LogoPictureBox.Size = New System.Drawing.Size(191, 221)
-        Me.LogoPictureBox.TabIndex = 0
-        Me.LogoPictureBox.TabStop = False
         '
         'UsernameLabel
         '
-        Me.UsernameLabel.Font = New System.Drawing.Font("Verdana", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.UsernameLabel.ForeColor = System.Drawing.Color.RoyalBlue
-        Me.UsernameLabel.Location = New System.Drawing.Point(195, 8)
+        Me.UsernameLabel.ForeColor = System.Drawing.Color.MidnightBlue
+        Me.UsernameLabel.Location = New System.Drawing.Point(11, 81)
         Me.UsernameLabel.Name = "UsernameLabel"
         Me.UsernameLabel.Size = New System.Drawing.Size(220, 23)
         Me.UsernameLabel.TabIndex = 0
@@ -62,9 +51,8 @@ Partial Class LoginForm
         '
         'PasswordLabel
         '
-        Me.PasswordLabel.Font = New System.Drawing.Font("Verdana", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.PasswordLabel.ForeColor = System.Drawing.Color.RoyalBlue
-        Me.PasswordLabel.Location = New System.Drawing.Point(195, 65)
+        Me.PasswordLabel.ForeColor = System.Drawing.Color.MidnightBlue
+        Me.PasswordLabel.Location = New System.Drawing.Point(10, 127)
         Me.PasswordLabel.Name = "PasswordLabel"
         Me.PasswordLabel.Size = New System.Drawing.Size(220, 23)
         Me.PasswordLabel.TabIndex = 2
@@ -73,25 +61,25 @@ Partial Class LoginForm
         '
         'UsernameTextBox
         '
-        Me.UsernameTextBox.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.UsernameTextBox.Location = New System.Drawing.Point(197, 28)
+        Me.UsernameTextBox.Font = New System.Drawing.Font("Verdana", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.UsernameTextBox.Location = New System.Drawing.Point(12, 101)
         Me.UsernameTextBox.Name = "UsernameTextBox"
-        Me.UsernameTextBox.Size = New System.Drawing.Size(220, 22)
+        Me.UsernameTextBox.Size = New System.Drawing.Size(220, 23)
         Me.UsernameTextBox.TabIndex = 1
         '
         'PasswordTextBox
         '
-        Me.PasswordTextBox.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.PasswordTextBox.Location = New System.Drawing.Point(197, 85)
+        Me.PasswordTextBox.Font = New System.Drawing.Font("Verdana", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.PasswordTextBox.Location = New System.Drawing.Point(12, 147)
         Me.PasswordTextBox.Name = "PasswordTextBox"
         Me.PasswordTextBox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
-        Me.PasswordTextBox.Size = New System.Drawing.Size(220, 22)
+        Me.PasswordTextBox.Size = New System.Drawing.Size(220, 23)
         Me.PasswordTextBox.TabIndex = 3
         '
         'OK
         '
         Me.OK.Image = CType(resources.GetObject("OK.Image"), System.Drawing.Image)
-        Me.OK.Location = New System.Drawing.Point(321, 118)
+        Me.OK.Location = New System.Drawing.Point(138, 176)
         Me.OK.Name = "OK"
         Me.OK.Size = New System.Drawing.Size(94, 35)
         Me.OK.TabIndex = 4
@@ -102,23 +90,33 @@ Partial Class LoginForm
         '
         Me.Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Cancel.Image = CType(resources.GetObject("Cancel.Image"), System.Drawing.Image)
-        Me.Cancel.Location = New System.Drawing.Point(221, 118)
+        Me.Cancel.Location = New System.Drawing.Point(12, 176)
         Me.Cancel.Name = "Cancel"
         Me.Cancel.Size = New System.Drawing.Size(94, 35)
         Me.Cancel.TabIndex = 5
-        Me.Cancel.Text = "&Cancel"
+        Me.Cancel.Text = "Cancel"
         Me.Cancel.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
         '
         'Button1
         '
         Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
-        Me.Button1.Location = New System.Drawing.Point(221, 171)
+        Me.Button1.Location = New System.Drawing.Point(12, 216)
         Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(194, 35)
+        Me.Button1.Size = New System.Drawing.Size(220, 35)
         Me.Button1.TabIndex = 6
         Me.Button1.Text = "Acceso Libre"
         Me.Button1.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.Button1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        '
+        'PictureBox1
+        '
+        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
+        Me.PictureBox1.Location = New System.Drawing.Point(73, 3)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(94, 92)
+        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.PictureBox1.TabIndex = 7
+        Me.PictureBox1.TabStop = False
         '
         'LoginForm
         '
@@ -126,7 +124,8 @@ Partial Class LoginForm
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel
-        Me.ClientSize = New System.Drawing.Size(444, 218)
+        Me.ClientSize = New System.Drawing.Size(240, 263)
+        Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.Cancel)
         Me.Controls.Add(Me.OK)
@@ -134,20 +133,19 @@ Partial Class LoginForm
         Me.Controls.Add(Me.UsernameTextBox)
         Me.Controls.Add(Me.PasswordLabel)
         Me.Controls.Add(Me.UsernameLabel)
-        Me.Controls.Add(Me.LogoPictureBox)
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "LoginForm"
-        Me.ShowInTaskbar = False
         Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "Autenticación del usuario"
-        CType(Me.LogoPictureBox, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
+        Me.Text = "Acceso"
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
     Friend WithEvents Button1 As System.Windows.Forms.Button
+    Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
 
 End Class

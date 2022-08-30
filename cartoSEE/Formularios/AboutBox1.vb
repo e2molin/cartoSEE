@@ -13,7 +13,11 @@ Public NotInheritable Class AboutBox1
         ' TODO: Customize the application's assembly information in the "Application" pane of the project 
         '    properties dialog (under the "Project" menu).
         Label1.Text = "CartoSEE"
-        Label3.Text = "Versión " & subVersion
+        Try
+            Label3.Text = System.IO.File.GetLastWriteTime(Application.ExecutablePath)
+        Catch ex As Exception
+
+        End Try
         Label5.Text = "Servicio de Documentación Geográfica y Biblioteca"
         Label6.Text = "Secretaría General"
         Label7.Text = "Instituto Geográfico Nacional - Ministerio de Fomento"

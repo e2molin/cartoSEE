@@ -162,9 +162,9 @@ Partial Class frmDocumentacion
         '
         Me.ListView1.ContextMenuStrip = Me.ContextMenuStrip1
         Me.ListView1.HideSelection = False
-        Me.ListView1.Location = New System.Drawing.Point(901, 522)
+        Me.ListView1.Location = New System.Drawing.Point(1268, 71)
         Me.ListView1.Name = "ListView1"
-        Me.ListView1.Size = New System.Drawing.Size(875, 450)
+        Me.ListView1.Size = New System.Drawing.Size(171, 169)
         Me.ListView1.TabIndex = 0
         Me.ListView1.UseCompatibleStateImageBehavior = False
         '
@@ -312,9 +312,9 @@ Partial Class frmDocumentacion
         Me.GroupBox1.Controls.Add(Me.Label13)
         Me.GroupBox1.Controls.Add(Me.Label10)
         Me.GroupBox1.Font = New System.Drawing.Font("Verdana", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox1.Location = New System.Drawing.Point(5, 66)
+        Me.GroupBox1.Location = New System.Drawing.Point(5, 71)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(875, 570)
+        Me.GroupBox1.Size = New System.Drawing.Size(882, 589)
         Me.GroupBox1.TabIndex = 11
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "GroupBox1"
@@ -324,7 +324,7 @@ Partial Class frmDocumentacion
         Me.Button23.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button23.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button23.Image = CType(resources.GetObject("Button23.Image"), System.Drawing.Image)
-        Me.Button23.Location = New System.Drawing.Point(520, 19)
+        Me.Button23.Location = New System.Drawing.Point(527, 19)
         Me.Button23.Name = "Button23"
         Me.Button23.Size = New System.Drawing.Size(65, 50)
         Me.Button23.TabIndex = 39
@@ -337,7 +337,7 @@ Partial Class frmDocumentacion
         Me.Button22.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button22.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button22.Image = CType(resources.GetObject("Button22.Image"), System.Drawing.Image)
-        Me.Button22.Location = New System.Drawing.Point(449, 18)
+        Me.Button22.Location = New System.Drawing.Point(456, 18)
         Me.Button22.Name = "Button22"
         Me.Button22.Size = New System.Drawing.Size(65, 50)
         Me.Button22.TabIndex = 38
@@ -372,7 +372,7 @@ Partial Class frmDocumentacion
         Me.Button10.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button10.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button10.Image = CType(resources.GetObject("Button10.Image"), System.Drawing.Image)
-        Me.Button10.Location = New System.Drawing.Point(662, 19)
+        Me.Button10.Location = New System.Drawing.Point(669, 19)
         Me.Button10.Name = "Button10"
         Me.Button10.Size = New System.Drawing.Size(65, 50)
         Me.Button10.TabIndex = 29
@@ -406,11 +406,11 @@ Partial Class frmDocumentacion
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 1
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 493.0!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 493.0!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 493.0!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 493.0!))
-        Me.TableLayoutPanel1.Size = New System.Drawing.Size(862, 493)
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 512.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 512.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 512.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 512.0!))
+        Me.TableLayoutPanel1.Size = New System.Drawing.Size(869, 512)
         Me.TableLayoutPanel1.TabIndex = 28
         '
         'Panel2
@@ -418,9 +418,9 @@ Partial Class frmDocumentacion
         Me.Panel2.BackColor = System.Drawing.SystemColors.Control
         Me.Panel2.Controls.Add(Me.TableLayoutPanel3)
         Me.Panel2.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Panel2.Location = New System.Drawing.Point(434, 3)
+        Me.Panel2.Location = New System.Drawing.Point(437, 3)
         Me.Panel2.Name = "Panel2"
-        Me.Panel2.Size = New System.Drawing.Size(425, 487)
+        Me.Panel2.Size = New System.Drawing.Size(429, 506)
         Me.Panel2.TabIndex = 29
         '
         'TableLayoutPanel3
@@ -436,7 +436,7 @@ Partial Class frmDocumentacion
         Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 76.29428!))
         Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 23.70572!))
         Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.TableLayoutPanel3.Size = New System.Drawing.Size(425, 487)
+        Me.TableLayoutPanel3.Size = New System.Drawing.Size(429, 506)
         Me.TableLayoutPanel3.TabIndex = 0
         '
         'lvAtributos
@@ -448,8 +448,9 @@ Partial Class frmDocumentacion
         Me.lvAtributos.Font = New System.Drawing.Font("Verdana", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lvAtributos.HideSelection = False
         Me.lvAtributos.Location = New System.Drawing.Point(3, 3)
+        Me.lvAtributos.MultiSelect = False
         Me.lvAtributos.Name = "lvAtributos"
-        Me.lvAtributos.Size = New System.Drawing.Size(419, 365)
+        Me.lvAtributos.Size = New System.Drawing.Size(423, 380)
         Me.lvAtributos.TabIndex = 34
         Me.lvAtributos.UseCompatibleStateImageBehavior = False
         '
@@ -529,15 +530,18 @@ Partial Class frmDocumentacion
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ListView2.Font = New System.Drawing.Font("Verdana", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ListView2.HideSelection = False
-        Me.ListView2.Location = New System.Drawing.Point(3, 374)
+        Me.ListView2.Location = New System.Drawing.Point(3, 389)
         Me.ListView2.Name = "ListView2"
-        Me.ListView2.Size = New System.Drawing.Size(419, 110)
+        Me.ListView2.Size = New System.Drawing.Size(423, 114)
         Me.ListView2.TabIndex = 42
         Me.ListView2.UseCompatibleStateImageBehavior = False
         Me.ListView2.View = System.Windows.Forms.View.Tile
         '
         'Panel1
         '
+        Me.Panel1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Panel1.BackColor = System.Drawing.SystemColors.Control
         Me.Panel1.Controls.Add(Me.picThumb)
         Me.Panel1.Controls.Add(Me.Label19)
@@ -546,10 +550,9 @@ Partial Class frmDocumentacion
         Me.Panel1.Controls.Add(Me.Label6)
         Me.Panel1.Controls.Add(Me.Label11)
         Me.Panel1.Controls.Add(Me.Label12)
-        Me.Panel1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.Panel1.Location = New System.Drawing.Point(3, 3)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(425, 487)
+        Me.Panel1.Size = New System.Drawing.Size(428, 506)
         Me.Panel1.TabIndex = 0
         '
         'picThumb
@@ -560,7 +563,7 @@ Partial Class frmDocumentacion
         Me.picThumb.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(192, Byte), Integer))
         Me.picThumb.Location = New System.Drawing.Point(3, 328)
         Me.picThumb.Name = "picThumb"
-        Me.picThumb.Size = New System.Drawing.Size(419, 154)
+        Me.picThumb.Size = New System.Drawing.Size(422, 173)
         Me.picThumb.TabIndex = 14
         Me.picThumb.TabStop = False
         '
@@ -573,7 +576,7 @@ Partial Class frmDocumentacion
         Me.Label19.Font = New System.Drawing.Font("Verdana", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label19.Location = New System.Drawing.Point(0, 261)
         Me.Label19.Name = "Label19"
-        Me.Label19.Size = New System.Drawing.Size(422, 221)
+        Me.Label19.Size = New System.Drawing.Size(425, 240)
         Me.Label19.TabIndex = 12
         Me.Label19.Text = "Label19"
         '
@@ -596,7 +599,7 @@ Partial Class frmDocumentacion
         Me.Label5.Font = New System.Drawing.Font("Verdana", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label5.Location = New System.Drawing.Point(0, 29)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(422, 120)
+        Me.Label5.Size = New System.Drawing.Size(425, 120)
         Me.Label5.TabIndex = 4
         Me.Label5.Text = "Label5"
         '
@@ -608,7 +611,7 @@ Partial Class frmDocumentacion
         Me.Label6.Font = New System.Drawing.Font("Verdana", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label6.Location = New System.Drawing.Point(0, 185)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(422, 40)
+        Me.Label6.Size = New System.Drawing.Size(425, 40)
         Me.Label6.TabIndex = 5
         Me.Label6.Text = "Label6"
         '
@@ -639,7 +642,7 @@ Partial Class frmDocumentacion
         Me.Button13.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button13.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button13.Image = CType(resources.GetObject("Button13.Image"), System.Drawing.Image)
-        Me.Button13.Location = New System.Drawing.Point(591, 19)
+        Me.Button13.Location = New System.Drawing.Point(598, 19)
         Me.Button13.Name = "Button13"
         Me.Button13.Size = New System.Drawing.Size(65, 50)
         Me.Button13.TabIndex = 26
@@ -652,7 +655,7 @@ Partial Class frmDocumentacion
         Me.Button5.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button5.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button5.Image = CType(resources.GetObject("Button5.Image"), System.Drawing.Image)
-        Me.Button5.Location = New System.Drawing.Point(804, 18)
+        Me.Button5.Location = New System.Drawing.Point(811, 18)
         Me.Button5.Name = "Button5"
         Me.Button5.Size = New System.Drawing.Size(65, 50)
         Me.Button5.TabIndex = 17
@@ -676,7 +679,7 @@ Partial Class frmDocumentacion
         Me.Button4.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button4.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button4.Image = CType(resources.GetObject("Button4.Image"), System.Drawing.Image)
-        Me.Button4.Location = New System.Drawing.Point(733, 19)
+        Me.Button4.Location = New System.Drawing.Point(740, 19)
         Me.Button4.Name = "Button4"
         Me.Button4.Size = New System.Drawing.Size(65, 50)
         Me.Button4.TabIndex = 16
@@ -756,7 +759,7 @@ Partial Class frmDocumentacion
         Me.GroupBox2.Controls.Add(Me.CheckBox2)
         Me.GroupBox2.Controls.Add(Me.CheckBox1)
         Me.GroupBox2.Font = New System.Drawing.Font("Verdana", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox2.Location = New System.Drawing.Point(1249, 103)
+        Me.GroupBox2.Location = New System.Drawing.Point(942, 67)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(308, 302)
         Me.GroupBox2.TabIndex = 19
@@ -1055,9 +1058,9 @@ Partial Class frmDocumentacion
         'StatusStrip1
         '
         Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1, Me.ToolStripStatusLabel2})
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 663)
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 923)
         Me.StatusStrip1.Name = "StatusStrip1"
-        Me.StatusStrip1.Size = New System.Drawing.Size(942, 22)
+        Me.StatusStrip1.Size = New System.Drawing.Size(1845, 22)
         Me.StatusStrip1.TabIndex = 15
         Me.StatusStrip1.Text = "StatusStrip1"
         '
@@ -1114,7 +1117,7 @@ Partial Class frmDocumentacion
         Me.GroupBox3.Controls.Add(Me.Button18)
         Me.GroupBox3.Controls.Add(Me.Button14)
         Me.GroupBox3.Controls.Add(Me.TableLayoutPanel2)
-        Me.GroupBox3.Location = New System.Drawing.Point(315, 66)
+        Me.GroupBox3.Location = New System.Drawing.Point(942, 405)
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Size = New System.Drawing.Size(875, 450)
         Me.GroupBox3.TabIndex = 23
@@ -1319,7 +1322,7 @@ Partial Class frmDocumentacion
         '
         Me.Button7.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button7.Image = CType(resources.GetObject("Button7.Image"), System.Drawing.Image)
-        Me.Button7.Location = New System.Drawing.Point(725, 5)
+        Me.Button7.Location = New System.Drawing.Point(727, 5)
         Me.Button7.Name = "Button7"
         Me.Button7.Size = New System.Drawing.Size(60, 55)
         Me.Button7.TabIndex = 24
@@ -1343,7 +1346,7 @@ Partial Class frmDocumentacion
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(942, 685)
+        Me.ClientSize = New System.Drawing.Size(1845, 945)
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.GroupBox3)

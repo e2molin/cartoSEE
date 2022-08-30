@@ -35,10 +35,10 @@
         ToolStripStatusLabel3.Text = ""
 
         RellenarDataview()
-        If App_Permiso <> 2 Then
-            btnEdit.Enabled = False
-            btnNew.Enabled = False
-        End If
+
+        btnEdit.Enabled = usuarioMyApp.permisosLista.editarDocumentacion
+        btnNew.Enabled = usuarioMyApp.permisosLista.editarDocumentacion
+
 
     End Sub
 

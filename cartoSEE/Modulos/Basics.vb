@@ -19,10 +19,18 @@ Module Basics
     Public DB_Instancia As String
     Public DB_User As String
     Public DB_Pass As String
-    Public App_User As String = ""
-    Public App_Pass As String
-    Public App_Permiso As Integer
-    Public App_Machine As String = ""
+
+    Public accessUser As String
+    Public accessPass As String
+    Public usuarioMyApp As myAppUser
+
+
+
+    'Public App_User As String = ""
+    'Public App_Pass As String
+    'Public App_Permiso As Integer
+    'Public App_Machine As String = ""
+
     Public VisorECW As String
     Public VisorJPG As String
     Public VisorPrint As String
