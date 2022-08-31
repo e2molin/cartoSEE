@@ -50,6 +50,9 @@ Module Basics
     Public rutaCentroDescargasScript As String
     Public rutaRepoThumbs As String
 
+    Public Const visorCartociudad As String = "https://www.cartociudad.es/visor/"
+
+
     'Encabezados para las consultas
     Public Encabezados(20) As EncabezadosConsulta
 
@@ -225,14 +228,31 @@ Module Basics
 
 
         'Lectura de los encabezados del archivo INI
+        'Si no hay configuraci´ñon de encabezados en el INI Local, los leemos del común en Remoto
+        Application.DoEvents()
 
-        For iBucle As Integer = 1 To Encabezados.Length - 1
+        If LeeIniLocal("QueryFields", "Visible1") <> "" Then
+            For iBucle As Integer = 1 To Encabezados.Length - 1
+                Encabezados(iBucle).Visible = IIf(LeeIniLocal("QueryFields", "Visible" & iBucle.ToString) = "SI", True, False)
+                Encabezados(iBucle).NombreEncabezado = LeeIniLocal("QueryFields", "Nombre" & iBucle.ToString)
+                Encabezados(iBucle).Anchura = 90
+            Next iBucle
+        Else
+            For iBucle As Integer = 1 To Encabezados.Length - 1
+                Encabezados(iBucle).Visible = IIf(LeeIni("QueryFields", "Visible" & iBucle.ToString) = "SI", True, False)
+                Encabezados(iBucle).NombreEncabezado = LeeIni("QueryFields", "Nombre" & iBucle.ToString)
+                Encabezados(iBucle).Anchura = 90
+            Next iBucle
+            ' Y ahora los guardamos en el local para que la próxima vez se lean del Local y no del remoto
+            Application.DoEvents()
+            For iBucle As Integer = 1 To Encabezados.Length - 1
+                EscribeIniLocal("QueryFields", "Visible" & iBucle.ToString, IIf(Encabezados(iBucle).Visible = True, "SI", "NO"))
+            Next
+        End If
 
-            Encabezados(iBucle).Visible = IIf(LeeIni("QueryFields", "Visible" & iBucle.ToString) = "SI", True, False)
-            Encabezados(iBucle).NombreEncabezado = LeeIni("QueryFields", "Nombre" & iBucle.ToString)
-            Encabezados(iBucle).Anchura = 90
 
-        Next iBucle
+
+
 
     End Sub
 

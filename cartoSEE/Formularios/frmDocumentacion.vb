@@ -27,20 +27,19 @@ Public Class frmDocumentacion
 
     Private Sub frmDocumentacion_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
-
         Me.Size = New Point(initialWidth, initialHeight)
         ListView1.Location = New Point(5, 66)
-        ListView1.Size = New Point(initialWidth - 30, initialHeight - 135)
+        ListView1.Size = New Point(Me.Size.Width - 30, Me.Size.Height - 135)
         ListView1.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Bottom Or AnchorStyles.Right
         ListView1.Visible = True
         GroupBox1.Location = New Point(5, 66)
-        GroupBox1.Size = New Point(initialWidth - 30, initialHeight - 135)
+        GroupBox1.Size = New Point(Me.Size.Width - 30, Me.Size.Height - 135)
         GroupBox1.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Bottom Or AnchorStyles.Right
         GroupBox1.Visible = False
         GroupBox2.Location = New Point(243, 72)
         GroupBox2.Visible = False
         GroupBox3.Location = New Point(5, 66)
-        GroupBox3.Size = New Point(initialWidth - 30, initialHeight - 135)
+        GroupBox3.Size = New Point(Me.Size.Width - 30, Me.Size.Height - 135)
         GroupBox3.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Bottom Or AnchorStyles.Right
         GroupBox3.Visible = False
 
@@ -125,19 +124,6 @@ Public Class frmDocumentacion
 
     End Sub
 
-
-    Private Sub frmDocumentacion_Resize(sender As Object, e As System.EventArgs) Handles Me.Resize
-
-        'ListView1.Size = New Point(Me.Width - 25, Me.Height - 150)
-        'GroupBox1.Size = New Point(Me.Width - 25, Me.Height - 150)
-        'GroupBox3.Size = New Point(Me.Width - 25, Me.Height - 150)
-        'If Me.Height < 700 Then
-        '    picThumb.Visible = False
-        'Else
-        '    picThumb.Visible = True
-        'End If
-
-    End Sub
 
     Sub TabulacionVentanas(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click, Button8.Click
 
@@ -416,6 +402,9 @@ Public Class frmDocumentacion
         ListView1.Columns.Clear()
         ListView1.Columns.Add("Sellado", "Sellado", 80, HorizontalAlignment.Left, 4)
         For ibucle As Integer = 1 To Encabezados.Length - 1
+            If ibucle = 19 Then
+                Application.DoEvents()
+            End If
             If Encabezados(ibucle).Visible = True Then
                 ListView1.Columns.Add("column" & ibucle, Encabezados(ibucle).NombreEncabezado, Encabezados(ibucle).Anchura, HorizontalAlignment.Left, 4)
             End If
@@ -574,14 +563,18 @@ Public Class frmDocumentacion
 
 
 
-    Sub CargarDatosSIDCARTO_By_Entorno(ByVal Xmax As Integer, ByVal Ymax As Integer,
-                                ByVal Xmin As Integer, ByVal Ymin As Integer)
+    Sub CargarDatosSIDCARTO_By_Entorno(ByVal Xmax As Integer, ByVal Ymax As Integer, ByVal Xmin As Integer, ByVal Ymin As Integer)
 
+
+        resultsetGeodocat = New docCartoSEEquery
+        resultsetGeodocat.flag_CargarFicherosGEO = True
+        resultsetGeodocat.getDocsSIDDAE_ByEntorno(Xmax, Ymax, Xmin, Ymin)
         resizingElements()
-        DameDocumentacionSIDCARTO_byEntorno(Xmax, Ymax, Xmin, Ymin, ListaDocumentos, qryLoaded)
-        Application.DoEvents()
-        If IsNothing(ListaDocumentos) Then Exit Sub
-        RellenarLisview(ListaDocumentos)
+        populateListView()
+        'DameDocumentacionSIDCARTO_byEntorno(Xmax, Ymax, Xmin, Ymin, ListaDocumentos, qryLoaded)
+        'Application.DoEvents()
+        'If IsNothing(ListaDocumentos) Then Exit Sub
+        'RellenarLisview(ListaDocumentos)
 
     End Sub
 
@@ -714,24 +707,10 @@ Public Class frmDocumentacion
 
         For Each docu As docCartoSEE In resultsetGeodocat.resultados
             iBucle = iBucle + 1
-            'If EstadoDocumento <> "" Then
-            '    If EstadoDocumento.Contains("-" & Documento.CodEstado & "-") = False Then _
-            '                                                                    Continue For
-            'End If
-            'If TipoDocumento <> "" Then
-            '    If TipoDocumento.Contains("-" & Documento.CodTipo & "-") = False Then _
-            '                                                                    Continue For
-            'End If
             iBucleTMP = iBucleTMP + 1
-            'TmpDoc(iBucleTMP) = ListaDocumentos(iBucle)
             elementoLV = New ListViewItem
             elementoLV.Text = docu.Sellado
 
-            'For ibucle As Integer = 1 To 10
-            '    If Encabezados(ibucle).Visible = True Then
-            '        ListView1.Columns.Add(Encabezados(ibucle).NombreEncabezado, Encabezados(ibucle).Anchura, HorizontalAlignment.Right)
-            '    End If
-            'Next
             If Encabezados(1).Visible = True Then elementoLV.SubItems.Add(docu.Tipo & IIf(docu.subTipoDoc = "", "", "/" & docu.subTipoDoc))
             If Encabezados(2).Visible = True Then elementoLV.SubItems.Add(docu.Tomo)
             If Encabezados(3).Visible = True Then elementoLV.SubItems.Add(docu.Estado)
@@ -762,13 +741,6 @@ Public Class frmDocumentacion
             ListView1.Items.Add(elementoLV)
             elementoLV = Nothing
         Next
-
-        'If EstadoDocumento <> "" Or TipoDocumento <> "" Then
-        '    ReDim Preserve TmpDoc(iBucleTMP)
-        '    Erase ListaDocumentos
-        '    ReDim ListaDocumentos(iBucleTMP)
-        '    ListaDocumentos = TmpDoc
-        'End If
 
         If ListView1.Items.Count > 0 Then
             NumPaginas_Album = CType(Math.Truncate((ListView1.Items.Count - 1) / 6) + 1, Integer)
@@ -1379,7 +1351,7 @@ Public Class frmDocumentacion
     Private Sub GuardarEncabezados()
 
         For iBucle As Integer = 1 To Encabezados.Length - 1
-            EscribeIni("QueryFields", "Visible" & iBucle.ToString, IIf(Encabezados(iBucle).Visible = True, "SI", "NO"))
+            EscribeIniLocal("QueryFields", "Visible" & iBucle.ToString, IIf(Encabezados(iBucle).Visible = True, "SI", "NO"))
         Next
 
     End Sub
@@ -1391,9 +1363,9 @@ Public Class frmDocumentacion
         Me.Cursor = Cursors.WaitCursor
         GroupBox2.Visible = False
         resizingElements()
+        ListView1.Visible = False
         populateListView()
-        'resizingElements()
-        'RellenarLisview(ListaDocumentos)
+        ListView1.Visible = True
         Me.Cursor = Cursors.Default
         GuardarEncabezados()
 
@@ -1436,7 +1408,7 @@ Public Class frmDocumentacion
     Private Sub CambiarColumnas(ByVal sender As System.Object, ByVal e As System.EventArgs) _
                         Handles CheckBox1.Click, CheckBox2.Click, CheckBox3.Click, CheckBox4.Click, CheckBox5.Click, CheckBox6.Click,
                         CheckBox7.Click, CheckBox8.Click, CheckBox9.Click, CheckBox10.Click, CheckBox11.Click, CheckBox12.Click,
-                        CheckBox13.Click, CheckBox14.Click, CheckBox15.Click, CheckBox16.Click, CheckBox17.Click, CheckBox18.Click
+                        CheckBox13.Click, CheckBox14.Click, CheckBox15.Click, CheckBox16.Click, CheckBox17.Click, CheckBox18.Click, CheckBox19.Click, CheckBox20.Click
 
         If sender.name = "CheckBox1" Then
             Encabezados(1).Visible = IIf(CheckBox1.Checked = True, True, False)
@@ -1477,8 +1449,8 @@ Public Class frmDocumentacion
             Encabezados(18).Visible = IIf(CheckBox18.Checked = True, True, False)
         ElseIf sender.name = "CheckBox19" Then
             Encabezados(19).Visible = IIf(CheckBox19.Checked = True, True, False)
-
-
+        ElseIf sender.name = "CheckBox20" Then
+            Encabezados(20).Visible = IIf(CheckBox20.Checked = True, True, False)
         End If
 
     End Sub
@@ -2554,5 +2526,30 @@ Public Class frmDocumentacion
                 End If
             Next
         End If
+    End Sub
+
+
+    Private Sub ajustarColumnasLV()
+
+        Dim columnasVisibles As Integer = 0
+        Dim gapScroll As Integer = 20
+
+        Try
+            For iBucle As Integer = 1 To Encabezados.Length - 1
+                If Encabezados(iBucle).Visible Then columnasVisibles += 1
+            Next
+            For iBucle As Integer = 0 To ListView1.Columns.Count - 1
+                ListView1.Columns(iBucle).Width = (ListView1.Width - gapScroll) / (columnasVisibles + 1)
+            Next
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+        End Try
+
+    End Sub
+
+    Private Sub Button24_Click(sender As Object, e As EventArgs) Handles Button24.Click
+
+        ajustarColumnasLV()
+
     End Sub
 End Class

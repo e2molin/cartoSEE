@@ -138,6 +138,7 @@ Partial Class frmDocumentacion
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Button7 = New System.Windows.Forms.Button()
         Me.Button9 = New System.Windows.Forms.Button()
+        Me.Button24 = New System.Windows.Forms.Button()
         Me.ContextMenuStrip1.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
@@ -329,7 +330,7 @@ Partial Class frmDocumentacion
         Me.Button23.Size = New System.Drawing.Size(65, 50)
         Me.Button23.TabIndex = 39
         Me.Button23.Text = "CdD"
-        Me.Button23.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.Button23.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         Me.Button23.UseVisualStyleBackColor = True
         '
         'Button22
@@ -1095,7 +1096,7 @@ Partial Class frmDocumentacion
         Me.Button16.Name = "Button16"
         Me.Button16.Size = New System.Drawing.Size(60, 55)
         Me.Button16.TabIndex = 20
-        Me.Button16.Text = "Actualiz"
+        Me.Button16.Text = "Refresca"
         Me.Button16.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         Me.Button16.UseVisualStyleBackColor = True
         '
@@ -1322,19 +1323,20 @@ Partial Class frmDocumentacion
         '
         Me.Button7.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button7.Image = CType(resources.GetObject("Button7.Image"), System.Drawing.Image)
-        Me.Button7.Location = New System.Drawing.Point(727, 5)
+        Me.Button7.Location = New System.Drawing.Point(845, 5)
         Me.Button7.Name = "Button7"
         Me.Button7.Size = New System.Drawing.Size(60, 55)
         Me.Button7.TabIndex = 24
         Me.Button7.Text = "Carrito"
         Me.Button7.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         Me.Button7.UseVisualStyleBackColor = True
+        Me.Button7.Visible = False
         '
         'Button9
         '
         Me.Button9.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button9.Image = CType(resources.GetObject("Button9.Image"), System.Drawing.Image)
-        Me.Button9.Location = New System.Drawing.Point(665, 5)
+        Me.Button9.Location = New System.Drawing.Point(725, 5)
         Me.Button9.Name = "Button9"
         Me.Button9.Size = New System.Drawing.Size(60, 55)
         Me.Button9.TabIndex = 25
@@ -1342,11 +1344,24 @@ Partial Class frmDocumentacion
         Me.Button9.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         Me.Button9.UseVisualStyleBackColor = True
         '
+        'Button24
+        '
+        Me.Button24.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button24.Image = CType(resources.GetObject("Button24.Image"), System.Drawing.Image)
+        Me.Button24.Location = New System.Drawing.Point(665, 5)
+        Me.Button24.Name = "Button24"
+        Me.Button24.Size = New System.Drawing.Size(60, 55)
+        Me.Button24.TabIndex = 33
+        Me.Button24.Text = "Ajustar"
+        Me.Button24.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+        Me.Button24.UseVisualStyleBackColor = True
+        '
         'frmDocumentacion
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1845, 945)
+        Me.Controls.Add(Me.Button24)
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.GroupBox3)
@@ -1515,4 +1530,5 @@ Partial Class frmDocumentacion
     Friend WithEvents mnuSetZIndex As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuSetZIndexBulk As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents Button23 As Button
+    Friend WithEvents Button24 As Button
 End Class

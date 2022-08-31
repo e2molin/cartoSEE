@@ -121,6 +121,7 @@
     <Compile Include="Clases\DocCartoGEODOCAT\docCartoSEETipoDocu.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\FlagsProperties.vb" />
     <Compile Include="Clases\Genericas\BaseConversor.vb" />
+    <Compile Include="Clases\Genericas\GEOCoordenada.vb" />
     <Compile Include="Clases\InputDialog.vb">
       <SubType>Form</SubType>
     </Compile>

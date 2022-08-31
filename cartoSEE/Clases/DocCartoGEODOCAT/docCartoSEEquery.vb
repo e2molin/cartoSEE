@@ -132,6 +132,35 @@
         rellenarDataset()
     End Sub
 
+    Sub getDocsSIDDAE_ByEntorno(ByVal Xmax As Integer, ByVal Ymax As Integer, ByVal Xmin As Integer, ByVal Ymin As Integer)
+
+        Dim CadenaSQLSpacial As String
+        'Obtenemos las líneas límite dentro del entorno
+        CadenaSQLSpacial = "SELECT archivo_id FROM bdsidschema.contornos WHERE ST_Intersects(" &
+                            "contornos.geom," &
+                            "ST_GeomFromText('POLYGON((" &
+                            Xmin & " " & Ymax & "," &
+                            Xmax & " " & Ymax & "," &
+                            Xmax & " " & Ymin & "," &
+                            Xmin & " " & Ymin & "," &
+                            Xmin & " " & Ymax & "))',23030))"
+
+        _consultaSQL = consultaSQLBaseWithoutContour &
+                    "WHERE archivo.idarchivo in ( " &
+                        CadenaSQLSpacial & " " &
+                    ") " &
+                    "group by archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal," &
+                    "archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, archivo.horizontal, archivo.tipodoc_id, archivo.estadodoc_id, archivo.procecarpeta, " &
+                    "archivo.procehoja, archivo.subtipo,archivo.juntaestadistica, archivo.signatura, archivo.observestandar_id,archivo.extraprops, archivo.observaciones,tbtipodocumento.tipodoc," &
+                    "archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.titn,archivo.autor,archivo.encabezado,tbestadodocumento.estadodoc, tbobservaciones.observestandar  order by archivo.idarchivo"
+
+
+        rellenarDataset()
+
+    End Sub
+
+
+
 
 
     Sub getDocsCartoSEE_BySQLSentence(ByVal cadSQL As String)

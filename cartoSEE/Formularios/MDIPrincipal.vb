@@ -10,6 +10,7 @@ Public Class MDIPrincipal
     Dim quitarAcento As New Destildator
     Private m_ChildFormNumber As Integer = 0
 
+
     Private Sub ToolBarToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ToolBarToolStripMenuItem.Click
         Me.ToolStrip.Visible = Me.ToolBarToolStripMenuItem.Checked
     End Sub
@@ -90,20 +91,20 @@ Public Class MDIPrincipal
         '-------------------------------------Autenticación del usuario
 
         Try
-                My.Forms.LoginForm.ShowDialog()
-            Catch
-                Application.DoEvents()
-            End Try
-            If My.Forms.LoginForm.DialogResult = Windows.Forms.DialogResult.OK Then
-                My.Forms.LoginForm.Dispose()
-                Application.DoEvents()
-            Else
-                My.Forms.LoginForm.Dispose()
-                Application.DoEvents()
-                MessageBox.Show("No dispone de acceso al programa", My.Application.Info.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-                End
-            End If
-            Me.Hide()
+            My.Forms.LoginForm.ShowDialog()
+        Catch
+            Application.DoEvents()
+        End Try
+        If My.Forms.LoginForm.DialogResult = Windows.Forms.DialogResult.OK Then
+            My.Forms.LoginForm.Dispose()
+            Application.DoEvents()
+        Else
+            My.Forms.LoginForm.Dispose()
+            Application.DoEvents()
+            MessageBox.Show("No dispone de acceso al programa", My.Application.Info.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            End
+        End If
+        Me.Hide()
 
         '-------------------------------------Resizing inicial
         If Screen.PrimaryScreen.Bounds.Width > 1025 Then
@@ -173,7 +174,6 @@ Public Class MDIPrincipal
         mnuOpenPreferenceFolder.Visible = usuarioMyApp.permisosLista.isUserISTARI
         mnuOpenLoggerFile.Visible = usuarioMyApp.permisosLista.isUserISTARI
 
-
     End Sub
 
     Sub CargarFiltros()
@@ -241,26 +241,28 @@ Public Class MDIPrincipal
 
     Sub ResizingElements()
 
-        Panel1.Width = 200
-
+        Panel1.Width = 250
+        RadioButton1.Width = 250
+        RadioButton2.Width = 250
 
         '--------------------------Resizing de elementos
-        ListBox1.Location = New Point(6, 116)
-        ListBox1.Size = New Point(189, 120)
-        ListBox1.Visible = False
-
-        'RadioButton1.Size = New Point(200, 41)
-        'RadioButton1.Location = New Point(0, 645)
-        'RadioButton2.Size = New Point(200, 41)
-        'RadioButton2.Location = New Point(0, 605)
+        lvMunicipios.Columns.Clear()
+        lvMunicipios.Columns.Add("Propiedad", 215, HorizontalAlignment.Left)
+        lvMunicipios.SmallImageList = ImageList2
+        lvMunicipios.FullRowSelect = True
+        lvMunicipios.View = View.Details
+        lvMunicipios.HeaderStyle = ColumnHeaderStyle.None
+        lvMunicipios.Location = New Point(6, 116)
+        lvMunicipios.Size = New Point(237, 170)
+        lvMunicipios.Visible = False
 
         PictureBox1.Visible = False
         PictureBox3.Visible = False
         PictureBox4.Visible = False
         Panel_DocSearch.Location = New Point(0, 0)
         Panel_GeoSearch.Location = New Point(0, 0)
-        Panel_DocSearch.Size = New Point(200, 800)
-        Panel_GeoSearch.Size = New Point(200, 800)
+        Panel_DocSearch.Size = New Point(250, 800)
+        Panel_GeoSearch.Size = New Point(250, 800)
         Panel_DocSearch.Visible = True
         Panel_GeoSearch.Visible = False
         RadioButton1.Checked = True
@@ -300,11 +302,6 @@ Public Class MDIPrincipal
         mnuGenerarRejilla.Visible = usuarioMyApp.permisosLista.isUserISTARI
         mnuLanzarPlantilla.Visible = usuarioMyApp.permisosLista.isUserISTARI
 
-        If Not usuarioMyApp.permisosLista.isUserISTARI Then
-            If LeeIni("Visores", "MostrarVisorCarto") <> "SI" Then
-                Button7.Visible = False
-            End If
-        End If
         Me.WindowState = FormWindowState.Maximized
 
         ComboBox1.Items.Add("-----")
@@ -334,8 +331,6 @@ Public Class MDIPrincipal
 
 
 
-
-
     End Sub
 
     '----------------------------------------------------------------------------------------------------------------------
@@ -349,20 +344,25 @@ Public Class MDIPrincipal
     End Sub
 
     Private Sub TextBox1_KeyUp(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TextBox1.KeyUp
-        Application.DoEvents()
-        If e.KeyData = Keys.Down And ListBox1.Visible = True Then
-            ListBox1.Focus()
-            ListBox1.SelectedIndex = 0
+
+        If e.KeyData = Keys.Down And lvMunicipios.Visible = True Then
+            lvMunicipios.Focus()
+            lvMunicipios.Items(0).Selected = True
         End If
         If e.KeyData = Keys.Enter Then
             LanzarConsulta(sender, e)
         End If
+
     End Sub
 
 
     Private Sub TextBox1_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TextBox1.TextChanged
+
+
         Dim filas() As DataRow
-        ListBox1.Visible = False
+        Dim elementoLV As ListViewItem
+
+        lvMunicipios.Visible = False
         Autocompletar_colindantes = False
         Autocompletar_colindantes = True
         If IsNumeric(TextBox1.Text.Trim) Then
@@ -371,7 +371,6 @@ Public Class MDIPrincipal
         End If
         If TextBox1.Text.Length > 1 And Autocompletar_municipios = True Then
             PictureBox1.Visible = True
-            Application.DoEvents()
             If CheckBox1.Checked = True Then
                 'Trabajamos con los municipios actuales
                 If ComboBox3.SelectedIndex = -1 Then
@@ -391,29 +390,31 @@ Public Class MDIPrincipal
 
             End If
 
+            lvMunicipios.Items.Clear()
 
-            ListBox1.Items.Clear()
             For Each dR As DataRow In filas
-                If CheckBox1.Checked = True Then
-                    'If dR("cod_munihisto").ToString.EndsWith("00") = True Then
-                    ListBox1.Items.Add(New itemData(dR("nombre").ToString, dR("cod_munihisto") & "|" & dR("idmunihisto") & "|" & dR("inecortoActual")))
-                    'End If
+                elementoLV = New ListViewItem : elementoLV.Text = dR("nombre").ToString : elementoLV.Tag = dR("cod_munihisto") & "|" & dR("idmunihisto") & "|" & dR("inecortoActual")
+                If dR("cod_munihisto").ToString.EndsWith("00") Then
+                    elementoLV.ImageIndex = 7
                 Else
-                    ListBox1.Items.Add(New itemData(dR("nombre").ToString, dR("cod_munihisto") & "|" & dR("idmunihisto") & "|" & dR("inecortoActual")))
+                    elementoLV.ImageIndex = 6
                 End If
-                ListBox1.Visible = True
+                elementoLV.ToolTipText = dR("inecortoActual")
+
+                lvMunicipios.Items.Add(elementoLV) : elementoLV = Nothing
+                lvMunicipios.Visible = True
             Next
-            If ListBox1.Items.Count = 1 Then
+            If lvMunicipios.Items.Count = 1 Then
                 Try
                     Autocompletar_municipios = False
-                    Dim Indices() As String = CType(ListBox1.Items(0), itemData).Valor.Split("|")
-                    TextBox1.Text = ListBox1.Items(0).ToString
-                    TextBox1.Tag = CType(ListBox1.Items(0), itemData).Valor
-                    ListBox1.Tag = Indices(1)
-                    ListBox1.Visible = False
+                    Dim Indices() As String = lvMunicipios.Items(0).Tag.Split("|")
+                    TextBox1.Text = lvMunicipios.Items(0).Text
+                    TextBox1.Tag = lvMunicipios.Items(0).Tag
+                    lvMunicipios.Tag = Indices(1)
+                    lvMunicipios.Visible = False
                     Autocompletar_municipios = True
                 Catch
-                    MessageBox.Show("Repita la búsqueda", My.Application.Info.AssemblyName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                    MessageBox.Show("Repita la búsqueda de nuevo", My.Application.Info.AssemblyName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                 End Try
             End If
             PictureBox1.Visible = False
@@ -421,32 +422,33 @@ Public Class MDIPrincipal
 
     End Sub
 
-    Private Sub SeleccionarElementoLB(ByVal sender As Object, ByVal e As System.EventArgs) Handles ListBox1.DoubleClick, ListBox1.Click
+    Private Sub SeleccionarElementoLV(sender As Object, e As EventArgs) Handles lvMunicipios.Click, lvMunicipios.DoubleClick
 
-
-        If ListBox1.SelectedItem Is Nothing Then Exit Sub
+        If lvMunicipios.SelectedItems.Count = 0 Then Exit Sub
         Autocompletar_municipios = False
-        TextBox1.Text = ListBox1.SelectedItem.ToString
-        TextBox1.Tag = CType(ListBox1.Items(ListBox1.SelectedIndex), itemData).Valor
+        TextBox1.Text = lvMunicipios.SelectedItems(0).Text
+        TextBox1.Tag = lvMunicipios.SelectedItems(0).Tag
         Dim Indices() As String = TextBox1.Tag.Split("|")
-        ListBox1.Tag = Indices(1)
+        lvMunicipios.Tag = Indices(1)
         Autocompletar_municipios = True
-        ListBox1.Visible = False
-        If sender.name = "Listbox1" Then LanzarConsulta(sender, e)
-
+        lvMunicipios.Visible = False
+        If sender.name = "lvMunicipios" Then LanzarConsulta(sender, e)
 
     End Sub
 
-    Private Sub ListBox1_KeyUp(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles ListBox1.KeyUp
-        Application.DoEvents()
-        If e.KeyData = Keys.Up And ListBox1.SelectedIndex = 0 Then
+
+    Private Sub lvMunicipios_KeyUp(sender As Object, e As KeyEventArgs) Handles lvMunicipios.KeyUp
+
+        If lvMunicipios.SelectedItems.Count = 0 Then Exit Sub
+        If e.KeyData = Keys.Up And lvMunicipios.SelectedItems(0).Index = 0 Then
             TextBox1.Focus()
-        ElseIf e.KeyData = Keys.Return And ListBox1.SelectedIndex >= 0 Then
-            SeleccionarElementoLB(sender, e)
+        ElseIf e.KeyData = Keys.Return And lvMunicipios.SelectedItems(0).Index >= 0 Then
+            SeleccionarElementoLV(sender, e)
             LanzarConsulta(sender, e)
         End If
 
     End Sub
+
 
     Sub LanzarConsulta(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
 
@@ -571,7 +573,6 @@ Public Class MDIPrincipal
 
         PictureBox3.Visible = False
         Me.Cursor = Cursors.Default
-        Application.DoEvents()
 
     End Sub
 
@@ -683,8 +684,7 @@ Public Class MDIPrincipal
 
 
 
-    Private Sub LimpiarCampos(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-                        Handles Button4.Click, Button5.Click
+    Private Sub LimpiarCampos(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button4.Click, Button5.Click
 
         Dim iBucle As Integer
         Application.DoEvents()
@@ -696,7 +696,8 @@ Public Class MDIPrincipal
         Next
         TextBox1.Text = ""
         TextBox1.Tag = ""
-        ListBox1.Tag = ""
+        'ListBox1.Tag = ""
+        lvMunicipios.Tag = ""
         TextBox2.Text = ""
         TextBox4.Text = ""
         TextBox5.Text = ""
@@ -719,7 +720,8 @@ Public Class MDIPrincipal
         ComboBox6.Text = "-----"
         ComboBox7.Text = "-----"
         ComboBox8.SelectedIndex = -1
-        ListBox1.Visible = False
+        'ListBox1.Visible = False
+        lvMunicipios.Visible = False
         CheckBox1.Checked = False
         TextBox3.Text = ""
         TextBox7.Text = ""
@@ -745,8 +747,6 @@ Public Class MDIPrincipal
             LimpiarCampos(sender, e)
         End If
 
-
-
     End Sub
 
 
@@ -767,15 +767,15 @@ Public Class MDIPrincipal
 
     End Sub
 
-    Private Sub toogleFilterOptions(sender As Object, e As EventArgs) Handles ToolStripButton15.Click, Button1.Click, Button2.Click
-        If Panel1.Width = 200 Then
-            Panel1.Width = 400
-            RadioButton1.Width = 400
-            RadioButton2.Width = 400
+    Private Sub toogleFilterOptions(sender As Object, e As EventArgs) Handles ToolStripButton15.Click, Button1.Click, Button2.Click, Button9.Click
+        If Panel1.Width = 250 Then
+            Panel1.Width = 500
+            RadioButton1.Width = 500
+            RadioButton2.Width = 500
         Else
-            Panel1.Width = 200
-            RadioButton1.Width = 200
-            RadioButton2.Width = 200
+            Panel1.Width = 250
+            RadioButton1.Width = 250
+            RadioButton2.Width = 250
 
         End If
     End Sub
@@ -786,8 +786,6 @@ Public Class MDIPrincipal
                                     mnuTool_AltaDoc.Click,
                                     mnuGenerarRejilla.Click,
                                     mnuLanzarPlantilla.Click, mnuAddECW.Click, mnuAddContornos.Click, mnuMuniHisto.Click, mnuOpenPreferenceFolder.Click, mnuOpenLoggerFile.Click
-
-
 
         If sender.name = "ToolStripButton9" Or sender.name = "mnuTool_AltaDoc" Then
             Dim FormularioCreacion As New frmEdicion
@@ -876,8 +874,6 @@ Public Class MDIPrincipal
 
         End If
 
-
-
     End Sub
 
     Sub LanzarInformes(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _
@@ -957,45 +953,37 @@ Public Class MDIPrincipal
 
         End If
 
-
-
-
     End Sub
 
 
     Sub LanzarConsultaGEO_SIDCARTO(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button6.Click
 
+
+
         Dim Xmax As Double = 0
         Dim Ymax As Double = 0
         Dim Xmin As Double = 0
         Dim Ymin As Double = 0
-        Dim XCentro As Double = 0
-        Dim YCentro As Double = 0
-        Dim Radio As Integer = 0
         Dim TituloConsulta As String = ""
 
-        If TextBox11.Text <> "" And TextBox12.Text <> "" And TextBox13.Text <> "" Then
-            'Compruebo si las coordenadas estan en geograficas, y si es así las paso a UTMED50 para procesar
-            XCentro = TextBox11.Text.Replace(".", ",")
-            YCentro = TextBox12.Text.Replace(".", ",")
+        If TextBox11.Text <> "" And TextBox12.Text <> "" And TextBox13.Text <> "" And TextBox24.Text <> "" Then
 
-            'If DentroEspaña(XCentro, YCentro) = True Then
-            '    If ConversionLLWGS84_to_UTMED50_GSB(XCentro, YCentro) = True Then
-            '        Application.DoEvents()
-            '    Else
-            '        MessageBox.Show("Las coordenadas no pueden convertirse a UTM", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-            '        Exit Sub
-            '    End If
-            'Else
-            '    XCentro = CType(TextBox11.Text.Replace(".", ","), Double)
-            '    YCentro = CType(TextBox12.Text.Replace(".", ","), Double)
-            'End If
-            Radio = CType(TextBox13.Text, Integer)
-            Xmax = XCentro + Radio * 1000
-            Ymax = YCentro + Radio * 1000
-            Xmin = XCentro - Radio * 1000
-            Ymin = YCentro - Radio * 1000
-            TituloConsulta = "Búsqueda por entorno. (" & XCentro.ToString & "," & YCentro.ToString & ") y  radio " & Radio.ToString & " Km"
+            'Dim searchCenter As New GEOCoordenada(TextBox11.Text, TextBox12.Text, TextBox24.Text)
+            Dim centroUTM30 As GEOCoordenada
+            Try
+                Dim searchCenter As New GEOCoordenada(TextBox11.Text, TextBox12.Text, TextBox24.Text)
+                centroUTM30 = searchCenter.convertTo(GEOCoordenada.srs.UTM30_SobreED50)
+                Dim radioSearch = CType(TextBox13.Text, Integer)
+                Xmax = centroUTM30.EastingCoord + radioSearch
+                Ymax = centroUTM30.NorthingCoord + radioSearch
+                Xmin = centroUTM30.EastingCoord - radioSearch
+                Ymin = centroUTM30.NorthingCoord - radioSearch
+            Catch ex As Exception
+
+            End Try
+
+            'Compruebo si las coordenadas estan en geograficas, y si es así las paso a UTMED50 para procesar
+            TituloConsulta = "Búsqueda por entorno. (" & TextBox11.Text & "," & TextBox12.Text & ") y  radio " & TextBox13.Text & " m"
         ElseIf TextBox7.Text <> "" And TextBox3.Text <> "" And TextBox9.Text <> "" And TextBox10.Text <> "" Then
             Xmax = CType(TextBox7.Text.Replace(".", ","), Double)
             Ymax = CType(TextBox3.Text.Replace(".", ","), Double)
@@ -1016,6 +1004,9 @@ Public Class MDIPrincipal
             'End If
             TituloConsulta = "Búsqueda por entorno. (" & Xmax.ToString & "," & Ymax.ToString & ") (" & Xmin.ToString & "," & Ymin.ToString & ")"
         End If
+
+        Application.DoEvents()
+
         If Xmax = 0 Or Ymax = 0 Or Xmin = 0 Or Ymin = 0 Then Exit Sub
         If Xmax - Xmin > 200000 Or Ymax - Ymin > 200000 Then
             MessageBox.Show("Reduzca el entorno de la búsqueda", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -1029,8 +1020,6 @@ Public Class MDIPrincipal
         FrmResult.CargarDatosSIDCARTO_By_Entorno(CType(Xmax, Integer), CType(Ymax, Integer), CType(Xmin, Integer), CType(Ymin, Integer))
         FrmResult.Show()
         PictureBox4.Visible = False
-
-
 
     End Sub
 
@@ -1342,20 +1331,14 @@ Public Class MDIPrincipal
     End Sub
 
     Private Sub Button7_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button7.Click
-        For Each ChildForm As Form In Me.MdiChildren
-            If ChildForm.Tag = "visorcarto" Then
-                ChildForm.Show()
-                ChildForm.Focus()
-                Exit Sub
-            End If
-        Next
 
-        MessageBox.Show("Herranmienta no diaponible")
-        'Dim visor As MapInstance
-        'visor = New MapInstance
-        'visor.Tag = "visorcarto"
-        'visor.MdiParent = Me
-        'visor.Show()
+        Try
+            Process.Start(visorCartociudad)
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, AplicacionTitulo)
+            Exit Sub
+        End Try
+
     End Sub
 
     Private Sub mnuLinkCdDMinutas_Click(sender As Object, e As EventArgs) Handles mnuLinkCdDMIPAC.Click, mnuLinkCdDPLPOB.Click, mnuLinkCdDPLEDI.Click, mnuLinkCdDHKPUP.Click, mnuLinkCdDAT.Click
@@ -1409,5 +1392,80 @@ Public Class MDIPrincipal
 
     End Sub
 
+    Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click
+        Dim linkCoordenadas As String = ""
+        Dim cadAnaliz As String = ""
+        Dim partesAnaliz() As String
+        Dim cadCoors() As String
+        Dim cadZoom As String
+        Dim cadEPSG As String
+        If My.Computer.Clipboard.ContainsText Then
 
+            linkCoordenadas = My.Computer.Clipboard.GetText()
+            'MessageBox.Show(linkCoordenadas)
+        End If
+
+
+        If linkCoordenadas.StartsWith("https://www.cartociudad.es/visor?") Then
+            cadAnaliz = linkCoordenadas.Replace("https://www.cartociudad.es/visor?", "")
+        ElseIf linkCoordenadas.StartsWith("http://www.cartociudad.es/visor?") Then
+            cadAnaliz = linkCoordenadas.Replace("http://www.cartociudad.es/visor?", "")
+        Else
+            MessageBox.Show("No se encuentran coordendas en el enlace  del portapapeles." & System.Environment.NewLine & linkCoordenadas, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            Exit Sub
+        End If
+        partesAnaliz = cadAnaliz.Split("&")
+        If partesAnaliz(0).StartsWith("center=") = False Or partesAnaliz(1).StartsWith("zoom=") = False Or partesAnaliz(2).StartsWith("srs=") = False Then
+            MessageBox.Show("No se encuentran coordendas en el enlace  del portapapeles." & System.Environment.NewLine & linkCoordenadas, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            Exit Sub
+        End If
+        cadCoors = partesAnaliz(0).Replace("center=", "").Split(",")
+        cadZoom = partesAnaliz(1).Replace("zoom=", "")
+        cadEPSG = partesAnaliz(2).Replace("srs=", "")
+
+        Dim posicionCaptur As New GEOCoordenada
+        Dim salida As New GEOCoordenada
+        Try
+            posicionCaptur = New GEOCoordenada(cadCoors(0), cadCoors(1), GEOCoordenada.srs.GOOGLE_SphericalMercator)
+            salida = posicionCaptur.convertTo(GEOCoordenada.srs.GEO_ETRS89)
+            TextBox11.Text = Math.Round(posicionCaptur.eastingCoord, 0)
+            TextBox12.Text = Math.Round(posicionCaptur.NorthingCoord, 0)
+            'Monitores con resolución 1920x1080 -> Altura de la venta de cartociudad en navegador maximizado -> 800 píxeles
+            'Monitores con resolución 3440x1440 -> Altura de la venta de cartociudad en navegador maximizado -> 1200 píxeles
+            TextBox13.Text = Math.Round(salida.getPixelSize(cadZoom, 256) * System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height * 0.85, 0) ' Considero tamaños de Tile de 256 píxeles y que el mapa ocupaba el 85% de la altura del navegador
+            TextBox24.Text = cadEPSG.ToLower.Replace("*m", "").Replace("epsg:", "")
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+
+
+
+
+    End Sub
+
+    Private Sub Button10_Click(sender As Object, e As EventArgs) Handles Button10.Click
+
+        Dim urlCdD As String
+
+        If TextBox11.Text <> "" And TextBox12.Text <> "" And TextBox24.Text <> "" Then
+
+            'Dim searchCenter As New GEOCoordenada(TextBox11.Text, TextBox12.Text, TextBox24.Text)
+            Dim centroGeoWGS84 As GEOCoordenada
+            Try
+                Dim searchCenter As New GEOCoordenada(TextBox11.Text, TextBox12.Text, TextBox24.Text)
+                centroGeoWGS84 = searchCenter.convertTo(GEOCoordenada.srs.GEO_WGS84)
+                urlCdD = "https://centrodedescargas.cnig.es/CentroDescargas/buscador.do?crs=EPSG:3857&BBOX=" &
+                                centroGeoWGS84.EastingCoord.ToString.Replace(",", ".") & "," &
+                                centroGeoWGS84.NorthingCoord.ToString.Replace(",", ".") & "," &
+                                centroGeoWGS84.EastingCoord.ToString.Replace(",", ".") & "," &
+                                centroGeoWGS84.NorthingCoord.ToString.Replace(",", ".")
+
+                Process.Start(urlCdD)
+            Catch ex As Exception
+                MessageBox.Show(ex.Message, AplicacionTitulo)
+            End Try
+
+        End If
+
+    End Sub
 End Class
