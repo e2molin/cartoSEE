@@ -294,7 +294,7 @@ Public Class frmEdicionesTablas
 
         If Me.Tag = 1 Then
             ElemBorrar = ListView1.SelectedItems(0).Tag
-            ObtenerEscalar("SELECT count(*) FROM archivo where tipodoc_id=" & ElemBorrar, Result)
+            ObtenerEscalar("SELECT count(*) FROM bdsidschema.archivo where tipodoc_id=" & ElemBorrar, Result)
             NumElementos = IIf(IsNumeric(Result), CType(Result, Integer), 0)
             If NumElementos > 0 Then
                 MessageBox.Show("Hay elementos asociados a este tipo de documento. No se puede eliminar.", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -302,11 +302,11 @@ Public Class frmEdicionesTablas
             End If
             If MessageBox.Show("¿Desea eliminar este tipo de documento:" & ListView1.SelectedItems(0).Text & "?", AplicacionTitulo, MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.No Then Exit Function
             ReDim CadSQL(0)
-            CadSQL(0) = "DELETE FROM tbtipodocumento where idtipodoc=" & ElemBorrar.ToString
+            CadSQL(0) = "DELETE FROM bdsidschema.tbtipodocumento where idtipodoc=" & ElemBorrar.ToString
             BorrarElemento = ExeTran(CadSQL)
         ElseIf Me.Tag = 2 Then
             ElemBorrar = ListView1.SelectedItems(0).Tag
-            ObtenerEscalar("SELECT count(*) FROM archivo where idobservestandar=" & ElemBorrar, Result)
+            ObtenerEscalar("SELECT count(*) FROM bdsidschema.archivo where idobservestandar=" & ElemBorrar, Result)
             NumElementos = IIf(IsNumeric(Result), CType(Result, Integer), 0)
             If NumElementos > 0 Then
                 MessageBox.Show("Hay elementos asociados con esta observación. No se puede eliminar.", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -314,11 +314,11 @@ Public Class frmEdicionesTablas
             End If
             If MessageBox.Show("¿Desea eliminar esta observación:" & ListView1.SelectedItems(0).Text & "?", AplicacionTitulo, MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.No Then Exit Function
             ReDim CadSQL(0)
-            CadSQL(0) = "DELETE FROM tbobservaciones where idobservestandar=" & ElemBorrar.ToString
+            CadSQL(0) = "DELETE FROM bdsidschema.tbobservaciones where idobservestandar=" & ElemBorrar.ToString
             BorrarElemento = ExeTran(CadSQL)
         ElseIf Me.Tag = 3 Then
             ElemBorrar = ListView1.SelectedItems(0).Tag
-            ObtenerEscalar("SELECT count(*) FROM archivo where idestadodoc=" & ElemBorrar, Result)
+            ObtenerEscalar("SELECT count(*) FROM bdsidschema.archivo where idestadodoc=" & ElemBorrar, Result)
             NumElementos = IIf(IsNumeric(Result), CType(Result, Integer), 0)
             If NumElementos > 0 Then
                 MessageBox.Show("Hay elementos asociados con este estado de conservación. No se puede eliminar.", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -326,13 +326,13 @@ Public Class frmEdicionesTablas
             End If
             If MessageBox.Show("¿Desea eliminar este estado de conservación:" & ListView1.SelectedItems(0).Text & "?", AplicacionTitulo, MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.No Then Exit Function
             ReDim CadSQL(0)
-            CadSQL(0) = "DELETE FROM tbestadodocumento where idestadodoc=" & ElemBorrar.ToString
+            CadSQL(0) = "DELETE FROM bdsidschema.tbestadodocumento where idestadodoc=" & ElemBorrar.ToString
             BorrarElemento = ExeTran(CadSQL)
         ElseIf Me.Tag = 4 Then
             ElemBorrar = ListView1.SelectedItems(0).Tag
             If MessageBox.Show("¿Desea eliminar esta conversión de unidades:" & ListView1.SelectedItems(0).Text & "?", AplicacionTitulo, MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.No Then Exit Function
             ReDim CadSQL(0)
-            CadSQL(0) = "DELETE FROM tbequivalencias where id_equivalencia=" & ElemBorrar.ToString
+            CadSQL(0) = "DELETE FROM bdsidschema.tbequivalencias where id_equivalencia=" & ElemBorrar.ToString
             BorrarElemento = ExeTran(CadSQL)
         End If
 
@@ -351,9 +351,9 @@ Public Class frmEdicionesTablas
             End If
             idElem = ListView1.SelectedItems(0).Tag
             ReDim ListaSQL(0)
-            ListaSQL(0) = "UPDATE tbtipodocumento SET " & _
-                            "tipodoc=" & "'" & TextBox1.Text.Replace("'", "`") & "'," & _
-                            "dirrepo=" & "'" & TextBox2.Text.Replace("'", "`") & "' " & _
+            ListaSQL(0) = "UPDATE bdsidschema.tbtipodocumento SET " &
+                            "tipodoc=" & "'" & TextBox1.Text.Replace("'", "`") & "'," &
+                            "dirrepo=" & "'" & TextBox2.Text.Replace("'", "`") & "' " &
                             "WHERE idtipodoc=" & idElem
         ElseIf Me.Tag = 2 Then
             If TextBox1.Text.Trim = "" Then
@@ -362,8 +362,8 @@ Public Class frmEdicionesTablas
             End If
             idElem = ListView1.SelectedItems(0).Tag
             ReDim ListaSQL(0)
-            ListaSQL(0) = "UPDATE tbobservaciones SET " & _
-                            "observestandar=" & "'" & TextBox1.Text.Replace("'", "`") & "' " & _
+            ListaSQL(0) = "UPDATE bdsidschema.tbobservaciones SET " &
+                            "observestandar=" & "'" & TextBox1.Text.Replace("'", "`") & "' " &
                             "WHERE idobservestandar=" & idElem
         ElseIf Me.Tag = 3 Then
             If TextBox1.Text.Trim = "" Then
@@ -372,8 +372,8 @@ Public Class frmEdicionesTablas
             End If
             idElem = ListView1.SelectedItems(0).Tag
             ReDim ListaSQL(0)
-            ListaSQL(0) = "UPDATE tbestadodocumento SET " & _
-                            "estadodoc=" & "'" & TextBox1.Text.Replace("'", "`") & "' " & _
+            ListaSQL(0) = "UPDATE bdsidschema.tbestadodocumento SET " &
+                            "estadodoc=" & "'" & TextBox1.Text.Replace("'", "`") & "' " &
                             "WHERE idestadodoc=" & idElem
         ElseIf Me.Tag = 4 Then
             If TextBox1.Text.Trim = "" Or TextBox2.Text.Trim = "" Then
@@ -382,10 +382,10 @@ Public Class frmEdicionesTablas
             End If
             idElem = ListView1.SelectedItems(0).Tag
             ReDim ListaSQL(0)
-            ListaSQL(0) = "UPDATE tbequivalencias SET " & _
-                            "nombre=" & "'" & TextBox1.Text.Replace("'", "`") & "'," & _
-                            "sup_m2=" & "" & TextBox2.Text.Replace(",", ".") & "," & _
-                            "comentario=" & "'" & TextBox3.Text.Replace("'", "`") & "' " & _
+            ListaSQL(0) = "UPDATE bdsidschema.tbequivalencias SET " &
+                            "nombre=" & "'" & TextBox1.Text.Replace("'", "`") & "'," &
+                            "sup_m2=" & "" & TextBox2.Text.Replace(",", ".") & "," &
+                            "comentario=" & "'" & TextBox3.Text.Replace("'", "`") & "' " &
                             "WHERE idequivalencia=" & idElem
         End If
         Application.DoEvents()
@@ -410,21 +410,21 @@ Public Class frmEdicionesTablas
                 MessageBox.Show("Escriba un nombre para el tipo de documento", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
                 Exit Function
             End If
-            ObtenerEscalar("SELECT nextval('tbtipodocumento_idtipodoc_seq')", Result)
+            ObtenerEscalar("SELECT nextval('bdsidschema.tbtipodocumento_idtipodoc_seq')", Result)
             idElem = IIf(IsNumeric(Result), CInt(Result), 0)
             ReDim ListaSQL(0)
-            ListaSQL(0) = "INSERT INTO tbtipodocumento (idtipodoc,tipodoc,dirrepo) VALUES (" & idElem & "," & _
-                            "'" & TextBox1.Text.Replace("'", "`") & "','" & _
+            ListaSQL(0) = "INSERT INTO bdsidschema.tbtipodocumento (idtipodoc,tipodoc,dirrepo) VALUES (" & idElem & "," &
+                            "'" & TextBox1.Text.Replace("'", "`") & "','" &
                             TextBox2.Text.Replace("'", "`") & "')"
         ElseIf Me.Tag = 2 Then
             If TextBox1.Text.Trim = "" Then
                 MessageBox.Show("Escriba un nombre para la observación", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
                 Exit Function
             End If
-            ObtenerEscalar("SELECT nextval('tbobservaciones_idobservestandar_seq')", Result)
+            ObtenerEscalar("SELECT nextval('bdsidschema.tbobservaciones_idobservestandar_seq')", Result)
             idElem = IIf(IsNumeric(Result), CInt(Result), 0)
             ReDim ListaSQL(0)
-            ListaSQL(0) = "INSERT INTO tbobservaciones (idobservestandar,observestandar) VALUES (" & _
+            ListaSQL(0) = "INSERT INTO bdsidschema.tbobservaciones (idobservestandar,observestandar) VALUES (" &
                             idElem & ",'" & TextBox1.Text.Replace("'", "`") & "')"
 
         ElseIf Me.Tag = 3 Then
@@ -432,10 +432,10 @@ Public Class frmEdicionesTablas
                 MessageBox.Show("Escriba un nombre para el estado de conservación", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
                 Exit Function
             End If
-            ObtenerEscalar("SELECT nextval('tbestadodocumento_idestadodoc_seq')", Result)
+            ObtenerEscalar("SELECT nextval('bdsidschema.tbestadodocumento_idestadodoc_seq')", Result)
             idElem = IIf(IsNumeric(Result), CInt(Result), 0)
             ReDim ListaSQL(0)
-            ListaSQL(0) = "INSERT INTO tbestadodocumento (idestadodoc,estadodoc) VALUES (" & _
+            ListaSQL(0) = "INSERT INTO bdsidschema.tbestadodocumento (idestadodoc,estadodoc) VALUES (" &
                             idElem & ",'" & TextBox1.Text.Replace("'", "`") & "')"
 
         ElseIf Me.Tag = 4 Then
@@ -443,13 +443,13 @@ Public Class frmEdicionesTablas
                 MessageBox.Show("Escriba un nombre y equivalencia para la unidad", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
                 Exit Function
             End If
-            ObtenerEscalar("SELECT nextval('tbequivalencias_idequivalencia_seq')", Result)
+            ObtenerEscalar("SELECT nextval('bdsidschema.tbequivalencias_idequivalencia_seq')", Result)
             idElem = IIf(IsNumeric(Result), CInt(Result), 0)
             ReDim ListaSQL(0)
-            ListaSQL(0) = "INSERT INTO tbequivalencias (nombre,sup_m2,idequivalencia,comentario) VALUES (" & _
-                            "'" & TextBox1.Text.Replace("'", "`") & "'," & _
-                            "" & TextBox2.Text & "," & _
-                            "" & idElem & "," & _
+            ListaSQL(0) = "INSERT INTO bdsidschema.tbequivalencias (nombre,sup_m2,idequivalencia,comentario) VALUES (" &
+                            "'" & TextBox1.Text.Replace("'", "`") & "'," &
+                            "" & TextBox2.Text & "," &
+                            "" & idElem & "," &
                             "'" & TextBox3.Text.Replace("'", "`") & "')"
 
         End If

@@ -603,7 +603,8 @@ Public Class frmDocumentacion
         registrarDatabaseLog("Informe documentos sin contorno", filter)
         resultsetGeodocat = New docCartoSEEquery
         resultsetGeodocat.flag_CargarFicherosGEO = True
-        resultsetGeodocat.getDocsGEODOCAT_WithoutContour(filter)
+        resultsetGeodocat.getDocsGEODOCAT_WithGeometry(filter)
+        Application.DoEvents()
         resizingElements()
         populateListView()
 
@@ -698,7 +699,13 @@ Public Class frmDocumentacion
         Dim iBucle As Integer
         Dim iBucleTMP As Integer
         'Dim TmpDoc() As docSIDCARTO
-        If resultsetGeodocat.resultados.Count = 0 Then Exit Sub
+        If resultsetGeodocat.resultados.Count = 0 Then
+            MessageBox.Show("Ningún documento satisface los criterios de búsqueda", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+            ToolStripStatusLabel1.Text = "Resultados :  documentos"
+            CerrarSpinner()
+            Me.Parent.Cursor = DefaultCursor
+            Exit Sub
+        End If
         'ReDim TmpDoc(ListaDocumentos.GetUpperBound(0))
 
         iBucle = -1
@@ -1036,7 +1043,7 @@ Public Class frmDocumentacion
         Label9.Text = ""
         Label39.Text = ""
         Label40.Text = ""
-
+        If resultsetGeodocat.resultados.Count = 0 Then Exit Sub
 
         Button14.Tag = Pagina - 1
         GroupBox3.Text = "Página " & (Pagina + 1).ToString & " de " & NumPaginas_Album
@@ -2376,22 +2383,24 @@ Public Class frmDocumentacion
     End Sub
 
     Private Sub Button20_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button20.Click
+
         With SaveFileDialog1
             .Title = "Introduzca el nombre del fichero SQL"
             .Filter = "Archivos SQL *.sql|*.Sql"
             .ShowDialog()
         End With
+
         If SaveFileDialog1.FileName = "" Then Exit Sub
 
-        Dim sw As New System.IO.StreamWriter(SaveFileDialog1.FileName, False, System.Text.Encoding.Unicode)
-
-        sw.WriteLine(qryLoaded)
-
-        sw.Close()
-        sw.Dispose()
-
-        MessageBox.Show("SQL sentence guardada", AplicacionTitulo,
-                        MessageBoxButtons.OK, MessageBoxIcon.Information)
+        Try
+            Dim sw As New System.IO.StreamWriter(SaveFileDialog1.FileName, False, System.Text.Encoding.Unicode)
+            sw.WriteLine(resultsetGeodocat.consultaSQL)
+            sw.Close()
+            sw.Dispose()
+            MessageBox.Show("SQL sentence guardada", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
 
     End Sub
 

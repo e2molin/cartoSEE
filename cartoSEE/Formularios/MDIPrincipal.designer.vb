@@ -208,6 +208,7 @@ Partial Class MDIPrincipal
         Me.RadioButton2 = New System.Windows.Forms.RadioButton()
         Me.RadioButton1 = New System.Windows.Forms.RadioButton()
         Me.Panel_GeoSearch = New System.Windows.Forms.Panel()
+        Me.Button10 = New System.Windows.Forms.Button()
         Me.Button9 = New System.Windows.Forms.Button()
         Me.PictureBox5 = New System.Windows.Forms.PictureBox()
         Me.Label35 = New System.Windows.Forms.Label()
@@ -238,7 +239,6 @@ Partial Class MDIPrincipal
         Me.Button6 = New System.Windows.Forms.Button()
         Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
         Me.ImageList2 = New System.Windows.Forms.ImageList(Me.components)
-        Me.Button10 = New System.Windows.Forms.Button()
         Me.MenuStrip.SuspendLayout()
         Me.ToolStrip.SuspendLayout()
         Me.StatusStrip.SuspendLayout()
@@ -830,7 +830,7 @@ Partial Class MDIPrincipal
         Me.ToolStripButton6.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.ToolStripButton6.Name = "ToolStripButton6"
         Me.ToolStripButton6.Size = New System.Drawing.Size(52, 52)
-        Me.ToolStripButton6.Text = "Búsqueda Geográfica"
+        Me.ToolStripButton6.Text = "Búsqueda espacial"
         '
         'ToolStripButton15
         '
@@ -839,7 +839,7 @@ Partial Class MDIPrincipal
         Me.ToolStripButton15.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.ToolStripButton15.Name = "ToolStripButton15"
         Me.ToolStripButton15.Size = New System.Drawing.Size(52, 52)
-        Me.ToolStripButton15.Text = "ToolStripButton15"
+        Me.ToolStripButton15.Text = "Ventana de opciones de filtro"
         '
         'ToolStripSeparator9
         '
@@ -853,7 +853,7 @@ Partial Class MDIPrincipal
         Me.ToolStripButton12.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.ToolStripButton12.Name = "ToolStripButton12"
         Me.ToolStripButton12.Size = New System.Drawing.Size(52, 52)
-        Me.ToolStripButton12.Text = "Ejecutar búsqueda definida"
+        Me.ToolStripButton12.Text = "Ejecutar búsqueda"
         Me.ToolStripButton12.ToolTipText = "Realizar consulta"
         '
         'ToolStripButton17
@@ -863,7 +863,7 @@ Partial Class MDIPrincipal
         Me.ToolStripButton17.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.ToolStripButton17.Name = "ToolStripButton17"
         Me.ToolStripButton17.Size = New System.Drawing.Size(52, 52)
-        Me.ToolStripButton17.Text = "Limpiar campo"
+        Me.ToolStripButton17.Text = "Limpiar campos"
         Me.ToolStripButton17.ToolTipText = "Limpiar campos"
         '
         'ToolStripSeparator3
@@ -1575,7 +1575,7 @@ Partial Class MDIPrincipal
         'Button1
         '
         Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
-        Me.Button1.Location = New System.Drawing.Point(8, 752)
+        Me.Button1.Location = New System.Drawing.Point(8, 579)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(147, 36)
         Me.Button1.TabIndex = 32
@@ -1667,7 +1667,7 @@ Partial Class MDIPrincipal
         'PictureBox3
         '
         Me.PictureBox3.Image = CType(resources.GetObject("PictureBox3.Image"), System.Drawing.Image)
-        Me.PictureBox3.Location = New System.Drawing.Point(225, 794)
+        Me.PictureBox3.Location = New System.Drawing.Point(225, 621)
         Me.PictureBox3.Name = "PictureBox3"
         Me.PictureBox3.Size = New System.Drawing.Size(19, 18)
         Me.PictureBox3.TabIndex = 13
@@ -1679,7 +1679,7 @@ Partial Class MDIPrincipal
         '
         Me.Button3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button3.Image = CType(resources.GetObject("Button3.Image"), System.Drawing.Image)
-        Me.Button3.Location = New System.Drawing.Point(161, 712)
+        Me.Button3.Location = New System.Drawing.Point(161, 539)
         Me.Button3.Name = "Button3"
         Me.Button3.Size = New System.Drawing.Size(83, 76)
         Me.Button3.TabIndex = 9
@@ -1690,7 +1690,7 @@ Partial Class MDIPrincipal
         'Button4
         '
         Me.Button4.Image = CType(resources.GetObject("Button4.Image"), System.Drawing.Image)
-        Me.Button4.Location = New System.Drawing.Point(8, 709)
+        Me.Button4.Location = New System.Drawing.Point(8, 536)
         Me.Button4.Name = "Button4"
         Me.Button4.Size = New System.Drawing.Size(147, 34)
         Me.Button4.TabIndex = 6
@@ -1814,6 +1814,17 @@ Partial Class MDIPrincipal
         Me.Panel_GeoSearch.Name = "Panel_GeoSearch"
         Me.Panel_GeoSearch.Size = New System.Drawing.Size(250, 828)
         Me.Panel_GeoSearch.TabIndex = 15
+        '
+        'Button10
+        '
+        Me.Button10.Image = CType(resources.GetObject("Button10.Image"), System.Drawing.Image)
+        Me.Button10.Location = New System.Drawing.Point(9, 682)
+        Me.Button10.Name = "Button10"
+        Me.Button10.Size = New System.Drawing.Size(234, 49)
+        Me.Button10.TabIndex = 51
+        Me.Button10.Text = "Búsqueda en el Centro de descargas"
+        Me.Button10.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.Button10.UseVisualStyleBackColor = True
         '
         'Button9
         '
@@ -2109,17 +2120,6 @@ Partial Class MDIPrincipal
         Me.ImageList2.Images.SetKeyName(5, "square.png")
         Me.ImageList2.Images.SetKeyName(6, "HourGlass_32.png")
         Me.ImageList2.Images.SetKeyName(7, "Actual_32.png")
-        '
-        'Button10
-        '
-        Me.Button10.Image = CType(resources.GetObject("Button10.Image"), System.Drawing.Image)
-        Me.Button10.Location = New System.Drawing.Point(9, 682)
-        Me.Button10.Name = "Button10"
-        Me.Button10.Size = New System.Drawing.Size(234, 49)
-        Me.Button10.TabIndex = 51
-        Me.Button10.Text = "Búsqueda en el Centro de descargas"
-        Me.Button10.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
-        Me.Button10.UseVisualStyleBackColor = True
         '
         'MDIPrincipal
         '

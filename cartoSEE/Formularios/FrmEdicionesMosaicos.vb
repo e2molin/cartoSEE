@@ -50,7 +50,7 @@ Public Class FrmEdicionesMosaicos
     Sub RellenarDataview()
 
         rcdMosaicos = New DataView
-        If CargarDataView("SELECT iddocdigital,titulo,coleccion,rutamosaico,codmuni FROM docdigital", rcdMosaicos) = False Then
+        If CargarDataView("SELECT iddocdigital,titulo,coleccion,rutamosaico,codmuni FROM bdsidschema.docdigital", rcdMosaicos) = False Then
             MessageBox.Show("No se pueden cargar los mosaicos", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
             Exit Sub
         End If
@@ -91,11 +91,11 @@ Public Class FrmEdicionesMosaicos
         'Ahora Relleno LV con las imágenes que forman el mosaico
         ListView2.Items.Clear()
         resultSET = New DataTable
-        cadSQL = "SELECT archivo.idarchivo,archivo.numdoc,archivo.subdivision,tbtipodocumento.tipodoc,tbtipodocumento.idtipodoc  " & _
-                "FROM archivo INNER JOIN docdigital2archivo ON " & _
-                "archivo.idarchivo=docdigital2archivo.archivo_id " & _
-                "INNER JOIN tbtipodocumento ON archivo.tipodoc_id = tbtipodocumento.idtipodoc " & _
-                "WHERE docdigital2archivo.docdigital_id=" & iRegistro & " " & _
+        cadSQL = "SELECT archivo.idarchivo,archivo.numdoc,archivo.subdivision,tbtipodocumento.tipodoc,tbtipodocumento.idtipodoc  " &
+                "FROM bdsidschema.archivo INNER JOIN bdsidschema.docdigital2archivo ON " &
+                "archivo.idarchivo=docdigital2archivo.archivo_id " &
+                "INNER JOIN bdsidschema.tbtipodocumento ON archivo.tipodoc_id = tbtipodocumento.idtipodoc " &
+                "WHERE docdigital2archivo.docdigital_id=" & iRegistro & " " &
                 "ORDER BY archivo.subdivision"
         CargarRecordset(cadSQL, resultSET)
         Registros = resultSET.Select

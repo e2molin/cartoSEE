@@ -266,9 +266,6 @@ Public Class MDIPrincipal
         Panel_DocSearch.Visible = True
         Panel_GeoSearch.Visible = False
         RadioButton1.Checked = True
-        PictureBox3.Location = New Point(89, Button3.Top)
-        PictureBox3.Visible = False
-
 
         TextBox3.Text = "" '"4545100"
         TextBox7.Text = "" '"594250"
@@ -295,12 +292,14 @@ Public Class MDIPrincipal
         mnuAddContornos.Enabled = usuarioMyApp.permisosLista.editarDocumentacion
         btnExportCdD.Enabled = usuarioMyApp.permisosLista.generarVersionCdD
         mnuExportCdD.Enabled = usuarioMyApp.permisosLista.generarVersionCdD
-        ToolStripButton19.Visible = usuarioMyApp.permisosLista.editarDocumentacion
+        ToolStripButton19.Enabled = usuarioMyApp.permisosLista.editarDocumentacion
+        mnuAdminTools.Enabled = usuarioMyApp.permisosLista.editarDocumentacion
 
         mnuDeveloper.Visible = usuarioMyApp.permisosLista.isUserISTARI
         ToolStripButton1.Visible = usuarioMyApp.permisosLista.isUserISTARI
         mnuGenerarRejilla.Visible = usuarioMyApp.permisosLista.isUserISTARI
         mnuLanzarPlantilla.Visible = usuarioMyApp.permisosLista.isUserISTARI
+        Button9.Visible = usuarioMyApp.permisosLista.isUserISTARI
 
         Me.WindowState = FormWindowState.Maximized
 
@@ -354,6 +353,16 @@ Public Class MDIPrincipal
         End If
 
     End Sub
+
+    Private Sub TextBox23_KeyUp(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TextBox23.KeyUp
+
+        If e.KeyData = Keys.Enter Then
+            LanzarConsulta(sender, e)
+        End If
+
+    End Sub
+
+
 
 
     Private Sub TextBox1_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TextBox1.TextChanged
@@ -477,6 +486,19 @@ Public Class MDIPrincipal
             CodMunicipioINEHistorico = CodigosMuni(0)
             MunicipioID = CodigosMuni(1)
             CodMunicipioINEActual = CodigosMuni(2)
+        ElseIf Not String.IsNullOrEmpty(TextBox23.text) Then
+            If IsNumeric(TextBox23.Text.Trim) Then
+                nSellado = TextBox23.Text.Trim
+            ElseIf obtenerIntervalo(TextBox23.Text.Trim, "-", nSellado1, nSellado2) = True Then
+                Application.DoEvents()
+            ElseIf obtenerIntervalo(TextBox23.Text.Trim, "#", nSellado1, nSellado2) = True Then
+                Application.DoEvents()
+            ElseIf obtenerIntervalo(TextBox23.Text.Trim, ";", listaSellos) = True Then
+                Application.DoEvents()
+            Else
+                Exit Sub
+        End If
+
         Else
 
             If ComboBox3.SelectedIndex <> -1 Then
@@ -755,6 +777,10 @@ Public Class MDIPrincipal
         Panel_DocSearch.Visible = False
         Panel_GeoSearch.Visible = True
         RadioButton2.Checked = True
+        'Como no aceptamos filtros en búsqueda geográfica por ahora, replegamos el panel
+        Panel1.Width = 250
+        RadioButton1.Width = 250
+        RadioButton2.Width = 250
 
     End Sub
 
@@ -768,6 +794,7 @@ Public Class MDIPrincipal
     End Sub
 
     Private Sub toogleFilterOptions(sender As Object, e As EventArgs) Handles ToolStripButton15.Click, Button1.Click, Button2.Click, Button9.Click
+        If RadioButton2.Checked Then Exit Sub
         If Panel1.Width = 250 Then
             Panel1.Width = 500
             RadioButton1.Width = 500
@@ -913,9 +940,9 @@ Public Class MDIPrincipal
             frmResult.MdiParent = Me
             frmResult.Text = textoInforme
             If codProv = 0 Then
-                frmResult.getGeodocatDocsWithoutContour("geom Is null")
+                frmResult.getGeodocatDocsWithoutContour("the_geom Is null")
             Else
-                frmResult.getGeodocatDocsWithoutContour("geom Is null And provincias.idprovincia=" & codProv)
+                frmResult.getGeodocatDocsWithoutContour("the_geom Is null And provincias.idprovincia=" & codProv)
             End If
 
             frmResult.Show()

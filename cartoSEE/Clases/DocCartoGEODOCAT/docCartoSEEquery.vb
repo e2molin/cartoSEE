@@ -55,9 +55,9 @@
 
     End Sub
 
-    Sub getDocsGEODOCAT_WithoutContour(ByVal Filtro As String)
+    Sub getDocsGEODOCAT_WithGeometry(ByVal Filtro As String)
 
-        _consultaSQL = consultaSQLBaseWithoutContour &
+        _consultaSQL = consultaSQLBaseWithContour &
                     "WHERE " & Filtro & " " &
                       "group by archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal," &
                       "archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, archivo.horizontal, archivo.tipodoc_id, archivo.estadodoc_id, archivo.procecarpeta, " &
