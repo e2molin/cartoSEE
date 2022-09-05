@@ -453,11 +453,9 @@ Module GestionDocumentacion
         End If
 
         If PlantillaGIS <> "" Then
-            sw = New System.IO.StreamWriter(AppFolderSetting & "\LaunchGM.gmw",
-                                    True, System.Text.Encoding.Default)
+            sw = New System.IO.StreamWriter(AppFolderSetting & "\LaunchGM.gmw", True, System.Text.Encoding.Default)
         Else
-            sw = New System.IO.StreamWriter(AppFolderSetting & "\LaunchGM.gmw",
-                                    False, System.Text.Encoding.Default)
+            sw = New System.IO.StreamWriter(AppFolderSetting & "\LaunchGM.gmw", False, System.Text.Encoding.Default)
             sw.WriteLine("GLOBAL_MAPPER_SCRIPT VERSION=""1.00"" FILENAME=""" & AppFolderSetting & "\LaunchGM.gmw" & """")
             sw.WriteLine("UNLOAD_ALL")
         End If

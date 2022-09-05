@@ -333,12 +333,12 @@ Public Class FrmEdicionesMosaicos
             Exit Sub
         End If
         For i = 0 To DataGridView1.SelectedRows.Count - 1
-            RutasECW.Add(rutaRepoGeorref & "\MOSAICOS_DIGITALES\28\" & _
-                            DataGridView1.Item(3, DataGridView1.SelectedRows(i).Index).Value.ToString)
+            RutasECW.Add(rutaRepoGeorref & "\MOSAICOS_DIGITALES\28\" & DataGridView1.Item(3, DataGridView1.SelectedRows(i).Index).Value.ToString)
         Next
         If RutasECW.Count > 0 Then
             If GenerarProyectoGM(RutasECW, False) = True Then
-                LanzarVisorExterno(My.Application.Info.DirectoryPath & "\LaunchGM.gmw")
+                'LanzarVisorExterno(My.Application.Info.DirectoryPath & "\LaunchGM.gmw")
+                LanzarVisorExterno(AppFolderSetting & "\LaunchGM.gmw")
             End If
         End If
 
