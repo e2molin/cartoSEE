@@ -4,14 +4,14 @@
 
     Private Sub frmTerritorios_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
-        Me.Size = New Point(720, 430)
+        Me.Size = New Point(1024, 680)
 
-        DataGridView1.Location = New Point(0, 43)
-        DataGridView1.Size = New Point(Me.Width - 15, Me.Height - 100)
+        DataGridView1.Location = New Point(0, 55)
+        DataGridView1.Size = New Point(Me.Width - 15, Me.Height - 130)
         DataGridView1.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Bottom Or AnchorStyles.Right
 
-        TableLayoutPanel1.Location = New Point(0, 43)
-        TableLayoutPanel1.Size = New Point(Me.Width - 15, Me.Height - 100)
+        TableLayoutPanel1.Location = New Point(0, 55)
+        TableLayoutPanel1.Size = New Point(Me.Width - 15, Me.Height - 130)
         TableLayoutPanel1.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Bottom Or AnchorStyles.Right
         TableLayoutPanel1.Visible = False
 
@@ -44,6 +44,7 @@
 
 
     Private Sub btnTodos_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTodos.Click, btnDetalles.Click
+
         If IsNothing(DataGridView1.CurrentCell) Then Exit Sub
 
         DataGridView1.Visible = False
@@ -250,39 +251,22 @@
     End Sub
 
 
-    'Sub rellenarColindantes(ByVal codPoligono As Integer)
-
-    '    Dim listaColin As New ArrayList
-    '    Dim elementoLV As ListViewItem
-    '    Dim g1 As ListViewGroup
-
-    '    DameColindantesByIdTerritorio(codPoligono, listaColin)
-    '    lvColin.Items.Clear()
-    '    g1 = New ListViewGroup("Territorios colindantes")
-    '    lvColin.Groups.Add(g1)
-    '    lvColin.HeaderStyle = ColumnHeaderStyle.None
-    '    If listaColin.Count = 0 Then
-    '        elementoLV = New ListViewItem : elementoLV.Text = "Colindantes no disponibles" : elementoLV.ImageIndex = 4
-    '        elementoLV.Group = g1 : lvColin.Items.Add(elementoLV) : elementoLV = Nothing
-    '    Else
-    '        For Each terri As TerritorioBSID In listaColin
-    '            elementoLV = New ListViewItem : elementoLV.Text = terri.nombre : elementoLV.ImageIndex = 4
-    '            elementoLV.SubItems.Add(String.Format("{0:00000}", terri.municipioINE)) : elementoLV.Group = g1
-    '            lvColin.Items.Add(elementoLV) : elementoLV = Nothing
-    '        Next
-    '    End If
-
-    'End Sub
-
     Sub RellenarDataview()
         Dim SQLBase As String
 
-        SQLBase = "SELECT munihisto.idmunihisto,munihisto.nombremunicipiohistorico,listamunicipios.nombre as nombremunicipioactual," & _
-                "provincias.nombreprovincia,munihisto.cod_munihisto,munihisto.cod_muni,munihisto.provincia_id," & _
-                "listamunicipios.inecorto as codine " & _
-                "FROM munihisto " & _
-                "left JOIN provincias on provincias.idprovincia=munihisto.provincia_id " & _
-                "left JOIN ngmepschema.listamunicipios on munihisto.entidad_id=listamunicipios.identidad"
+        SQLBase = "SELECT MuniHisto.idmunihisto,munihisto.nombremunicipiohistorico," &
+                "listamunicipios.nombre As nombremunicipioactual," &
+                "provincias.nombreprovincia," &
+                "to_char(MuniHisto.cod_munihisto::integer, 'FM0000000'::text) AS cod_munihisto," &
+                "to_char(listamunicipios.inecorto::integer, 'FM00000'::text) AS codine," &
+                "to_char(MuniHisto.provincia_id::integer, 'FM00'::text) AS provincia_id " &
+                "From bdsidschema.munihisto " &
+                "Left Join bdsidschema.provincias on provincias.idprovincia=munihisto.provincia_id " &
+                "Left Join ngmepschema.listamunicipios on munihisto.entidad_id=listamunicipios.identidad"
+
+
+
+
 
         rcdMuniHistos = New DataView
         If CargarDataView(SQLBase, rcdMuniHistos) = False Then
@@ -297,12 +281,14 @@
         DataGridView1.Columns(2).HeaderText = "Municipio Actual"
         DataGridView1.Columns(2).Width = 250
         DataGridView1.Columns(3).HeaderText = "Provincia"
-        DataGridView1.Columns(3).Width = 75
-        DataGridView1.Columns(4).HeaderText = "Código"
-        DataGridView1.Columns(4).Width = 50
-        DataGridView1.Columns(5).Visible = False
+        DataGridView1.Columns(3).Width = 120
+        DataGridView1.Columns(4).HeaderText = "Código INE histórico"
+        DataGridView1.Columns(4).Width = 130
+        DataGridView1.Columns(4).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
+        DataGridView1.Columns(5).HeaderText = "Código INE actual"
+        DataGridView1.Columns(5).Width = 130
+        DataGridView1.Columns(5).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
         DataGridView1.Columns(6).Visible = False
-        DataGridView1.Columns(7).Visible = False
         DataGridView1.ColumnHeadersVisible = True
         ToolStripStatusLabel1.Text = "Número de municipios históricos: " & DataGridView1.RowCount
 
@@ -325,6 +311,8 @@
         Dim muniHEdit As MuniHisto
         Dim indiceGrid As Integer
         Dim idMuni As Integer
+
+        If DataGridView1.CurrentCell.RowIndex < 0 Then Exit Sub
 
         indiceGrid = DataGridView1.CurrentCell.RowIndex
         idMuni = DataGridView1.Item("idmunihisto", indiceGrid).Value.ToString
@@ -373,4 +361,40 @@
 
     End Sub
 
+    Private Sub asignarEnlaceCDD(sender As Object, e As EventArgs) Handles ddEnlacePlanis.Click, ddEnlacePLEDI.Click, ddEnlacePLPOB.Click, ddEnlaceHKPUP.Click
+
+        Dim linkCdD As String = ""
+        Dim indiceGrid As Integer
+        Dim idmunihisto As String = ""
+
+        If DataGridView1.CurrentCell.RowIndex < 0 Then Exit Sub
+
+        indiceGrid = DataGridView1.CurrentCell.RowIndex
+        idmunihisto = DataGridView1.Item("idmunihisto", indiceGrid).Value.ToString
+        If idmunihisto = "" Then Exit Sub
+        Dim muniHistoSel As New MuniHisto(idmunihisto)
+
+        Application.DoEvents()
+
+        If sender.name = "ddEnlacePlanis" Then
+            linkCdD = "https://centrodedescargas.cnig.es/CentroDescargas/buscar.do?filtro.codFamilia=MIPAC&filtro.codIne=" & muniHistoSel.municipioINE_LongFormat
+        ElseIf sender.name = "ddEnlacePLPOB" Then
+            linkCdD = "https://centrodedescargas.cnig.es/CentroDescargas/buscar.do?filtro.codFamilia=PLPOB&filtro.codIne=" & muniHistoSel.municipioINE_LongFormat
+        ElseIf sender.name = "ddEnlacePLEDI" Then
+            linkCdD = "https://centrodedescargas.cnig.es/CentroDescargas/buscar.do?filtro.codFamilia=PLEDI&filtro.codIne=" & muniHistoSel.municipioINE_LongFormat
+        ElseIf sender.name = "ddEnlaceHKPUP" Then
+            linkCdD = "https://centrodedescargas.cnig.es/CentroDescargas/buscar.do?filtro.codFamilia=HKPUP&filtro.codIne=" & muniHistoSel.municipioINE_LongFormat
+        End If
+
+        If linkCdD = "" Then
+            MessageBox.Show("Enlace no disponible", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Exit Sub
+        End If
+        Try
+            Process.Start(linkCdD)
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Exit Sub
+        End Try
+    End Sub
 End Class

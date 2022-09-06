@@ -23,49 +23,54 @@ Partial Class frmMuniHisto
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMuniHisto))
-        Me.ToolStrip1 = New System.Windows.Forms.ToolStrip
-        Me.btnTodos = New System.Windows.Forms.ToolStripButton
-        Me.btnDetalles = New System.Windows.Forms.ToolStripButton
-        Me.btnExportar = New System.Windows.Forms.ToolStripButton
-        Me.btnRefresh = New System.Windows.Forms.ToolStripButton
-        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator
-        Me.ToolStripLabel2 = New System.Windows.Forms.ToolStripLabel
-        Me.cboFiltros = New System.Windows.Forms.ToolStripComboBox
-        Me.ToolStripLabel1 = New System.Windows.Forms.ToolStripLabel
-        Me.txtSearch = New System.Windows.Forms.ToolStripTextBox
-        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
-        Me.btnPrev = New System.Windows.Forms.ToolStripButton
-        Me.btnNext = New System.Windows.Forms.ToolStripButton
-        Me.btnEdit = New System.Windows.Forms.ToolStripButton
-        Me.ToolStripDropDownButton1 = New System.Windows.Forms.ToolStripDropDownButton
-        Me.mnuColumna1 = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuColumna2 = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuColumna3 = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuColumna4 = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuColumna5 = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuColumna6 = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuColumna7 = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuColumna8 = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuColumna9 = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuColumna10 = New System.Windows.Forms.ToolStripMenuItem
-        Me.btnNew = New System.Windows.Forms.ToolStripButton
-        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
-        Me.lvDetails = New System.Windows.Forms.ListView
-        Me.TabControl1 = New System.Windows.Forms.TabControl
-        Me.TabPage1 = New System.Windows.Forms.TabPage
-        Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel
-        Me.Panel2 = New System.Windows.Forms.Panel
-        Me.txtObserv = New System.Windows.Forms.TextBox
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.Panel1 = New System.Windows.Forms.Panel
-        Me.lvColin = New System.Windows.Forms.ListView
-        Me.TabPage2 = New System.Windows.Forms.TabPage
-        Me.DataGridView1 = New System.Windows.Forms.DataGridView
-        Me.StatusStrip1 = New System.Windows.Forms.StatusStrip
-        Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel
-        Me.ToolStripStatusLabel2 = New System.Windows.Forms.ToolStripStatusLabel
-        Me.ToolStripStatusLabel3 = New System.Windows.Forms.ToolStripStatusLabel
-        Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog
+        Me.ToolStrip1 = New System.Windows.Forms.ToolStrip()
+        Me.btnTodos = New System.Windows.Forms.ToolStripButton()
+        Me.btnDetalles = New System.Windows.Forms.ToolStripButton()
+        Me.btnExportar = New System.Windows.Forms.ToolStripButton()
+        Me.btnRefresh = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
+        Me.ToolStripLabel2 = New System.Windows.Forms.ToolStripLabel()
+        Me.cboFiltros = New System.Windows.Forms.ToolStripComboBox()
+        Me.ToolStripLabel1 = New System.Windows.Forms.ToolStripLabel()
+        Me.txtSearch = New System.Windows.Forms.ToolStripTextBox()
+        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+        Me.btnPrev = New System.Windows.Forms.ToolStripButton()
+        Me.btnNext = New System.Windows.Forms.ToolStripButton()
+        Me.btnEdit = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripDropDownButton1 = New System.Windows.Forms.ToolStripDropDownButton()
+        Me.mnuColumna1 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuColumna2 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuColumna3 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuColumna4 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuColumna5 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuColumna6 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuColumna7 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuColumna8 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuColumna9 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuColumna10 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.btnNew = New System.Windows.Forms.ToolStripButton()
+        Me.dropdownEnlacesCDD = New System.Windows.Forms.ToolStripDropDownButton()
+        Me.ddEnlacePlanis = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ddEnlacePLPOB = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ddEnlacePLEDI = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ddEnlaceHKPUP = New System.Windows.Forms.ToolStripMenuItem()
+        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+        Me.lvDetails = New System.Windows.Forms.ListView()
+        Me.TabControl1 = New System.Windows.Forms.TabControl()
+        Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
+        Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.txtObserv = New System.Windows.Forms.TextBox()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.lvColin = New System.Windows.Forms.ListView()
+        Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.DataGridView1 = New System.Windows.Forms.DataGridView()
+        Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
+        Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.ToolStripStatusLabel2 = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.ToolStripStatusLabel3 = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
         Me.ToolStrip1.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
@@ -80,11 +85,11 @@ Partial Class frmMuniHisto
         'ToolStrip1
         '
         Me.ToolStrip1.ImageScalingSize = New System.Drawing.Size(24, 24)
-        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnTodos, Me.btnDetalles, Me.btnExportar, Me.btnRefresh, Me.ToolStripSeparator2, Me.ToolStripLabel2, Me.cboFiltros, Me.ToolStripLabel1, Me.txtSearch, Me.ToolStripSeparator1, Me.btnPrev, Me.btnNext, Me.btnEdit, Me.ToolStripDropDownButton1, Me.btnNew})
+        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnTodos, Me.btnDetalles, Me.btnExportar, Me.btnRefresh, Me.ToolStripSeparator2, Me.ToolStripLabel2, Me.cboFiltros, Me.ToolStripLabel1, Me.txtSearch, Me.ToolStripSeparator1, Me.btnPrev, Me.btnNext, Me.btnEdit, Me.ToolStripDropDownButton1, Me.btnNew, Me.dropdownEnlacesCDD})
         Me.ToolStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow
         Me.ToolStrip1.Location = New System.Drawing.Point(0, 0)
         Me.ToolStrip1.Name = "ToolStrip1"
-        Me.ToolStrip1.Size = New System.Drawing.Size(712, 44)
+        Me.ToolStrip1.Size = New System.Drawing.Size(1008, 53)
         Me.ToolStrip1.TabIndex = 16
         Me.ToolStrip1.Text = "ToolStrip1"
         '
@@ -95,7 +100,7 @@ Partial Class frmMuniHisto
         Me.btnTodos.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None
         Me.btnTodos.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.btnTodos.Name = "btnTodos"
-        Me.btnTodos.Size = New System.Drawing.Size(55, 41)
+        Me.btnTodos.Size = New System.Drawing.Size(65, 50)
         Me.btnTodos.Text = "Todos"
         Me.btnTodos.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         Me.btnTodos.ToolTipText = "Muestra un listado de todos los registros"
@@ -107,7 +112,7 @@ Partial Class frmMuniHisto
         Me.btnDetalles.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None
         Me.btnDetalles.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.btnDetalles.Name = "btnDetalles"
-        Me.btnDetalles.Size = New System.Drawing.Size(55, 41)
+        Me.btnDetalles.Size = New System.Drawing.Size(65, 50)
         Me.btnDetalles.Text = "Detalle"
         Me.btnDetalles.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         Me.btnDetalles.ToolTipText = "Información detallada del registro"
@@ -119,7 +124,7 @@ Partial Class frmMuniHisto
         Me.btnExportar.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None
         Me.btnExportar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.btnExportar.Name = "btnExportar"
-        Me.btnExportar.Size = New System.Drawing.Size(55, 41)
+        Me.btnExportar.Size = New System.Drawing.Size(65, 50)
         Me.btnExportar.Text = "Exportar"
         Me.btnExportar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         Me.btnExportar.ToolTipText = "Exportar todos los resultados a CSV"
@@ -131,7 +136,7 @@ Partial Class frmMuniHisto
         Me.btnRefresh.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None
         Me.btnRefresh.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.btnRefresh.Name = "btnRefresh"
-        Me.btnRefresh.Size = New System.Drawing.Size(55, 41)
+        Me.btnRefresh.Size = New System.Drawing.Size(65, 50)
         Me.btnRefresh.Text = "Refrescar"
         Me.btnRefresh.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         Me.btnRefresh.ToolTipText = "Actualizar datos"
@@ -155,7 +160,7 @@ Partial Class frmMuniHisto
         Me.cboFiltros.Items.AddRange(New Object() {"Todos", "Nombre", "Municipio", "Provincia", "Código"})
         Me.cboFiltros.Margin = New System.Windows.Forms.Padding(-32, 16, 1, 0)
         Me.cboFiltros.Name = "cboFiltros"
-        Me.cboFiltros.Size = New System.Drawing.Size(121, 21)
+        Me.cboFiltros.Size = New System.Drawing.Size(121, 23)
         '
         'ToolStripLabel1
         '
@@ -169,6 +174,7 @@ Partial Class frmMuniHisto
         'txtSearch
         '
         Me.txtSearch.AutoSize = False
+        Me.txtSearch.Font = New System.Drawing.Font("Segoe UI", 9.0!)
         Me.txtSearch.Margin = New System.Windows.Forms.Padding(-76, 16, 1, 0)
         Me.txtSearch.Name = "txtSearch"
         Me.txtSearch.Size = New System.Drawing.Size(80, 21)
@@ -187,7 +193,7 @@ Partial Class frmMuniHisto
         Me.btnPrev.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None
         Me.btnPrev.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.btnPrev.Name = "btnPrev"
-        Me.btnPrev.Size = New System.Drawing.Size(55, 41)
+        Me.btnPrev.Size = New System.Drawing.Size(65, 50)
         Me.btnPrev.Text = "Anterior"
         Me.btnPrev.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         Me.btnPrev.ToolTipText = "Registro anterior"
@@ -200,7 +206,7 @@ Partial Class frmMuniHisto
         Me.btnNext.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None
         Me.btnNext.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.btnNext.Name = "btnNext"
-        Me.btnNext.Size = New System.Drawing.Size(55, 41)
+        Me.btnNext.Size = New System.Drawing.Size(65, 50)
         Me.btnNext.Text = "Siguiente"
         Me.btnNext.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         Me.btnNext.ToolTipText = "Registro siguiente"
@@ -212,7 +218,7 @@ Partial Class frmMuniHisto
         Me.btnEdit.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None
         Me.btnEdit.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.btnEdit.Name = "btnEdit"
-        Me.btnEdit.Size = New System.Drawing.Size(55, 41)
+        Me.btnEdit.Size = New System.Drawing.Size(65, 50)
         Me.btnEdit.Text = "Editar"
         Me.btnEdit.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         Me.btnEdit.ToolTipText = "Edición del documento"
@@ -225,7 +231,7 @@ Partial Class frmMuniHisto
         Me.ToolStripDropDownButton1.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None
         Me.ToolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.ToolStripDropDownButton1.Name = "ToolStripDropDownButton1"
-        Me.ToolStripDropDownButton1.Size = New System.Drawing.Size(70, 41)
+        Me.ToolStripDropDownButton1.Size = New System.Drawing.Size(70, 50)
         Me.ToolStripDropDownButton1.Text = "Columnas"
         Me.ToolStripDropDownButton1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         Me.ToolStripDropDownButton1.ToolTipText = "Ocultar y mostrar columnas"
@@ -338,16 +344,51 @@ Partial Class frmMuniHisto
         Me.btnNew.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None
         Me.btnNew.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.btnNew.Name = "btnNew"
-        Me.btnNew.Size = New System.Drawing.Size(55, 41)
+        Me.btnNew.Size = New System.Drawing.Size(65, 50)
         Me.btnNew.Text = "Nuevo"
         Me.btnNew.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         Me.btnNew.ToolTipText = "Edición del documento"
         '
+        'dropdownEnlacesCDD
+        '
+        Me.dropdownEnlacesCDD.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ddEnlacePlanis, Me.ddEnlacePLPOB, Me.ddEnlacePLEDI, Me.ddEnlaceHKPUP})
+        Me.dropdownEnlacesCDD.Image = CType(resources.GetObject("dropdownEnlacesCDD.Image"), System.Drawing.Image)
+        Me.dropdownEnlacesCDD.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.dropdownEnlacesCDD.Name = "dropdownEnlacesCDD"
+        Me.dropdownEnlacesCDD.Size = New System.Drawing.Size(80, 43)
+        Me.dropdownEnlacesCDD.Text = "Enlace CdD"
+        Me.dropdownEnlacesCDD.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+        Me.dropdownEnlacesCDD.ToolTipText = "Enlaces CdD"
+        '
+        'ddEnlacePlanis
+        '
+        Me.ddEnlacePlanis.Name = "ddEnlacePlanis"
+        Me.ddEnlacePlanis.Size = New System.Drawing.Size(372, 22)
+        Me.ddEnlacePlanis.Text = "Planimetrías, altimetrías y conjunta"
+        '
+        'ddEnlacePLPOB
+        '
+        Me.ddEnlacePLPOB.Name = "ddEnlacePLPOB"
+        Me.ddEnlacePLPOB.Size = New System.Drawing.Size(372, 22)
+        Me.ddEnlacePLPOB.Text = "Planos de población"
+        '
+        'ddEnlacePLEDI
+        '
+        Me.ddEnlacePLEDI.Name = "ddEnlacePLEDI"
+        Me.ddEnlacePLEDI.Size = New System.Drawing.Size(372, 22)
+        Me.ddEnlacePLEDI.Text = "Planos de edificación"
+        '
+        'ddEnlaceHKPUP
+        '
+        Me.ddEnlaceHKPUP.Name = "ddEnlaceHKPUP"
+        Me.ddEnlaceHKPUP.Size = New System.Drawing.Size(372, 22)
+        Me.ddEnlaceHKPUP.Text = "Hojas kilométricas, parcelario urbano y planos directores"
+        '
         'TableLayoutPanel1
         '
         Me.TableLayoutPanel1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.TableLayoutPanel1.ColumnCount = 2
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
@@ -357,16 +398,17 @@ Partial Class frmMuniHisto
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 1
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel1.Size = New System.Drawing.Size(409, 283)
+        Me.TableLayoutPanel1.Size = New System.Drawing.Size(705, 528)
         Me.TableLayoutPanel1.TabIndex = 18
         '
         'lvDetails
         '
         Me.lvDetails.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.lvDetails.HideSelection = False
         Me.lvDetails.Location = New System.Drawing.Point(3, 3)
         Me.lvDetails.Name = "lvDetails"
         Me.lvDetails.ShowItemToolTips = True
-        Me.lvDetails.Size = New System.Drawing.Size(198, 277)
+        Me.lvDetails.Size = New System.Drawing.Size(346, 522)
         Me.lvDetails.TabIndex = 0
         Me.lvDetails.UseCompatibleStateImageBehavior = False
         '
@@ -375,10 +417,10 @@ Partial Class frmMuniHisto
         Me.TabControl1.Controls.Add(Me.TabPage1)
         Me.TabControl1.Controls.Add(Me.TabPage2)
         Me.TabControl1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TabControl1.Location = New System.Drawing.Point(207, 3)
+        Me.TabControl1.Location = New System.Drawing.Point(355, 3)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(199, 277)
+        Me.TabControl1.Size = New System.Drawing.Size(347, 522)
         Me.TabControl1.TabIndex = 1
         '
         'TabPage1
@@ -387,7 +429,7 @@ Partial Class frmMuniHisto
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(191, 251)
+        Me.TabPage1.Size = New System.Drawing.Size(339, 496)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Información"
         Me.TabPage1.UseVisualStyleBackColor = True
@@ -404,7 +446,7 @@ Partial Class frmMuniHisto
         Me.TableLayoutPanel2.RowCount = 2
         Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel2.Size = New System.Drawing.Size(185, 245)
+        Me.TableLayoutPanel2.Size = New System.Drawing.Size(333, 490)
         Me.TableLayoutPanel2.TabIndex = 0
         '
         'Panel2
@@ -412,20 +454,20 @@ Partial Class frmMuniHisto
         Me.Panel2.Controls.Add(Me.txtObserv)
         Me.Panel2.Controls.Add(Me.Label2)
         Me.Panel2.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Panel2.Location = New System.Drawing.Point(3, 125)
+        Me.Panel2.Location = New System.Drawing.Point(3, 248)
         Me.Panel2.Name = "Panel2"
-        Me.Panel2.Size = New System.Drawing.Size(179, 117)
+        Me.Panel2.Size = New System.Drawing.Size(327, 239)
         Me.Panel2.TabIndex = 1
         '
         'txtObserv
         '
         Me.txtObserv.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtObserv.Location = New System.Drawing.Point(3, 16)
         Me.txtObserv.Multiline = True
         Me.txtObserv.Name = "txtObserv"
-        Me.txtObserv.Size = New System.Drawing.Size(173, 98)
+        Me.txtObserv.Size = New System.Drawing.Size(321, 220)
         Me.txtObserv.TabIndex = 2
         '
         'Label2
@@ -443,16 +485,17 @@ Partial Class frmMuniHisto
         Me.Panel1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.Panel1.Location = New System.Drawing.Point(3, 3)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(179, 116)
+        Me.Panel1.Size = New System.Drawing.Size(327, 239)
         Me.Panel1.TabIndex = 0
         '
         'lvColin
         '
         Me.lvColin.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.lvColin.HideSelection = False
         Me.lvColin.Location = New System.Drawing.Point(0, 0)
         Me.lvColin.Name = "lvColin"
         Me.lvColin.ShowItemToolTips = True
-        Me.lvColin.Size = New System.Drawing.Size(179, 116)
+        Me.lvColin.Size = New System.Drawing.Size(327, 239)
         Me.lvColin.TabIndex = 0
         Me.lvColin.UseCompatibleStateImageBehavior = False
         '
@@ -461,7 +504,7 @@ Partial Class frmMuniHisto
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(191, 251)
+        Me.TabPage2.Size = New System.Drawing.Size(339, 496)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Documentación"
         Me.TabPage2.UseVisualStyleBackColor = True
@@ -473,7 +516,7 @@ Partial Class frmMuniHisto
         Me.DataGridView1.AllowUserToResizeRows = False
         Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.DataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically
-        Me.DataGridView1.Location = New System.Drawing.Point(0, 43)
+        Me.DataGridView1.Location = New System.Drawing.Point(0, 55)
         Me.DataGridView1.MultiSelect = False
         Me.DataGridView1.Name = "DataGridView1"
         Me.DataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
@@ -483,35 +526,35 @@ Partial Class frmMuniHisto
         'StatusStrip1
         '
         Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1, Me.ToolStripStatusLabel2, Me.ToolStripStatusLabel3})
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 374)
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 619)
         Me.StatusStrip1.Name = "StatusStrip1"
-        Me.StatusStrip1.Size = New System.Drawing.Size(712, 22)
+        Me.StatusStrip1.Size = New System.Drawing.Size(1008, 22)
         Me.StatusStrip1.TabIndex = 20
         Me.StatusStrip1.Text = "StatusStrip1"
         '
         'ToolStripStatusLabel1
         '
         Me.ToolStripStatusLabel1.Name = "ToolStripStatusLabel1"
-        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(111, 17)
+        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(119, 17)
         Me.ToolStripStatusLabel1.Text = "ToolStripStatusLabel1"
         '
         'ToolStripStatusLabel2
         '
         Me.ToolStripStatusLabel2.Name = "ToolStripStatusLabel2"
-        Me.ToolStripStatusLabel2.Size = New System.Drawing.Size(111, 17)
+        Me.ToolStripStatusLabel2.Size = New System.Drawing.Size(119, 17)
         Me.ToolStripStatusLabel2.Text = "ToolStripStatusLabel2"
         '
         'ToolStripStatusLabel3
         '
         Me.ToolStripStatusLabel3.Name = "ToolStripStatusLabel3"
-        Me.ToolStripStatusLabel3.Size = New System.Drawing.Size(111, 17)
+        Me.ToolStripStatusLabel3.Size = New System.Drawing.Size(119, 17)
         Me.ToolStripStatusLabel3.Text = "ToolStripStatusLabel3"
         '
         'frmMuniHisto
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(712, 396)
+        Me.ClientSize = New System.Drawing.Size(1008, 641)
         Me.Controls.Add(Me.ToolStrip1)
         Me.Controls.Add(Me.StatusStrip1)
         Me.Controls.Add(Me.TableLayoutPanel1)
@@ -578,4 +621,9 @@ Partial Class frmMuniHisto
     Friend WithEvents ToolStripStatusLabel3 As System.Windows.Forms.ToolStripStatusLabel
     Friend WithEvents SaveFileDialog1 As System.Windows.Forms.SaveFileDialog
     Friend WithEvents lvColin As System.Windows.Forms.ListView
+    Friend WithEvents dropdownEnlacesCDD As ToolStripDropDownButton
+    Friend WithEvents ddEnlacePlanis As ToolStripMenuItem
+    Friend WithEvents ddEnlacePLPOB As ToolStripMenuItem
+    Friend WithEvents ddEnlacePLEDI As ToolStripMenuItem
+    Friend WithEvents ddEnlaceHKPUP As ToolStripMenuItem
 End Class
