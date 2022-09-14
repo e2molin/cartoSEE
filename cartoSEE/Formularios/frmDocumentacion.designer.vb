@@ -66,6 +66,10 @@ Partial Class frmDocumentacion
         Me.mnuDetailTipoWMS4 = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuDetailTipoWMS0 = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuSetZIndex = New System.Windows.Forms.ToolStripMenuItem()
+        Me.MarcarComoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.contextMnuPrinDestacado = New System.Windows.Forms.ToolStripMenuItem()
+        Me.contextMnuPrin4Star = New System.Windows.Forms.ToolStripMenuItem()
+        Me.contextMnuPrin5Star = New System.Windows.Forms.ToolStripMenuItem()
         Me.ListView2 = New System.Windows.Forms.ListView()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.picThumb = New System.Windows.Forms.PictureBox()
@@ -457,9 +461,9 @@ Partial Class frmDocumentacion
         '
         'ContextMenuStrip2
         '
-        Me.ContextMenuStrip2.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MostrarEnWMSToolStripMenuItem, Me.DefinirTipoDeWMSToolStripMenuItem1, Me.mnuSetZIndex})
+        Me.ContextMenuStrip2.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MostrarEnWMSToolStripMenuItem, Me.DefinirTipoDeWMSToolStripMenuItem1, Me.mnuSetZIndex, Me.MarcarComoToolStripMenuItem})
         Me.ContextMenuStrip2.Name = "ContextMenuStrip2"
-        Me.ContextMenuStrip2.Size = New System.Drawing.Size(284, 70)
+        Me.ContextMenuStrip2.Size = New System.Drawing.Size(284, 114)
         '
         'MostrarEnWMSToolStripMenuItem
         '
@@ -471,13 +475,13 @@ Partial Class frmDocumentacion
         'mnuDetailMostrarWMS
         '
         Me.mnuDetailMostrarWMS.Name = "mnuDetailMostrarWMS"
-        Me.mnuDetailMostrarWMS.Size = New System.Drawing.Size(162, 22)
+        Me.mnuDetailMostrarWMS.Size = New System.Drawing.Size(180, 22)
         Me.mnuDetailMostrarWMS.Text = "Mostrar en WMS"
         '
         'mnuDetailOcultarWMS
         '
         Me.mnuDetailOcultarWMS.Name = "mnuDetailOcultarWMS"
-        Me.mnuDetailOcultarWMS.Size = New System.Drawing.Size(162, 22)
+        Me.mnuDetailOcultarWMS.Size = New System.Drawing.Size(180, 22)
         Me.mnuDetailOcultarWMS.Text = "Ocultar en WMS"
         '
         'DefinirTipoDeWMSToolStripMenuItem1
@@ -490,31 +494,31 @@ Partial Class frmDocumentacion
         'mnuDetailTipoWMS1
         '
         Me.mnuDetailTipoWMS1.Name = "mnuDetailTipoWMS1"
-        Me.mnuDetailTipoWMS1.Size = New System.Drawing.Size(171, 22)
+        Me.mnuDetailTipoWMS1.Size = New System.Drawing.Size(180, 22)
         Me.mnuDetailTipoWMS1.Text = "Planimetrías"
         '
         'mnuDetailTipoWMS2
         '
         Me.mnuDetailTipoWMS2.Name = "mnuDetailTipoWMS2"
-        Me.mnuDetailTipoWMS2.Size = New System.Drawing.Size(171, 22)
+        Me.mnuDetailTipoWMS2.Size = New System.Drawing.Size(180, 22)
         Me.mnuDetailTipoWMS2.Text = "Altimetrías"
         '
         'mnuDetailTipoWMS3
         '
         Me.mnuDetailTipoWMS3.Name = "mnuDetailTipoWMS3"
-        Me.mnuDetailTipoWMS3.Size = New System.Drawing.Size(171, 22)
+        Me.mnuDetailTipoWMS3.Size = New System.Drawing.Size(180, 22)
         Me.mnuDetailTipoWMS3.Text = "Hojas kilométricas"
         '
         'mnuDetailTipoWMS4
         '
         Me.mnuDetailTipoWMS4.Name = "mnuDetailTipoWMS4"
-        Me.mnuDetailTipoWMS4.Size = New System.Drawing.Size(171, 22)
+        Me.mnuDetailTipoWMS4.Size = New System.Drawing.Size(180, 22)
         Me.mnuDetailTipoWMS4.Text = "Mixto Plani+Alti"
         '
         'mnuDetailTipoWMS0
         '
         Me.mnuDetailTipoWMS0.Name = "mnuDetailTipoWMS0"
-        Me.mnuDetailTipoWMS0.Size = New System.Drawing.Size(171, 22)
+        Me.mnuDetailTipoWMS0.Size = New System.Drawing.Size(180, 22)
         Me.mnuDetailTipoWMS0.Text = "Sin definir"
         '
         'mnuSetZIndex
@@ -522,6 +526,31 @@ Partial Class frmDocumentacion
         Me.mnuSetZIndex.Name = "mnuSetZIndex"
         Me.mnuSetZIndex.Size = New System.Drawing.Size(283, 22)
         Me.mnuSetZIndex.Text = "Definir Z-Index del documento (1-1000)"
+        '
+        'MarcarComoToolStripMenuItem
+        '
+        Me.MarcarComoToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.contextMnuPrinDestacado, Me.contextMnuPrin4Star, Me.contextMnuPrin5Star})
+        Me.MarcarComoToolStripMenuItem.Name = "MarcarComoToolStripMenuItem"
+        Me.MarcarComoToolStripMenuItem.Size = New System.Drawing.Size(283, 22)
+        Me.MarcarComoToolStripMenuItem.Text = "Marcar como"
+        '
+        'contextMnuPrinDestacado
+        '
+        Me.contextMnuPrinDestacado.Name = "contextMnuPrinDestacado"
+        Me.contextMnuPrinDestacado.Size = New System.Drawing.Size(180, 22)
+        Me.contextMnuPrinDestacado.Text = "Destacado"
+        '
+        'contextMnuPrin4Star
+        '
+        Me.contextMnuPrin4Star.Name = "contextMnuPrin4Star"
+        Me.contextMnuPrin4Star.Size = New System.Drawing.Size(180, 22)
+        Me.contextMnuPrin4Star.Text = "Cuatro estrellas"
+        '
+        'contextMnuPrin5Star
+        '
+        Me.contextMnuPrin5Star.Name = "contextMnuPrin5Star"
+        Me.contextMnuPrin5Star.Size = New System.Drawing.Size(180, 22)
+        Me.contextMnuPrin5Star.Text = "Cinco estrellas"
         '
         'ListView2
         '
@@ -1531,4 +1560,8 @@ Partial Class frmDocumentacion
     Friend WithEvents mnuSetZIndexBulk As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents Button23 As Button
     Friend WithEvents Button24 As Button
+    Friend WithEvents MarcarComoToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents contextMnuPrinDestacado As ToolStripMenuItem
+    Friend WithEvents contextMnuPrin4Star As ToolStripMenuItem
+    Friend WithEvents contextMnuPrin5Star As ToolStripMenuItem
 End Class

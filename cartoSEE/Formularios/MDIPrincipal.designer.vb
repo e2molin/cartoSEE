@@ -67,6 +67,7 @@ Partial Class MDIPrincipal
         Me.mnuAddECW = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAddContornos = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMuniHisto = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuQueryLibrosRegistro = New System.Windows.Forms.ToolStripMenuItem()
         Me.ViewMenu = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolBarToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.StatusBarToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -114,6 +115,7 @@ Partial Class MDIPrincipal
         Me.ToolStripButton9 = New System.Windows.Forms.ToolStripButton()
         Me.ButCarrito = New System.Windows.Forms.ToolStripButton()
         Me.btnVisorMosaicos = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripButton20 = New System.Windows.Forms.ToolStripButton()
         Me.btnExportCdD = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripDropDownButton1 = New System.Windows.Forms.ToolStripDropDownButton()
         Me.mnuLinkCdDMIPAC = New System.Windows.Forms.ToolStripMenuItem()
@@ -147,6 +149,9 @@ Partial Class MDIPrincipal
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.Button2 = New System.Windows.Forms.Button()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
+        Me.btnGetWeird = New System.Windows.Forms.Button()
+        Me.btnGetImportant = New System.Windows.Forms.Button()
+        Me.btnGetStar = New System.Windows.Forms.Button()
         Me.Label32 = New System.Windows.Forms.Label()
         Me.CheckedListBox3 = New System.Windows.Forms.CheckedListBox()
         Me.Label28 = New System.Windows.Forms.Label()
@@ -260,7 +265,7 @@ Partial Class MDIPrincipal
         Me.MenuStrip.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip.MdiWindowListItem = Me.WindowsMenu
         Me.MenuStrip.Name = "MenuStrip"
-        Me.MenuStrip.Size = New System.Drawing.Size(1398, 24)
+        Me.MenuStrip.Size = New System.Drawing.Size(1539, 24)
         Me.MenuStrip.TabIndex = 5
         Me.MenuStrip.Text = "MenuStrip"
         '
@@ -287,7 +292,7 @@ Partial Class MDIPrincipal
         '
         'FileMenu
         '
-        Me.FileMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuBuscador, Me.mnuBuscadorGeo, Me.ToolStripSeparator5, Me.mnuEjecutar, Me.mnuLimpiar, Me.ToolStripSeparator7, Me.ToolStripMenuItem2, Me.ToolStripMenuItem1, Me.ToolStripSeparator6, Me.mnuVisorMosaicos, Me.mnuTool_AltaDoc, Me.mnuTool_EditAtrib, Me.mnuAddECW, Me.mnuAddContornos, Me.mnuMuniHisto})
+        Me.FileMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuBuscador, Me.mnuBuscadorGeo, Me.ToolStripSeparator5, Me.mnuEjecutar, Me.mnuLimpiar, Me.ToolStripSeparator7, Me.ToolStripMenuItem2, Me.ToolStripMenuItem1, Me.ToolStripSeparator6, Me.mnuVisorMosaicos, Me.mnuTool_AltaDoc, Me.mnuTool_EditAtrib, Me.mnuAddECW, Me.mnuAddContornos, Me.mnuMuniHisto, Me.mnuQueryLibrosRegistro})
         Me.FileMenu.ImageTransparentColor = System.Drawing.SystemColors.ActiveBorder
         Me.FileMenu.Name = "FileMenu"
         Me.FileMenu.Size = New System.Drawing.Size(107, 20)
@@ -556,6 +561,13 @@ Partial Class MDIPrincipal
         Me.mnuMuniHisto.Size = New System.Drawing.Size(280, 22)
         Me.mnuMuniHisto.Text = "Gestión  de municipios históricos"
         '
+        'mnuQueryLibrosRegistro
+        '
+        Me.mnuQueryLibrosRegistro.Image = CType(resources.GetObject("mnuQueryLibrosRegistro.Image"), System.Drawing.Image)
+        Me.mnuQueryLibrosRegistro.Name = "mnuQueryLibrosRegistro"
+        Me.mnuQueryLibrosRegistro.Size = New System.Drawing.Size(280, 22)
+        Me.mnuQueryLibrosRegistro.Text = "Consulta de libros de registro"
+        '
         'ViewMenu
         '
         Me.ViewMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolBarToolStripMenuItem, Me.StatusBarToolStripMenuItem, Me.PanelLateralIzquierdoToolStripMenuItem})
@@ -793,10 +805,10 @@ Partial Class MDIPrincipal
         'ToolStrip
         '
         Me.ToolStrip.ImageScalingSize = New System.Drawing.Size(48, 48)
-        Me.ToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolConfig, Me.ToolStripSeparator1, Me.ToolStripButton5, Me.ToolStripButton6, Me.ToolStripButton15, Me.ToolStripSeparator9, Me.ToolStripButton12, Me.ToolStripButton17, Me.ToolStripSeparator3, Me.ToolStripButton9, Me.ButCarrito, Me.btnVisorMosaicos, Me.btnExportCdD, Me.ToolStripDropDownButton1, Me.ToolStripButton19, Me.ToolStripButton1, Me.ToolStripSeparator4, Me.ToolStripButton3, Me.ToolStripButton4, Me.ToolMiniaturas, Me.ToolStripButton7, Me.ToolStripButton16, Me.ToolStripButton18, Me.ToolStripButton14, Me.ToolStripButton11, Me.ToolStripButton10, Me.ToolStripButton8, Me.ToolStripSeparator2, Me.ToolStripButton2, Me.HelpToolStripButton, Me.ToolStripButton13})
+        Me.ToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolConfig, Me.ToolStripSeparator1, Me.ToolStripButton5, Me.ToolStripButton6, Me.ToolStripButton15, Me.ToolStripSeparator9, Me.ToolStripButton12, Me.ToolStripButton17, Me.ToolStripSeparator3, Me.ToolStripButton9, Me.ButCarrito, Me.btnVisorMosaicos, Me.ToolStripButton20, Me.btnExportCdD, Me.ToolStripDropDownButton1, Me.ToolStripButton19, Me.ToolStripButton1, Me.ToolStripSeparator4, Me.ToolStripButton3, Me.ToolStripButton4, Me.ToolMiniaturas, Me.ToolStripButton7, Me.ToolStripButton16, Me.ToolStripButton18, Me.ToolStripButton14, Me.ToolStripButton11, Me.ToolStripButton10, Me.ToolStripButton8, Me.ToolStripSeparator2, Me.ToolStripButton2, Me.HelpToolStripButton, Me.ToolStripButton13})
         Me.ToolStrip.Location = New System.Drawing.Point(0, 24)
         Me.ToolStrip.Name = "ToolStrip"
-        Me.ToolStrip.Size = New System.Drawing.Size(1398, 55)
+        Me.ToolStrip.Size = New System.Drawing.Size(1539, 55)
         Me.ToolStrip.TabIndex = 6
         Me.ToolStrip.Text = "ToolStrip"
         '
@@ -899,6 +911,16 @@ Partial Class MDIPrincipal
         Me.btnVisorMosaicos.Size = New System.Drawing.Size(52, 52)
         Me.btnVisorMosaicos.Text = "ToolStripButton12"
         Me.btnVisorMosaicos.ToolTipText = "Visor de mosaicos"
+        '
+        'ToolStripButton20
+        '
+        Me.ToolStripButton20.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.ToolStripButton20.Image = CType(resources.GetObject("ToolStripButton20.Image"), System.Drawing.Image)
+        Me.ToolStripButton20.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.ToolStripButton20.Name = "ToolStripButton20"
+        Me.ToolStripButton20.Size = New System.Drawing.Size(52, 52)
+        Me.ToolStripButton20.Text = "ToolStripButton20"
+        Me.ToolStripButton20.ToolTipText = "Libros de registro del Archivo Topográfico"
         '
         'btnExportCdD
         '
@@ -1125,7 +1147,7 @@ Partial Class MDIPrincipal
         Me.StatusStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1, Me.ToolStripStatusLabel, Me.ToolStripStatusLabel2})
         Me.StatusStrip.Location = New System.Drawing.Point(0, 1003)
         Me.StatusStrip.Name = "StatusStrip"
-        Me.StatusStrip.Size = New System.Drawing.Size(1398, 22)
+        Me.StatusStrip.Size = New System.Drawing.Size(1539, 22)
         Me.StatusStrip.TabIndex = 7
         Me.StatusStrip.Text = "StatusStrip"
         '
@@ -1139,7 +1161,7 @@ Partial Class MDIPrincipal
         'ToolStripStatusLabel
         '
         Me.ToolStripStatusLabel.Name = "ToolStripStatusLabel"
-        Me.ToolStripStatusLabel.Size = New System.Drawing.Size(1113, 17)
+        Me.ToolStripStatusLabel.Size = New System.Drawing.Size(1254, 17)
         Me.ToolStripStatusLabel.Spring = True
         Me.ToolStripStatusLabel.Text = "Status"
         Me.ToolStripStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -1178,6 +1200,9 @@ Partial Class MDIPrincipal
         '
         'GroupBox5
         '
+        Me.GroupBox5.Controls.Add(Me.btnGetWeird)
+        Me.GroupBox5.Controls.Add(Me.btnGetImportant)
+        Me.GroupBox5.Controls.Add(Me.btnGetStar)
         Me.GroupBox5.Controls.Add(Me.Label32)
         Me.GroupBox5.Controls.Add(Me.CheckedListBox3)
         Me.GroupBox5.Controls.Add(Me.Label28)
@@ -1214,10 +1239,44 @@ Partial Class MDIPrincipal
         Me.GroupBox5.Controls.Add(Me.Label2)
         Me.GroupBox5.Location = New System.Drawing.Point(256, 53)
         Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Size = New System.Drawing.Size(240, 681)
+        Me.GroupBox5.Size = New System.Drawing.Size(251, 786)
         Me.GroupBox5.TabIndex = 19
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Más opciones de filtrado"
+        '
+        'btnGetWeird
+        '
+        Me.btnGetWeird.Image = CType(resources.GetObject("btnGetWeird.Image"), System.Drawing.Image)
+        Me.btnGetWeird.Location = New System.Drawing.Point(165, 678)
+        Me.btnGetWeird.Name = "btnGetWeird"
+        Me.btnGetWeird.Size = New System.Drawing.Size(75, 50)
+        Me.btnGetWeird.TabIndex = 42
+        Me.btnGetWeird.Text = "Raros"
+        Me.btnGetWeird.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+        Me.btnGetWeird.UseVisualStyleBackColor = True
+        '
+        'btnGetImportant
+        '
+        Me.btnGetImportant.Image = CType(resources.GetObject("btnGetImportant.Image"), System.Drawing.Image)
+        Me.btnGetImportant.Location = New System.Drawing.Point(87, 678)
+        Me.btnGetImportant.Name = "btnGetImportant"
+        Me.btnGetImportant.Size = New System.Drawing.Size(75, 50)
+        Me.btnGetImportant.TabIndex = 41
+        Me.btnGetImportant.Text = "Destacados"
+        Me.btnGetImportant.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+        Me.btnGetImportant.UseVisualStyleBackColor = True
+        '
+        'btnGetStar
+        '
+        Me.btnGetStar.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.btnGetStar.Image = CType(resources.GetObject("btnGetStar.Image"), System.Drawing.Image)
+        Me.btnGetStar.Location = New System.Drawing.Point(6, 678)
+        Me.btnGetStar.Name = "btnGetStar"
+        Me.btnGetStar.Size = New System.Drawing.Size(75, 50)
+        Me.btnGetStar.TabIndex = 40
+        Me.btnGetStar.Text = "5 estrellas"
+        Me.btnGetStar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+        Me.btnGetStar.UseVisualStyleBackColor = True
         '
         'Label32
         '
@@ -2120,12 +2179,15 @@ Partial Class MDIPrincipal
         Me.ImageList2.Images.SetKeyName(5, "square.png")
         Me.ImageList2.Images.SetKeyName(6, "HourGlass_32.png")
         Me.ImageList2.Images.SetKeyName(7, "Actual_32.png")
+        Me.ImageList2.Images.SetKeyName(8, "destacar_32.png")
+        Me.ImageList2.Images.SetKeyName(9, "Estrella_48.png")
+        Me.ImageList2.Images.SetKeyName(10, "RaroInvertido_48.png")
         '
         'MDIPrincipal
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1398, 1025)
+        Me.ClientSize = New System.Drawing.Size(1539, 1025)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.ToolStrip)
         Me.Controls.Add(Me.MenuStrip)
@@ -2375,4 +2437,9 @@ Partial Class MDIPrincipal
     Friend WithEvents Button9 As Button
     Friend WithEvents PictureBox5 As PictureBox
     Friend WithEvents Button10 As Button
+    Friend WithEvents mnuQueryLibrosRegistro As ToolStripMenuItem
+    Friend WithEvents ToolStripButton20 As ToolStripButton
+    Friend WithEvents btnGetWeird As Button
+    Friend WithEvents btnGetImportant As Button
+    Friend WithEvents btnGetStar As Button
 End Class

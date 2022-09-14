@@ -32,6 +32,7 @@ Public Class frmDocumentacion
         ListView1.Size = New Point(Me.Size.Width - 30, Me.Size.Height - 135)
         ListView1.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Bottom Or AnchorStyles.Right
         ListView1.Visible = True
+        ListView1.SmallImageList = MDIPrincipal.ImageList2
         GroupBox1.Location = New Point(5, 66)
         GroupBox1.Size = New Point(Me.Size.Width - 30, Me.Size.Height - 135)
         GroupBox1.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Bottom Or AnchorStyles.Right
@@ -513,6 +514,17 @@ Public Class frmDocumentacion
 
     End Sub
 
+    Sub CargarDatosSIDCARTO_By_PropsPatron(ByVal propsPatron As String)
+
+        registrarDatabaseLog("Buscando documentos por patron")
+        resultsetGeodocat = New docCartoSEEquery
+        resultsetGeodocat.flag_CargarFicherosGEO = True
+        resultsetGeodocat.getDocsSIDDAE_ByFiltroSQLwithPatron(" idarchivo>0 ", propsPatron)
+        resizingElements()
+        populateListView()
+
+    End Sub
+
     Sub CargarDatosSIDCARTO_By_MunicipioID(ByVal codMuniHisto As Integer,
                                     Optional ByVal tiposDoc As String = "",
                                     Optional ByVal estadosDoc As String = "",
@@ -611,11 +623,12 @@ Public Class frmDocumentacion
     End Sub
 
 
-
+    ' deprecated
     Private Sub RellenarLisview(ByRef ListaDocumentos() As docSIDCARTO,
                                     Optional ByVal EstadoDocumento As String = "",
                                     Optional ByVal TipoDocumento As String = "")
-
+        MessageBox.Show("Deprecated")
+        Exit Sub
         Dim elementoLV As ListViewItem
         Dim iBucle As Integer
         Dim iBucleTMP As Integer
@@ -641,7 +654,7 @@ Public Class frmDocumentacion
             TmpDoc(iBucleTMP) = ListaDocumentos(iBucle)
             elementoLV = New ListViewItem
             elementoLV.Text = Documento.Sellado
-
+            elementoLV.ImageIndex = 4
             'For ibucle As Integer = 1 To 10
             '    If Encabezados(ibucle).Visible = True Then
             '        ListView1.Columns.Add(Encabezados(ibucle).NombreEncabezado, Encabezados(ibucle).Anchura, HorizontalAlignment.Right)
@@ -717,7 +730,15 @@ Public Class frmDocumentacion
             iBucleTMP = iBucleTMP + 1
             elementoLV = New ListViewItem
             elementoLV.Text = docu.Sellado
-
+            If docu.extraProps.getValueByProperty(FlagsProperties.MultiProperty.destacado) Then
+                elementoLV.ImageIndex = 8
+            End If
+            If docu.extraProps.getValueByProperty(FlagsProperties.MultiProperty.estrellas5) Then
+                elementoLV.ImageIndex = 9
+            End If
+            If docu.extraProps.getValueByProperty(FlagsProperties.MultiProperty.peculiar) Then
+                elementoLV.ImageIndex = 10
+            End If
             If Encabezados(1).Visible = True Then elementoLV.SubItems.Add(docu.Tipo & IIf(docu.subTipoDoc = "", "", "/" & docu.subTipoDoc))
             If Encabezados(2).Visible = True Then elementoLV.SubItems.Add(docu.Tomo)
             If Encabezados(3).Visible = True Then elementoLV.SubItems.Add(docu.Estado)
@@ -2150,7 +2171,32 @@ Public Class frmDocumentacion
 #End Region
 
     Private Sub GestionDetailContextMenu(ByVal sender As Object, ByVal e As System.EventArgs) Handles mnuDetailMostrarWMS.Click, mnuDetailOcultarWMS.Click,
-        mnuDetailTipoWMS0.Click, mnuDetailTipoWMS1.Click, mnuDetailTipoWMS2.Click, mnuDetailTipoWMS3.Click, mnuDetailTipoWMS4.Click, mnuSetZIndex.Click
+        mnuDetailTipoWMS0.Click, mnuDetailTipoWMS1.Click, mnuDetailTipoWMS2.Click, mnuDetailTipoWMS3.Click, mnuDetailTipoWMS4.Click, mnuSetZIndex.Click, contextMnuPrinDestacado.Click
+
+
+
+        Application.DoEvents()
+
+        'Esta acción de menú se aplica al documento, no a los ficheros georreferenciados
+        If sender.name = "contextMnuPrinDestacado" Then
+            Application.DoEvents()
+            MessageBox.Show(resultsetGeodocat.resultados(GroupBox1.Tag).docIndex)
+            If resultsetGeodocat.resultados(GroupBox1.Tag).extraprops.assignByProperty(FlagsProperties.MultiProperty.destacado, 1) Then
+                Try
+                    If ExeSinTran("UPDATE bdsidschema.archivo set extraprops=" & resultsetGeodocat.resultados(GroupBox1.Tag).extraprops.propertyCode & " where idarchivo=" & resultsetGeodocat.resultados(GroupBox1.Tag).docIndex) Then
+                        MessageBox.Show("Cambios realizados", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    End If
+                Catch ex As Exception
+                    MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Error)
+                End Try
+
+            End If
+            Application.DoEvents()
+            Exit Sub
+
+        End If
+
+
 
         If lvAtributos.SelectedItems.Count <> 1 Then
             MessageBox.Show("Seleccione un único fichero del apartado de Georreferenciación", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
@@ -2432,68 +2478,46 @@ Public Class frmDocumentacion
 
     Private Sub Button22_Click_1(sender As System.Object, e As System.EventArgs) Handles Button22.Click
 
-        Application.DoEvents()
+
         Dim nTomo As String
         Dim cProv As Integer
-        Dim fileimagen As String
+        Dim filePDF As String
         Dim folderOutput As String
 
         Try
             nTomo = resultsetGeodocat.resultados(GroupBox1.Tag).Tomo
             cProv = resultsetGeodocat.resultados(GroupBox1.Tag).ProvinciaRepo
+
+            Application.DoEvents()
+            ' A partir de los datos del documento componemos la ruta donde deberían almacenarse la digitalización del libro de registro donde viene detallado
+            If nTomo.Length = 1 Then
+                nTomo = "00" & nTomo.ToLower
+            ElseIf nTomo.Length = 2 Then
+                nTomo = "0" & nTomo.ToLower
+            ElseIf nTomo.Length = 4 And nTomo.ToLower.EndsWith("bis") Then
+                nTomo = "00" & nTomo.ToLower
+            ElseIf nTomo.Length = 4 And nTomo.ToLower.EndsWith("ter") Then
+                nTomo = "00" & nTomo.ToLower
+            ElseIf nTomo.Length = 5 And nTomo.ToLower.EndsWith("bis") Then
+                nTomo = "0" & nTomo.ToLower
+            ElseIf nTomo.Length = 5 And nTomo.ToLower.EndsWith("ter") Then
+                nTomo = "0" & nTomo.ToLower
+            Else
+                nTomo = nTomo.ToLower
+            End If
+
+            filePDF = rutaRepoInventarioInfo & "\" & String.Format("{0:00}", cProv) & "\P" & String.Format("{0:00}", cProv) & "T" & nTomo & ".pdf"
+            If System.IO.File.Exists(filePDF) Then
+                Process.Start(filePDF)
+            Else
+                MessageBox.Show("No hay información del tomo " & nTomo & " de la provincia " & DameProvinciaByINE(cProv), AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            End If
+
         Catch ex As Exception
             MessageBox.Show(ex.Message, AplicacionTitulo)
             Exit Sub
         End Try
 
-        If MessageBox.Show("¿Desea copiar los documentos digitalizados encontrados a un directorio?", AplicacionTitulo, MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
-            FolderBrowserDialog1.ShowNewFolderButton = True
-            If FolderBrowserDialog1.ShowDialog = Windows.Forms.DialogResult.Cancel Then Exit Sub
-            folderOutput = FolderBrowserDialog1.SelectedPath
-        End If
-
-        If (cProv >= 1 And cProv <= 50) And nTomo <> "" Then
-            Dim rcdInventario As New DataTable
-            Dim filasInvent() As DataRow
-            Dim contImagen As Integer = 0
-
-            nTomo = nTomo.ToLower
-            If nTomo.StartsWith("00") Then nTomo = nTomo.Substring(2, nTomo.Length - 2)
-            If nTomo.StartsWith("0") Then nTomo = nTomo.Substring(1, nTomo.Length - 1)
-            nTomo = nTomo.Replace("tris", "ter")
-
-            Try
-                If CargarRecordset("SELECT * from bdsidschema.inventario where codprov=" & cProv & " AND lower(tomo)='" & nTomo.ToLower & "'", rcdInventario) Then
-                    If rcdInventario.Rows.Count = 0 Then
-                        MessageBox.Show("No hay información del tomo " & nTomo & " de la provincia " & DameProvinciaByINE(cProv), AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-                    Else
-
-                        filasInvent = rcdInventario.Select
-                        For Each filaInvent As DataRow In filasInvent
-                            Application.DoEvents()
-                            fileimagen = rutaRepoInventarioInfo & "\" & filaInvent("tipo").ToString & "\" & String.Format("{0:00}", cProv) & "\" & filaInvent("fichero").ToString
-                            If System.IO.File.Exists(fileimagen) Then
-                                Process.Start(fileimagen)
-                                contImagen = contImagen + 1
-                                If folderOutput <> "" Then
-                                    System.IO.File.Copy(fileimagen, folderOutput & "\" & String.Format("{0:00}", cProv) & "-" & filaInvent("fichero").ToString)
-                                End If
-                            End If
-                        Next
-                        MessageBox.Show("Se encontraron " & contImagen & " documentos", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-                    End If
-                End If
-
-            Catch ex As Exception
-                MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-            Finally
-                Erase filasInvent
-                rcdInventario.Dispose()
-                rcdInventario = Nothing
-            End Try
-
-
-        End If
     End Sub
 
     ''' <summary>

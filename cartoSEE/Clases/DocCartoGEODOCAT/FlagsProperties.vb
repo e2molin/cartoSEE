@@ -3,7 +3,7 @@
     Private valorDecimal As Integer = 0
     Private valorBinario As String = ""
     Private valorBinarioFormat As String = ""
-    Enum MultiProperty
+    Enum MultiProperty As Integer
         SinInformacion = 1
         Anulada = 2
         AnuladaParcial = 3
@@ -16,10 +16,10 @@
         Investigar = 10
         Repetida = 11
         estrellas5 = 12
-        estrellas4 = 13
-        estrellas3 = 14
+        Disponible1 = 13
+        destacado = 14
         peculiar = 15
-        Disponible1 = 16
+        Disponible2 = 16
 
     End Enum
 
@@ -36,10 +36,10 @@
                                                     "Averiguar",                        '10
                                                     "Repetida",                         '11
                                                     "5 estrellas",                      '12
-                                                    "4 estrellas",                      '13
-                                                    "3 estrellas",                      '14
+                                                    "Disponible 1",                     '13
+                                                    "Destacado",                        '14
                                                     "Peculiar",                         '15
-                                                    "Disponible 1"                      '16
+                                                    "Disponible 2"                      '16
     }
 
     ' Define the property.
@@ -147,7 +147,27 @@
         Return cadOUT
     End Function
 
-    Public Function validate() As Boolean
+    Public Function getValueByProperty(propiedad As MultiProperty) As Boolean
+
+        Dim position As Integer = 0
+        Dim cadValue As String = ""
+        Dim seqProps As String = ""
+        Try
+            position = Convert.ToInt32(propiedad)
+            seqProps = propertyPatron()
+            cadValue = seqProps.Substring(propertyList.Count - Convert.ToInt32(propiedad), 1)
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
+
+        Return IIf(cadValue = "1", True, False)
+
+
+    End Function
+
+
+
+    Public Function validate(sequencia As String) As Boolean
         Return True
     End Function
 
@@ -165,7 +185,7 @@
         Next
 
         Try
-            If validate() Then
+            If validate(cadProperties) Then
                 propertyBinary = cadProperties
                 Return True
             Else
@@ -179,9 +199,29 @@
 
     End Function
 
+    Public Function assignByProperty(propiedad As MultiProperty, value As Boolean) As Boolean
+
+        Dim seqInicio As String
+        Dim seqAsignado As String
+        seqInicio = propertyPatron()
+        seqAsignado = seqInicio.Substring(0, propertyList.Count - Convert.ToInt32(propiedad)) &
+                            IIf(value = True, "1", "0") &
+                            seqInicio.Substring(propertyList.Count - Convert.ToInt32(propiedad) + 1, propertyList.Count - (propertyList.Count - Convert.ToInt32(propiedad) + 1))
 
 
+        Try
+            If validate(seqAsignado) Then
+                propertyBinary = seqAsignado
+                Return True
+            Else
+                Return False
+            End If
 
+        Catch ex As Exception
+            MessageBox.Show("Error:" & ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Return False
+        End Try
 
+    End Function
 
 End Class

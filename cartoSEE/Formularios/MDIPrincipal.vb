@@ -459,7 +459,7 @@ Public Class MDIPrincipal
     End Sub
 
 
-    Sub LanzarConsulta(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
+    Sub LanzarConsulta(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click, btnGetImportant.Click, btnGetStar.Click, btnGetWeird.Click
 
         Dim FirmaYear As String = ""
         Dim EstadosDocumento As String = ""
@@ -486,7 +486,7 @@ Public Class MDIPrincipal
             CodMunicipioINEHistorico = CodigosMuni(0)
             MunicipioID = CodigosMuni(1)
             CodMunicipioINEActual = CodigosMuni(2)
-        ElseIf Not String.IsNullOrEmpty(TextBox23.text) Then
+        ElseIf Not String.IsNullOrEmpty(TextBox23.Text) Then
             If IsNumeric(TextBox23.Text.Trim) Then
                 nSellado = TextBox23.Text.Trim
             ElseIf obtenerIntervalo(TextBox23.Text.Trim, "-", nSellado1, nSellado2) = True Then
@@ -497,7 +497,7 @@ Public Class MDIPrincipal
                 Application.DoEvents()
             Else
                 Exit Sub
-        End If
+            End If
 
         Else
 
@@ -517,6 +517,40 @@ Public Class MDIPrincipal
         End If
         PictureBox3.Visible = True
         LanzarSpinner()
+
+
+
+        If sender.name = "btnGetImportant" Then
+            Dim FrmResult As New frmDocumentacion
+            FrmResult.MdiParent = Me
+            FrmResult.Text = "Documentos destacados"
+            FrmResult.CargarDatosSIDCARTO_By_PropsPatron("__1_____________")
+            FrmResult.Show()
+            PictureBox3.Visible = False
+            Me.Cursor = Cursors.Default
+            Exit Sub
+        ElseIf sender.name = "btnGetStar" Then
+            Dim FrmResult As New frmDocumentacion
+            FrmResult.MdiParent = Me
+            FrmResult.Text = "Documentos cinco estrellas"
+            FrmResult.CargarDatosSIDCARTO_By_PropsPatron("____1___________")
+            FrmResult.Show()
+            PictureBox3.Visible = False
+            Me.Cursor = Cursors.Default
+            Exit Sub
+        ElseIf sender.name = "btnGetWeird" Then
+            Dim FrmResult As New frmDocumentacion
+            FrmResult.MdiParent = Me
+            FrmResult.Text = "Documentos raros o extraños"
+            FrmResult.CargarDatosSIDCARTO_By_PropsPatron("_1______________")
+            FrmResult.Show()
+            PictureBox3.Visible = False
+            Me.Cursor = Cursors.Default
+            Exit Sub
+        End If
+
+
+
 
         '-----------------------------------------------------------------------------------
         'Evalúo si se filtran los documentos por estado o por tipo
@@ -812,7 +846,7 @@ Public Class MDIPrincipal
                                     Handles ToolStripButton9.Click,
                                     mnuTool_AltaDoc.Click,
                                     mnuGenerarRejilla.Click,
-                                    mnuLanzarPlantilla.Click, mnuAddECW.Click, mnuAddContornos.Click, mnuMuniHisto.Click, mnuOpenPreferenceFolder.Click, mnuOpenLoggerFile.Click
+                                    mnuLanzarPlantilla.Click, mnuAddECW.Click, mnuAddContornos.Click, mnuMuniHisto.Click, mnuOpenPreferenceFolder.Click, mnuOpenLoggerFile.Click, mnuQueryLibrosRegistro.Click, ToolStripButton20.Click
 
         If sender.name = "ToolStripButton9" Or sender.name = "mnuTool_AltaDoc" Then
             Dim FormularioCreacion As New frmEdicion
@@ -820,6 +854,29 @@ Public Class MDIPrincipal
             FormularioCreacion.ModoTrabajo("NUEVO", 0)
             FormularioCreacion.Show()
             FormularioCreacion.Visible = True
+        ElseIf sender.name = "mnuQueryLibrosRegistro" Or sender.name = "ToolStripButton20" Then
+
+            Dim frmVista As New dataViewerForm
+
+            frmVista.MdiParent = Me
+            frmVista.Text = "Libros de registro del Archivo Técnico"
+            frmVista.cadSQL = "SELECT idregistro, contenido, tomo, nombreprovincia,fichpdf," &
+                "'" & rutaRepoInventarioInfo & "' || '\' || " & "to_char(codprov,'FM00')" & " || '\' || fichpdf as pathresopurce," &
+                "paginas FROM bdsidschema.librosderegistro inner join bdsidschema.provincias on idprovincia=librosderegistro.codprov"
+            frmVista.fieldExternalDocument = "pathresopurce"
+            frmVista.camposVisibles = New List(Of String) From {"contenido", "tomo", "nombreprovincia", "ruta", "paginas"}
+            frmVista.headerFields = New Dictionary(Of String, String) From {
+                                                                                {"contenido", "Contenido"},
+                                                                                {"tomo", "Tomo"},
+                                                                                {"nombreprovincia", "Provincia"},
+                                                                                {"paginas", "Páginas"}
+                                                                            }
+            frmVista.filterFields = New Dictionary(Of String, String) From {
+                                                                                {"nombreprovincia", "Provincia"},
+                                                                                {"tomo", "Tomo"}
+                                                                            }
+            frmVista.Show()
+
         ElseIf sender.name = "mnuOpenPreferenceFolder" Then
             Try
                 Process.Start(AppFolderSetting)
@@ -828,7 +885,7 @@ Public Class MDIPrincipal
             End Try
         ElseIf sender.name = "mnuOpenLoggerFile" Then
             Try
-                If System.IO.File.Exists("C:\Program Files (x86)\Notepad++\notepad++.exe") Then
+                If System.IO.File.Exists("C: \Program Files (x86)\Notepad++\notepad++.exe") Then
                     Process.Start("C:\Program Files (x86)\Notepad++\notepad++.exe", ficheroLogger)
                 Else
                     Process.Start(ficheroLogger)
@@ -1495,4 +1552,6 @@ Public Class MDIPrincipal
         End If
 
     End Sub
+
+
 End Class

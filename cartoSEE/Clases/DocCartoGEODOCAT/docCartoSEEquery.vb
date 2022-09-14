@@ -111,10 +111,10 @@
                     "WHERE archivo.idarchivo in (" &
                         "with dataprops as (" &
                                     "select idarchivo," &
-                                    "CASE" &
-                                        "WHEN bdsidschema.number_to_base(extraprops,2) is null THEN repeat('0',16)" &
-                                        "ELSE repeat('0',16 - length(bdsidschema.number_to_base(extraprops,2))) || bdsidschema.number_to_base(extraprops,2)" &
-                                    "END as patron" &
+                                    "CASE " &
+                                        "WHEN bdsidschema.number_to_base(extraprops,2) is null THEN repeat('0',16) " &
+                                        "ELSE repeat('0',16 - length(bdsidschema.number_to_base(extraprops,2))) || bdsidschema.number_to_base(extraprops,2) " &
+                                    "END as patron " &
                                     "from bdsidschema.archivo " &
                                     "INNER JOIN bdsidschema.archivo2munihisto ON archivo2munihisto.archivo_id=archivo.idarchivo " &
                                     "INNER JOIN bdsidschema.munihisto on munihisto.idmunihisto= archivo2munihisto.munihisto_id " &

@@ -187,7 +187,7 @@ Module Basics
         rutaRepo = LeeIni("Repositorio", "rutaRepo")
         rutaRepoWeb = LeeIni("Repositorio", "rutaRepoWeb")
         rutaRepoGeorref = LeeIni("Repositorio", "rutaRepoGeorref")
-        rutaRepoInventarioInfo = "\\sbdignmad650\@ArchivoTecnico\LibrosFichasDeRegistro"
+        rutaRepoInventarioInfo = LeeIni("Repositorio", "rutaRepoInventarioInfo").Trim
         rutaCentroDescargas = LeeIni("Metadatos", "rutaCentroDescargas").Trim
         rutaRepoThumbs = LeeIni("Metadatos", "rutaRepoThumbs").Trim
 
