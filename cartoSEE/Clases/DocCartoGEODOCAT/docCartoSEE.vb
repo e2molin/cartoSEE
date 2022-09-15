@@ -48,6 +48,12 @@
     Property encabezadoABSYSdoc As String
     Property urlABSYSdoc As String
 
+    ' Historial de cambios
+    Property historialCambios As New ArrayList
+    Dim historialConsultado As Boolean = False
+
+
+
     Property BBOX4OL3 As String = "POLYGON((-3 42,3 42,0 39,-3 42))"
     Property BBOXCenter4OL3_ByExtent As String = "[-3, 39, 3, 42]"
     Property BBOX_Xmin As String = "-10"
@@ -452,5 +458,39 @@
 
     End Sub
 
+    Sub cargarHistorial()
+
+        If historialConsultado = True Then Exit Sub
+
+        Dim rcdHistorial As New DataTable
+        Dim filas As DataRow()
+        Dim edicion As docCartoSEEVariacion
+        Try
+            If CargarRecordset("SELECT * from bdsidschema.archivolog WHERE archivo_id=" & docIndex, rcdHistorial) = False Then
+                Exit Try
+            End If
+            filas = rcdHistorial.Select
+            historialCambios.Clear()
+            For Each fila As DataRow In filas
+                edicion = New docCartoSEEVariacion
+                edicion.usuario = fila("usuario_update").ToString
+                edicion.fechaVariacion = fila("fecha_update")
+                edicion.tipoVariacion = fila("tipo_variacion").ToString
+                edicion.valorOld = fila("valor_old").ToString
+                edicion.ValorNew = fila("valor_new").ToString
+                historialCambios.Add(edicion)
+                edicion = Nothing
+            Next
+        Catch ex As Exception
+            Application.DoEvents()
+        Finally
+            Erase filas
+            filas = Nothing
+            rcdHistorial.Dispose()
+            rcdHistorial = Nothing
+            historialConsultado = True
+        End Try
+
+    End Sub
 
 End Class

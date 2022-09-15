@@ -38,6 +38,11 @@ Partial Class frmDocumentacion
         Me.menuTipoWMS4 = New System.Windows.Forms.ToolStripMenuItem()
         Me.menuTipoWMS0 = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuSetZIndexBulk = New System.Windows.Forms.ToolStripMenuItem()
+        Me.contextMnuListMarcar = New System.Windows.Forms.ToolStripMenuItem()
+        Me.contextMnuListaDestacado = New System.Windows.Forms.ToolStripMenuItem()
+        Me.contextMnuListaRaro = New System.Windows.Forms.ToolStripMenuItem()
+        Me.contextMnuListaTop = New System.Windows.Forms.ToolStripMenuItem()
+        Me.contextMnuListaNone = New System.Windows.Forms.ToolStripMenuItem()
         Me.Button3 = New System.Windows.Forms.Button()
         Me.PageSetupDialog1 = New System.Windows.Forms.PageSetupDialog()
         Me.PrintDocument1 = New System.Drawing.Printing.PrintDocument()
@@ -45,6 +50,9 @@ Partial Class frmDocumentacion
         Me.PrintDialog1 = New System.Windows.Forms.PrintDialog()
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.btnFichaDoc = New System.Windows.Forms.Button()
+        Me.btnHistorial = New System.Windows.Forms.Button()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.Button23 = New System.Windows.Forms.Button()
         Me.Button22 = New System.Windows.Forms.Button()
         Me.Label7 = New System.Windows.Forms.Label()
@@ -54,6 +62,9 @@ Partial Class frmDocumentacion
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.Panel2 = New System.Windows.Forms.Panel()
         Me.TableLayoutPanel3 = New System.Windows.Forms.TableLayoutPanel()
+        Me.ListView2 = New System.Windows.Forms.ListView()
+        Me.Panel3 = New System.Windows.Forms.Panel()
+        Me.lvHistorial = New System.Windows.Forms.ListView()
         Me.lvAtributos = New System.Windows.Forms.ListView()
         Me.ContextMenuStrip2 = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.MostrarEnWMSToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -66,11 +77,11 @@ Partial Class frmDocumentacion
         Me.mnuDetailTipoWMS4 = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuDetailTipoWMS0 = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuSetZIndex = New System.Windows.Forms.ToolStripMenuItem()
-        Me.MarcarComoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.contextMnuPrinDestacado = New System.Windows.Forms.ToolStripMenuItem()
-        Me.contextMnuPrin4Star = New System.Windows.Forms.ToolStripMenuItem()
-        Me.contextMnuPrin5Star = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ListView2 = New System.Windows.Forms.ListView()
+        Me.contextMnuDetalleMarcar = New System.Windows.Forms.ToolStripMenuItem()
+        Me.contextMnuDetalleDestacado = New System.Windows.Forms.ToolStripMenuItem()
+        Me.contextMnuDetalleRaro = New System.Windows.Forms.ToolStripMenuItem()
+        Me.contextMnuDetalleTop = New System.Windows.Forms.ToolStripMenuItem()
+        Me.contextMnuDetalleNone = New System.Windows.Forms.ToolStripMenuItem()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.picThumb = New System.Windows.Forms.PictureBox()
         Me.Label19 = New System.Windows.Forms.Label()
@@ -145,9 +156,11 @@ Partial Class frmDocumentacion
         Me.Button24 = New System.Windows.Forms.Button()
         Me.ContextMenuStrip1.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.Panel2.SuspendLayout()
         Me.TableLayoutPanel3.SuspendLayout()
+        Me.Panel3.SuspendLayout()
         Me.ContextMenuStrip2.SuspendLayout()
         Me.Panel1.SuspendLayout()
         CType(Me.picThumb, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -167,7 +180,7 @@ Partial Class frmDocumentacion
         '
         Me.ListView1.ContextMenuStrip = Me.ContextMenuStrip1
         Me.ListView1.HideSelection = False
-        Me.ListView1.Location = New System.Drawing.Point(1268, 71)
+        Me.ListView1.Location = New System.Drawing.Point(1605, 101)
         Me.ListView1.Name = "ListView1"
         Me.ListView1.Size = New System.Drawing.Size(171, 169)
         Me.ListView1.TabIndex = 0
@@ -175,9 +188,9 @@ Partial Class frmDocumentacion
         '
         'ContextMenuStrip1
         '
-        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem3, Me.ToolStripMenuItem4, Me.ToolStripMenuItem5, Me.ToolStripMenuItem1, Me.ToolStripMenuItem2, Me.mnuOnOffWMS, Me.menuTipoWMSRoot, Me.mnuSetZIndexBulk})
+        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem3, Me.ToolStripMenuItem4, Me.ToolStripMenuItem5, Me.ToolStripMenuItem1, Me.ToolStripMenuItem2, Me.mnuOnOffWMS, Me.menuTipoWMSRoot, Me.mnuSetZIndexBulk, Me.contextMnuListMarcar})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
-        Me.ContextMenuStrip1.Size = New System.Drawing.Size(284, 180)
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(284, 202)
         '
         'ToolStripMenuItem3
         '
@@ -271,6 +284,41 @@ Partial Class frmDocumentacion
         Me.mnuSetZIndexBulk.Size = New System.Drawing.Size(283, 22)
         Me.mnuSetZIndexBulk.Text = "Definir Z-Index del documento (1-1000)"
         '
+        'contextMnuListMarcar
+        '
+        Me.contextMnuListMarcar.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.contextMnuListaDestacado, Me.contextMnuListaRaro, Me.contextMnuListaTop, Me.contextMnuListaNone})
+        Me.contextMnuListMarcar.Name = "contextMnuListMarcar"
+        Me.contextMnuListMarcar.Size = New System.Drawing.Size(283, 22)
+        Me.contextMnuListMarcar.Text = "Marcar como"
+        '
+        'contextMnuListaDestacado
+        '
+        Me.contextMnuListaDestacado.Image = CType(resources.GetObject("contextMnuListaDestacado.Image"), System.Drawing.Image)
+        Me.contextMnuListaDestacado.Name = "contextMnuListaDestacado"
+        Me.contextMnuListaDestacado.Size = New System.Drawing.Size(180, 22)
+        Me.contextMnuListaDestacado.Text = "Destacado"
+        '
+        'contextMnuListaRaro
+        '
+        Me.contextMnuListaRaro.Image = CType(resources.GetObject("contextMnuListaRaro.Image"), System.Drawing.Image)
+        Me.contextMnuListaRaro.Name = "contextMnuListaRaro"
+        Me.contextMnuListaRaro.Size = New System.Drawing.Size(180, 22)
+        Me.contextMnuListaRaro.Text = "Raro / Peculiar"
+        '
+        'contextMnuListaTop
+        '
+        Me.contextMnuListaTop.Image = CType(resources.GetObject("contextMnuListaTop.Image"), System.Drawing.Image)
+        Me.contextMnuListaTop.Name = "contextMnuListaTop"
+        Me.contextMnuListaTop.Size = New System.Drawing.Size(180, 22)
+        Me.contextMnuListaTop.Text = "Cinco estrellas"
+        '
+        'contextMnuListaNone
+        '
+        Me.contextMnuListaNone.Image = CType(resources.GetObject("contextMnuListaNone.Image"), System.Drawing.Image)
+        Me.contextMnuListaNone.Name = "contextMnuListaNone"
+        Me.contextMnuListaNone.Size = New System.Drawing.Size(180, 22)
+        Me.contextMnuListaNone.Text = "Eliminar marcas"
+        '
         'Button3
         '
         Me.Button3.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -303,6 +351,9 @@ Partial Class frmDocumentacion
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.btnFichaDoc)
+        Me.GroupBox1.Controls.Add(Me.btnHistorial)
+        Me.GroupBox1.Controls.Add(Me.PictureBox1)
         Me.GroupBox1.Controls.Add(Me.Button23)
         Me.GroupBox1.Controls.Add(Me.Button22)
         Me.GroupBox1.Controls.Add(Me.Label7)
@@ -319,17 +370,52 @@ Partial Class frmDocumentacion
         Me.GroupBox1.Font = New System.Drawing.Font("Verdana", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GroupBox1.Location = New System.Drawing.Point(5, 71)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(882, 589)
+        Me.GroupBox1.Size = New System.Drawing.Size(1012, 620)
         Me.GroupBox1.TabIndex = 11
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "GroupBox1"
+        '
+        'btnFichaDoc
+        '
+        Me.btnFichaDoc.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnFichaDoc.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnFichaDoc.Image = CType(resources.GetObject("btnFichaDoc.Image"), System.Drawing.Image)
+        Me.btnFichaDoc.Location = New System.Drawing.Point(444, 18)
+        Me.btnFichaDoc.Name = "btnFichaDoc"
+        Me.btnFichaDoc.Size = New System.Drawing.Size(65, 50)
+        Me.btnFichaDoc.TabIndex = 42
+        Me.btnFichaDoc.Text = "Ficha"
+        Me.btnFichaDoc.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+        Me.btnFichaDoc.UseVisualStyleBackColor = True
+        '
+        'btnHistorial
+        '
+        Me.btnHistorial.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnHistorial.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnHistorial.Image = CType(resources.GetObject("btnHistorial.Image"), System.Drawing.Image)
+        Me.btnHistorial.Location = New System.Drawing.Point(515, 18)
+        Me.btnHistorial.Name = "btnHistorial"
+        Me.btnHistorial.Size = New System.Drawing.Size(65, 50)
+        Me.btnHistorial.TabIndex = 41
+        Me.btnHistorial.Text = "Historial"
+        Me.btnHistorial.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+        Me.btnHistorial.UseVisualStyleBackColor = True
+        '
+        'PictureBox1
+        '
+        Me.PictureBox1.Location = New System.Drawing.Point(393, 37)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(32, 32)
+        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.PictureBox1.TabIndex = 40
+        Me.PictureBox1.TabStop = False
         '
         'Button23
         '
         Me.Button23.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button23.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button23.Image = CType(resources.GetObject("Button23.Image"), System.Drawing.Image)
-        Me.Button23.Location = New System.Drawing.Point(527, 19)
+        Me.Button23.Location = New System.Drawing.Point(657, 19)
         Me.Button23.Name = "Button23"
         Me.Button23.Size = New System.Drawing.Size(65, 50)
         Me.Button23.TabIndex = 39
@@ -342,11 +428,11 @@ Partial Class frmDocumentacion
         Me.Button22.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button22.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button22.Image = CType(resources.GetObject("Button22.Image"), System.Drawing.Image)
-        Me.Button22.Location = New System.Drawing.Point(456, 18)
+        Me.Button22.Location = New System.Drawing.Point(586, 18)
         Me.Button22.Name = "Button22"
         Me.Button22.Size = New System.Drawing.Size(65, 50)
         Me.Button22.TabIndex = 38
-        Me.Button22.Text = "+ Info"
+        Me.Button22.Text = "Registro"
         Me.Button22.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         Me.Button22.UseVisualStyleBackColor = True
         '
@@ -377,7 +463,7 @@ Partial Class frmDocumentacion
         Me.Button10.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button10.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button10.Image = CType(resources.GetObject("Button10.Image"), System.Drawing.Image)
-        Me.Button10.Location = New System.Drawing.Point(669, 19)
+        Me.Button10.Location = New System.Drawing.Point(799, 19)
         Me.Button10.Name = "Button10"
         Me.Button10.Size = New System.Drawing.Size(65, 50)
         Me.Button10.TabIndex = 29
@@ -411,11 +497,11 @@ Partial Class frmDocumentacion
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 1
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 512.0!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 512.0!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 512.0!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 512.0!))
-        Me.TableLayoutPanel1.Size = New System.Drawing.Size(869, 512)
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 543.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 543.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 543.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 543.0!))
+        Me.TableLayoutPanel1.Size = New System.Drawing.Size(999, 543)
         Me.TableLayoutPanel1.TabIndex = 28
         '
         'Panel2
@@ -423,17 +509,17 @@ Partial Class frmDocumentacion
         Me.Panel2.BackColor = System.Drawing.SystemColors.Control
         Me.Panel2.Controls.Add(Me.TableLayoutPanel3)
         Me.Panel2.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Panel2.Location = New System.Drawing.Point(437, 3)
+        Me.Panel2.Location = New System.Drawing.Point(502, 3)
         Me.Panel2.Name = "Panel2"
-        Me.Panel2.Size = New System.Drawing.Size(429, 506)
+        Me.Panel2.Size = New System.Drawing.Size(494, 537)
         Me.Panel2.TabIndex = 29
         '
         'TableLayoutPanel3
         '
         Me.TableLayoutPanel3.ColumnCount = 1
         Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel3.Controls.Add(Me.lvAtributos, 0, 0)
         Me.TableLayoutPanel3.Controls.Add(Me.ListView2, 0, 1)
+        Me.TableLayoutPanel3.Controls.Add(Me.Panel3, 0, 0)
         Me.TableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TableLayoutPanel3.Location = New System.Drawing.Point(0, 0)
         Me.TableLayoutPanel3.Name = "TableLayoutPanel3"
@@ -441,29 +527,62 @@ Partial Class frmDocumentacion
         Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 76.29428!))
         Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 23.70572!))
         Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.TableLayoutPanel3.Size = New System.Drawing.Size(429, 506)
+        Me.TableLayoutPanel3.Size = New System.Drawing.Size(494, 537)
         Me.TableLayoutPanel3.TabIndex = 0
+        '
+        'ListView2
+        '
+        Me.ListView2.AllowDrop = True
+        Me.ListView2.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ListView2.Font = New System.Drawing.Font("Verdana", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ListView2.HideSelection = False
+        Me.ListView2.Location = New System.Drawing.Point(3, 412)
+        Me.ListView2.Name = "ListView2"
+        Me.ListView2.Size = New System.Drawing.Size(488, 122)
+        Me.ListView2.TabIndex = 42
+        Me.ListView2.UseCompatibleStateImageBehavior = False
+        Me.ListView2.View = System.Windows.Forms.View.Tile
+        '
+        'Panel3
+        '
+        Me.Panel3.Controls.Add(Me.lvHistorial)
+        Me.Panel3.Controls.Add(Me.lvAtributos)
+        Me.Panel3.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Panel3.Location = New System.Drawing.Point(3, 3)
+        Me.Panel3.Name = "Panel3"
+        Me.Panel3.Size = New System.Drawing.Size(488, 403)
+        Me.Panel3.TabIndex = 43
+        '
+        'lvHistorial
+        '
+        Me.lvHistorial.BackColor = System.Drawing.SystemColors.Window
+        Me.lvHistorial.Font = New System.Drawing.Font("Verdana", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lvHistorial.HideSelection = False
+        Me.lvHistorial.Location = New System.Drawing.Point(173, 26)
+        Me.lvHistorial.Name = "lvHistorial"
+        Me.lvHistorial.Size = New System.Drawing.Size(120, 209)
+        Me.lvHistorial.TabIndex = 35
+        Me.lvHistorial.UseCompatibleStateImageBehavior = False
         '
         'lvAtributos
         '
-        Me.lvAtributos.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lvAtributos.ContextMenuStrip = Me.ContextMenuStrip2
         Me.lvAtributos.Font = New System.Drawing.Font("Verdana", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lvAtributos.HideSelection = False
-        Me.lvAtributos.Location = New System.Drawing.Point(3, 3)
+        Me.lvAtributos.Location = New System.Drawing.Point(0, 2)
         Me.lvAtributos.MultiSelect = False
         Me.lvAtributos.Name = "lvAtributos"
-        Me.lvAtributos.Size = New System.Drawing.Size(423, 380)
+        Me.lvAtributos.Size = New System.Drawing.Size(149, 209)
         Me.lvAtributos.TabIndex = 34
         Me.lvAtributos.UseCompatibleStateImageBehavior = False
         '
         'ContextMenuStrip2
         '
-        Me.ContextMenuStrip2.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MostrarEnWMSToolStripMenuItem, Me.DefinirTipoDeWMSToolStripMenuItem1, Me.mnuSetZIndex, Me.MarcarComoToolStripMenuItem})
+        Me.ContextMenuStrip2.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MostrarEnWMSToolStripMenuItem, Me.DefinirTipoDeWMSToolStripMenuItem1, Me.mnuSetZIndex, Me.contextMnuDetalleMarcar})
         Me.ContextMenuStrip2.Name = "ContextMenuStrip2"
-        Me.ContextMenuStrip2.Size = New System.Drawing.Size(284, 114)
+        Me.ContextMenuStrip2.Size = New System.Drawing.Size(284, 92)
         '
         'MostrarEnWMSToolStripMenuItem
         '
@@ -527,45 +646,40 @@ Partial Class frmDocumentacion
         Me.mnuSetZIndex.Size = New System.Drawing.Size(283, 22)
         Me.mnuSetZIndex.Text = "Definir Z-Index del documento (1-1000)"
         '
-        'MarcarComoToolStripMenuItem
+        'contextMnuDetalleMarcar
         '
-        Me.MarcarComoToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.contextMnuPrinDestacado, Me.contextMnuPrin4Star, Me.contextMnuPrin5Star})
-        Me.MarcarComoToolStripMenuItem.Name = "MarcarComoToolStripMenuItem"
-        Me.MarcarComoToolStripMenuItem.Size = New System.Drawing.Size(283, 22)
-        Me.MarcarComoToolStripMenuItem.Text = "Marcar como"
+        Me.contextMnuDetalleMarcar.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.contextMnuDetalleDestacado, Me.contextMnuDetalleRaro, Me.contextMnuDetalleTop, Me.contextMnuDetalleNone})
+        Me.contextMnuDetalleMarcar.Name = "contextMnuDetalleMarcar"
+        Me.contextMnuDetalleMarcar.Size = New System.Drawing.Size(283, 22)
+        Me.contextMnuDetalleMarcar.Text = "Marcar como"
         '
-        'contextMnuPrinDestacado
+        'contextMnuDetalleDestacado
         '
-        Me.contextMnuPrinDestacado.Name = "contextMnuPrinDestacado"
-        Me.contextMnuPrinDestacado.Size = New System.Drawing.Size(180, 22)
-        Me.contextMnuPrinDestacado.Text = "Destacado"
+        Me.contextMnuDetalleDestacado.Image = CType(resources.GetObject("contextMnuDetalleDestacado.Image"), System.Drawing.Image)
+        Me.contextMnuDetalleDestacado.Name = "contextMnuDetalleDestacado"
+        Me.contextMnuDetalleDestacado.Size = New System.Drawing.Size(180, 22)
+        Me.contextMnuDetalleDestacado.Text = "Destacado"
         '
-        'contextMnuPrin4Star
+        'contextMnuDetalleRaro
         '
-        Me.contextMnuPrin4Star.Name = "contextMnuPrin4Star"
-        Me.contextMnuPrin4Star.Size = New System.Drawing.Size(180, 22)
-        Me.contextMnuPrin4Star.Text = "Cuatro estrellas"
+        Me.contextMnuDetalleRaro.Image = CType(resources.GetObject("contextMnuDetalleRaro.Image"), System.Drawing.Image)
+        Me.contextMnuDetalleRaro.Name = "contextMnuDetalleRaro"
+        Me.contextMnuDetalleRaro.Size = New System.Drawing.Size(180, 22)
+        Me.contextMnuDetalleRaro.Text = "Raro / Peculiar"
         '
-        'contextMnuPrin5Star
+        'contextMnuDetalleTop
         '
-        Me.contextMnuPrin5Star.Name = "contextMnuPrin5Star"
-        Me.contextMnuPrin5Star.Size = New System.Drawing.Size(180, 22)
-        Me.contextMnuPrin5Star.Text = "Cinco estrellas"
+        Me.contextMnuDetalleTop.Image = CType(resources.GetObject("contextMnuDetalleTop.Image"), System.Drawing.Image)
+        Me.contextMnuDetalleTop.Name = "contextMnuDetalleTop"
+        Me.contextMnuDetalleTop.Size = New System.Drawing.Size(180, 22)
+        Me.contextMnuDetalleTop.Text = "Cinco estrellas"
         '
-        'ListView2
+        'contextMnuDetalleNone
         '
-        Me.ListView2.AllowDrop = True
-        Me.ListView2.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.ListView2.Font = New System.Drawing.Font("Verdana", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ListView2.HideSelection = False
-        Me.ListView2.Location = New System.Drawing.Point(3, 389)
-        Me.ListView2.Name = "ListView2"
-        Me.ListView2.Size = New System.Drawing.Size(423, 114)
-        Me.ListView2.TabIndex = 42
-        Me.ListView2.UseCompatibleStateImageBehavior = False
-        Me.ListView2.View = System.Windows.Forms.View.Tile
+        Me.contextMnuDetalleNone.Image = CType(resources.GetObject("contextMnuDetalleNone.Image"), System.Drawing.Image)
+        Me.contextMnuDetalleNone.Name = "contextMnuDetalleNone"
+        Me.contextMnuDetalleNone.Size = New System.Drawing.Size(180, 22)
+        Me.contextMnuDetalleNone.Text = "Eliminar marcas"
         '
         'Panel1
         '
@@ -582,7 +696,7 @@ Partial Class frmDocumentacion
         Me.Panel1.Controls.Add(Me.Label12)
         Me.Panel1.Location = New System.Drawing.Point(3, 3)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(428, 506)
+        Me.Panel1.Size = New System.Drawing.Size(493, 537)
         Me.Panel1.TabIndex = 0
         '
         'picThumb
@@ -593,7 +707,7 @@ Partial Class frmDocumentacion
         Me.picThumb.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(192, Byte), Integer))
         Me.picThumb.Location = New System.Drawing.Point(3, 328)
         Me.picThumb.Name = "picThumb"
-        Me.picThumb.Size = New System.Drawing.Size(422, 173)
+        Me.picThumb.Size = New System.Drawing.Size(487, 204)
         Me.picThumb.TabIndex = 14
         Me.picThumb.TabStop = False
         '
@@ -606,7 +720,7 @@ Partial Class frmDocumentacion
         Me.Label19.Font = New System.Drawing.Font("Verdana", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label19.Location = New System.Drawing.Point(0, 261)
         Me.Label19.Name = "Label19"
-        Me.Label19.Size = New System.Drawing.Size(425, 240)
+        Me.Label19.Size = New System.Drawing.Size(490, 271)
         Me.Label19.TabIndex = 12
         Me.Label19.Text = "Label19"
         '
@@ -629,7 +743,7 @@ Partial Class frmDocumentacion
         Me.Label5.Font = New System.Drawing.Font("Verdana", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label5.Location = New System.Drawing.Point(0, 29)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(425, 120)
+        Me.Label5.Size = New System.Drawing.Size(490, 120)
         Me.Label5.TabIndex = 4
         Me.Label5.Text = "Label5"
         '
@@ -641,7 +755,7 @@ Partial Class frmDocumentacion
         Me.Label6.Font = New System.Drawing.Font("Verdana", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label6.Location = New System.Drawing.Point(0, 185)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(425, 40)
+        Me.Label6.Size = New System.Drawing.Size(490, 40)
         Me.Label6.TabIndex = 5
         Me.Label6.Text = "Label6"
         '
@@ -672,7 +786,7 @@ Partial Class frmDocumentacion
         Me.Button13.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button13.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button13.Image = CType(resources.GetObject("Button13.Image"), System.Drawing.Image)
-        Me.Button13.Location = New System.Drawing.Point(598, 19)
+        Me.Button13.Location = New System.Drawing.Point(728, 19)
         Me.Button13.Name = "Button13"
         Me.Button13.Size = New System.Drawing.Size(65, 50)
         Me.Button13.TabIndex = 26
@@ -685,7 +799,7 @@ Partial Class frmDocumentacion
         Me.Button5.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button5.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button5.Image = CType(resources.GetObject("Button5.Image"), System.Drawing.Image)
-        Me.Button5.Location = New System.Drawing.Point(811, 18)
+        Me.Button5.Location = New System.Drawing.Point(941, 18)
         Me.Button5.Name = "Button5"
         Me.Button5.Size = New System.Drawing.Size(65, 50)
         Me.Button5.TabIndex = 17
@@ -709,7 +823,7 @@ Partial Class frmDocumentacion
         Me.Button4.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button4.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button4.Image = CType(resources.GetObject("Button4.Image"), System.Drawing.Image)
-        Me.Button4.Location = New System.Drawing.Point(740, 19)
+        Me.Button4.Location = New System.Drawing.Point(870, 19)
         Me.Button4.Name = "Button4"
         Me.Button4.Size = New System.Drawing.Size(65, 50)
         Me.Button4.TabIndex = 16
@@ -789,7 +903,7 @@ Partial Class frmDocumentacion
         Me.GroupBox2.Controls.Add(Me.CheckBox2)
         Me.GroupBox2.Controls.Add(Me.CheckBox1)
         Me.GroupBox2.Font = New System.Drawing.Font("Verdana", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox2.Location = New System.Drawing.Point(942, 67)
+        Me.GroupBox2.Location = New System.Drawing.Point(1235, 89)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(308, 302)
         Me.GroupBox2.TabIndex = 19
@@ -1088,9 +1202,9 @@ Partial Class frmDocumentacion
         'StatusStrip1
         '
         Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1, Me.ToolStripStatusLabel2})
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 923)
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 912)
         Me.StatusStrip1.Name = "StatusStrip1"
-        Me.StatusStrip1.Size = New System.Drawing.Size(1845, 22)
+        Me.StatusStrip1.Size = New System.Drawing.Size(1857, 22)
         Me.StatusStrip1.TabIndex = 15
         Me.StatusStrip1.Text = "StatusStrip1"
         '
@@ -1147,9 +1261,9 @@ Partial Class frmDocumentacion
         Me.GroupBox3.Controls.Add(Me.Button18)
         Me.GroupBox3.Controls.Add(Me.Button14)
         Me.GroupBox3.Controls.Add(Me.TableLayoutPanel2)
-        Me.GroupBox3.Location = New System.Drawing.Point(942, 405)
+        Me.GroupBox3.Location = New System.Drawing.Point(1157, 436)
         Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(875, 450)
+        Me.GroupBox3.Size = New System.Drawing.Size(688, 424)
         Me.GroupBox3.TabIndex = 23
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "GroupBox3"
@@ -1168,7 +1282,7 @@ Partial Class frmDocumentacion
         '
         Me.Button18.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button18.Image = CType(resources.GetObject("Button18.Image"), System.Drawing.Image)
-        Me.Button18.Location = New System.Drawing.Point(796, 16)
+        Me.Button18.Location = New System.Drawing.Point(609, 16)
         Me.Button18.Name = "Button18"
         Me.Button18.Size = New System.Drawing.Size(67, 34)
         Me.Button18.TabIndex = 2
@@ -1178,7 +1292,7 @@ Partial Class frmDocumentacion
         '
         Me.Button14.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button14.Image = CType(resources.GetObject("Button14.Image"), System.Drawing.Image)
-        Me.Button14.Location = New System.Drawing.Point(726, 16)
+        Me.Button14.Location = New System.Drawing.Point(539, 16)
         Me.Button14.Name = "Button14"
         Me.Button14.Size = New System.Drawing.Size(67, 34)
         Me.Button14.TabIndex = 1
@@ -1212,7 +1326,7 @@ Partial Class frmDocumentacion
         Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.TableLayoutPanel2.Size = New System.Drawing.Size(857, 388)
+        Me.TableLayoutPanel2.Size = New System.Drawing.Size(670, 362)
         Me.TableLayoutPanel2.TabIndex = 0
         '
         'Label40
@@ -1220,7 +1334,7 @@ Partial Class frmDocumentacion
         Me.Label40.AutoSize = True
         Me.Label40.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label40.ForeColor = System.Drawing.Color.Navy
-        Me.Label40.Location = New System.Drawing.Point(573, 368)
+        Me.Label40.Location = New System.Drawing.Point(449, 342)
         Me.Label40.Name = "Label40"
         Me.Label40.Size = New System.Drawing.Size(45, 13)
         Me.Label40.TabIndex = 11
@@ -1231,7 +1345,7 @@ Partial Class frmDocumentacion
         Me.Label39.AutoSize = True
         Me.Label39.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label39.ForeColor = System.Drawing.Color.Navy
-        Me.Label39.Location = New System.Drawing.Point(288, 368)
+        Me.Label39.Location = New System.Drawing.Point(226, 342)
         Me.Label39.Name = "Label39"
         Me.Label39.Size = New System.Drawing.Size(45, 13)
         Me.Label39.TabIndex = 10
@@ -1242,7 +1356,7 @@ Partial Class frmDocumentacion
         Me.Label9.AutoSize = True
         Me.Label9.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label9.ForeColor = System.Drawing.Color.Navy
-        Me.Label9.Location = New System.Drawing.Point(3, 368)
+        Me.Label9.Location = New System.Drawing.Point(3, 342)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(39, 13)
         Me.Label9.TabIndex = 9
@@ -1253,7 +1367,7 @@ Partial Class frmDocumentacion
         Me.Label8.AutoSize = True
         Me.Label8.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label8.ForeColor = System.Drawing.Color.Navy
-        Me.Label8.Location = New System.Drawing.Point(573, 174)
+        Me.Label8.Location = New System.Drawing.Point(449, 161)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(39, 13)
         Me.Label8.TabIndex = 8
@@ -1264,9 +1378,9 @@ Partial Class frmDocumentacion
         Me.PictureBox4.BackColor = System.Drawing.Color.LightSteelBlue
         Me.PictureBox4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.PictureBox4.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.PictureBox4.Location = New System.Drawing.Point(573, 3)
+        Me.PictureBox4.Location = New System.Drawing.Point(449, 3)
         Me.PictureBox4.Name = "PictureBox4"
-        Me.PictureBox4.Size = New System.Drawing.Size(281, 168)
+        Me.PictureBox4.Size = New System.Drawing.Size(218, 155)
         Me.PictureBox4.TabIndex = 2
         Me.PictureBox4.TabStop = False
         '
@@ -1275,9 +1389,9 @@ Partial Class frmDocumentacion
         Me.PictureBox3.BackColor = System.Drawing.Color.Goldenrod
         Me.PictureBox3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.PictureBox3.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.PictureBox3.Location = New System.Drawing.Point(288, 3)
+        Me.PictureBox3.Location = New System.Drawing.Point(226, 3)
         Me.PictureBox3.Name = "PictureBox3"
-        Me.PictureBox3.Size = New System.Drawing.Size(279, 168)
+        Me.PictureBox3.Size = New System.Drawing.Size(217, 155)
         Me.PictureBox3.TabIndex = 1
         Me.PictureBox3.TabStop = False
         '
@@ -1288,7 +1402,7 @@ Partial Class frmDocumentacion
         Me.PictureBox2.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PictureBox2.Location = New System.Drawing.Point(3, 3)
         Me.PictureBox2.Name = "PictureBox2"
-        Me.PictureBox2.Size = New System.Drawing.Size(279, 168)
+        Me.PictureBox2.Size = New System.Drawing.Size(217, 155)
         Me.PictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PictureBox2.TabIndex = 0
         Me.PictureBox2.TabStop = False
@@ -1298,9 +1412,9 @@ Partial Class frmDocumentacion
         Me.PictureBox5.BackColor = System.Drawing.Color.LightCoral
         Me.PictureBox5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.PictureBox5.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.PictureBox5.Location = New System.Drawing.Point(3, 197)
+        Me.PictureBox5.Location = New System.Drawing.Point(3, 184)
         Me.PictureBox5.Name = "PictureBox5"
-        Me.PictureBox5.Size = New System.Drawing.Size(279, 168)
+        Me.PictureBox5.Size = New System.Drawing.Size(217, 155)
         Me.PictureBox5.TabIndex = 3
         Me.PictureBox5.TabStop = False
         '
@@ -1309,9 +1423,9 @@ Partial Class frmDocumentacion
         Me.PictureBox6.BackColor = System.Drawing.Color.LightYellow
         Me.PictureBox6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.PictureBox6.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.PictureBox6.Location = New System.Drawing.Point(288, 197)
+        Me.PictureBox6.Location = New System.Drawing.Point(226, 184)
         Me.PictureBox6.Name = "PictureBox6"
-        Me.PictureBox6.Size = New System.Drawing.Size(279, 168)
+        Me.PictureBox6.Size = New System.Drawing.Size(217, 155)
         Me.PictureBox6.TabIndex = 4
         Me.PictureBox6.TabStop = False
         '
@@ -1320,9 +1434,9 @@ Partial Class frmDocumentacion
         Me.PictureBox7.BackColor = System.Drawing.Color.Khaki
         Me.PictureBox7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.PictureBox7.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.PictureBox7.Location = New System.Drawing.Point(573, 197)
+        Me.PictureBox7.Location = New System.Drawing.Point(449, 184)
         Me.PictureBox7.Name = "PictureBox7"
-        Me.PictureBox7.Size = New System.Drawing.Size(281, 168)
+        Me.PictureBox7.Size = New System.Drawing.Size(218, 155)
         Me.PictureBox7.TabIndex = 5
         Me.PictureBox7.TabStop = False
         '
@@ -1331,7 +1445,7 @@ Partial Class frmDocumentacion
         Me.Label3.AutoSize = True
         Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label3.ForeColor = System.Drawing.Color.Navy
-        Me.Label3.Location = New System.Drawing.Point(288, 174)
+        Me.Label3.Location = New System.Drawing.Point(226, 161)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(39, 13)
         Me.Label3.TabIndex = 7
@@ -1342,7 +1456,7 @@ Partial Class frmDocumentacion
         Me.Label2.AutoSize = True
         Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label2.ForeColor = System.Drawing.Color.Navy
-        Me.Label2.Location = New System.Drawing.Point(3, 174)
+        Me.Label2.Location = New System.Drawing.Point(3, 161)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(39, 13)
         Me.Label2.TabIndex = 6
@@ -1389,7 +1503,7 @@ Partial Class frmDocumentacion
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1845, 945)
+        Me.ClientSize = New System.Drawing.Size(1857, 934)
         Me.Controls.Add(Me.Button24)
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.GroupBox1)
@@ -1417,9 +1531,11 @@ Partial Class frmDocumentacion
         Me.ContextMenuStrip1.ResumeLayout(False)
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TableLayoutPanel1.ResumeLayout(False)
         Me.Panel2.ResumeLayout(False)
         Me.TableLayoutPanel3.ResumeLayout(False)
+        Me.Panel3.ResumeLayout(False)
         Me.ContextMenuStrip2.ResumeLayout(False)
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
@@ -1560,8 +1676,19 @@ Partial Class frmDocumentacion
     Friend WithEvents mnuSetZIndexBulk As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents Button23 As Button
     Friend WithEvents Button24 As Button
-    Friend WithEvents MarcarComoToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents contextMnuPrinDestacado As ToolStripMenuItem
-    Friend WithEvents contextMnuPrin4Star As ToolStripMenuItem
-    Friend WithEvents contextMnuPrin5Star As ToolStripMenuItem
+    Friend WithEvents contextMnuDetalleMarcar As ToolStripMenuItem
+    Friend WithEvents contextMnuDetalleDestacado As ToolStripMenuItem
+    Friend WithEvents contextMnuDetalleRaro As ToolStripMenuItem
+    Friend WithEvents contextMnuDetalleTop As ToolStripMenuItem
+    Friend WithEvents PictureBox1 As PictureBox
+    Friend WithEvents contextMnuListMarcar As ToolStripMenuItem
+    Friend WithEvents contextMnuListaDestacado As ToolStripMenuItem
+    Friend WithEvents contextMnuListaRaro As ToolStripMenuItem
+    Friend WithEvents contextMnuListaTop As ToolStripMenuItem
+    Friend WithEvents btnHistorial As Button
+    Friend WithEvents Panel3 As Panel
+    Friend WithEvents lvHistorial As ListView
+    Friend WithEvents btnFichaDoc As Button
+    Friend WithEvents contextMnuListaNone As ToolStripMenuItem
+    Friend WithEvents contextMnuDetalleNone As ToolStripMenuItem
 End Class

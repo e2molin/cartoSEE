@@ -2166,6 +2166,9 @@ Partial Class MDIPrincipal
         Me.ImageList1.Images.SetKeyName(7, "bullet_ball_red.png")
         Me.ImageList1.Images.SetKeyName(8, "bullet_ball_green.png")
         Me.ImageList1.Images.SetKeyName(9, "bullet_ball_yellow.png")
+        Me.ImageList1.Images.SetKeyName(10, "destacar_48.png")
+        Me.ImageList1.Images.SetKeyName(11, "Estrella_48.png")
+        Me.ImageList1.Images.SetKeyName(12, "RaroInvertido_48.png")
         '
         'ImageList2
         '

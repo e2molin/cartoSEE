@@ -119,6 +119,7 @@
     <Compile Include="Clases\DocCartoGEODOCAT\docCartoSEE.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\docCartoSEEquery.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\docCartoSEETipoDocu.vb" />
+    <Compile Include="Clases\DocCartoGEODOCAT\docCartoSEEVariacion.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\FlagsProperties.vb" />
     <Compile Include="Clases\forms\dataViewerForm.Designer.vb">
       <DependentUpon>dataViewerForm.vb</DependentUpon>

@@ -61,6 +61,10 @@ Public Class frmDocumentacion
             Button8.Enabled = True
         End If
 
+        btnHistorial.Location = New Point(755, 18)
+        btnFichaDoc.Location = New Point(755, 18)
+        btnFichaDoc.Visible = False
+
         Button13.Enabled = usuarioMyApp.permisosLista.asignarParamsWMS
         mnuOnWMS.Enabled = usuarioMyApp.permisosLista.asignarParamsWMS
         mnuOffWMS.Enabled = usuarioMyApp.permisosLista.asignarParamsWMS
@@ -76,6 +80,9 @@ Public Class frmDocumentacion
         mnuDetailTipoWMS2.Enabled = usuarioMyApp.permisosLista.asignarParamsWMS
         mnuDetailTipoWMS3.Enabled = usuarioMyApp.permisosLista.asignarParamsWMS
         mnuDetailTipoWMS4.Enabled = usuarioMyApp.permisosLista.asignarParamsWMS
+        contextMnuDetalleMarcar.Enabled = usuarioMyApp.permisosLista.editarDocumentacion
+        contextMnuListMarcar.Enabled = usuarioMyApp.permisosLista.editarDocumentacion
+
         If usuarioMyApp.permisosLista.isUserISTARI Then
             Button20.Visible = True
         End If
@@ -99,7 +106,6 @@ Public Class frmDocumentacion
         CheckBox17.Checked = IIf(Encabezados(17).Visible = True, True, False)
         CheckBox18.Checked = IIf(Encabezados(18).Visible = True, True, False)
 
-        Application.DoEvents()
         ToolStripStatusLabel2.Text = ""
         Label2.Text = ""
         Label3.Text = ""
@@ -122,6 +128,20 @@ Public Class frmDocumentacion
         lvAtributos.FullRowSelect = True
         lvAtributos.View = View.Details
         lvAtributos.HeaderStyle = ColumnHeaderStyle.None
+        lvAtributos.Dock = DockStyle.Fill
+
+        lvHistorial.Columns.Clear()
+        lvHistorial.Columns.Add("Fecha", 120, HorizontalAlignment.Left)
+        lvHistorial.Columns.Add("Usuario", 80, HorizontalAlignment.Left)
+        lvHistorial.Columns.Add("Variación", 120, HorizontalAlignment.Left)
+        lvHistorial.Columns.Add("Antes", 150, HorizontalAlignment.Left)
+        lvHistorial.Columns.Add("Después", 150, HorizontalAlignment.Left)
+        lvHistorial.SmallImageList = MDIPrincipal.ImageList2
+        lvHistorial.FullRowSelect = True
+        lvHistorial.View = View.Details
+        lvHistorial.Dock = DockStyle.Fill
+        lvHistorial.Visible = False
+
 
     End Sub
 
@@ -829,7 +849,7 @@ Public Class frmDocumentacion
         Label19.Text = ""
         Label1.Text = ""
         Button10.Tag = ""
-
+        PictureBox1.Image = Nothing
 
         ListView1.Visible = False
         GroupBox3.Visible = False
@@ -947,7 +967,6 @@ Public Class frmDocumentacion
             Button23.Enabled = False
         End If
 
-
         'Metemos el resto de las propiedades
         ListView2.Items.Clear()
         ListView2.View = View.LargeIcon
@@ -960,6 +979,15 @@ Public Class frmDocumentacion
         Label7.Text = resultsetGeodocat.resultados(NumElemento).fechaPrincipal
         Label19.Text = resultsetGeodocat.resultados(NumElemento).Observaciones
 
+        If resultsetGeodocat.resultados(NumElemento).extraProps.getValueByProperty(FlagsProperties.MultiProperty.destacado) Then
+            PictureBox1.Image = MDIPrincipal.ImageList1.Images(10)
+        End If
+        If resultsetGeodocat.resultados(NumElemento).extraProps.getValueByProperty(FlagsProperties.MultiProperty.estrellas5) Then
+            PictureBox1.Image = MDIPrincipal.ImageList1.Images(11)
+        End If
+        If resultsetGeodocat.resultados(NumElemento).extraProps.getValueByProperty(FlagsProperties.MultiProperty.peculiar) Then
+            PictureBox1.Image = MDIPrincipal.ImageList1.Images(12)
+        End If
 
         'Repositorio de documento imagen asociado
         '-----------------------------------------------------------------------------------------------------------------
@@ -2171,17 +2199,24 @@ Public Class frmDocumentacion
 #End Region
 
     Private Sub GestionDetailContextMenu(ByVal sender As Object, ByVal e As System.EventArgs) Handles mnuDetailMostrarWMS.Click, mnuDetailOcultarWMS.Click,
-        mnuDetailTipoWMS0.Click, mnuDetailTipoWMS1.Click, mnuDetailTipoWMS2.Click, mnuDetailTipoWMS3.Click, mnuDetailTipoWMS4.Click, mnuSetZIndex.Click, contextMnuPrinDestacado.Click
+        mnuDetailTipoWMS0.Click, mnuDetailTipoWMS1.Click, mnuDetailTipoWMS2.Click, mnuDetailTipoWMS3.Click, mnuDetailTipoWMS4.Click, mnuSetZIndex.Click, contextMnuDetalleDestacado.Click, contextMnuDetalleRaro.Click, contextMnuDetalleTop.Click, contextMnuDetalleNone.Click
 
-
-
-        Application.DoEvents()
 
         'Esta acción de menú se aplica al documento, no a los ficheros georreferenciados
-        If sender.name = "contextMnuPrinDestacado" Then
-            Application.DoEvents()
-            MessageBox.Show(resultsetGeodocat.resultados(GroupBox1.Tag).docIndex)
-            If resultsetGeodocat.resultados(GroupBox1.Tag).extraprops.assignByProperty(FlagsProperties.MultiProperty.destacado, 1) Then
+        If sender.name = "contextMnuDetalleDestacado" Or sender.name = "contextMnuDetalleRaro" Or sender.name = "contextMnuDetalleTop" Or sender.name = "contextMnuDetalleNone" Then
+            Dim okProc As Boolean = False
+            If sender.name = "contextMnuDetalleDestacado" Then
+                okProc = resultsetGeodocat.resultados(GroupBox1.Tag).extraprops.assignByProperty(FlagsProperties.MultiProperty.destacado, 1)
+            ElseIf sender.name = "contextMnuDetalleRaro" Then
+                okProc = resultsetGeodocat.resultados(GroupBox1.Tag).extraprops.assignByProperty(FlagsProperties.MultiProperty.peculiar, 1)
+            ElseIf sender.name = "contextMnuDetalleTop" Then
+                okProc = resultsetGeodocat.resultados(GroupBox1.Tag).extraprops.assignByProperty(FlagsProperties.MultiProperty.estrellas5, 1)
+            ElseIf sender.name = "contextMnuDetalleNone" Then
+                okProc = resultsetGeodocat.resultados(GroupBox1.Tag).extraprops.assignByProperty(FlagsProperties.MultiProperty.destacado, 0)
+                okProc = resultsetGeodocat.resultados(GroupBox1.Tag).extraprops.assignByProperty(FlagsProperties.MultiProperty.peculiar, 0)
+                okProc = resultsetGeodocat.resultados(GroupBox1.Tag).extraprops.assignByProperty(FlagsProperties.MultiProperty.estrellas5, 0)
+            End If
+            If okProc Then
                 Try
                     If ExeSinTran("UPDATE bdsidschema.archivo set extraprops=" & resultsetGeodocat.resultados(GroupBox1.Tag).extraprops.propertyCode & " where idarchivo=" & resultsetGeodocat.resultados(GroupBox1.Tag).docIndex) Then
                         MessageBox.Show("Cambios realizados", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -2189,14 +2224,12 @@ Public Class frmDocumentacion
                 Catch ex As Exception
                     MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Error)
                 End Try
-
+            Else
+                MessageBox.Show("No se pudieron asignar las propiedades", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
             End If
-            Application.DoEvents()
+
             Exit Sub
-
         End If
-
-
 
         If lvAtributos.SelectedItems.Count <> 1 Then
             MessageBox.Show("Seleccione un único fichero del apartado de Georreferenciación", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
@@ -2283,7 +2316,7 @@ Public Class frmDocumentacion
 
     Private Sub GestionContextMenu(ByVal sender As Object, ByVal e As System.EventArgs) _
                 Handles ToolStripMenuItem1.Click, ToolStripMenuItem2.Click, mnuOffWMS.Click, mnuOnWMS.Click, menuTipoWMS0.Click, menuTipoWMS1.Click, menuTipoWMS2.Click, menuTipoWMS3.Click, menuTipoWMS4.Click,
-                mnuSetZIndexBulk.Click
+                mnuSetZIndexBulk.Click, contextMnuListaDestacado.Click, contextMnuListaRaro.Click, contextMnuListaTop.Click, contextMnuListaNone.Click
 
         Dim listaSQLs As ArrayList
         Dim typeWMS As String = ""
@@ -2349,7 +2382,53 @@ Public Class frmDocumentacion
                 listaSQLs.Clear()
                 listaSQLs = Nothing
             End Try
+        ElseIf sender.name = "contextMnuListaNone" Then
+            listaSQLs = New ArrayList
+            Try
+                For Each item As ListViewItem In ListView1.SelectedItems
+                    'Ponemos los tres flags a cero
+                    resultsetGeodocat.resultados(item.Tag).extraprops.assignByProperty(FlagsProperties.MultiProperty.destacado, False)
+                    resultsetGeodocat.resultados(item.Tag).extraprops.assignByProperty(FlagsProperties.MultiProperty.peculiar, False)
+                    resultsetGeodocat.resultados(item.Tag).extraprops.assignByProperty(FlagsProperties.MultiProperty.estrellas5, False)
+                    listaSQLs.Add("UPDATE bdsidschema.archivo set extraprops=" & resultsetGeodocat.resultados(item.Tag).extraprops.propertyCode & " WHERE idarchivo=" & resultsetGeodocat.resultados(item.Tag).docIndex)
+                Next
+                If listaSQLs.Count > 0 Then
+                    If ExeTran(listaSQLs) Then MessageBox.Show("Cambios realizados", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+                End If
+            Catch ex As Exception
+                MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            Finally
+                listaSQLs.Clear()
+                listaSQLs = Nothing
+            End Try
+        ElseIf sender.name = "contextMnuListaDestacado" Or sender.name = "contextMnuListaRaro" Or sender.name = "contextMnuListaTop" Then
+            listaSQLs = New ArrayList
+            Try
+                For Each item As ListViewItem In ListView1.SelectedItems
 
+                    If sender.name = "contextMnuListaDestacado" Then
+                        If resultsetGeodocat.resultados(item.Tag).extraprops.toggleProperty(FlagsProperties.MultiProperty.destacado) Then
+                            listaSQLs.Add("UPDATE bdsidschema.archivo set extraprops=" & resultsetGeodocat.resultados(item.Tag).extraprops.propertyCode & " WHERE idarchivo=" & resultsetGeodocat.resultados(item.Tag).docIndex)
+                        End If
+                    ElseIf sender.name = "contextMnuListaRaro" Then
+                        If resultsetGeodocat.resultados(item.Tag).extraprops.toggleProperty(FlagsProperties.MultiProperty.peculiar) Then
+                            listaSQLs.Add("UPDATE bdsidschema.archivo set extraprops=" & resultsetGeodocat.resultados(item.Tag).extraprops.propertyCode & " WHERE idarchivo=" & resultsetGeodocat.resultados(item.Tag).docIndex)
+                        End If
+                    ElseIf sender.name = "contextMnuListaTop" Then
+                        If resultsetGeodocat.resultados(item.Tag).extraprops.toggleProperty(FlagsProperties.MultiProperty.estrellas5) Then
+                            listaSQLs.Add("UPDATE bdsidschema.archivo set extraprops=" & resultsetGeodocat.resultados(item.Tag).extraprops.propertyCode & " WHERE idarchivo=" & resultsetGeodocat.resultados(item.Tag).docIndex)
+                        End If
+                    End If
+                Next
+                If listaSQLs.Count > 0 Then
+                    If ExeTran(listaSQLs) Then MessageBox.Show("Cambios realizados", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+                End If
+            Catch ex As Exception
+                MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            Finally
+                listaSQLs.Clear()
+                listaSQLs = Nothing
+            End Try
         ElseIf sender.name = "mnuSetZIndexBulk" Then
 
             Dim respZindex As String = InputBox("Introduce un valor para el Z-Index (1-1000)", AplicacionTitulo)
@@ -2583,6 +2662,41 @@ Public Class frmDocumentacion
     Private Sub Button24_Click(sender As Object, e As EventArgs) Handles Button24.Click
 
         ajustarColumnasLV()
+
+    End Sub
+
+    Private Sub toogleHistorialDatosProc(sender As Object, e As EventArgs) Handles btnHistorial.Click, btnFichaDoc.Click
+
+        Dim elementoLVHisto As ListViewItem
+        If lvHistorial.Visible Then
+            lvHistorial.Visible = False
+            lvAtributos.Visible = True
+            btnHistorial.Visible = True
+            btnFichaDoc.Visible = False
+        Else
+            If lvHistorial.Items.Count = 0 Then
+                resultsetGeodocat.resultados(GroupBox1.Tag).cargarHistorial()
+                For Each item As docCartoSEEVariacion In resultsetGeodocat.resultados(GroupBox1.Tag).historialCambios
+                    elementoLVHisto = New ListViewItem
+                    elementoLVHisto.Text = item.fechaVariacion
+                    elementoLVHisto.SubItems.Add(item.usuario)
+                    elementoLVHisto.SubItems.Add(item.tipoVariacion)
+                    elementoLVHisto.SubItems.Add(item.valorOld)
+                    elementoLVHisto.SubItems.Add(item.ValorNew)
+                    lvHistorial.Items.Add(elementoLVHisto)
+                    elementoLVHisto = Nothing
+                Next
+            End If
+            lvHistorial.Visible = True
+            lvAtributos.Visible = False
+            btnHistorial.Visible = False
+            btnFichaDoc.Visible = True
+
+
+
+        End If
+
+
 
     End Sub
 End Class

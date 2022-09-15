@@ -224,4 +224,35 @@
 
     End Function
 
+    Public Function toggleProperty(propiedad As MultiProperty) As Boolean
+
+        Dim seqInicio As String
+        Dim seqAsignado As String
+        seqInicio = propertyPatron()
+        Dim initialValue As Boolean
+        If seqInicio.Substring(propertyList.Count - Convert.ToInt32(propiedad), 1) = "1" Then
+            initialValue = True
+        Else
+            initialValue = False
+        End If
+
+        seqAsignado = seqInicio.Substring(0, propertyList.Count - Convert.ToInt32(propiedad)) &
+                            IIf(initialValue = True, "0", "1") &
+                            seqInicio.Substring(propertyList.Count - Convert.ToInt32(propiedad) + 1, propertyList.Count - (propertyList.Count - Convert.ToInt32(propiedad) + 1))
+
+        Try
+            If validate(seqAsignado) Then
+                propertyBinary = seqAsignado
+                Return True
+            Else
+                Return False
+            End If
+
+        Catch ex As Exception
+            MessageBox.Show("Error:" & ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Return False
+        End Try
+
+    End Function
+
 End Class
