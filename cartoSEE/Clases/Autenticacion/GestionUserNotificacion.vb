@@ -3,6 +3,7 @@
 
     Dim ListaIncidencias As ArrayList
     Const incidenciasAppName As String = "CARTOSEE"
+    Property modoAdmin As Boolean = False
 
 
 #Region "Windows Controls Definition"
@@ -311,12 +312,13 @@
         ListView1.Columns.Add("Fecha", 70, HorizontalAlignment.Left)
         ListView1.Columns.Add("Usuario", 100, HorizontalAlignment.Left)
         ListView1.Columns.Add("Estado", 60, HorizontalAlignment.Left)
-        If usuarioMyApp.permisosLista.isUserISTARI = False Then
-            Button2.Enabled = False
-            Button3.Enabled = False
-        End If
+
+        Button2.Enabled = usuarioMyApp.permisosLista.editarDocumentacion
+        Button3.Enabled = usuarioMyApp.permisosLista.editarDocumentacion
 
         CargarIncidencias()
+
+        TabControl1.SelectedTab = If(modoAdmin, TabControl1.TabPages(1), TabControl1.TabPages(0))
 
     End Sub
 
@@ -325,7 +327,7 @@
 
         If TextBox2.Text.Trim = "" Then Exit Sub
         If TextBox1.Text.Trim = "" Then
-            If MessageBox.Show("No ha indicado ninguna referencia o documento asociado.¿Continuar?", _
+            If MessageBox.Show("No ha indicado ninguna referencia o documento asociado.¿Continuar?",
                             AplicacionTitulo, MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.No Then Exit Sub
         End If
 
@@ -448,8 +450,7 @@
 
     End Sub
 
-    Private Sub CambiarEstado(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-                    Handles Button2.Click, Button3.Click
+    Private Sub CambiarEstado(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click, Button3.Click
 
         Dim okProc As Boolean
         Me.Cursor = Cursors.WaitCursor

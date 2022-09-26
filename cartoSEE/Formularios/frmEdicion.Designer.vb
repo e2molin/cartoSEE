@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class frmEdicion
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,7 +20,7 @@ Partial Class frmEdicion
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEdicion))
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
@@ -114,7 +114,6 @@ Partial Class frmEdicion
         Me.Label22 = New System.Windows.Forms.Label()
         Me.TextBox2 = New System.Windows.Forms.TextBox()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
-        Me.Button10 = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.StatusStrip1.SuspendLayout()
@@ -202,7 +201,7 @@ Partial Class frmEdicion
         Me.GroupBox1.Controls.Add(Me.CheckBox1)
         Me.GroupBox1.Location = New System.Drawing.Point(12, 56)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(970, 400)
+        Me.GroupBox1.Size = New System.Drawing.Size(977, 665)
         Me.GroupBox1.TabIndex = 0
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "GroupBox1"
@@ -256,7 +255,7 @@ Partial Class frmEdicion
         'Button9
         '
         Me.Button9.Image = CType(resources.GetObject("Button9.Image"), System.Drawing.Image)
-        Me.Button9.Location = New System.Drawing.Point(430, 336)
+        Me.Button9.Location = New System.Drawing.Point(682, 596)
         Me.Button9.Name = "Button9"
         Me.Button9.Size = New System.Drawing.Size(86, 43)
         Me.Button9.TabIndex = 72
@@ -364,7 +363,7 @@ Partial Class frmEdicion
         'Label14
         '
         Me.Label14.AutoSize = True
-        Me.Label14.Location = New System.Drawing.Point(190, 361)
+        Me.Label14.Location = New System.Drawing.Point(193, 339)
         Me.Label14.Name = "Label14"
         Me.Label14.Size = New System.Drawing.Size(51, 13)
         Me.Label14.TabIndex = 64
@@ -373,7 +372,7 @@ Partial Class frmEdicion
         'Label13
         '
         Me.Label13.AutoSize = True
-        Me.Label13.Location = New System.Drawing.Point(34, 359)
+        Me.Label13.Location = New System.Drawing.Point(37, 337)
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(33, 13)
         Me.Label13.TabIndex = 63
@@ -382,7 +381,7 @@ Partial Class frmEdicion
         'Label12
         '
         Me.Label12.AutoSize = True
-        Me.Label12.Location = New System.Drawing.Point(34, 332)
+        Me.Label12.Location = New System.Drawing.Point(34, 388)
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(65, 13)
         Me.Label12.TabIndex = 62
@@ -493,7 +492,7 @@ Partial Class frmEdicion
         '
         Me.ComboBox6.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox6.FormattingEnabled = True
-        Me.ComboBox6.Location = New System.Drawing.Point(247, 358)
+        Me.ComboBox6.Location = New System.Drawing.Point(250, 336)
         Me.ComboBox6.Name = "ComboBox6"
         Me.ComboBox6.Size = New System.Drawing.Size(120, 21)
         Me.ComboBox6.Sorted = True
@@ -503,7 +502,7 @@ Partial Class frmEdicion
         '
         Me.CheckBox20.AutoSize = True
         Me.CheckBox20.ForeColor = System.Drawing.SystemColors.ActiveCaption
-        Me.CheckBox20.Location = New System.Drawing.Point(171, 358)
+        Me.CheckBox20.Location = New System.Drawing.Point(174, 336)
         Me.CheckBox20.Name = "CheckBox20"
         Me.CheckBox20.Size = New System.Drawing.Size(70, 17)
         Me.CheckBox20.TabIndex = 47
@@ -514,7 +513,7 @@ Partial Class frmEdicion
         '
         Me.ComboBox5.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox5.FormattingEnabled = True
-        Me.ComboBox5.Location = New System.Drawing.Point(101, 358)
+        Me.ComboBox5.Location = New System.Drawing.Point(104, 336)
         Me.ComboBox5.Name = "ComboBox5"
         Me.ComboBox5.Size = New System.Drawing.Size(61, 21)
         Me.ComboBox5.TabIndex = 18
@@ -523,7 +522,7 @@ Partial Class frmEdicion
         '
         Me.CheckBox19.AutoSize = True
         Me.CheckBox19.ForeColor = System.Drawing.SystemColors.ActiveCaption
-        Me.CheckBox19.Location = New System.Drawing.Point(15, 358)
+        Me.CheckBox19.Location = New System.Drawing.Point(18, 336)
         Me.CheckBox19.Name = "CheckBox19"
         Me.CheckBox19.Size = New System.Drawing.Size(52, 17)
         Me.CheckBox19.TabIndex = 50
@@ -540,7 +539,7 @@ Partial Class frmEdicion
         'Button4
         '
         Me.Button4.Image = CType(resources.GetObject("Button4.Image"), System.Drawing.Image)
-        Me.Button4.Location = New System.Drawing.Point(522, 336)
+        Me.Button4.Location = New System.Drawing.Point(774, 596)
         Me.Button4.Name = "Button4"
         Me.Button4.Size = New System.Drawing.Size(86, 43)
         Me.Button4.TabIndex = 44
@@ -551,7 +550,7 @@ Partial Class frmEdicion
         'Button3
         '
         Me.Button3.Image = CType(resources.GetObject("Button3.Image"), System.Drawing.Image)
-        Me.Button3.Location = New System.Drawing.Point(614, 336)
+        Me.Button3.Location = New System.Drawing.Point(866, 596)
         Me.Button3.Name = "Button3"
         Me.Button3.Size = New System.Drawing.Size(86, 43)
         Me.Button3.TabIndex = 22
@@ -648,7 +647,7 @@ Partial Class frmEdicion
         '
         Me.CheckBox16.AutoSize = True
         Me.CheckBox16.ForeColor = System.Drawing.SystemColors.ActiveCaption
-        Me.CheckBox16.Location = New System.Drawing.Point(15, 331)
+        Me.CheckBox16.Location = New System.Drawing.Point(15, 387)
         Me.CheckBox16.Name = "CheckBox16"
         Me.CheckBox16.Size = New System.Drawing.Size(84, 17)
         Me.CheckBox16.TabIndex = 49
@@ -760,9 +759,10 @@ Partial Class frmEdicion
         '
         'TextBox16
         '
-        Me.TextBox16.Location = New System.Drawing.Point(101, 332)
+        Me.TextBox16.Location = New System.Drawing.Point(101, 385)
+        Me.TextBox16.Multiline = True
         Me.TextBox16.Name = "TextBox16"
-        Me.TextBox16.Size = New System.Drawing.Size(269, 20)
+        Me.TextBox16.Size = New System.Drawing.Size(552, 254)
         Me.TextBox16.TabIndex = 17
         '
         'TextBox15
@@ -931,9 +931,9 @@ Partial Class frmEdicion
         'StatusStrip1
         '
         Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1, Me.ToolStripStatusLabel2})
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 955)
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 739)
         Me.StatusStrip1.Name = "StatusStrip1"
-        Me.StatusStrip1.Size = New System.Drawing.Size(1008, 22)
+        Me.StatusStrip1.Size = New System.Drawing.Size(1568, 22)
         Me.StatusStrip1.TabIndex = 25
         Me.StatusStrip1.Text = "StatusStrip1"
         '
@@ -980,9 +980,9 @@ Partial Class frmEdicion
         Me.GroupBox2.Controls.Add(Me.TextBox3)
         Me.GroupBox2.Controls.Add(Me.Label22)
         Me.GroupBox2.Controls.Add(Me.TextBox2)
-        Me.GroupBox2.Location = New System.Drawing.Point(12, 473)
+        Me.GroupBox2.Location = New System.Drawing.Point(995, 56)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(643, 379)
+        Me.GroupBox2.Size = New System.Drawing.Size(556, 326)
         Me.GroupBox2.TabIndex = 52
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Información gráfica"
@@ -1045,21 +1045,11 @@ Partial Class frmEdicion
         '
         Me.OpenFileDialog1.FileName = "OpenFileDialog1"
         '
-        'Button10
-        '
-        Me.Button10.Location = New System.Drawing.Point(281, 18)
-        Me.Button10.Name = "Button10"
-        Me.Button10.Size = New System.Drawing.Size(75, 23)
-        Me.Button10.TabIndex = 53
-        Me.Button10.Text = "Button10"
-        Me.Button10.UseVisualStyleBackColor = True
-        '
         'frmEdicion
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1008, 977)
-        Me.Controls.Add(Me.Button10)
+        Me.ClientSize = New System.Drawing.Size(1568, 761)
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.Button6)
         Me.Controls.Add(Me.Button5)
@@ -1170,5 +1160,4 @@ Partial Class frmEdicion
     Friend WithEvents Label24 As System.Windows.Forms.Label
     Friend WithEvents CheckBox24 As System.Windows.Forms.CheckBox
     Friend WithEvents CheckedListBox1 As CheckedListBox
-    Friend WithEvents Button10 As Button
 End Class

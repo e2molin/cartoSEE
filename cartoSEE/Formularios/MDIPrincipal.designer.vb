@@ -145,6 +145,7 @@ Partial Class MDIPrincipal
         Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
         Me.ToolStripStatusLabel = New System.Windows.Forms.ToolStripStatusLabel()
         Me.ToolStripStatusLabel2 = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.ToolStripStatusLabel3 = New System.Windows.Forms.ToolStripStatusLabel()
         Me.ToolTip = New System.Windows.Forms.ToolTip(Me.components)
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.Button2 = New System.Windows.Forms.Button()
@@ -1144,7 +1145,7 @@ Partial Class MDIPrincipal
         '
         'StatusStrip
         '
-        Me.StatusStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1, Me.ToolStripStatusLabel, Me.ToolStripStatusLabel2})
+        Me.StatusStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1, Me.ToolStripStatusLabel, Me.ToolStripStatusLabel2, Me.ToolStripStatusLabel3})
         Me.StatusStrip.Location = New System.Drawing.Point(0, 1003)
         Me.StatusStrip.Name = "StatusStrip"
         Me.StatusStrip.Size = New System.Drawing.Size(1539, 22)
@@ -1161,7 +1162,7 @@ Partial Class MDIPrincipal
         'ToolStripStatusLabel
         '
         Me.ToolStripStatusLabel.Name = "ToolStripStatusLabel"
-        Me.ToolStripStatusLabel.Size = New System.Drawing.Size(1254, 17)
+        Me.ToolStripStatusLabel.Size = New System.Drawing.Size(1088, 17)
         Me.ToolStripStatusLabel.Spring = True
         Me.ToolStripStatusLabel.Text = "Status"
         Me.ToolStripStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -1172,6 +1173,15 @@ Partial Class MDIPrincipal
         Me.ToolStripStatusLabel2.Name = "ToolStripStatusLabel2"
         Me.ToolStripStatusLabel2.Size = New System.Drawing.Size(135, 17)
         Me.ToolStripStatusLabel2.Text = "ToolStripStatusLabel2"
+        '
+        'ToolStripStatusLabel3
+        '
+        Me.ToolStripStatusLabel3.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ToolStripStatusLabel3.Image = CType(resources.GetObject("ToolStripStatusLabel3.Image"), System.Drawing.Image)
+        Me.ToolStripStatusLabel3.Name = "ToolStripStatusLabel3"
+        Me.ToolStripStatusLabel3.Size = New System.Drawing.Size(135, 17)
+        Me.ToolStripStatusLabel3.Text = "ToolStripStatusLabel3"
+        Me.ToolStripStatusLabel3.Visible = False
         '
         'Panel1
         '
@@ -2445,4 +2455,5 @@ Partial Class MDIPrincipal
     Friend WithEvents btnGetWeird As Button
     Friend WithEvents btnGetImportant As Button
     Friend WithEvents btnGetStar As Button
+    Friend WithEvents ToolStripStatusLabel3 As ToolStripStatusLabel
 End Class

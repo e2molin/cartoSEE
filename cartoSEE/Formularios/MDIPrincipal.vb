@@ -8,6 +8,8 @@ Public Class MDIPrincipal
     Dim Autocompletar_colindantes As Boolean
     Dim Colindantes As New DataTable
     Dim quitarAcento As New Destildator
+    Dim pendingNotify As Integer = 0
+
     Private m_ChildFormNumber As Integer = 0
 
 
@@ -139,15 +141,27 @@ Public Class MDIPrincipal
             ComboBox3.Items.Add(New itemData("(Todas)", 0))
             ResizingElements()
             CargarFiltros()
-            Me.Show()
+
             If usuarioMyApp.permisosLista.editarDocumentacion Then
+                If ObtenerEscalar("SELECT count(*) from bdsidschema.incidencias where aplicacion='CARTOSEE' and estado='Abierta'", pendingNotify) Then
+                    If pendingNotify > 0 Then
+                        ToolStripStatusLabel3.Text = "Hay " & pendingNotify & " incidencias abiertas"
+                        ToolStripStatusLabel3.Visible = True
+                    Else
+                        ToolStripStatusLabel3.Text = "No hay notificaciones pendientes"
+                        ToolStripStatusLabel3.Visible = True
+                    End If
+                End If
                 ToolStripStatusLabel.Text = "Conectado a " & DB_Instancia & " en " & DB_Servidor & ". Usuario de administración."
             Else
                 ToolStripStatusLabel.Text = "Conectado al sistema. Usuario de consulta."
                 ToolStripStatusLabel.ToolTipText = "Conectado a " & DB_Instancia & " en " & DB_Servidor & ""
             End If
+
+            Me.Show()
+
         Else
-            MessageBox.Show("No es posible conectarse a la base de datos", My.Application.Info.AssemblyName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                MessageBox.Show("No es posible conectarse a la base de datos", My.Application.Info.AssemblyName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
             ResizingElements()
             Button6.Enabled = False
             Button7.Enabled = False
@@ -1374,10 +1388,11 @@ Public Class MDIPrincipal
     End Sub
 
 
-    Private Sub itemUsermenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles itemUsermenu.Click, ToolStripButton2.Click
+    Private Sub itemUsermenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles itemUsermenu.Click, ToolStripButton2.Click, ToolStripStatusLabel3.Click
 
         Dim frmUser As GestionUserNotificacion
         frmUser = New GestionUserNotificacion
+        frmUser.modoAdmin = usuarioMyApp.permisosLista.editarDocumentacion
         frmUser.MdiParent = Me
         frmUser.Show()
 

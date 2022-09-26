@@ -8,17 +8,17 @@
     Private Sub frmEdicion_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
         'Colocamos elementos
-        Me.Size = New Point(1024, 600)
+        Me.Size = New Point(1050, 800)
         ListBox1.Location = New Point(404, 127)
         ListBox1.Size = New Point(249, 150)
         ListBox1.Visible = False
 
         GroupBox1.Location = New Point(12, 53)
-        GroupBox1.Size = New Point(970, 400)
+        GroupBox1.Size = New Point(980, 670)
         GroupBox1.Visible = True
 
         GroupBox2.Location = New Point(12, 53)
-        GroupBox2.Size = New Point(970, 400)
+        GroupBox2.Size = New Point(980, 670)
         GroupBox2.Visible = False
 
         ListView1.FullRowSelect = True
@@ -1294,28 +1294,5 @@
 
     End Sub
 
-    Private Sub Button10_Click(sender As Object, e As EventArgs) Handles Button10.Click
-        'FlagProperties
-        'Dim cadProperties As String = ""
-        'For iPropCheck As Integer = 0 To CheckedListBox1.Items.Count - 1
-        '    Application.DoEvents()
-        '    If cadProperties = "" Then
-        '        cadProperties = IIf(CheckedListBox1.GetItemChecked(iPropCheck) = True, "1", "0")
-        '        Continue For
-        '    End If
-        '    cadProperties = IIf(CheckedListBox1.GetItemChecked(iPropCheck) = True, "1", "0") & cadProperties
 
-        'Next
-
-        Dim flagPropos As New FlagsProperties()
-        If flagPropos.assignByContainer(CheckedListBox1) Then
-            MessageBox.Show(flagPropos.propertyCode)
-        End If
-        'flagPropos.propertyBinary = cadProperties
-
-        'If flagPropos.validate Then
-        '    MessageBox.Show(flagPropos.propertyCode)
-        'End If
-
-    End Sub
 End Class
