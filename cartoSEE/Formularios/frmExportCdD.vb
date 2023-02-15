@@ -26,7 +26,8 @@ Public Class frmExportCdD
         Next
 
         txtDirTarget.Text = My.Computer.FileSystem.SpecialDirectories.Temp
-        txtDirTarget.Text = "S:\CdDJE" '\\sbdignmad651\INTERCAMBIO\User_Esteban\CdDJE
+        txtDirTarget.Text = "D:\volcadosCDD"
+
         cancelar = False
         ToolStripStatusLabel1.Text = "Seleccione provincia"
 

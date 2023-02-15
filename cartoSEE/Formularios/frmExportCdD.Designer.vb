@@ -43,6 +43,11 @@ Partial Class frmExportCdD
         Me.CheckedListBox1 = New System.Windows.Forms.CheckedListBox()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.cboxOverwrite = New System.Windows.Forms.CheckBox()
+        Me.DateTimePicker1 = New System.Windows.Forms.DateTimePicker()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.DateTimePicker2 = New System.Windows.Forms.DateTimePicker()
+        Me.Button2 = New System.Windows.Forms.Button()
         Me.StatusStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -65,15 +70,15 @@ Partial Class frmExportCdD
         '
         'txtDirTarget
         '
-        Me.txtDirTarget.Location = New System.Drawing.Point(15, 91)
+        Me.txtDirTarget.Location = New System.Drawing.Point(15, 394)
         Me.txtDirTarget.Name = "txtDirTarget"
-        Me.txtDirTarget.Size = New System.Drawing.Size(297, 20)
+        Me.txtDirTarget.Size = New System.Drawing.Size(667, 20)
         Me.txtDirTarget.TabIndex = 2
         '
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(12, 75)
+        Me.Label2.Location = New System.Drawing.Point(12, 378)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(96, 13)
         Me.Label2.TabIndex = 3
@@ -82,7 +87,7 @@ Partial Class frmExportCdD
         'Button1
         '
         Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
-        Me.Button1.Location = New System.Drawing.Point(318, 75)
+        Me.Button1.Location = New System.Drawing.Point(704, 378)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(87, 36)
         Me.Button1.TabIndex = 4
@@ -92,29 +97,28 @@ Partial Class frmExportCdD
         '
         'btnProcess
         '
-        Me.btnProcess.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnProcess.Image = CType(resources.GetObject("btnProcess.Image"), System.Drawing.Image)
-        Me.btnProcess.Location = New System.Drawing.Point(540, 284)
+        Me.btnProcess.Location = New System.Drawing.Point(617, 28)
         Me.btnProcess.Name = "btnProcess"
-        Me.btnProcess.Size = New System.Drawing.Size(87, 36)
+        Me.btnProcess.Size = New System.Drawing.Size(162, 36)
         Me.btnProcess.TabIndex = 5
-        Me.btnProcess.Text = "Proceso"
+        Me.btnProcess.Text = "Procesar provincia"
         Me.btnProcess.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
         Me.btnProcess.UseVisualStyleBackColor = True
         '
         'StatusStrip1
         '
         Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1, Me.ToolStripProgressBar1})
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 335)
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 447)
         Me.StatusStrip1.Name = "StatusStrip1"
-        Me.StatusStrip1.Size = New System.Drawing.Size(641, 22)
+        Me.StatusStrip1.Size = New System.Drawing.Size(836, 22)
         Me.StatusStrip1.TabIndex = 6
         Me.StatusStrip1.Text = "StatusStrip1"
         '
         'ToolStripStatusLabel1
         '
         Me.ToolStripStatusLabel1.Name = "ToolStripStatusLabel1"
-        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(120, 17)
+        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(119, 17)
         Me.ToolStripStatusLabel1.Text = "ToolStripStatusLabel1"
         '
         'ToolStripProgressBar1
@@ -125,7 +129,7 @@ Partial Class frmExportCdD
         'chkCreateINDEX
         '
         Me.chkCreateINDEX.AutoSize = True
-        Me.chkCreateINDEX.Location = New System.Drawing.Point(15, 156)
+        Me.chkCreateINDEX.Location = New System.Drawing.Point(395, 214)
         Me.chkCreateINDEX.Name = "chkCreateINDEX"
         Me.chkCreateINDEX.Size = New System.Drawing.Size(178, 17)
         Me.chkCreateINDEX.TabIndex = 8
@@ -136,7 +140,7 @@ Partial Class frmExportCdD
         'chkThumb
         '
         Me.chkThumb.AutoSize = True
-        Me.chkThumb.Location = New System.Drawing.Point(15, 247)
+        Me.chkThumb.Location = New System.Drawing.Point(395, 305)
         Me.chkThumb.Name = "chkThumb"
         Me.chkThumb.Size = New System.Drawing.Size(177, 17)
         Me.chkThumb.TabIndex = 10
@@ -147,7 +151,7 @@ Partial Class frmExportCdD
         'chkCreateNEM
         '
         Me.chkCreateNEM.AutoSize = True
-        Me.chkCreateNEM.Location = New System.Drawing.Point(15, 202)
+        Me.chkCreateNEM.Location = New System.Drawing.Point(395, 260)
         Me.chkCreateNEM.Name = "chkCreateNEM"
         Me.chkCreateNEM.Size = New System.Drawing.Size(170, 17)
         Me.chkCreateNEM.TabIndex = 11
@@ -158,7 +162,7 @@ Partial Class frmExportCdD
         'chkHTML
         '
         Me.chkHTML.AutoSize = True
-        Me.chkHTML.Location = New System.Drawing.Point(15, 133)
+        Me.chkHTML.Location = New System.Drawing.Point(395, 191)
         Me.chkHTML.Name = "chkHTML"
         Me.chkHTML.Size = New System.Drawing.Size(273, 17)
         Me.chkHTML.TabIndex = 12
@@ -171,7 +175,7 @@ Partial Class frmExportCdD
         Me.chkCopiaFicherosImagen.AutoSize = True
         Me.chkCopiaFicherosImagen.Checked = True
         Me.chkCopiaFicherosImagen.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkCopiaFicherosImagen.Location = New System.Drawing.Point(15, 225)
+        Me.chkCopiaFicherosImagen.Location = New System.Drawing.Point(395, 283)
         Me.chkCopiaFicherosImagen.Name = "chkCopiaFicherosImagen"
         Me.chkCopiaFicherosImagen.Size = New System.Drawing.Size(207, 17)
         Me.chkCopiaFicherosImagen.TabIndex = 13
@@ -182,7 +186,7 @@ Partial Class frmExportCdD
         'chkMuniIndex
         '
         Me.chkMuniIndex.AutoSize = True
-        Me.chkMuniIndex.Location = New System.Drawing.Point(15, 179)
+        Me.chkMuniIndex.Location = New System.Drawing.Point(395, 237)
         Me.chkMuniIndex.Name = "chkMuniIndex"
         Me.chkMuniIndex.Size = New System.Drawing.Size(277, 17)
         Me.chkMuniIndex.TabIndex = 14
@@ -193,7 +197,7 @@ Partial Class frmExportCdD
         'chkCopiaFicherosZIP
         '
         Me.chkCopiaFicherosZIP.AutoSize = True
-        Me.chkCopiaFicherosZIP.Location = New System.Drawing.Point(15, 270)
+        Me.chkCopiaFicherosZIP.Location = New System.Drawing.Point(395, 328)
         Me.chkCopiaFicherosZIP.Name = "chkCopiaFicherosZIP"
         Me.chkCopiaFicherosZIP.Size = New System.Drawing.Size(257, 17)
         Me.chkCopiaFicherosZIP.TabIndex = 15
@@ -203,17 +207,16 @@ Partial Class frmExportCdD
         '
         'CheckedListBox1
         '
-        Me.CheckedListBox1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.CheckedListBox1.FormattingEnabled = True
-        Me.CheckedListBox1.Location = New System.Drawing.Point(324, 154)
+        Me.CheckedListBox1.Location = New System.Drawing.Point(15, 195)
         Me.CheckedListBox1.Name = "CheckedListBox1"
-        Me.CheckedListBox1.Size = New System.Drawing.Size(303, 124)
+        Me.CheckedListBox1.Size = New System.Drawing.Size(356, 154)
         Me.CheckedListBox1.TabIndex = 16
         '
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(321, 134)
+        Me.Label3.Location = New System.Drawing.Point(12, 175)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(174, 13)
         Me.Label3.TabIndex = 17
@@ -222,18 +225,67 @@ Partial Class frmExportCdD
         'cboxOverwrite
         '
         Me.cboxOverwrite.AutoSize = True
-        Me.cboxOverwrite.Location = New System.Drawing.Point(324, 44)
+        Me.cboxOverwrite.Location = New System.Drawing.Point(244, 44)
         Me.cboxOverwrite.Name = "cboxOverwrite"
         Me.cboxOverwrite.Size = New System.Drawing.Size(228, 17)
         Me.cboxOverwrite.TabIndex = 18
         Me.cboxOverwrite.Text = "Sobrescribir si existen los ficheros de salida"
         Me.cboxOverwrite.UseVisualStyleBackColor = True
         '
+        'DateTimePicker1
+        '
+        Me.DateTimePicker1.Location = New System.Drawing.Point(171, 101)
+        Me.DateTimePicker1.Name = "DateTimePicker1"
+        Me.DateTimePicker1.Size = New System.Drawing.Size(200, 20)
+        Me.DateTimePicker1.TabIndex = 19
+        Me.DateTimePicker1.Value = New Date(2022, 12, 5, 0, 0, 0, 0)
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Location = New System.Drawing.Point(12, 107)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(153, 13)
+        Me.Label4.TabIndex = 20
+        Me.Label4.Text = "Documentos modificados entre"
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Location = New System.Drawing.Point(377, 107)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(12, 13)
+        Me.Label5.TabIndex = 21
+        Me.Label5.Text = "y"
+        '
+        'DateTimePicker2
+        '
+        Me.DateTimePicker2.Location = New System.Drawing.Point(395, 100)
+        Me.DateTimePicker2.Name = "DateTimePicker2"
+        Me.DateTimePicker2.Size = New System.Drawing.Size(200, 20)
+        Me.DateTimePicker2.TabIndex = 22
+        '
+        'Button2
+        '
+        Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
+        Me.Button2.Location = New System.Drawing.Point(617, 86)
+        Me.Button2.Name = "Button2"
+        Me.Button2.Size = New System.Drawing.Size(162, 36)
+        Me.Button2.TabIndex = 23
+        Me.Button2.Text = "Procesar periodo"
+        Me.Button2.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.Button2.UseVisualStyleBackColor = True
+        '
         'frmExportCdD
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(641, 357)
+        Me.ClientSize = New System.Drawing.Size(836, 469)
+        Me.Controls.Add(Me.Button2)
+        Me.Controls.Add(Me.DateTimePicker2)
+        Me.Controls.Add(Me.Label5)
+        Me.Controls.Add(Me.Label4)
+        Me.Controls.Add(Me.DateTimePicker1)
         Me.Controls.Add(Me.cboxOverwrite)
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.CheckedListBox1)
@@ -280,4 +332,9 @@ Partial Class frmExportCdD
     Friend WithEvents CheckedListBox1 As System.Windows.Forms.CheckedListBox
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents cboxOverwrite As CheckBox
+    Friend WithEvents DateTimePicker1 As DateTimePicker
+    Friend WithEvents Label4 As Label
+    Friend WithEvents Label5 As Label
+    Friend WithEvents DateTimePicker2 As DateTimePicker
+    Friend WithEvents Button2 As Button
 End Class
