@@ -245,6 +245,7 @@ Partial Class MDIPrincipal
         Me.Button6 = New System.Windows.Forms.Button()
         Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
         Me.ImageList2 = New System.Windows.Forms.ImageList(Me.components)
+        Me.btnGetCdD = New System.Windows.Forms.Button()
         Me.MenuStrip.SuspendLayout()
         Me.ToolStrip.SuspendLayout()
         Me.StatusStrip.SuspendLayout()
@@ -1162,7 +1163,7 @@ Partial Class MDIPrincipal
         'ToolStripStatusLabel
         '
         Me.ToolStripStatusLabel.Name = "ToolStripStatusLabel"
-        Me.ToolStripStatusLabel.Size = New System.Drawing.Size(1088, 17)
+        Me.ToolStripStatusLabel.Size = New System.Drawing.Size(1254, 17)
         Me.ToolStripStatusLabel.Spring = True
         Me.ToolStripStatusLabel.Text = "Status"
         Me.ToolStripStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -1210,6 +1211,7 @@ Partial Class MDIPrincipal
         '
         'GroupBox5
         '
+        Me.GroupBox5.Controls.Add(Me.btnGetCdD)
         Me.GroupBox5.Controls.Add(Me.btnGetWeird)
         Me.GroupBox5.Controls.Add(Me.btnGetImportant)
         Me.GroupBox5.Controls.Add(Me.btnGetStar)
@@ -1257,7 +1259,7 @@ Partial Class MDIPrincipal
         'btnGetWeird
         '
         Me.btnGetWeird.Image = CType(resources.GetObject("btnGetWeird.Image"), System.Drawing.Image)
-        Me.btnGetWeird.Location = New System.Drawing.Point(165, 678)
+        Me.btnGetWeird.Location = New System.Drawing.Point(167, 674)
         Me.btnGetWeird.Name = "btnGetWeird"
         Me.btnGetWeird.Size = New System.Drawing.Size(75, 50)
         Me.btnGetWeird.TabIndex = 42
@@ -1268,7 +1270,7 @@ Partial Class MDIPrincipal
         'btnGetImportant
         '
         Me.btnGetImportant.Image = CType(resources.GetObject("btnGetImportant.Image"), System.Drawing.Image)
-        Me.btnGetImportant.Location = New System.Drawing.Point(87, 678)
+        Me.btnGetImportant.Location = New System.Drawing.Point(86, 673)
         Me.btnGetImportant.Name = "btnGetImportant"
         Me.btnGetImportant.Size = New System.Drawing.Size(75, 50)
         Me.btnGetImportant.TabIndex = 41
@@ -1280,7 +1282,7 @@ Partial Class MDIPrincipal
         '
         Me.btnGetStar.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.btnGetStar.Image = CType(resources.GetObject("btnGetStar.Image"), System.Drawing.Image)
-        Me.btnGetStar.Location = New System.Drawing.Point(6, 678)
+        Me.btnGetStar.Location = New System.Drawing.Point(5, 673)
         Me.btnGetStar.Name = "btnGetStar"
         Me.btnGetStar.Size = New System.Drawing.Size(75, 50)
         Me.btnGetStar.TabIndex = 40
@@ -2196,6 +2198,18 @@ Partial Class MDIPrincipal
         Me.ImageList2.Images.SetKeyName(9, "Estrella_48.png")
         Me.ImageList2.Images.SetKeyName(10, "RaroInvertido_48.png")
         '
+        'btnGetCdD
+        '
+        Me.btnGetCdD.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.btnGetCdD.Image = CType(resources.GetObject("btnGetCdD.Image"), System.Drawing.Image)
+        Me.btnGetCdD.Location = New System.Drawing.Point(6, 729)
+        Me.btnGetCdD.Name = "btnGetCdD"
+        Me.btnGetCdD.Size = New System.Drawing.Size(75, 50)
+        Me.btnGetCdD.TabIndex = 43
+        Me.btnGetCdD.Text = "Rev CdD"
+        Me.btnGetCdD.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+        Me.btnGetCdD.UseVisualStyleBackColor = True
+        '
         'MDIPrincipal
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -2456,4 +2470,5 @@ Partial Class MDIPrincipal
     Friend WithEvents btnGetImportant As Button
     Friend WithEvents btnGetStar As Button
     Friend WithEvents ToolStripStatusLabel3 As ToolStripStatusLabel
+    Friend WithEvents btnGetCdD As Button
 End Class

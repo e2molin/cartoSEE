@@ -19,7 +19,7 @@
         Disponible1 = 13
         destacado = 14
         peculiar = 15
-        Disponible2 = 16
+        changeOnCdD = 16
 
     End Enum
 
@@ -39,7 +39,7 @@
                                                     "Disponible 1",                     '13
                                                     "Destacado",                        '14
                                                     "Peculiar",                         '15
-                                                    "Disponible 2"                      '16
+                                                    "Revisar CdD"                       '16
     }
 
     ' Define the property.

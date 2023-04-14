@@ -473,7 +473,8 @@ Public Class MDIPrincipal
     End Sub
 
 
-    Sub LanzarConsulta(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click, btnGetImportant.Click, btnGetStar.Click, btnGetWeird.Click
+    Sub LanzarConsulta(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click, btnGetImportant.Click, btnGetStar.Click,
+        btnGetWeird.Click, btnGetCdD.Click
 
         Dim FirmaYear As String = ""
         Dim EstadosDocumento As String = ""
@@ -557,6 +558,15 @@ Public Class MDIPrincipal
             FrmResult.MdiParent = Me
             FrmResult.Text = "Documentos raros o extraños"
             FrmResult.CargarDatosSIDCARTO_By_PropsPatron("_1______________")
+            FrmResult.Show()
+            PictureBox3.Visible = False
+            Me.Cursor = Cursors.Default
+            Exit Sub
+        ElseIf sender.name = "btnGetCdD" Then
+            Dim FrmResult As New frmDocumentacion
+            FrmResult.MdiParent = Me
+            FrmResult.Text = "Documentos a revisar para el CdD"
+            FrmResult.CargarDatosSIDCARTO_By_PropsPatron("1_______________")
             FrmResult.Show()
             PictureBox3.Visible = False
             Me.Cursor = Cursors.Default
