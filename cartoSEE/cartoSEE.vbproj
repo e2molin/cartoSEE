@@ -254,6 +254,7 @@
     <Compile Include="Modulos\ConsultasGEO.vb" />
     <Compile Include="Modulos\CreateShortcut.vb" />
     <Compile Include="Modulos\Documentacion.vb" />
+    <Compile Include="Modulos\DVMUtils.vb" />
     <Compile Include="Modulos\GestionDocumentacion.vb" />
     <Compile Include="Modulos\ManagePDF.vb" />
     <Compile Include="Modulos\Procedimientos.vb" />
@@ -373,7 +374,9 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="readme.md" />
-    <None Include="resources\proj23030.prj" />
+    <None Include="resources\proj23030.prj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="cartoSEE.ico" />

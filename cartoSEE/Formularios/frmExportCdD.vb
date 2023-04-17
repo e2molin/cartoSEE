@@ -41,37 +41,14 @@ Public Class frmExportCdD
 
     Private Sub btnProcess_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnProcess.Click
 
-        Application.DoEvents()
-        'REPETIR LEON OOOOJJJJOOOO
-        'procesarProvincia4CdD(47, txtDirTarget.Text)
-        'procesarProvincia4CdD(48, txtDirTarget.Text)
-        'procesarProvincia4CdD(49, txtDirTarget.Text)
-        'procesarProvincia4CdD(50, txtDirTarget.Text)
-        'MessageBox.Show("Proceso terminado", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
-        'Exit Sub
         If cboProvincias.SelectedIndex = -1 Then
-            MessageBox.Show("Selecciona una provincia", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+            ModalExclamation("Selecciona una provincia")
             Exit Sub
         End If
         If Not System.IO.Directory.Exists(txtDirTarget.Text.Trim) Then
-            MessageBox.Show("El directorio no existe", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+            ModalExclamation("El directorio no existe")
             Exit Sub
         End If
-        Try
-            If System.IO.File.Exists(txtDirTarget.Text.Trim & "\logCopy.log") Then System.IO.File.Delete(txtDirTarget.Text.Trim & "\logCopy.log")
-            If System.IO.File.Exists(txtDirTarget.Text.Trim & "\alias.txt") Then System.IO.File.Delete(txtDirTarget.Text.Trim & "\alias.txt")
-            If System.IO.File.Exists(txtDirTarget.Text.Trim & "\municipios.txt") Then System.IO.File.Delete(txtDirTarget.Text.Trim & "\municipios.txt")
-            If System.IO.File.Exists(txtDirTarget.Text.Trim & "\actualizCartoSEE.sql") Then System.IO.File.Delete(txtDirTarget.Text.Trim & "\actualizCartoSEE.sql")
-            Using archivoAlias As System.IO.StreamWriter = New System.IO.StreamWriter(txtDirTarget.Text.Trim & "\alias.txt", False, System.Text.Encoding.UTF8)
-                Using archivoMunicipios As System.IO.StreamWriter = New System.IO.StreamWriter(txtDirTarget.Text.Trim & "\municipios.txt", False, System.Text.Encoding.UTF8)
-                    archivoMunicipios.WriteLine("idProductor;Nombre Fichero JPG;Códigos INE de municipio asociado")
-                    archivoAlias.WriteLine("idProductor;Fichero;Temática;Alias;Escala;Autor;Fecha;TipoFichero")
-                End Using
-            End Using
-        Catch ex As Exception
-            GenerarLOG("e2m: " & ex.Message)
-            Exit Sub
-        End Try
 
         If cboProvincias.Text = "(Procesar todas)" Then
             ToolStripProgressBar1.Minimum = 0
@@ -88,7 +65,7 @@ Public Class frmExportCdD
             procesarProvincia4CdD(CType(cboProvincias.SelectedItem, itemData).Valor, txtDirTarget.Text)
         End If
         ToolStripStatusLabel1.Text = "Proceso terminado"
-        MessageBox.Show("Proceso terminado", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+        ModalInfo("Proceso terminado")
 
     End Sub
 
@@ -103,26 +80,33 @@ Public Class frmExportCdD
         Me.Cursor = Cursors.WaitCursor
         Dim RutaLOG As String = txtDirTarget.Text & "\" & String.Format("{0:00}", cProv) & "\loggerCdD.log"
         Dim ficheroBaseCSV As String = txtDirTarget.Text & "\" & String.Format("{0:00}", cProv) & "\data.csv"
-        If System.IO.File.Exists(RutaLOG) Then
+        If IO.File.Exists(RutaLOG) Then
             Try
-                System.IO.File.Delete(RutaLOG)
+                IO.File.Delete(RutaLOG)
             Catch ex As Exception
-                MessageBox.Show("No se puede eliminar " & ficheroBaseCSV, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                ModalExclamation("No se puede eliminar " & ficheroBaseCSV)
                 Exit Sub
             End Try
         End If
-        If System.IO.File.Exists(ficheroBaseCSV) Then
+        If IO.File.Exists(ficheroBaseCSV) Then
             Try
-                System.IO.File.Delete(ficheroBaseCSV)
+                IO.File.Delete(ficheroBaseCSV)
             Catch ex As Exception
-                MessageBox.Show("No se puede eliminar " & ficheroBaseCSV, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                ModalExclamation("No se puede eliminar " & ficheroBaseCSV)
                 Exit Sub
             End Try
         End If
 
+        If CheckedListBox1.CheckedItems.Count = 0 Then
+            ModalExclamation("No se han seleccionado los tipos de documewnto a procesar")
+            Me.Cursor = Cursors.Default
+            Exit Sub
+        End If
+
+
+
         'Seleccionamos los documentos de la provincia
         ToolStripStatusLabel1.Text = "Accediendo a la información de " & DameProvinciaByINE(cProv)
-        Application.DoEvents()
 
         Dim seqTiposDoc As String = ""
         tiposdocu2CDD.Clear()
@@ -134,6 +118,8 @@ Public Class frmExportCdD
         Next
 
 
+
+
         Dim resultDocumentos As New docCartoSEEquery
         resultDocumentos.flag_ActualizarInfoGeom = True
         resultDocumentos.flag_CargarFicherosGEO = True
@@ -141,124 +127,24 @@ Public Class frmExportCdD
 
         If resultDocumentos.resultados.Count = 0 Then Exit Sub
 
-        'Aplicamos tareas
-        If chkHTML.Checked Then
-            ToolStripStatusLabel1.Text = "Procesando " & DameProvinciaByINE(cProv) & ". Generando informes HTML"
-            folderWork = folderOUT & "\" & String.Format("{0:00}", cProv) & "\html\"
-            Try
-                If Not System.IO.Directory.Exists(folderWork) Then
-                    System.IO.Directory.CreateDirectory(folderWork)
-                End If
-            Catch ex As Exception
-                MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-            End Try
-            proce = New procGenerateHTMLReport
-            proce.generarHTMLreport(resultDocumentos.resultados, My.Application.Info.DirectoryPath & "\resources\docsidcarto-template.html", folderWork, True, tiposdocu2CDD)
-            proce = Nothing
+        If ModalQuestion("Se van a procesar " & resultDocumentos.resultados.Count & " documentos. ¿Continuar?") <> DialogResult.Yes Then
+            Me.Cursor = Cursors.Default
+            Exit Sub
         End If
 
-        If chkCreateINDEX.Checked Then
-            ToolStripStatusLabel1.Text = "Procesando " & DameProvinciaByINE(cProv) & ". Generando índice"
-            folderWork = folderOUT & "\" & String.Format("{0:00}", cProv) & "\html\"
-            Try
-                If Not System.IO.Directory.Exists(folderWork) Then
-                    System.IO.Directory.CreateDirectory(folderWork)
-                End If
-            Catch ex As Exception
-                MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-            End Try
-
-            proce = New procGenerateHTMLReport
-            proce.generarHTMLIndexProvinReport(resultDocumentos.resultados, My.Application.Info.DirectoryPath & "\resources\index-template.html", folderWork, tiposdocu2CDD)
-            proce = Nothing
-        End If
-
-        If chkMuniIndex.Checked Then
-            ToolStripStatusLabel1.Text = "Procesando " & DameProvinciaByINE(cProv) & ". Generando índice para cada municipio histórico"
-            folderWork = folderOUT & "\" & String.Format("{0:00}", cProv) & "\html\"
-            Try
-                If Not System.IO.Directory.Exists(folderWork) Then
-                    System.IO.Directory.CreateDirectory(folderWork)
-                End If
-            Catch ex As Exception
-                MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-            End Try
-            proce = New procGenerateHTMLReport
-            proce.generarMuniHistoIndex(cProv, folderWork, tiposdocu2CDD, chkHTML.Checked)
-            proce.Dispose()
-            proce = Nothing
-
-            proce = New procGenerateHTMLReport
-            proce.generarMuniActualIndex(cProv, folderWork, tiposdocu2CDD, chkHTML.Checked)
-            proce.Dispose()
-            proce = Nothing
-        End If
-
-        If chkCreateNEM.Checked Then
-            ToolStripStatusLabel1.Text = "Procesando " & DameProvinciaByINE(cProv) & ". Generando metadatos ISO19115"
-            folderWork = folderOUT & "\" & String.Format("{0:00}", cProv) & "\xml\"
-            Try
-                If Not System.IO.Directory.Exists(folderWork) Then
-                    System.IO.Directory.CreateDirectory(folderWork)
-                End If
-            Catch ex As Exception
-                MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-            End Try
-            proce = New procGenerateHTMLReport
-            proce.generarXMLISO19115(resultDocumentos.resultados, folderWork, tiposdocu2CDD)
-            proce = Nothing
-        End If
-
-        If chkCopiaFicherosImagen.Checked Then
-            Dim folderDocs4CdD As String
-            Dim folderMetadata4CdD As String
-            ToolStripStatusLabel1.Text = "Procesando " & DameProvinciaByINE(cProv) & ". Copiando ficheros para el CdD"
-            folderMetadata4CdD = folderOUT
-            folderDocs4CdD = folderOUT & "\documentos\" & String.Format("{0:00}", cProv)
-            Try
-                If Not System.IO.Directory.Exists(folderDocs4CdD) Then
-                    System.IO.Directory.CreateDirectory(folderDocs4CdD)
-                End If
-            Catch ex As Exception
-                MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-            End Try
-            proce = New procGenerateHTMLReport
-            proce.exportCdDGenerico(resultDocumentos.resultados, folderMetadata4CdD, folderDocs4CdD, tiposdocu2CDD, cboxOverwrite.Checked)
-            proce = Nothing
-        End If
-
-        If chkThumb.Checked Then
-            Dim folderCopyThumb As String
-            ToolStripStatusLabel1.Text = "Procesando " & DameProvinciaByINE(cProv) & ". Copiando miniaturas para el CdD"
-            folderCopyThumb = folderOUT & "\" & String.Format("{0:00}", cProv) & "\thumb\"
-            Try
-                If Not System.IO.Directory.Exists(folderCopyThumb) Then
-                    System.IO.Directory.CreateDirectory(folderCopyThumb)
-                End If
-            Catch ex As Exception
-                MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-            End Try
-            proce = New procGenerateHTMLReport
-            proce.copyFilesThumb2Directory(resultDocumentos.resultados, folderCopyThumb, tiposdocu2CDD)
-            proce = Nothing
-        End If
-
-        If chkCopiaFicherosZIP.Checked Then
-            Dim folderCopyZIP As String
-            ToolStripStatusLabel1.Text = "Procesando " & DameProvinciaByINE(cProv) & ". Copiando ficheros para el CdD"
-            folderCopyZIP = folderOUT & "\" & String.Format("{0:00}", cProv) & "\zip\"
-            Try
-                If Not System.IO.Directory.Exists(folderCopyZIP) Then
-                    System.IO.Directory.CreateDirectory(folderCopyZIP)
-                End If
-            Catch ex As Exception
-                MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-            End Try
-            proce = New procGenerateHTMLReport
-            proce.copyFiles2DirectoryZIPPED(resultDocumentos.resultados, folderCopyZIP, tiposdocu2CDD)
-            proce = Nothing
-        End If
-
+        Dim folderCopyFiles As String
+        ToolStripStatusLabel1.Text = "Procesando " & DameProvinciaByINE(cProv) & ". Copiando ficheros para el CdD"
+        folderCopyFiles = folderOUT & "\"
+        Try
+            If Not IO.Directory.Exists(folderCopyFiles) Then
+                IO.Directory.CreateDirectory(folderCopyFiles)
+            End If
+        Catch ex As Exception
+            ModalExclamation(ex.Message)
+        End Try
+        proce = New procGenerateHTMLReport
+        proce.copyFiles2DirectoryToCDD(resultDocumentos.resultados, folderCopyFiles, tiposdocu2CDD, RadioButton2.Checked)
+        proce = Nothing
         resultDocumentos.resultados.Clear()
         resultDocumentos = Nothing
         ToolStripProgressBar1.Value = ToolStripProgressBar1.Maximum
@@ -680,7 +566,6 @@ Public Class frmExportCdD
         txtDirTarget.Text = DirRepo
 
     End Sub
-
 
 
 End Class

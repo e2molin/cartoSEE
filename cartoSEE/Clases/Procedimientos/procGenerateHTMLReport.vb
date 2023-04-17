@@ -158,26 +158,26 @@
             ProgressBar1.Value = indexProc
             Application.DoEvents()
             If contenido = "" Then
-                contenido = "<tr class=""odd gradeX"">" & _
-                                    "<td>" & documento.tipoDocumento.NombreTipo & "</td>" & _
-                                    "<td>" & documento.Sellado & "</td>" & _
-                                    "<td>" & documento.municipiosHistoLiteralHTML & "</td>" & _
-                                    "<td>" & documento.fechaPrincipal & "</td>" & _
-                                    "<td>" & _
-                                    "<a href=""" & documento.nameFileHTML & """ title=""Información del documento""><span class=""glyphicon glyphicon glyphicon-info-sign""></span></a> " & _
-                                    "<a href=""../zip/" & documento.nameFileHTML.Replace(".html", ".zip") & """ title=""Descarga del documento""><span class=""glyphicon glyphicon glyphicon-link""></span></a> " & _
-                                    "<a href=""../xml/" & documento.nameFileNEMXML & """ title=""Metadatos ISO19115 del documento""><span class=""glyphicon glyphicon glyphicon-globe""></span></a>" & _
+                contenido = "<tr class=""odd gradeX"">" &
+                                    "<td>" & documento.tipoDocumento.NombreTipo & "</td>" &
+                                    "<td>" & documento.Sellado & "</td>" &
+                                    "<td>" & documento.municipiosHistoLiteralHTML & "</td>" &
+                                    "<td>" & documento.fechaPrincipal & "</td>" &
+                                    "<td>" &
+                                    "<a href=""" & documento.nameFileHTML & """ title=""Información del documento""><span class=""glyphicon glyphicon glyphicon-info-sign""></span></a> " &
+                                    "<a href=""../zip/" & documento.nameFileHTML.Replace(".html", ".zip") & """ title=""Descarga del documento""><span class=""glyphicon glyphicon glyphicon-link""></span></a> " &
+                                    "<a href=""../xml/" & documento.nameFileNEMXML & """ title=""Metadatos ISO19115 del documento""><span class=""glyphicon glyphicon glyphicon-globe""></span></a>" &
                                     "</td></tr>"
             Else
-                contenido = contenido & "<tr class=""odd gradeX"">" & _
-                                    "<td>" & documento.tipoDocumento.NombreTipo & "</td>" & _
-                                    "<td>" & documento.Sellado & "</td>" & _
-                                    "<td>" & documento.municipiosHistoLiteralHTML & "</td>" & _
-                                    "<td>" & documento.fechaPrincipal & "</td>" & _
-                                    "<td>" & _
-                                    "<a href=""" & documento.nameFileHTML & """ title=""Información del documento""><span class=""glyphicon glyphicon glyphicon-info-sign""></span></a> " & _
-                                    "<a href=""../zip/" & documento.nameFileHTML.Replace(".html", ".zip") & """ title=""Descarga del documento""><span class=""glyphicon glyphicon glyphicon-link""></span></a> " & _
-                                    "<a href=""../xml/" & documento.nameFileNEMXML & """ title=""Metadatos ISO19115 del documento""><span class=""glyphicon glyphicon glyphicon-globe""></span></a>" & _
+                contenido = contenido & "<tr class=""odd gradeX"">" &
+                                    "<td>" & documento.tipoDocumento.NombreTipo & "</td>" &
+                                    "<td>" & documento.Sellado & "</td>" &
+                                    "<td>" & documento.municipiosHistoLiteralHTML & "</td>" &
+                                    "<td>" & documento.fechaPrincipal & "</td>" &
+                                    "<td>" &
+                                    "<a href=""" & documento.nameFileHTML & """ title=""Información del documento""><span class=""glyphicon glyphicon glyphicon-info-sign""></span></a> " &
+                                    "<a href=""../zip/" & documento.nameFileHTML.Replace(".html", ".zip") & """ title=""Descarga del documento""><span class=""glyphicon glyphicon glyphicon-link""></span></a> " &
+                                    "<a href=""../xml/" & documento.nameFileNEMXML & """ title=""Metadatos ISO19115 del documento""><span class=""glyphicon glyphicon glyphicon-globe""></span></a>" &
                                     "</td></tr>"
             End If
             provinciaNombre = documento.Provincias
@@ -233,7 +233,7 @@
                 Try
                     resultDocumentosMunicipal = New docCartoSEEquery
                     resultDocumentosMunicipal.getDocsSIDDAE_ByFiltroSellado("idarchivo in (Select archivo_id from archivo2munihisto where munihisto_id=" & dR("idmunihisto").ToString & ")")
-                    If generarHTMLIndexMunicipalHistoReport(resultDocumentosMunicipal.resultados, _
+                    If generarHTMLIndexMunicipalHistoReport(resultDocumentosMunicipal.resultados,
                                                         My.Application.Info.DirectoryPath & "\resources\index-muni-template.html", folderWork, tiposdocu2CDD,
                                                         String.Format("{0:0000000}", dR("cod_munihisto")), dR("nombre").ToString, nombreFicheroCDD) Then
                         Application.DoEvents()
@@ -264,26 +264,26 @@
         For Each documento As docCartoSEE In lista
             If tiposdocu2CDD.IndexOf(documento.tipoDocumento.idTipodoc) = -1 Then Continue For
             If contenido = "" Then
-                contenido = "<tr class=""odd gradeX"">" & _
-                                   "<td>" & documento.tipoDocumento.NombreTipo & "</td>" & _
-                                   "<td>" & documento.Sellado & "</td>" & _
-                                   "<td>" & documento.municipiosHistoLiteral & "</td>" & _
-                                   "<td>" & documento.fechaPrincipal & "</td>" & _
-                                    "<td>" & _
-                                    "<a href=""" & documento.nameFileHTML & """ title=""Información del documento""><span class=""glyphicon glyphicon glyphicon-info-sign""></span></a> " & _
-                                    "<a href=""../zip/" & documento.nameFileECWJPG & """ title=""Descarga del documento""><span class=""glyphicon glyphicon glyphicon-link""></span></a> " & _
-                                    "<a href=""../xml/" & documento.nameFileNEMXML & """ title=""Metadatos ISO19115 del documento""><span class=""glyphicon glyphicon glyphicon-globe""></span></a>" & _
+                contenido = "<tr class=""odd gradeX"">" &
+                                   "<td>" & documento.tipoDocumento.NombreTipo & "</td>" &
+                                   "<td>" & documento.Sellado & "</td>" &
+                                   "<td>" & documento.municipiosHistoLiteral & "</td>" &
+                                   "<td>" & documento.fechaPrincipal & "</td>" &
+                                    "<td>" &
+                                    "<a href=""" & documento.nameFileHTML & """ title=""Información del documento""><span class=""glyphicon glyphicon glyphicon-info-sign""></span></a> " &
+                                    "<a href=""../zip/" & documento.nameFileECWJPG & """ title=""Descarga del documento""><span class=""glyphicon glyphicon glyphicon-link""></span></a> " &
+                                    "<a href=""../xml/" & documento.nameFileNEMXML & """ title=""Metadatos ISO19115 del documento""><span class=""glyphicon glyphicon glyphicon-globe""></span></a>" &
                                     "</td></tr>"
             Else
-                contenido = contenido & "<tr class=""odd gradeX"">" & _
-                                     "<td>" & documento.tipoDocumento.NombreTipo & "</td>" & _
-                                     "<td>" & documento.Sellado & "</td>" & _
-                                     "<td>" & documento.municipiosHistoLiteral & "</td>" & _
-                                     "<td>" & documento.fechaPrincipal & "</td>" & _
-                                     "<td>" & _
-                                     "<a href=""" & documento.nameFileHTML & """ title=""Información del documento""><span class=""glyphicon glyphicon glyphicon-info-sign""></span></a> " & _
-                                     "<a href=""../zip/" & documento.nameFileECWJPG & """ title=""Descarga del documento""><span class=""glyphicon glyphicon glyphicon-link""></span></a> " & _
-                                     "<a href=""../xml/" & documento.nameFileNEMXML & """ title=""Metadatos ISO19115 del documento""><span class=""glyphicon glyphicon glyphicon-globe""></span></a>" & _
+                contenido = contenido & "<tr class=""odd gradeX"">" &
+                                     "<td>" & documento.tipoDocumento.NombreTipo & "</td>" &
+                                     "<td>" & documento.Sellado & "</td>" &
+                                     "<td>" & documento.municipiosHistoLiteral & "</td>" &
+                                     "<td>" & documento.fechaPrincipal & "</td>" &
+                                     "<td>" &
+                                     "<a href=""" & documento.nameFileHTML & """ title=""Información del documento""><span class=""glyphicon glyphicon glyphicon-info-sign""></span></a> " &
+                                     "<a href=""../zip/" & documento.nameFileECWJPG & """ title=""Descarga del documento""><span class=""glyphicon glyphicon glyphicon-link""></span></a> " &
+                                     "<a href=""../xml/" & documento.nameFileNEMXML & """ title=""Metadatos ISO19115 del documento""><span class=""glyphicon glyphicon glyphicon-globe""></span></a>" &
                                      "</td></tr>"
 
             End If
@@ -341,9 +341,9 @@
                 nombreFicheroCDD = nombreFicheroCDD.Replace(" ", "_")
                 Try
                     resultDocumentosMunicipal = New docCartoSEEquery
-                    resultDocumentosMunicipal.getDocsSIDDAE_ByFiltroSellado("idarchivo in (Select archivo_id from archivo2munihisto inner join munihisto on munihisto.idmunihisto=archivo2munihisto.munihisto_id " & _
+                    resultDocumentosMunicipal.getDocsSIDDAE_ByFiltroSellado("idarchivo in (Select archivo_id from archivo2munihisto inner join munihisto on munihisto.idmunihisto=archivo2munihisto.munihisto_id " &
                                                                         "where munihisto.entidad_id=" & dR("idmunihisto").ToString & ")")
-                    If generarHTMLIndexMunicipalActualReport(resultDocumentosMunicipal.resultados, _
+                    If generarHTMLIndexMunicipalActualReport(resultDocumentosMunicipal.resultados,
                                                         My.Application.Info.DirectoryPath & "\resources\index-muni-template.html", folderWork, tiposdocu2CDD,
                                                         String.Format("{0:00000}", dR("inecortoactual")), dR("nombre").ToString, nombreFicheroCDD) Then
                         Application.DoEvents()
@@ -375,26 +375,26 @@
         For Each documento As docCartoSEE In lista
             If tiposdocu2CDD.IndexOf(documento.tipoDocumento.idTipodoc) = -1 Then Continue For
             If contenido = "" Then
-                contenido = "<tr class=""odd gradeX"">" & _
-                                   "<td>" & documento.tipoDocumento.NombreTipo & "</td>" & _
-                                   "<td>" & documento.Sellado & "</td>" & _
-                                   "<td>" & documento.municipiosHistoLiteral & "</td>" & _
-                                   "<td>" & documento.fechaPrincipal & "</td>" & _
-                                    "<td>" & _
-                                    "<a href=""" & documento.nameFileHTML & """ title=""Información del documento""><span class=""glyphicon glyphicon glyphicon-info-sign""></span></a> " & _
-                                     "<a href=""../zip/" & documento.nameFileECWJPG & """ title=""Descarga del documento""><span class=""glyphicon glyphicon glyphicon-link""></span></a> " & _
-                                     "<a href=""../xml/" & documento.nameFileNEMXML & """ title=""Metadatos ISO19115 del documento""><span class=""glyphicon glyphicon glyphicon-globe""></span></a>" & _
+                contenido = "<tr class=""odd gradeX"">" &
+                                   "<td>" & documento.tipoDocumento.NombreTipo & "</td>" &
+                                   "<td>" & documento.Sellado & "</td>" &
+                                   "<td>" & documento.municipiosHistoLiteral & "</td>" &
+                                   "<td>" & documento.fechaPrincipal & "</td>" &
+                                    "<td>" &
+                                    "<a href=""" & documento.nameFileHTML & """ title=""Información del documento""><span class=""glyphicon glyphicon glyphicon-info-sign""></span></a> " &
+                                     "<a href=""../zip/" & documento.nameFileECWJPG & """ title=""Descarga del documento""><span class=""glyphicon glyphicon glyphicon-link""></span></a> " &
+                                     "<a href=""../xml/" & documento.nameFileNEMXML & """ title=""Metadatos ISO19115 del documento""><span class=""glyphicon glyphicon glyphicon-globe""></span></a>" &
                                      "</td></tr>"
             Else
-                contenido = contenido & "<tr class=""odd gradeX"">" & _
-                                     "<td>" & documento.tipoDocumento.NombreTipo & "</td>" & _
-                                     "<td>" & documento.Sellado & "</td>" & _
-                                     "<td>" & documento.municipiosHistoLiteral & "</td>" & _
-                                     "<td>" & documento.fechaPrincipal & "</td>" & _
-                                    "<td>" & _
-                                    "<a href=""" & documento.nameFileHTML & """ title=""Información del documento""><span class=""glyphicon glyphicon glyphicon-info-sign""></span></a> " & _
-                                     "<a href=""../zip/" & documento.nameFileECWJPG & """ title=""Descarga del documento""><span class=""glyphicon glyphicon glyphicon-link""></span></a> " & _
-                                     "<a href=""../xml/" & documento.nameFileNEMXML & """ title=""Metadatos ISO19115 del documento""><span class=""glyphicon glyphicon glyphicon-globe""></span></a>" & _
+                contenido = contenido & "<tr class=""odd gradeX"">" &
+                                     "<td>" & documento.tipoDocumento.NombreTipo & "</td>" &
+                                     "<td>" & documento.Sellado & "</td>" &
+                                     "<td>" & documento.municipiosHistoLiteral & "</td>" &
+                                     "<td>" & documento.fechaPrincipal & "</td>" &
+                                    "<td>" &
+                                    "<a href=""" & documento.nameFileHTML & """ title=""Información del documento""><span class=""glyphicon glyphicon glyphicon-info-sign""></span></a> " &
+                                     "<a href=""../zip/" & documento.nameFileECWJPG & """ title=""Descarga del documento""><span class=""glyphicon glyphicon glyphicon-link""></span></a> " &
+                                     "<a href=""../xml/" & documento.nameFileNEMXML & """ title=""Metadatos ISO19115 del documento""><span class=""glyphicon glyphicon glyphicon-globe""></span></a>" &
                                      "</td></tr>"
             End If
             provinciaNombre = documento.Provincias
@@ -646,106 +646,139 @@
 
     End Function
 
-    Function copyFiles2DirectoryZIPPED(ByVal lista As ArrayList, folderOUTfilesCopy As String, tiposdocu2CDD As ArrayList) As Boolean
+    Function copyFiles2DirectoryToCDD(lista As ArrayList, folderOUT As String, tiposdocu2CDD As ArrayList, procesarGeorref As Boolean) As Boolean
 
 
         Dim indexProc As Integer
         Dim pathOrigen As String
         Dim pathDestino As String
         Dim pathDestinoPRJ As String
-        Dim folder4ZIP As String
 
+        Dim folderFileOut As String
+        Dim extensionFile As String
+        Dim nombreFileOut As String
+
+        If Not folderOUT.EndsWith("\") Then folderOUT &= "\"
         Me.Text = "Copia de los ficheros JPG+ECW en ZIP para el Centro de Descargas"
         Label1.Text = "Copiando los ficheros JPG+ECW para el Centro de Descargas"
         ProgressBar1.Minimum = 0
         ProgressBar1.Maximum = lista.Count
         Me.Show()
 
-        If Not System.IO.Directory.Exists(folderOUTfilesCopy) Then
+        If Not IO.Directory.Exists(folderOUT) Then
             MessageBox.Show("La ruta destino de los ficheros no existe", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
             Me.Close()
             Return False
         End If
-        Using archivoZIP As System.IO.StreamWriter = New System.IO.StreamWriter(folderOUTfilesCopy.Replace("\zip\", "\") & "\zipProc.bat", False, System.Text.Encoding.Default)
-            Using archivoLog As System.IO.StreamWriter = New System.IO.StreamWriter(folderOUTfilesCopy & "\_logCopy.log", False, System.Text.Encoding.Default)
-                Using archivoData As System.IO.StreamWriter = New System.IO.StreamWriter(folderOUTfilesCopy.Replace("\zip\", "\") & "\_ZIP2codigosINE.txt", False, System.Text.Encoding.Default)
-                    archivoData.WriteLine("Nombre Fichero ZIP;Códigos INE de municipio asociado")
-                    For Each documento As docCartoSEE In lista
-                        'Application.DoEvents()
-                        If tiposdocu2CDD.IndexOf(documento.tipoDocumento.idTipodoc) = -1 Then Continue For
-                        indexProc = indexProc + 1
-                        ProgressBar1.Value = indexProc
-                        'Preparamos la carpeta que contendrá los ficheros de cada documento
-                        folder4ZIP = folderOUTfilesCopy & documento.nameFolder4CDD & "\"
-                        If Not System.IO.Directory.Exists(folder4ZIP) Then System.IO.Directory.CreateDirectory(folder4ZIP)
-                        'Primero copiamos el JPG
-                        pathOrigen = documento.rutaFicheroBajaRes
-                        pathDestino = folder4ZIP & documento.nameFile4CDD
-                        Try
-                            System.IO.File.Copy(pathOrigen, pathDestino, True)
-                            'archivoLog.WriteLine("*COPIA CORRECTA*" & pathOrigen & "#" & pathDestino)
-                            'Por cada INE metemos una línea
-                            For Each muni As String In documento.listaCodMuniActual
-                                Application.DoEvents()
-                                archivoData.WriteLine(documento.nameFolder4CDD & ".zip" & ";" & muni)
-                            Next
-                        Catch ex As Exception
-                            archivoLog.WriteLine("#COPIA ERRONEA#" & pathOrigen & "#" & pathDestino & "#" & ex.Message)
-                        End Try
+        If Not IO.Directory.Exists(folderOUT & "archivos\") Then IO.Directory.CreateDirectory(folderOUT & "archivos\")
 
-                        If documento.listaFicherosGeo.Count = 0 Then
-                            archivoLog.WriteLine("#OJO: El Documento" & documento.Sellado & " no dispone de información georreferenciada")
-                            archivoZIP.WriteLine("7z a " & folderOUTfilesCopy & documento.nameFolder4CDD & ".zip """ & folder4ZIP & """")
-                            archivoZIP.WriteLine("del /S /Q """ & folder4ZIP & """")
-                            archivoZIP.WriteLine("rd """ & folder4ZIP & """")
-                            Continue For
-                        End If
-                        'Después copiamos el ECW si los hay
-                        If documento.listaFicherosGeo.Count = 1 Then
-                            pathOrigen = documento.listaFicherosGeo.Item(0)
-                            pathDestino = folder4ZIP & documento.nameFile4CDD.Replace(".jpg", ".ecw")
-                            'Y también el fichero PRJ
-                            pathDestinoPRJ = folder4ZIP & documento.nameFile4CDD.Replace(".jpg", ".prj")
-                            Try
-                                System.IO.File.Copy(pathOrigen, pathDestino, True)
-                                System.IO.File.Copy(My.Application.Info.DirectoryPath & "\resources\proj23030.prj", pathDestinoPRJ, True)
-                                archivoLog.WriteLine("*COPIA CORRECTA*" & pathOrigen & "#" & pathDestino)
-                            Catch ex As Exception
-                                archivoLog.WriteLine("#COPIA ERRONEA#" & pathOrigen & "#" & pathDestino & "#" & ex.Message)
-                            End Try
-                        Else
-                            Application.DoEvents()
-                            For Each docuECW As String In documento.listaFicherosGeo
-                                pathOrigen = docuECW
-                                pathDestino = folder4ZIP & SacarFileDeRuta(pathOrigen)
-                                'Y también el fichero PRJ
-                                pathDestinoPRJ = folder4ZIP & SacarFileDeRuta(pathOrigen).Replace(".ecw", ".prj")
+        Using archivoZIP As New IO.StreamWriter(folderOUT & "archivos\zipProc.bat", False, System.Text.Encoding.UTF8)
+            Using archivoLog As New IO.StreamWriter(folderOUT & "archivos\_logCopy.log", False, System.Text.Encoding.UTF8)
+                Using archivoFileToMuni As New IO.StreamWriter(folderOUT & "\files2codigosINE.txt", False, System.Text.Encoding.UTF8)
+                    Using archivoAlias As New IO.StreamWriter(folderOUT & "\alias.txt", False, System.Text.Encoding.UTF8)
+                        Using sentenciaSQL As New IO.StreamWriter(folderOUT & "\database.sql", False, System.Text.Encoding.UTF8)
+                            archivoFileToMuni.WriteLine("Nombre Fichero;Códigos INE de municipio asociado")
+                            archivoAlias.WriteLine("idProductor;Fichero;Temática;Alias;Escala;Autor;Fecha;TipoFichero")
+                            For Each documento As docCartoSEE In lista
+
+                                If tiposdocu2CDD.IndexOf(documento.tipoDocumento.idTipodoc) = -1 Then Continue For
+                                indexProc = indexProc + 1
+                                ProgressBar1.Value = indexProc
+                                extensionFile = "JPG"
+                                nombreFileOut = documento.nameFile4CDD
+                                If procesarGeorref Then
+                                    extensionFile = IIf(documento.listaFicherosGeo.Count = 0, "JPG", "ZIP")
+                                    nombreFileOut = IIf(documento.listaFicherosGeo.Count = 0, documento.nameFile4CDD, documento.nameFolder4CDD & ".zip")
+                                End If
+
+                                archivoAlias.WriteLine(documento.getIdProductor4CdD & ";" &
+                                                   nombreFileOut & ";" &
+                                                   documento.tipoDocumento.tematicaCdD & ";" &
+                                                   documento.getCdDAlias & ";" &
+                                                   IIf(documento.Escala = 0, "Sin escala", documento.Escala.ToString) & ";" &
+                                                   IIf(documento.autorDocumento = "", "Desconocido", documento.autorDocumento.ToString) & ";" &
+                                                   documento.yearFechaPrincipal & ";" & extensionFile)
+
+                                sentenciaSQL.WriteLine("UPDATE bdsidschema.archivo SET " &
+                                                       "cdd_nomfich = E'" & nombreFileOut & "'," &
+                                                       "cdd_titulo = E'" & documento.getCdDAlias.Replace("'", "\'") & ";" & documento.yearFechaPrincipal & "' " &
+                                                       "WHERE sellado=" & documento.getIdProductor4CdD & ";")
+
+                                'Preparamos la carpeta que contendrá los ficheros de cada documento
+                                folderFileOut = folderOUT & "archivos\"
+                                If procesarGeorref Then
+                                    If documento.listaFicherosGeo.Count > 0 Then
+                                        folderFileOut = folderOUT & "archivos\" & documento.nameFolder4CDD & "\"
+                                    End If
+                                End If
+                                If Not IO.Directory.Exists(folderFileOut) Then IO.Directory.CreateDirectory(folderFileOut)
+
+                                'Primero copiamos el JPG
+                                pathOrigen = documento.rutaFicheroBajaRes
+                                pathDestino = folderFileOut & documento.nameFile4CDD
                                 Try
-                                    System.IO.File.Copy(pathOrigen, pathDestino, True)
-                                    System.IO.File.Copy(My.Application.Info.DirectoryPath & "\resources\proj23030.prj", pathDestinoPRJ, True)
-                                    archivoLog.WriteLine("*COPIA CORRECTA*" & pathOrigen & "#" & pathDestino)
+                                    IO.File.Copy(pathOrigen, pathDestino, True)
+                                    'archivoLog.WriteLine("*COPIA CORRECTA*" & pathOrigen & "#" & pathDestino)
+                                    'Por cada INE metemos una línea
+                                    For Each muni As String In documento.listaCodMuniActual
+                                        Application.DoEvents()
+                                        If procesarGeorref Then
+                                            If documento.listaFicherosGeo.Count = 0 Then
+                                                archivoFileToMuni.WriteLine(documento.nameFile4CDD & ";" & muni)
+                                            Else
+                                                archivoFileToMuni.WriteLine(documento.nameFolder4CDD & ".zip" & ";" & muni)
+                                            End If
+                                        Else
+                                            archivoFileToMuni.WriteLine(documento.nameFile4CDD & ";" & muni)
+                                        End If
+                                    Next
                                 Catch ex As Exception
                                     archivoLog.WriteLine("#COPIA ERRONEA#" & pathOrigen & "#" & pathDestino & "#" & ex.Message)
                                 End Try
+
+                                If procesarGeorref Then
+                                    'Después copiamos el ECW si los hay
+                                    If documento.listaFicherosGeo.Count = 1 Then
+                                        pathOrigen = documento.listaFicherosGeo.Item(0)
+                                        pathDestino = folderFileOut & documento.nameFile4CDD.Replace(".jpg", ".ecw")
+                                        'Y también el fichero PRJ
+                                        pathDestinoPRJ = folderFileOut & documento.nameFile4CDD.Replace(".jpg", ".prj")
+                                        Try
+                                            IO.File.Copy(pathOrigen, pathDestino, True)
+                                            IO.File.Copy(My.Application.Info.DirectoryPath & "\resources\proj23030.prj", pathDestinoPRJ, True)
+                                            archivoLog.WriteLine("*COPIA CORRECTA*" & pathOrigen & "#" & pathDestino)
+                                        Catch ex As Exception
+                                            archivoLog.WriteLine("#COPIA ERRONEA#" & pathOrigen & "#" & pathDestino & "#" & ex.Message)
+                                        End Try
+                                    Else
+                                        For Each docuECW As String In documento.listaFicherosGeo
+                                            pathOrigen = docuECW
+                                            pathDestino = folderFileOut & SacarFileDeRuta(pathOrigen)
+                                            'Y también el fichero PRJ
+                                            pathDestinoPRJ = folderFileOut & SacarFileDeRuta(pathOrigen).Replace(".ecw", ".prj")
+                                            Try
+                                                IO.File.Copy(pathOrigen, pathDestino, True)
+                                                IO.File.Copy(My.Application.Info.DirectoryPath & "\resources\proj23030.prj", pathDestinoPRJ, True)
+                                                archivoLog.WriteLine("*COPIA CORRECTA*" & pathOrigen & "#" & pathDestino)
+                                            Catch ex As Exception
+                                                archivoLog.WriteLine("#COPIA ERRONEA#" & pathOrigen & "#" & pathDestino & "#" & ex.Message)
+                                            End Try
+                                        Next
+                                    End If
+                                    If documento.listaFicherosGeo.Count > 0 Then
+                                        archivoZIP.WriteLine("""" & path7zUtility & """ a " & folderOUT & "archivos\" & documento.nameFolder4CDD & ".zip """ & folderFileOut & """")
+                                        archivoZIP.WriteLine("del /S /Q """ & folderFileOut & """")
+                                        archivoZIP.WriteLine("rd """ & folderFileOut & """")
+                                    End If
+                                End If
                             Next
-                        End If
-                        archivoZIP.WriteLine("7z a " & folderOUTfilesCopy & documento.nameFolder4CDD & ".zip """ & folder4ZIP & """")
-                        archivoZIP.WriteLine("del /S /Q """ & folder4ZIP & """")
-                        archivoZIP.WriteLine("rd """ & folder4ZIP & """")
-                    Next
+                        End Using
+                    End Using
                 End Using
             End Using
         End Using
         ProgressBar1.Value = lista.Count
 
-        'Me.Cursor = Cursors.WaitCursor
-        'runProcWait(folderOUTfilesCopy.Replace("\zip\", "\") & "\zipProc.bat")
-        'Me.Cursor = Cursors.Default
-        'Try
-        '    System.IO.File.Delete(folderOUTfilesCopy.Replace("\zip\", "\") & "\zipProc.bat")
-        'Catch ex As Exception
-        '    MessageBox.Show(ex.Message)
-        'End Try
         Me.Close()
         Return True
 

@@ -313,6 +313,10 @@
                         IIf(subTipoDoc <> "", ". " & subTipoDoc, "") &
                         IIf(Coleccion <> "", ". Colección " & Coleccion, "") &
                         IIf(Subdivision <> "", ". " & Subdivision, ""))
+            ElseIf tipoDocumento.NombreTipo = "Planimetría" Then
+                Return _tipoDocumento.NombreTipo.Substring(0, 5).Replace("ñ", "n").ToUpper & "-" & String.Format("{0:000000}", Sellado) & "-" & _fechaPrincipal.Substring(0, 4)
+            ElseIf tipoDocumento.NombreTipo = "Altimetría" Then
+                Return _tipoDocumento.NombreTipo.Substring(0, 5).Replace("ñ", "n").ToUpper & "-" & String.Format("{0:000000}", Sellado) & "-" & _fechaPrincipal.Substring(0, 4)
             Else
                 Return "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. " &
                        "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
@@ -425,11 +429,11 @@
         Dim y2_tmp As Double
         Dim contador As Integer = -1
 
-        cadSQL = "SELECT st_xmin(ST_box2d(ST_Transform(geom,4230))) as xmin," &
-                        "st_xmax(ST_box2d(ST_Transform(geom,4230))) as xmax," &
-                        "st_ymin(ST_box2d(ST_Transform(geom,4230))) as ymin," &
-                        "st_ymax(ST_box2d(ST_Transform(geom,4230))) as ymax " &
-                        "FROM contornos WHERE not geom is null and archivo_id=" & docIndex
+        cadSQL = "SELECT st_xmin(Box2D(ST_Transform(geom,4230))) as xmin," &
+                        "st_xmax(Box2D(ST_Transform(geom,4230))) as xmax," &
+                        "st_ymin(Box2D(ST_Transform(geom,4230))) as ymin," &
+                        "st_ymax(Box2D(ST_Transform(geom,4230))) as ymax " &
+                        "FROM bdsidschema.contornos WHERE not geom is null and archivo_id=" & docIndex
         rcdTMP = New DataTable
         If CargarRecordset(cadSQL, rcdTMP) = True Then
             filas = rcdTMP.Select

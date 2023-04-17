@@ -31,6 +31,8 @@ Module Basics
     'Public App_Permiso As Integer
     'Public App_Machine As String = ""
 
+    Public urlAbsysLink As String
+    Public path7zUtility As String
     Public VisorECW As String
     Public VisorJPG As String
     Public VisorPrint As String
@@ -56,118 +58,6 @@ Module Basics
     'Encabezados para las consultas
     Public Encabezados(20) As EncabezadosConsulta
 
-    '--------------------------------------------------------------------------------------------
-    'Declaraciones de API
-    '--------------------------------------------------------------------------------------------
-    Declare Function GetPrivateProfileString Lib "kernel32" Alias "GetPrivateProfileStringA" _
-                    (ByVal lpApplicationName As String, ByVal lpKeyName As String, _
-                    ByVal lpDefault As String, ByVal lpReturnedString As String, _
-                    ByVal nSize As Integer, ByVal lpFileName As String) As Integer
-    Declare Function WritePrivateProfileString Lib "kernel32" Alias "WritePrivateProfileStringA" _
-                    (ByVal lpApplicationName As String, ByVal lpKeyName As String, _
-                    ByVal lpString As String, ByVal lpFileName As String) As Integer
-
-    Declare Sub InvalidateRect Lib "user32" (ByVal hwnd As Long, ByVal T As Long, ByVal bErase As Long)
-    Declare Sub ValidateRect Lib "user32" (ByVal hwnd As Long, ByVal T As Long)
-
-
-    ''' <summary>
-    ''' Lectura de un archivo INI en el directorio del ejecutable
-    ''' </summary>
-    ''' <param name="Seccion">Seccion del archivo INI</param>
-    ''' <param name="Item">Atributo de la seccion del archivo INI</param>
-    ''' <returns>Devuelve una cadena con el valor del atributo dentro de la seccion</returns>
-    ''' <remarks></remarks>
-    Public Function LeeIni(ByVal Seccion As String, ByVal Item As String) As String
-        Dim NumChar As Long
-        Dim A As String
-        Dim Ini
-        A = Space(512)
-        If Right(My.Application.Info.DirectoryPath, 1) = "\" Then
-            Ini = My.Application.Info.DirectoryPath & My.Application.Info.AssemblyName & ".ini"
-        Else
-            Ini = My.Application.Info.DirectoryPath & "\" & My.Application.Info.AssemblyName & ".ini"
-        End If
-        NumChar = GetPrivateProfileString(Seccion, Item, "", A, 512, Ini)
-        If NumChar = 0 Then
-            LeeIni = ""
-            Exit Function
-        End If
-
-        A = Left(A, NumChar)
-        LeeIni = A
-    End Function
-
-    ''' <summary>
-    ''' Escritura en un archivo INI en el directorio del ejecutable
-    ''' </summary>
-    ''' <param name="Seccion">Seccion del archivo INI</param>
-    ''' <param name="Item">Atributo de la seccion del archivo INI</param>
-    ''' <param name="Texto">Valor a escribir</param>
-    ''' <remarks></remarks>
-    Public Sub EscribeIni(ByVal Seccion As String, ByVal Item As String, ByVal Texto As String)
-        Dim NumChar As Long
-        Dim A
-        Dim Ini
-        A = Space(512)
-        If Right(My.Application.Info.DirectoryPath, 1) = "\" Then
-            Ini = My.Application.Info.DirectoryPath & My.Application.Info.AssemblyName & ".ini"
-        Else
-            Ini = My.Application.Info.DirectoryPath & "\" & My.Application.Info.AssemblyName & ".ini"
-        End If
-        NumChar = WritePrivateProfileString(Seccion, Item, Texto, Ini)
-    End Sub
-
-
-    ''' <summary>
-    ''' Lectura de un archivo INI en el directorio de usuario
-    ''' </summary>
-    ''' <param name="Seccion">Seccion del archivo INI</param>
-    ''' <param name="Item">Atributo de la seccion del archivo INI</param>
-    ''' <returns>Devuelve una cadena con el valor del atributo dentro de la seccion</returns>
-    ''' <remarks></remarks>
-    Public Function LeeIniLocal(ByVal Seccion As String, ByVal Item As String) As String
-        Dim NumChar As Long
-        Dim A As String
-        Dim Ini
-        A = Space(255)
-        If Right(AppFolderSetting, 1) = "\" Then
-            Ini = AppFolderSetting & My.Application.Info.AssemblyName & ".ini"
-        Else
-            Ini = AppFolderSetting & "\" & My.Application.Info.AssemblyName & ".ini"
-        End If
-        NumChar = GetPrivateProfileString(Seccion, Item, "", A, 255, Ini)
-        If NumChar = 0 Then
-            LeeIniLocal = ""
-            Exit Function
-        End If
-
-        A = Left(A, NumChar)
-        LeeIniLocal = A
-    End Function
-
-    ''' <summary>
-    ''' Escritura en un archivo INI en el directorio de usuario
-    ''' </summary>
-    ''' <param name="Seccion">Seccion del archivo INI</param>
-    ''' <param name="Item">Atributo de la seccion del archivo INI</param>
-    ''' <param name="Texto">Valor a escribir</param>
-    ''' <remarks></remarks>
-    Public Sub EscribeIniLocal(ByVal Seccion As String, ByVal Item As String, ByVal Texto As String)
-        Dim NumChar As Long
-        Dim A
-        Dim Ini
-        A = Space(255)
-        If Right(AppFolderSetting, 1) = "\" Then
-            Ini = AppFolderSetting & My.Application.Info.AssemblyName & ".ini"
-        Else
-            Ini = AppFolderSetting & "\" & My.Application.Info.AssemblyName & ".ini"
-        End If
-        NumChar = WritePrivateProfileString(Seccion, Item, Texto, Ini)
-    End Sub
-
-
-
     Public Sub LeerConfiguracionINI()
 
         'Pasos previos a leer por primera vez el INI
@@ -190,9 +80,11 @@ Module Basics
         rutaRepoInventarioInfo = LeeIni("Repositorio", "rutaRepoInventarioInfo").Trim
         rutaCentroDescargas = LeeIni("Metadatos", "rutaCentroDescargas").Trim
         rutaRepoThumbs = LeeIni("Metadatos", "rutaRepoThumbs").Trim
+        urlAbsysLink = LeeIni("Configuracion", "urlAbsysLink")
 
         CalidadFavorita = LeeIni("Repositorio", "CalidadFavorita")
         RutaRejillaNTV2 = LeeIni("Configuracion", "RutaRejillaNTV2")
+        path7zUtility = LeeIni("Configuracion", "path7zUtility")
 
         'Utiliza la tabla tbusuarios para validar el tipo de usuario
         If LeeIni("Database", "ModoDelegaciones").ToUpper = "SI" Then
@@ -502,22 +394,6 @@ Module Basics
 
     End Function
 
-    Function GenerarLOG(ByVal Frase As String) As Boolean
-
-        Dim sw As New System.IO.StreamWriter(ficheroLogger, True)
-        Dim cadFechaInsert As String = Now.Year & "-" & _
-                                        String.Format("{0:00}", CInt(Now.Month.ToString)) & "-" & _
-                                        String.Format("{0:00}", CInt(Now.Day.ToString)) & " " & _
-                                        String.Format("{0:00}", CInt(Now.Hour.ToString)) & ":" & _
-                                        String.Format("{0:00}", CInt(Now.Minute.ToString))
-
-        sw.WriteLine(cadFechaInsert & " # " & Frase)
-        sw.Close()
-        sw.Dispose()
-        sw = Nothing
-
-    End Function
-
     Function ArrayEliminarDuplicados(ByVal items() As docSIDCARTO) As docSIDCARTO()
         Dim noDupsArrList As New ArrayList
         For i As Integer = 0 To items.Length - 1
@@ -531,30 +407,6 @@ Module Basics
         noDupsArrList.CopyTo(uniqueItems)
         Return uniqueItems
 
-    End Function
-
-    Function FormatearFecha(ByVal fecha As Date, Optional ByVal tipo As String = "") As String
-        If fecha = Nothing Then Return ""
-        If tipo = "SPAIN" Then
-            Return String.Format("{0:00}", fecha.Day) & "-" & String.Format("{0:00}", fecha.Month) & "-" & fecha.Year
-        ElseIf tipo = "GERMAN" Then
-            Return fecha.Year & "-" & String.Format("{0:00}", fecha.Month) & "-" & String.Format("{0:00}", fecha.Day)
-        Else
-            'Por defecto devuelve el formato español
-            Return String.Format("{0:00}", fecha.Day) & "-" & String.Format("{0:00}", fecha.Month) & "-" & fecha.Year
-        End If
-    End Function
-
-    Function FormatearFechaHora(ByVal fecha As Date, Optional ByVal tipo As String = "") As String
-        If fecha = Nothing Then Return ""
-        If tipo = "SPAIN" Then
-            Return String.Format("{0:00}", fecha.Day) & "-" & String.Format("{0:00}", fecha.Month) & "-" & fecha.Year
-        ElseIf tipo = "GERMAN" Then
-            Return fecha.Year & "-" & String.Format("{0:00}", fecha.Month) & "-" & String.Format("{0:00}", fecha.Day) & " " & String.Format("{0:00}", fecha.Hour) & ":" & String.Format("{0:00}", fecha.Minute) & ":" & String.Format("{0:00}", fecha.Second)
-        Else
-            'Por defecto devuelve el formato español
-            Return String.Format("{0:00}", fecha.Day) & "-" & String.Format("{0:00}", fecha.Month) & "-" & fecha.Year
-        End If
     End Function
 
     Sub LanzarSpinner()

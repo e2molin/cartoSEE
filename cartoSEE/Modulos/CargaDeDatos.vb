@@ -165,11 +165,11 @@ Module CargaDeDatos
             dA.Fill(Contenedor)
             dA.Dispose()
             cmdSQL.Dispose()
-            Application.DoEvents()
             CargarRecordset = True
         Catch Fallo As Exception
             CargarRecordset = False
-            MessageBox.Show(Fallo.Message, My.Application.Info.AssemblyName, MessageBoxButtons.OK, MessageBoxIcon.Error)
+            GenerarLOG(Fallo.Message)
+            ModalError(Fallo.Message)
         End Try
 
     End Function

@@ -253,7 +253,7 @@
             item.titnABSYSdoc = dR("titn")
             If item.titnABSYSdoc > 0 Then
                 item.cargaABSYS = True
-                item.urlABSYSdoc = "https://www.ign.es/web/biblioteca_cartoteca/abnetcl.cgi?TITN=" & item.titnABSYSdoc
+                item.urlABSYSdoc = urlAbsysLink & item.titnABSYSdoc
             Else
                 item.cargaABSYS = False
                 item.urlABSYSdoc = ""
