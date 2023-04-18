@@ -59,7 +59,7 @@
         InitializeComponent()
     End Sub
 
-    Public Sub runProcWait(fileBatch)
+    Public Sub RunProcWait(fileBatch)
 
         Dim proceso As Process
         Dim si As New ProcessStartInfo
@@ -89,7 +89,7 @@
     End Sub
 
 
-    Public Function generarHTMLreport(ByVal lista As ArrayList, ByVal template As String, folderOUTHTML As String, generateIndexFile As Boolean, tiposdocu2CDD As ArrayList) As Boolean
+    Public Function GenerarHTMLreport(ByVal lista As ArrayList, ByVal template As String, folderOUTHTML As String, generateIndexFile As Boolean, tiposdocu2CDD As ArrayList) As Boolean
 
 
         Dim reportHTML As WebCdDTemplate
@@ -127,12 +127,12 @@
             ProgressBar1.Value = lista.Count
         End Using
 
-        If generateIndexFile Then generarHTMLIndexProvinReport(lista, template.Replace("docsidcarto-template", "index-template"), folderOUTHTML, tiposdocu2CDD)
+        If generateIndexFile Then GenerarHTMLIndexProvinReport(lista, template.Replace("docsidcarto-template", "index-template"), folderOUTHTML, tiposdocu2CDD)
         Me.Close()
         Return True
     End Function
 
-    Public Function generarHTMLIndexProvinReport(ByVal lista As ArrayList, ByVal template As String, folderOUTHTML As String, tiposdocu2CDD As ArrayList) As Boolean
+    Public Function GenerarHTMLIndexProvinReport(ByVal lista As ArrayList, ByVal template As String, folderOUTHTML As String, tiposdocu2CDD As ArrayList) As Boolean
 
         Dim indexProc As Integer
         Dim srTemplate As System.IO.StreamReader
@@ -207,7 +207,7 @@
         Return True
     End Function
 
-    Public Function generarMuniHistoIndex(codProv As Integer, folderWork As String, tiposdocu2CDD As ArrayList, Optional appendMode As Boolean = False) As Boolean
+    Public Function GenerarMuniHistoIndex(codProv As Integer, folderWork As String, tiposdocu2CDD As ArrayList, Optional appendMode As Boolean = False) As Boolean
 
         Dim filas() As DataRow
         Dim procTilde As New Destildator
@@ -233,7 +233,7 @@
                 Try
                     resultDocumentosMunicipal = New docCartoSEEquery
                     resultDocumentosMunicipal.getDocsSIDDAE_ByFiltroSellado("idarchivo in (Select archivo_id from archivo2munihisto where munihisto_id=" & dR("idmunihisto").ToString & ")")
-                    If generarHTMLIndexMunicipalHistoReport(resultDocumentosMunicipal.resultados,
+                    If GenerarHTMLIndexMunicipalHistoReport(resultDocumentosMunicipal.resultados,
                                                         My.Application.Info.DirectoryPath & "\resources\index-muni-template.html", folderWork, tiposdocu2CDD,
                                                         String.Format("{0:0000000}", dR("cod_munihisto")), dR("nombre").ToString, nombreFicheroCDD) Then
                         Application.DoEvents()
@@ -251,7 +251,7 @@
         Me.Close()
     End Function
 
-    Private Function generarHTMLIndexMunicipalHistoReport(ByVal lista As ArrayList, ByVal template As String, folderOUTHTML As String, tiposdocu2CDD As ArrayList, codMuni As String, nombreMunicipioCompleto As String, nombreMuni4CDD As String) As Boolean
+    Private Function GenerarHTMLIndexMunicipalHistoReport(ByVal lista As ArrayList, ByVal template As String, folderOUTHTML As String, tiposdocu2CDD As ArrayList, codMuni As String, nombreMunicipioCompleto As String, nombreMuni4CDD As String) As Boolean
 
         Dim indexProc As Integer
         Dim srTemplate As System.IO.StreamReader
@@ -317,7 +317,7 @@
         Return True
     End Function
 
-    Public Function generarMuniActualIndex(codProv As Integer, folderWork As String, tiposdocu2CDD As ArrayList, Optional appendMode As Boolean = False) As Boolean
+    Public Function GenerarMuniActualIndex(codProv As Integer, folderWork As String, tiposdocu2CDD As ArrayList, Optional appendMode As Boolean = False) As Boolean
 
         Dim filas() As DataRow
         Dim procTilde As New Destildator
@@ -343,7 +343,7 @@
                     resultDocumentosMunicipal = New docCartoSEEquery
                     resultDocumentosMunicipal.getDocsSIDDAE_ByFiltroSellado("idarchivo in (Select archivo_id from archivo2munihisto inner join munihisto on munihisto.idmunihisto=archivo2munihisto.munihisto_id " &
                                                                         "where munihisto.entidad_id=" & dR("idmunihisto").ToString & ")")
-                    If generarHTMLIndexMunicipalActualReport(resultDocumentosMunicipal.resultados,
+                    If GenerarHTMLIndexMunicipalActualReport(resultDocumentosMunicipal.resultados,
                                                         My.Application.Info.DirectoryPath & "\resources\index-muni-template.html", folderWork, tiposdocu2CDD,
                                                         String.Format("{0:00000}", dR("inecortoactual")), dR("nombre").ToString, nombreFicheroCDD) Then
                         Application.DoEvents()
@@ -363,7 +363,7 @@
     End Function
 
 
-    Private Function generarHTMLIndexMunicipalActualReport(ByVal lista As ArrayList, ByVal template As String, folderOUTHTML As String, tiposdocu2CDD As ArrayList, codMuni As String, nombreMunicipioCompleto As String, nombreMuni4CDD As String) As Boolean
+    Private Function GenerarHTMLIndexMunicipalActualReport(ByVal lista As ArrayList, ByVal template As String, folderOUTHTML As String, tiposdocu2CDD As ArrayList, codMuni As String, nombreMunicipioCompleto As String, nombreMuni4CDD As String) As Boolean
 
         Dim srTemplate As System.IO.StreamReader
         Dim swIndex As System.IO.StreamWriter
@@ -424,7 +424,7 @@
         Return True
     End Function
 
-    Public Function generarMiniaturasFromDocs(ByVal lista As ArrayList, folderOUTThumb As String) As Boolean
+    Public Function GenerarMiniaturasFromDocs(ByVal lista As ArrayList, folderOUTThumb As String) As Boolean
 
         Dim indexProc As Integer
         Me.Text = "Generando miniaturas de los documentos SIDDAE"
@@ -446,7 +446,7 @@
 
     End Function
 
-    Public Function generarXMLISO19115(ByVal lista As ArrayList, folderOUTXML As String, tiposdocu2CDD As ArrayList) As Boolean
+    Public Function GenerarXMLISO19115(ByVal lista As ArrayList, folderOUTXML As String, tiposdocu2CDD As ArrayList) As Boolean
 
 
         Dim docXML As MetadataISO19115
@@ -507,7 +507,7 @@
     End Function
 
 
-    Function exportCdDGenerico(ByVal lista As ArrayList, folderMetadata4CdD As String, folderOUTfilesCopy As String, tiposdocu2CDD As ArrayList, copiarSiExisteEnDestino As Boolean) As Boolean
+    Function ExportCdDGenerico(ByVal lista As ArrayList, folderMetadata4CdD As String, folderOUTfilesCopy As String, tiposdocu2CDD As ArrayList, copiarSiExisteEnDestino As Boolean) As Boolean
 
 
         Dim indexProc As Integer
@@ -594,7 +594,7 @@
     End Function
 
 
-    Function copyFilesJPG2Directory(ByVal lista As ArrayList, folderOUTfilesCopy As String, tiposdocu2CDD As ArrayList) As Boolean
+    Function CopyFilesJPG2Directory(ByVal lista As ArrayList, folderOUTfilesCopy As String, tiposdocu2CDD As ArrayList) As Boolean
 
 
         Dim indexProc As Integer
@@ -646,7 +646,7 @@
 
     End Function
 
-    Function copyFiles2DirectoryToCDD(lista As ArrayList, folderOUT As String, tiposdocu2CDD As ArrayList, procesarGeorref As Boolean) As Boolean
+    Function CopyFiles2DirectoryToCDD(lista As ArrayList, folderOUT As String, tiposdocu2CDD As ArrayList, procesarGeorref As Boolean) As Boolean
 
 
         Dim indexProc As Integer
@@ -672,26 +672,28 @@
         End If
         If Not IO.Directory.Exists(folderOUT & "archivos\") Then IO.Directory.CreateDirectory(folderOUT & "archivos\")
 
-        Using archivoZIP As New IO.StreamWriter(folderOUT & "archivos\zipProc.bat", False, System.Text.Encoding.UTF8)
+        Using archivoZIP As New IO.StreamWriter(folderOUT & "archivos\zipProc.bat", False, System.Text.Encoding.Default)
             Using archivoLog As New IO.StreamWriter(folderOUT & "archivos\_logCopy.log", False, System.Text.Encoding.UTF8)
                 Using archivoFileToMuni As New IO.StreamWriter(folderOUT & "\files2codigosINE.txt", False, System.Text.Encoding.UTF8)
                     Using archivoAlias As New IO.StreamWriter(folderOUT & "\alias.txt", False, System.Text.Encoding.UTF8)
                         Using sentenciaSQL As New IO.StreamWriter(folderOUT & "\database.sql", False, System.Text.Encoding.UTF8)
-                            archivoFileToMuni.WriteLine("Nombre Fichero;Códigos INE de municipio asociado")
-                            archivoAlias.WriteLine("idProductor;Fichero;Temática;Alias;Escala;Autor;Fecha;TipoFichero")
-                            For Each documento As docCartoSEE In lista
+                            Using docsDeleteFromCdd As New IO.StreamWriter(folderOUT & "\docsTodelete.sql", False, System.Text.Encoding.UTF8)
+                                archivoFileToMuni.WriteLine("Nombre Fichero;Códigos INE de municipio asociado")
+                                archivoAlias.WriteLine("idProductor;Fichero;Temática;Alias;Escala;Autor;Fecha;TipoFichero")
+                                docsDeleteFromCdd.WriteLine("idProductor;Fichero")
+                                For Each documento As docCartoSEE In lista
+                                    Application.DoEvents()
+                                    If tiposdocu2CDD.IndexOf(documento.tipoDocumento.idTipodoc) = -1 Then Continue For
+                                    indexProc += 1
+                                    ProgressBar1.Value = indexProc
+                                    extensionFile = "JPG"
+                                    nombreFileOut = documento.nameFilePropuestoParaCDD("jpg")
+                                    If procesarGeorref Then
+                                        extensionFile = IIf(documento.listaFicherosGeo.Count = 0, "JPG", "ZIP")
+                                        nombreFileOut = IIf(documento.listaFicherosGeo.Count = 0, documento.nameFilePropuestoParaCDD("jpg"), documento.nameFilePropuestoParaCDD("zip"))
+                                    End If
 
-                                If tiposdocu2CDD.IndexOf(documento.tipoDocumento.idTipodoc) = -1 Then Continue For
-                                indexProc = indexProc + 1
-                                ProgressBar1.Value = indexProc
-                                extensionFile = "JPG"
-                                nombreFileOut = documento.nameFile4CDD
-                                If procesarGeorref Then
-                                    extensionFile = IIf(documento.listaFicherosGeo.Count = 0, "JPG", "ZIP")
-                                    nombreFileOut = IIf(documento.listaFicherosGeo.Count = 0, documento.nameFile4CDD, documento.nameFolder4CDD & ".zip")
-                                End If
-
-                                archivoAlias.WriteLine(documento.getIdProductor4CdD & ";" &
+                                    archivoAlias.WriteLine(documento.getIdProductor4CdD & ";" &
                                                    nombreFileOut & ";" &
                                                    documento.tipoDocumento.tematicaCdD & ";" &
                                                    documento.getCdDAlias & ";" &
@@ -699,63 +701,50 @@
                                                    IIf(documento.autorDocumento = "", "Desconocido", documento.autorDocumento.ToString) & ";" &
                                                    documento.yearFechaPrincipal & ";" & extensionFile)
 
-                                sentenciaSQL.WriteLine("UPDATE bdsidschema.archivo SET " &
+                                    sentenciaSQL.WriteLine("UPDATE bdsidschema.archivo SET " &
                                                        "cdd_nomfich = E'" & nombreFileOut & "'," &
-                                                       "cdd_titulo = E'" & documento.getCdDAlias.Replace("'", "\'") & ";" & documento.yearFechaPrincipal & "' " &
+                                                       "cdd_titulo = E'" & documento.getCdDAlias.Replace("'", "\'") & "' " &
                                                        "WHERE sellado=" & documento.getIdProductor4CdD & ";")
 
-                                'Preparamos la carpeta que contendrá los ficheros de cada documento
-                                folderFileOut = folderOUT & "archivos\"
-                                If procesarGeorref Then
-                                    If documento.listaFicherosGeo.Count > 0 Then
-                                        folderFileOut = folderOUT & "archivos\" & documento.nameFolder4CDD & "\"
-                                    End If
-                                End If
-                                If Not IO.Directory.Exists(folderFileOut) Then IO.Directory.CreateDirectory(folderFileOut)
-
-                                'Primero copiamos el JPG
-                                pathOrigen = documento.rutaFicheroBajaRes
-                                pathDestino = folderFileOut & documento.nameFile4CDD
-                                Try
-                                    IO.File.Copy(pathOrigen, pathDestino, True)
-                                    'archivoLog.WriteLine("*COPIA CORRECTA*" & pathOrigen & "#" & pathDestino)
-                                    'Por cada INE metemos una línea
-                                    For Each muni As String In documento.listaCodMuniActual
-                                        Application.DoEvents()
-                                        If procesarGeorref Then
-                                            If documento.listaFicherosGeo.Count = 0 Then
-                                                archivoFileToMuni.WriteLine(documento.nameFile4CDD & ";" & muni)
-                                            Else
-                                                archivoFileToMuni.WriteLine(documento.nameFolder4CDD & ".zip" & ";" & muni)
-                                            End If
-                                        Else
-                                            archivoFileToMuni.WriteLine(documento.nameFile4CDD & ";" & muni)
+                                    'Preparamos la carpeta que contendrá los ficheros de cada documento
+                                    folderFileOut = folderOUT & "archivos\"
+                                    If procesarGeorref Then
+                                        If documento.listaFicherosGeo.Count > 0 Then
+                                            folderFileOut = folderOUT & "archivos\" & documento.nameFilePropuestoParaCDD() & "\"
                                         End If
-                                    Next
-                                Catch ex As Exception
-                                    archivoLog.WriteLine("#COPIA ERRONEA#" & pathOrigen & "#" & pathDestino & "#" & ex.Message)
-                                End Try
+                                    End If
+                                    If Not IO.Directory.Exists(folderFileOut) Then IO.Directory.CreateDirectory(folderFileOut)
 
-                                If procesarGeorref Then
-                                    'Después copiamos el ECW si los hay
-                                    If documento.listaFicherosGeo.Count = 1 Then
-                                        pathOrigen = documento.listaFicherosGeo.Item(0)
-                                        pathDestino = folderFileOut & documento.nameFile4CDD.Replace(".jpg", ".ecw")
-                                        'Y también el fichero PRJ
-                                        pathDestinoPRJ = folderFileOut & documento.nameFile4CDD.Replace(".jpg", ".prj")
-                                        Try
-                                            IO.File.Copy(pathOrigen, pathDestino, True)
-                                            IO.File.Copy(My.Application.Info.DirectoryPath & "\resources\proj23030.prj", pathDestinoPRJ, True)
-                                            archivoLog.WriteLine("*COPIA CORRECTA*" & pathOrigen & "#" & pathDestino)
-                                        Catch ex As Exception
-                                            archivoLog.WriteLine("#COPIA ERRONEA#" & pathOrigen & "#" & pathDestino & "#" & ex.Message)
-                                        End Try
-                                    Else
-                                        For Each docuECW As String In documento.listaFicherosGeo
-                                            pathOrigen = docuECW
-                                            pathDestino = folderFileOut & SacarFileDeRuta(pathOrigen)
+                                    'Primero copiamos el JPG
+                                    pathOrigen = documento.rutaFicheroBajaRes
+                                    pathDestino = folderFileOut & documento.nameFilePropuestoParaCDD("jpg")
+                                    Try
+                                        IO.File.Copy(pathOrigen, pathDestino, True)
+                                        'archivoLog.WriteLine("*COPIA CORRECTA*" & pathOrigen & "#" & pathDestino)
+                                        'Por cada INE metemos una línea
+                                        For Each muni As String In documento.listaCodMuniActual
+                                            Application.DoEvents()
+                                            If procesarGeorref Then
+                                                If documento.listaFicherosGeo.Count = 0 Then
+                                                    archivoFileToMuni.WriteLine(documento.nameFilePropuestoParaCDD("jpg") & ";" & muni)
+                                                Else
+                                                    archivoFileToMuni.WriteLine(documento.nameFilePropuestoParaCDD("zip") & ";" & muni)
+                                                End If
+                                            Else
+                                                archivoFileToMuni.WriteLine(documento.nameFilePropuestoParaCDD("jpg") & ";" & muni)
+                                            End If
+                                        Next
+                                    Catch ex As Exception
+                                        archivoLog.WriteLine("#COPIA ERRONEA#" & pathOrigen & "#" & pathDestino & "#" & ex.Message)
+                                    End Try
+
+                                    If procesarGeorref Then
+                                        'Después copiamos el ECW si los hay
+                                        If documento.listaFicherosGeo.Count = 1 Then
+                                            pathOrigen = documento.listaFicherosGeo.Item(0)
+                                            pathDestino = folderFileOut & documento.nameFilePropuestoParaCDD("ecw")
                                             'Y también el fichero PRJ
-                                            pathDestinoPRJ = folderFileOut & SacarFileDeRuta(pathOrigen).Replace(".ecw", ".prj")
+                                            pathDestinoPRJ = folderFileOut & documento.nameFilePropuestoParaCDD("prj")
                                             Try
                                                 IO.File.Copy(pathOrigen, pathDestino, True)
                                                 IO.File.Copy(My.Application.Info.DirectoryPath & "\resources\proj23030.prj", pathDestinoPRJ, True)
@@ -763,29 +752,46 @@
                                             Catch ex As Exception
                                                 archivoLog.WriteLine("#COPIA ERRONEA#" & pathOrigen & "#" & pathDestino & "#" & ex.Message)
                                             End Try
-                                        Next
+                                        Else
+                                            For Each docuECW As String In documento.listaFicherosGeo
+                                                pathOrigen = docuECW
+                                                pathDestino = folderFileOut & documento.nameFilePropuestoParaCDD("ecw")
+                                                'Y también el fichero PRJ
+                                                pathDestinoPRJ = folderFileOut & documento.nameFilePropuestoParaCDD("prj")
+                                                Try
+                                                    IO.File.Copy(pathOrigen, pathDestino, True)
+                                                    IO.File.Copy(My.Application.Info.DirectoryPath & "\resources\proj23030.prj", pathDestinoPRJ, True)
+                                                    archivoLog.WriteLine("*COPIA CORRECTA*" & pathOrigen & "#" & pathDestino)
+                                                Catch ex As Exception
+                                                    archivoLog.WriteLine("#COPIA ERRONEA#" & pathOrigen & "#" & pathDestino & "#" & ex.Message)
+                                                End Try
+                                            Next
+                                        End If
+                                        If documento.listaFicherosGeo.Count > 0 Then
+                                            archivoZIP.WriteLine("""" & path7zUtility & """ a " & folderOUT & "archivos\" & documento.nameFilePropuestoParaCDD("zip") & " """ & folderFileOut & """")
+                                            archivoZIP.WriteLine("del /S /Q """ & folderFileOut & """")
+                                            archivoZIP.WriteLine("rd """ & folderFileOut & """")
+                                        End If
                                     End If
-                                    If documento.listaFicherosGeo.Count > 0 Then
-                                        archivoZIP.WriteLine("""" & path7zUtility & """ a " & folderOUT & "archivos\" & documento.nameFolder4CDD & ".zip """ & folderFileOut & """")
-                                        archivoZIP.WriteLine("del /S /Q """ & folderFileOut & """")
-                                        archivoZIP.WriteLine("rd """ & folderFileOut & """")
+                                    'Si el documento ya se envió al CdD, lo listamos en un fichero de eliminaciones para que lo den de baja antes de darlo de alta modificado.
+                                    If documento.cddNombreFichero.ToString <> "" Then
+                                        docsDeleteFromCdd.WriteLine(documento.getIdProductor4CdD & ";" & documento.cddNombreFichero)
                                     End If
-                                End If
-                            Next
+                                Next
+                            End Using
                         End Using
                     End Using
                 End Using
             End Using
         End Using
         ProgressBar1.Value = lista.Count
-
         Me.Close()
         Return True
 
 
     End Function
 
-    Function copyFilesThumb2Directory(ByVal lista As ArrayList, folderOUTfilesCopy As String, tiposdocu2CDD As ArrayList) As Boolean
+    Function CopyFilesThumb2Directory(ByVal lista As ArrayList, folderOUTfilesCopy As String, tiposdocu2CDD As ArrayList) As Boolean
 
 
         Dim indexProc As Integer

@@ -64,7 +64,7 @@ Public Class frmExportCdD
             ToolStripProgressBar1.Value = 1
             procesarProvincia4CdD(CType(cboProvincias.SelectedItem, itemData).Valor, txtDirTarget.Text)
         End If
-        ToolStripStatusLabel1.Text = "Proceso terminado"
+
         ModalInfo("Proceso terminado")
 
     End Sub
@@ -74,36 +74,15 @@ Public Class frmExportCdD
 
         Dim listaTerris As New ArrayList
         Dim tiposdocu2CDD As New ArrayList
-        Dim folderWork As String
         Dim proce As procGenerateHTMLReport
 
         Me.Cursor = Cursors.WaitCursor
-        Dim RutaLOG As String = txtDirTarget.Text & "\" & String.Format("{0:00}", cProv) & "\loggerCdD.log"
-        Dim ficheroBaseCSV As String = txtDirTarget.Text & "\" & String.Format("{0:00}", cProv) & "\data.csv"
-        If IO.File.Exists(RutaLOG) Then
-            Try
-                IO.File.Delete(RutaLOG)
-            Catch ex As Exception
-                ModalExclamation("No se puede eliminar " & ficheroBaseCSV)
-                Exit Sub
-            End Try
-        End If
-        If IO.File.Exists(ficheroBaseCSV) Then
-            Try
-                IO.File.Delete(ficheroBaseCSV)
-            Catch ex As Exception
-                ModalExclamation("No se puede eliminar " & ficheroBaseCSV)
-                Exit Sub
-            End Try
-        End If
 
         If CheckedListBox1.CheckedItems.Count = 0 Then
-            ModalExclamation("No se han seleccionado los tipos de documewnto a procesar")
+            ModalExclamation("No se han seleccionado los tipos de documento a procesar")
             Me.Cursor = Cursors.Default
             Exit Sub
         End If
-
-
 
         'Seleccionamos los documentos de la provincia
         ToolStripStatusLabel1.Text = "Accediendo a la información de " & DameProvinciaByINE(cProv)
@@ -111,13 +90,10 @@ Public Class frmExportCdD
         Dim seqTiposDoc As String = ""
         tiposdocu2CDD.Clear()
         For Each elem As itemData In CheckedListBox1.CheckedItems
-            Application.DoEvents()
             tiposdocu2CDD.Add(CType(elem.Valor, Integer))
             If seqTiposDoc = "" Then seqTiposDoc = CType(elem.Valor, Integer) : Continue For
             seqTiposDoc = seqTiposDoc & "," & CType(elem.Valor, Integer)
         Next
-
-
 
 
         Dim resultDocumentos As New docCartoSEEquery
@@ -132,326 +108,29 @@ Public Class frmExportCdD
             Exit Sub
         End If
 
-        Dim folderCopyFiles As String
         ToolStripStatusLabel1.Text = "Procesando " & DameProvinciaByINE(cProv) & ". Copiando ficheros para el CdD"
-        folderCopyFiles = folderOUT & "\"
+        folderOUT = IIf(folderOUT.EndsWith("\"), folderOUT, folderOUT & "\")
         Try
-            If Not IO.Directory.Exists(folderCopyFiles) Then
-                IO.Directory.CreateDirectory(folderCopyFiles)
+            If Not IO.Directory.Exists(folderOUT) Then
+                IO.Directory.CreateDirectory(folderOUT)
             End If
         Catch ex As Exception
             ModalExclamation(ex.Message)
         End Try
         proce = New procGenerateHTMLReport
-        proce.copyFiles2DirectoryToCDD(resultDocumentos.resultados, folderCopyFiles, tiposdocu2CDD, RadioButton2.Checked)
+        proce.copyFiles2DirectoryToCDD(resultDocumentos.resultados, folderOUT, tiposdocu2CDD, RadioButton2.Checked)
         proce = Nothing
+        ToolStripProgressBar1.Visible = False
+        ToolStripStatusLabel1.Text = "Documentos procesados: " & resultDocumentos.resultados.Count
         resultDocumentos.resultados.Clear()
         resultDocumentos = Nothing
-        ToolStripProgressBar1.Value = ToolStripProgressBar1.Maximum
         Me.Cursor = Cursors.Default
 
     End Sub
 
 
-    Private Sub procesarProvincia(ByVal cProv As Integer)
-
-        Dim listaTerris As New ArrayList
-        Dim okProc As Boolean
-        Dim contador As Integer
-
-        Dim RutaLOG As String = txtDirTarget.Text & "\" & String.Format("{0:00}", cProv) & "\logger.log"
-        Dim ficheroBaseCSV As String = txtDirTarget.Text & "\" & String.Format("{0:00}", cProv) & "\data.csv"
-        If System.IO.File.Exists(RutaLOG) Then
-            Try
-                System.IO.File.Delete(RutaLOG)
-            Catch ex As Exception
-                MessageBox.Show("No se puede eliminar " & ficheroBaseCSV, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-                Exit Sub
-            End Try
-        End If
-        If System.IO.File.Exists(ficheroBaseCSV) Then
-            Try
-                System.IO.File.Delete(ficheroBaseCSV)
-            Catch ex As Exception
-                MessageBox.Show("No se puede eliminar " & ficheroBaseCSV, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-                Exit Sub
-            End Try
-        End If
-
-        'Cargamos la lista de territorios involucrados
-        Me.Cursor = Cursors.WaitCursor
-        listaTerris = dameListaMunicipios(cProv)
-        btnProcess.Visible = False
-        ToolStripStatusLabel1.Text = "Municipios: " & listaTerris.Count
-        ToolStripProgressBar1.Visible = True
-        ToolStripProgressBar1.Minimum = 0
-        ToolStripProgressBar1.Maximum = listaTerris.Count
-        ToolStripStatusLabel1.Text = "Procesando " & DameProvinciaByINE(cProv) & ". Municipios: " & listaTerris.Count
-
-        'Iniciamos el proceso
-        contador = 0
-        'For Each terri As TerritorioBSID In listaTerris
-        '    'Application.DoEvents()
-        '    'If terri.Nombre.IndexOf("Harana") = -1 Then Continue For
-        '    'Application.DoEvents()
-        '    If cancelar = True Then
-        '        If MessageBox.Show("¿Desea cancelar el proceso?", AplicacionTitulo, MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
-        '            Exit For
-        '        End If
-        '        cancelar = False
-        '    End If
-        '    'Cargamos la información del municipio
-        '    exportDocs.resultados.Clear()
-        '    exportDocs.getDocsSIDDAE_ByIdTerritorio(terri.indice)
-
-        '    'DameDocumentacionSIDDAE_ByIdTerritorio(terri.Indice, listaDocs)
-        '    'Abrimos un fichero para volcar información
-        '    okProc = generarFichMunicipio(terri.nombre, terri.municipioINE)
-        '    If okProc = False Then
-        '        If MessageBox.Show("No se pudo exportar " & terri.nombre & ".¿Continuar?", AplicacionTitulo, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) = Windows.Forms.DialogResult.No Then Exit For
-        '    End If
-        '    'okProc = copiarLoteFicheros(terri.Nombre, terri.INE, cProv)
-        '    'If okProc = False Then
-        '    '    If MessageBox.Show("No se pudo copiar los documentos de " & terri.Nombre & ".¿Continuar?", AplicacionTitulo, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) = Windows.Forms.DialogResult.No Then Exit For
-        '    'End If
-        '    contador = contador + 1
-        '    ToolStripProgressBar1.Value = contador
-        '    Application.DoEvents()
-        'Next
 
 
-        'Una vez terminados con los datos de cada municipio, copiamos y generamos las miniaturas
-        okProc = copiarLoteFicheros(cProv)
-        If okProc = False Then
-            MessageBox.Show("No se pudo copiar los documentos", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-        End If
-
-        btnProcess.Visible = True
-        ToolStripProgressBar1.Visible = False
-        ToolStripStatusLabel1.Text = "Municipios: " & listaTerris.Count
-        MessageBox.Show("Proceso terminado", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
-        Me.Cursor = Cursors.Default
-
-
-
-    End Sub
-
-    Function copiarLoteFicheros(ByVal terriNombre As String, ByVal terriINE As Integer, ByVal cProv As Integer) As Boolean
-
-        Dim CarpetaPDF As String
-        Dim CarpetaThumb As String
-        Dim codINE As String
-        Dim RutaLOG As String
-        Dim RutaOrigen As String
-        Dim RutaDestino As String
-        Dim nombreNuevo As String
-        Dim ficheroBaseCSV As String
-
-        'Aplicamos reglas de nomenclatura al fichero de salida
-        codINE = String.Format("{0:00000}", terriINE)
-        CarpetaPDF = txtDirTarget.Text & "\" & String.Format("{0:00}", cProv) & "\PDF\"
-        CarpetaThumb = txtDirTarget.Text & "\" & String.Format("{0:00}", cProv) & "\Thumbs\"
-        RutaLOG = txtDirTarget.Text & "\" & String.Format("{0:00}", cProv) & "\logger.log"
-        ficheroBaseCSV = txtDirTarget.Text & "\" & String.Format("{0:00}", cProv) & "\data.csv"
-
-        Using archivoLog As System.IO.StreamWriter = New System.IO.StreamWriter(RutaLOG, True, System.Text.Encoding.Default)
-            Using archivoData As System.IO.StreamWriter = New System.IO.StreamWriter(ficheroBaseCSV, True, System.Text.Encoding.Default)
-                'Creamos las carpetas de destino por si n o existen
-                If Not System.IO.Directory.Exists(CarpetaPDF) Then
-                    Try
-                        System.IO.Directory.CreateDirectory(CarpetaPDF)
-                    Catch ex As Exception
-                        MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-                        Return False
-                    End Try
-                End If
-                If Not System.IO.Directory.Exists(CarpetaThumb) Then
-                    Try
-                        System.IO.Directory.CreateDirectory(CarpetaThumb)
-                    Catch ex As Exception
-                        MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-                        Return False
-                    End Try
-                End If
-                Application.DoEvents()
-                For Each doc As docCartoSEE In exportDocs.resultados
-                    'RutaOrigen = doc.ficheroPDF
-                    ''Al nombre nuevo le aplicamos convención de reglas
-                    ''Dim munisSec() As String = doc.MunicipiosSecundario.Split(",")
-                    ''Dim muniSec As String = ""
-                    ''If munisSec.Length >= 1 Then muniSec = munisSec(0)
-                    'Dim firmas() As String = doc.firmas.Split(",")
-                    'Dim firma As String = ""
-                    'If firmas.Length >= 1 Then firma = firmas(0)
-                    'If chkCreateNEM.Checked = True Then
-                    '    nombreNuevo = SacarFileDeRuta(doc.ficheroPDF)
-                    'Else
-                    '    nombreNuevo = doc.Sellado & "_" & doc.Tipo.nombreTipo & "_" & doc.getTerritorioPrincipal & "_" & doc.getTerritorioSecundario & "_" & firma & doc.Tipo.extension
-                    '    nombreNuevo = procTilde.destildar(nombreNuevo).Replace(" ", "_")
-                    'End If
-                    'RutaDestino = CarpetaPDF & nombreNuevo
-                    'If Not System.IO.File.Exists(RutaDestino) Then
-                    '    Try
-                    '        If chkCreateINDEX.Checked = False Then
-                    '            System.IO.File.Copy(RutaOrigen, RutaDestino)
-                    '            'Generamos la miniatura si nos la piden
-                    '            If chkThumb.Checked = True Then
-                    '                generaThumbPortada(RutaDestino, CarpetaThumb & "\" & SacarFileDeRuta(RutaDestino).Replace(".pdf", ".jpg"))
-                    '            End If
-                    '        Else
-                    '            'Generamos la miniatura si nos la piden
-                    '            If chkThumb.Checked = True Then
-                    '                generaThumbPortada(RutaOrigen, CarpetaThumb & "\" & SacarFileDeRuta(RutaDestino).Replace(".pdf", ".jpg"))
-                    '            End If
-                    '        End If
-                    '        archivoLog.WriteLine("#COPIA#" & RutaOrigen & "#" & RutaDestino)
-
-                    '        'Ahora generamos el fichero para la base de datos
-                    '        Dim fraseCSV As String
-                    '        Dim tmpMunicipios As String
-                    '        tmpMunicipios = doc.getTerritorioPrincipal & "|" & doc.getTerritorioSecundario
-                    '        Dim tmpMunis() As String = tmpMunicipios.Split("|")
-                    '        For Each tmpMuni As String In tmpMunis
-                    '            Dim fileCopy As New System.IO.FileInfo(RutaDestino)
-                    '            If fileCopy.Exists Then
-                    '                fraseCSV = doc.Sellado & ";" & _
-                    '                            tmpMuni.Replace("(", ";").Replace(")", "").Trim & ";" & _
-                    '                            fileCopy.FullName & ";" & _
-                    '                            fileCopy.Length
-                    '            Else
-                    '                fraseCSV = doc.Sellado & ";" & _
-                    '                            tmpMuni.Replace("(", ";").Replace(")", "").Trim & ";" & _
-                    '                            fileCopy.FullName & ";0"
-                    '            End If
-                    '            archivoData.WriteLine(fraseCSV)
-                    '            fileCopy = Nothing
-                    '        Next
-                    '    Catch ex As Exception
-                    '        archivoLog.WriteLine("#ERROR COPIA#" & RutaOrigen & "#" & RutaDestino & "#" & ex.Message)
-                    '        'MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-                    '        'Return False
-                    '    End Try
-                    'End If
-                Next
-                Return True
-            End Using
-        End Using
-
-
-    End Function
-
-    Function copiarLoteFicheros(ByVal cProv As Integer) As Boolean
-
-        Dim CarpetaPDF As String
-        Dim CarpetaThumb As String
-        Dim contador As Integer
-        Dim RutaLOG As String
-        Dim RutaOrigen As String
-        Dim RutaDestino As String
-        Dim nombreNuevo As String
-        Dim ficheroBaseCSV As String
-        'Dim ListaDocsProv() As docSIDDAE
-
-        'Aplicamos reglas de nomenclatura al fichero de salida
-        'codINE = String.Format("{0:00000}", terriINE)
-        CarpetaPDF = txtDirTarget.Text & "\" & String.Format("{0:00}", cProv) & "\PDF\"
-        CarpetaThumb = txtDirTarget.Text & "\" & String.Format("{0:00}", cProv) & "\Thumbs\"
-        RutaLOG = txtDirTarget.Text & "\" & String.Format("{0:00}", cProv) & "\logger.log"
-        ficheroBaseCSV = txtDirTarget.Text & "\" & String.Format("{0:00}", cProv) & "\data.csv"
-
-
-        'exportDocs.getDocsSIDDAE_ByProvincia(cProv)
-
-        'DameDocumentacionSIDDAE_ByProvinciaExclusiva(cProv, ListaDocsProv)
-        ToolStripStatusLabel1.Text = "Procesando " & DameProvinciaByINE(cProv) & ". Documentos: " & exportDocs.resultados.Count
-        ToolStripProgressBar1.Maximum = exportDocs.resultados.Count
-        ToolStripProgressBar1.Minimum = 0
-        contador = -1
-
-
-        Using archivoLog As System.IO.StreamWriter = New System.IO.StreamWriter(RutaLOG, True, System.Text.Encoding.Default)
-            Using archivoData As System.IO.StreamWriter = New System.IO.StreamWriter(ficheroBaseCSV, True, System.Text.Encoding.Default)
-                'Creamos las carpetas de destino por si n o existen
-                If Not System.IO.Directory.Exists(CarpetaPDF) Then
-                    Try
-                        System.IO.Directory.CreateDirectory(CarpetaPDF)
-                    Catch ex As Exception
-                        MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-                        Return False
-                    End Try
-                End If
-                If Not System.IO.Directory.Exists(CarpetaThumb) Then
-                    Try
-                        System.IO.Directory.CreateDirectory(CarpetaThumb)
-                    Catch ex As Exception
-                        MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-                        Return False
-                    End Try
-                End If
-                Application.DoEvents()
-                For Each doc As docCartoSEE In exportDocs.resultados
-                    'Application.DoEvents()
-                    'contador = contador + 1
-                    'If doc.Tipo.nombreTipo = "Memoria" Then Continue For
-                    'If doc.Tipo.nombreTipo = "Disco de datos" Then Continue For
-                    'ToolStripProgressBar1.Value = contador
-                    'RutaOrigen = doc.ficheroPDF
-                    'Dim firmas() As String = doc.firmas.Split(",")
-                    'Dim firma As String = ""
-                    'If firmas.Length >= 1 Then firma = firmas(0)
-                    'If chkCreateNEM.Checked = True Then
-                    '    nombreNuevo = SacarFileDeRuta(doc.ficheroPDF)
-                    'Else
-                    '    nombreNuevo = doc.Sellado & "_" & doc.Tipo.nombreTipo & "_" & doc.getTerritorioPrincipal & "_" & doc.getTerritorioSecundario & "_" & firma & doc.Tipo.extension
-                    '    nombreNuevo = procTilde.destildar(nombreNuevo).Replace(" ", "_")
-                    'End If
-                    'RutaDestino = CarpetaPDF & nombreNuevo
-                    'If Not System.IO.File.Exists(RutaDestino) Then
-                    '    Try
-                    '        If chkCreateINDEX.Checked = False Then
-                    '            System.IO.File.Copy(RutaOrigen, RutaDestino)
-                    '            'Generamos la miniatura si nos la piden
-                    '            If chkThumb.Checked = True Then
-                    '                generaThumbPortada(RutaDestino, CarpetaThumb & "\" & SacarFileDeRuta(RutaDestino).Replace(".pdf", ".jpg"))
-                    '            End If
-                    '        Else
-                    '            'Generamos la miniatura si nos la piden
-                    '            If chkThumb.Checked = True Then
-                    '                generaThumbPortada(RutaOrigen, CarpetaThumb & "\" & SacarFileDeRuta(RutaDestino).Replace(".pdf", ".jpg"))
-                    '            End If
-                    '        End If
-                    '        archivoLog.WriteLine("#COPIA#" & RutaOrigen & "#" & RutaDestino)
-
-                    '        'Ahora generamos el fichero para la base de datos
-                    '        Dim fraseCSV As String
-                    '        Dim tmpMunicipios As String = doc.getTerritorioPrincipal & "|" & doc.getTerritorioSecundario
-                    '        Dim tmpMunis() As String = tmpMunicipios.Split("|")
-                    '        For Each tmpMuni As String In tmpMunis
-                    '            Dim fileCopy As New System.IO.FileInfo(RutaDestino)
-                    '            If fileCopy.Exists Then
-                    '                fraseCSV = doc.Sellado & ";" & _
-                    '                            tmpMuni.Replace("(", ";").Replace(")", "").Trim & ";" & _
-                    '                            fileCopy.FullName & ";" & _
-                    '                            fileCopy.Length
-                    '            Else
-                    '                fraseCSV = doc.Sellado & ";" & _
-                    '                            tmpMuni.Replace("(", ";").Replace(")", "").Trim & ";" & _
-                    '                            fileCopy.FullName & ";0"
-                    '            End If
-                    '            archivoData.WriteLine(fraseCSV)
-                    '            fileCopy = Nothing
-                    '        Next
-                    '    Catch ex As Exception
-                    '        archivoLog.WriteLine("#ERROR COPIA#" & RutaOrigen & "#" & RutaDestino & "#" & ex.Message)
-                    '    End Try
-                    'End If
-                Next
-
-            End Using
-        End Using
-        Return True
-
-    End Function
 
     Function generarFichMunicipio(ByVal terriNombre As String, ByVal terriINE As Integer) As Boolean
 
@@ -523,39 +202,6 @@ Public Class frmExportCdD
 
     End Function
 
-
-    Function dameListaMunicipios(ByVal codProv As Integer) As ArrayList
-
-        'Dim rcdMunis As DataTable
-        'Dim filas() As DataRow
-        'Dim listaTerritorios As ArrayList
-        'Dim terri As TerritorioBSID
-
-
-        'rcdMunis = New DataTable
-        'listaTerritorios = New ArrayList
-        'If CargarRecordset("SELECT idterritorio,nombre,tipo,municipio from territorios where tipo='Municipio' and provincia=" & codProv, rcdMunis) Then
-        '    filas = rcdMunis.Select()
-        '    For Each fila As DataRow In filas
-        '        terri = New TerritorioBSID
-        '        terri.Indice = fila.Item("idterritorio")
-        '        terri.Nombre = fila.Item("nombre")
-        '        terri.municipioINE = fila.Item("municipio")
-        '        terri.tipo = fila.Item("tipo")
-        '        listaTerritorios.Add(terri)
-        '        terri = Nothing
-        '    Next
-        '    Erase filas
-        '    rcdMunis.Dispose()
-        '    rcdMunis = Nothing
-        'End If
-        'Return listaTerritorios
-
-    End Function
-
-
-
-
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
         Dim DirRepo As String
         FolderBrowserDialog1.Description = "Selecciona el directorio para realizar el volcado"
@@ -567,5 +213,102 @@ Public Class frmExportCdD
 
     End Sub
 
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click, Button3.Click
 
+        Dim listaTerris As New ArrayList
+        Dim tiposdocu2CDD As New ArrayList
+        Dim proce As procGenerateHTMLReport
+        Dim folderOUT As String
+
+        Me.Cursor = Cursors.WaitCursor
+
+        If sender.name = "Button3" Then
+            For i As Integer = 0 To CheckedListBox1.Items.Count - 1
+                CheckedListBox1.SetItemChecked(i, True)
+            Next
+        End If
+
+
+        If CheckedListBox1.CheckedItems.Count = 0 Then
+            ModalExclamation("No se han seleccionado los tipos de documento a procesar")
+            Me.Cursor = Cursors.Default
+            Exit Sub
+        End If
+
+        If sender.name = "Button2" Then
+            ToolStripStatusLabel1.Text = "Accediendo a la información modificada entre " & DateTimePicker1.Value & " y " & DateTimePicker2.Value
+        End If
+
+        If sender.name = "Button3" Then
+            ToolStripStatusLabel1.Text = "Accediendo a la información marcada para el CdD"
+        End If
+
+
+        Dim seqTiposDoc As String = ""
+        tiposdocu2CDD.Clear()
+        For Each elem As itemData In CheckedListBox1.CheckedItems
+            tiposdocu2CDD.Add(CType(elem.Valor, Integer))
+            If seqTiposDoc = "" Then seqTiposDoc = CType(elem.Valor, Integer) : Continue For
+            seqTiposDoc = seqTiposDoc & "," & CType(elem.Valor, Integer)
+        Next
+
+
+        Dim resultDocumentos As New docCartoSEEquery
+        resultDocumentos.flag_ActualizarInfoGeom = True
+        resultDocumentos.flag_CargarFicherosGEO = True
+        If sender.name = "Button2" Then
+            resultDocumentos.getDocsSIDDAE_ByFiltroSellado("archivo.fechamodificacion " &
+                                                       "between '" & FormatearFecha(DateTimePicker1.Value, "ISO8601") & "' AND '" &
+                                                       "" & FormatearFecha(DateTimePicker2.Value, "ISO8601") & "' " &
+                                                        "AND tipodoc_id IN (" & seqTiposDoc & ")")
+        End If
+        If sender.name = "Button3" Then
+            resultDocumentos.getDocsSIDDAE_ByFiltroSQLwithPatron(" idarchivo>0 ", "1_______________")
+        End If
+
+
+
+
+
+        If resultDocumentos.resultados.Count = 0 Then Exit Sub
+
+        If ModalQuestion("Se van a procesar " & resultDocumentos.resultados.Count & " documentos. ¿Continuar?") <> DialogResult.Yes Then
+            Me.Cursor = Cursors.Default
+            Exit Sub
+        End If
+
+        folderOUT = txtDirTarget.Text
+        folderOUT = IIf(folderOUT.EndsWith("\"), folderOUT, folderOUT & "\")
+        Try
+            If Not IO.Directory.Exists(folderOUT) Then
+                IO.Directory.CreateDirectory(folderOUT)
+            End If
+        Catch ex As Exception
+            ModalExclamation(ex.Message)
+        End Try
+
+        proce = New procGenerateHTMLReport
+        proce.CopyFiles2DirectoryToCDD(resultDocumentos.resultados, folderOUT, tiposdocu2CDD, RadioButton2.Checked)
+        proce = Nothing
+        ToolStripProgressBar1.Visible = False
+        ToolStripStatusLabel1.Text = "Documentos procesados: " & resultDocumentos.resultados.Count
+        resultDocumentos.resultados.Clear()
+        resultDocumentos = Nothing
+        Me.Cursor = Cursors.Default
+        ModalInfo("Proceso terminado")
+
+
+    End Sub
+
+    Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click, Button5.Click
+
+        Dim valorCheck As Boolean
+
+        If sender.name = "Button4" Then valorCheck = True
+        If sender.name = "Button5" Then valorCheck = False
+        For i As Integer = 0 To CheckedListBox1.Items.Count - 1
+            CheckedListBox1.SetItemChecked(i, valorCheck)
+        Next
+
+    End Sub
 End Class

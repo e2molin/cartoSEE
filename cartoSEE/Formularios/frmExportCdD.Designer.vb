@@ -45,6 +45,8 @@ Partial Class frmExportCdD
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.RadioButton2 = New System.Windows.Forms.RadioButton()
         Me.RadioButton1 = New System.Windows.Forms.RadioButton()
+        Me.Button4 = New System.Windows.Forms.Button()
+        Me.Button5 = New System.Windows.Forms.Button()
         Me.StatusStrip1.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
@@ -107,9 +109,9 @@ Partial Class frmExportCdD
         'StatusStrip1
         '
         Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1, Me.ToolStripProgressBar1})
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 465)
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 459)
         Me.StatusStrip1.Name = "StatusStrip1"
-        Me.StatusStrip1.Size = New System.Drawing.Size(830, 22)
+        Me.StatusStrip1.Size = New System.Drawing.Size(810, 22)
         Me.StatusStrip1.TabIndex = 6
         Me.StatusStrip1.Text = "StatusStrip1"
         '
@@ -127,15 +129,15 @@ Partial Class frmExportCdD
         'CheckedListBox1
         '
         Me.CheckedListBox1.FormattingEnabled = True
-        Me.CheckedListBox1.Location = New System.Drawing.Point(15, 93)
+        Me.CheckedListBox1.Location = New System.Drawing.Point(15, 108)
         Me.CheckedListBox1.Name = "CheckedListBox1"
-        Me.CheckedListBox1.Size = New System.Drawing.Size(356, 154)
+        Me.CheckedListBox1.Size = New System.Drawing.Size(356, 139)
         Me.CheckedListBox1.TabIndex = 16
         '
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(12, 77)
+        Me.Label3.Location = New System.Drawing.Point(12, 83)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(174, 13)
         Me.Label3.TabIndex = 17
@@ -239,11 +241,31 @@ Partial Class frmExportCdD
         Me.RadioButton1.Text = "Copiar sólo ficheros digitalizados JPG"
         Me.RadioButton1.UseVisualStyleBackColor = True
         '
+        'Button4
+        '
+        Me.Button4.Location = New System.Drawing.Point(231, 77)
+        Me.Button4.Name = "Button4"
+        Me.Button4.Size = New System.Drawing.Size(67, 25)
+        Me.Button4.TabIndex = 26
+        Me.Button4.Text = "Todos"
+        Me.Button4.UseVisualStyleBackColor = True
+        '
+        'Button5
+        '
+        Me.Button5.Location = New System.Drawing.Point(304, 77)
+        Me.Button5.Name = "Button5"
+        Me.Button5.Size = New System.Drawing.Size(67, 25)
+        Me.Button5.TabIndex = 27
+        Me.Button5.Text = "Ninguno"
+        Me.Button5.UseVisualStyleBackColor = True
+        '
         'frmExportCdD
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(830, 487)
+        Me.ClientSize = New System.Drawing.Size(810, 481)
+        Me.Controls.Add(Me.Button5)
+        Me.Controls.Add(Me.Button4)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.Button3)
         Me.Controls.Add(Me.Button2)
@@ -261,7 +283,9 @@ Partial Class frmExportCdD
         Me.Controls.Add(Me.txtDirTarget)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.cboProvincias)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
+        Me.MaximizeBox = False
         Me.Name = "frmExportCdD"
         Me.Text = "Volcado Centro de descargas"
         Me.StatusStrip1.ResumeLayout(False)
@@ -294,4 +318,6 @@ Partial Class frmExportCdD
     Friend WithEvents GroupBox1 As GroupBox
     Friend WithEvents RadioButton2 As RadioButton
     Friend WithEvents RadioButton1 As RadioButton
+    Friend WithEvents Button4 As Button
+    Friend WithEvents Button5 As Button
 End Class

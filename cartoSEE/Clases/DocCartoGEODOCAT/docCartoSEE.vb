@@ -225,6 +225,17 @@
         End Get
     End Property
 
+    ReadOnly Property nameFilePropuestoParaCDD(Optional extension As String = "") As String
+
+        Get
+            Dim procTilde As New Destildator
+            Return _tipoDocumento.prefijoNombreCDD &
+                String.Format("{0:000000}", Sellado) & "_" &
+                _fechaPrincipal.Substring(0, 4) & "_" &
+                procTilde.destildar(municipiosHistoLiteral()).Replace(",", "-").ToUpper.Replace(" ", "_") &
+                IIf(extension <> "", "." & extension.ToLower, "")
+        End Get
+    End Property
 
     ReadOnly Property nameFile4CDD() As String
 
@@ -314,9 +325,11 @@
                         IIf(Coleccion <> "", ". Colección " & Coleccion, "") &
                         IIf(Subdivision <> "", ". " & Subdivision, ""))
             ElseIf tipoDocumento.NombreTipo = "Planimetría" Then
-                Return _tipoDocumento.NombreTipo.Substring(0, 5).Replace("ñ", "n").ToUpper & "-" & String.Format("{0:000000}", Sellado) & "-" & _fechaPrincipal.Substring(0, 4)
+                Return nameFilePropuestoParaCDD
             ElseIf tipoDocumento.NombreTipo = "Altimetría" Then
-                Return _tipoDocumento.NombreTipo.Substring(0, 5).Replace("ñ", "n").ToUpper & "-" & String.Format("{0:000000}", Sellado) & "-" & _fechaPrincipal.Substring(0, 4)
+                Return nameFilePropuestoParaCDD
+            ElseIf tipoDocumento.NombreTipo = "Conjunta" Then
+                Return nameFilePropuestoParaCDD
             Else
                 Return "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. " &
                        "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
