@@ -1578,5 +1578,10 @@ Public Class MDIPrincipal
 
     End Sub
 
+    Private Sub ToolStripStatusLabel4_Click(sender As Object, e As EventArgs)
 
+        frmNomen.MdiParent = Me
+        frmNomen.Show()
+
+    End Sub
 End Class

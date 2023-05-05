@@ -1,9 +1,9 @@
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class MDIPrincipal
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         If disposing AndAlso components IsNot Nothing Then
             components.Dispose()
@@ -18,7 +18,7 @@ Partial Class MDIPrincipal
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MDIPrincipal))
@@ -150,6 +150,7 @@ Partial Class MDIPrincipal
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.Button2 = New System.Windows.Forms.Button()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
+        Me.btnGetCdD = New System.Windows.Forms.Button()
         Me.btnGetWeird = New System.Windows.Forms.Button()
         Me.btnGetImportant = New System.Windows.Forms.Button()
         Me.btnGetStar = New System.Windows.Forms.Button()
@@ -245,7 +246,6 @@ Partial Class MDIPrincipal
         Me.Button6 = New System.Windows.Forms.Button()
         Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
         Me.ImageList2 = New System.Windows.Forms.ImageList(Me.components)
-        Me.btnGetCdD = New System.Windows.Forms.Button()
         Me.MenuStrip.SuspendLayout()
         Me.ToolStrip.SuspendLayout()
         Me.StatusStrip.SuspendLayout()
@@ -1162,8 +1162,10 @@ Partial Class MDIPrincipal
         '
         'ToolStripStatusLabel
         '
+        Me.ToolStripStatusLabel.Image = CType(resources.GetObject("ToolStripStatusLabel.Image"), System.Drawing.Image)
+        Me.ToolStripStatusLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.ToolStripStatusLabel.Name = "ToolStripStatusLabel"
-        Me.ToolStripStatusLabel.Size = New System.Drawing.Size(1254, 17)
+        Me.ToolStripStatusLabel.Size = New System.Drawing.Size(1119, 17)
         Me.ToolStripStatusLabel.Spring = True
         Me.ToolStripStatusLabel.Text = "Status"
         Me.ToolStripStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -1182,7 +1184,6 @@ Partial Class MDIPrincipal
         Me.ToolStripStatusLabel3.Name = "ToolStripStatusLabel3"
         Me.ToolStripStatusLabel3.Size = New System.Drawing.Size(135, 17)
         Me.ToolStripStatusLabel3.Text = "ToolStripStatusLabel3"
-        Me.ToolStripStatusLabel3.Visible = False
         '
         'Panel1
         '
@@ -1255,6 +1256,18 @@ Partial Class MDIPrincipal
         Me.GroupBox5.TabIndex = 19
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Más opciones de filtrado"
+        '
+        'btnGetCdD
+        '
+        Me.btnGetCdD.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.btnGetCdD.Image = CType(resources.GetObject("btnGetCdD.Image"), System.Drawing.Image)
+        Me.btnGetCdD.Location = New System.Drawing.Point(6, 729)
+        Me.btnGetCdD.Name = "btnGetCdD"
+        Me.btnGetCdD.Size = New System.Drawing.Size(75, 50)
+        Me.btnGetCdD.TabIndex = 43
+        Me.btnGetCdD.Text = "Rev CdD"
+        Me.btnGetCdD.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+        Me.btnGetCdD.UseVisualStyleBackColor = True
         '
         'btnGetWeird
         '
@@ -2197,18 +2210,6 @@ Partial Class MDIPrincipal
         Me.ImageList2.Images.SetKeyName(8, "destacar_32.png")
         Me.ImageList2.Images.SetKeyName(9, "Estrella_48.png")
         Me.ImageList2.Images.SetKeyName(10, "RaroInvertido_48.png")
-        '
-        'btnGetCdD
-        '
-        Me.btnGetCdD.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.btnGetCdD.Image = CType(resources.GetObject("btnGetCdD.Image"), System.Drawing.Image)
-        Me.btnGetCdD.Location = New System.Drawing.Point(6, 729)
-        Me.btnGetCdD.Name = "btnGetCdD"
-        Me.btnGetCdD.Size = New System.Drawing.Size(75, 50)
-        Me.btnGetCdD.TabIndex = 43
-        Me.btnGetCdD.Text = "Rev CdD"
-        Me.btnGetCdD.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
-        Me.btnGetCdD.UseVisualStyleBackColor = True
         '
         'MDIPrincipal
         '
