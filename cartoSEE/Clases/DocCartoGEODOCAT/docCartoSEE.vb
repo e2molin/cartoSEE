@@ -52,14 +52,28 @@
     Property historialCambios As New ArrayList
     Dim historialConsultado As Boolean = False
 
-
-
     Property BBOX4OL3 As String = "POLYGON((-3 42,3 42,0 39,-3 42))"
     Property BBOXCenter4OL3_ByExtent As String = "[-3, 39, 3, 42]"
     Property BBOX_Xmin As String = "-10"
     Property BBOX_Xmax As String = "-5"
     Property BBOX_Ymin As String = "39"
     Property BBOX_Ymax As String = "43"
+
+
+    ReadOnly Property GetURIMetadatoMARC21 As String
+        Get
+            If titnABSYSdoc > 0 Then Return $"{canonicalURLCatalogoNew}/catalogoweb/xml/{String.Format("{0:0000000}", titnABSYSdoc)}-marc21.xml"
+            Return ""
+        End Get
+    End Property
+
+    ReadOnly Property GetURIFichaCatalogo As String
+        Get
+            If titnABSYSdoc > 0 Then Return $"{canonicalURLCatalogoNew}/catalogoweb/html/{IIf(titnABSYSdoc > 100000, String.Format("{0:0000000}", titnABSYSdoc), String.Format("{0:000000}", titnABSYSdoc))}.html"
+            Return ""
+        End Get
+    End Property
+
 
     ReadOnly Property yearFechaPrincipal As String
         Get

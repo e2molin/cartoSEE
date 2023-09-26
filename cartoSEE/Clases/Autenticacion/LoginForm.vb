@@ -22,6 +22,4 @@ Public Class LoginForm
 
     End Sub
 
-
-
 End Class

@@ -960,6 +960,15 @@ Public Class frmDocumentacion
         elementoLV.SubItems.Add(resultsetGeodocat.resultados(NumElemento).urlABSYSdoc.ToString) : elementoLV.Group = g4
         lvAtributos.Items.Add(elementoLV) : elementoLV = Nothing
 
+        elementoLV = New ListViewItem : elementoLV.Text = "URL metadatos" : elementoLV.ImageIndex = 4
+        elementoLV.SubItems.Add(resultsetGeodocat.resultados(NumElemento).GetURIMetadatoMARC21) : elementoLV.Group = g4
+        lvAtributos.Items.Add(elementoLV) : elementoLV = Nothing
+
+        elementoLV = New ListViewItem : elementoLV.Text = "URL catálogo" : elementoLV.ImageIndex = 4
+        elementoLV.SubItems.Add(resultsetGeodocat.resultados(NumElemento).GetURIFichaCatalogo) : elementoLV.Group = g4
+        lvAtributos.Items.Add(elementoLV) : elementoLV = Nothing
+
+
 
         If resultsetGeodocat.resultados(NumElemento).cddurl <> "" Then
             Button23.Enabled = True
@@ -2636,6 +2645,19 @@ Public Class frmDocumentacion
                         MessageBox.Show("URL del Catálogo ABSYS copiada al portapapeles", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
                     End If
                 End If
+                If li.SubItems(0).Text = "URL metadatos" Then
+                    If li.SubItems(1).Text <> "" Then
+                        My.Computer.Clipboard.SetText(li.SubItems(1).Text)
+                        MessageBox.Show("URL del Metadato en MARC21 copiada al portapapeles", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    End If
+                End If
+                If li.SubItems(0).Text = "URL catálogo" Then
+                    If li.SubItems(1).Text <> "" Then
+                        My.Computer.Clipboard.SetText(li.SubItems(1).Text)
+                        MessageBox.Show("URL de la ficha en el catálogo copiada al portapapeles", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    End If
+                End If
+
             Next
         End If
     End Sub
@@ -2697,6 +2719,14 @@ Public Class frmDocumentacion
         End If
 
 
+
+    End Sub
+
+    Private Sub lvAtributos_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lvAtributos.SelectedIndexChanged
+
+    End Sub
+
+    Private Sub lvAtributos_LocationChanged(sender As Object, e As EventArgs) Handles lvAtributos.LocationChanged
 
     End Sub
 End Class

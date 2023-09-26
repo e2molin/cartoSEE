@@ -32,6 +32,7 @@ Module Basics
     'Public App_Machine As String = ""
 
     Public urlAbsysLink As String
+    Public canonicalURLCatalogoNew As String
     Public path7zUtility As String
     Public VisorECW As String
     Public VisorJPG As String
@@ -81,6 +82,7 @@ Module Basics
         rutaCentroDescargas = LeeIni("Metadatos", "rutaCentroDescargas").Trim
         rutaRepoThumbs = LeeIni("Metadatos", "rutaRepoThumbs").Trim
         urlAbsysLink = LeeIni("Configuracion", "urlAbsysLink")
+        canonicalURLCatalogoNew = LeeIni("Configuracion", "canonicalURLCatalogoNew")
 
         CalidadFavorita = LeeIni("Repositorio", "CalidadFavorita")
         RutaRejillaNTV2 = LeeIni("Configuracion", "RutaRejillaNTV2")

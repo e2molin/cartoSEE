@@ -161,7 +161,7 @@ Public Class MDIPrincipal
             Me.Show()
 
         Else
-                MessageBox.Show("No es posible conectarse a la base de datos", My.Application.Info.AssemblyName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            MessageBox.Show("No es posible conectarse a la base de datos", My.Application.Info.AssemblyName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
             ResizingElements()
             Button6.Enabled = False
             Button7.Enabled = False
@@ -174,11 +174,10 @@ Public Class MDIPrincipal
         End If
 
         'Dim endTicks As Long = DateTime.Now.Ticks
-        'ToolStripStatusLabel.Text = "Tiempo: " & (endTicks - startTicks) / 100 & " ns."
-        ToolStripStatusLabel.Text = "Usuario: " & usuarioMyApp.loginUser &
-                            ". " & usuarioMyApp.permisosLista.getNombrePermiso &
-                            IIf(usuarioMyApp.permisosLista.isUserISTARI = True, ". Conectado a " & DB_Servidor & " en la database " & DB_Instancia & " .EXE:" & My.Application.Info.DirectoryPath, "")
+        ToolStripStatusLabel1.Text = $"{usuarioMyApp.loginUser} / {usuarioMyApp.permisosLista.getNombrePermiso}"
+        ToolStripStatusLabel.Text = $"{DB_Instancia} en {DB_Servidor} {IIf(usuarioMyApp.permisosLista.isUserISTARI, $" .EXE:{My.Application.Info.DirectoryPath}", "")}"
         ToolStripStatusLabel2.Text = Now.ToLongDateString.ToString
+        'My.Application.Info.AssemblyName.
         My.Forms.SplashScreen.Dispose()
         TextBox7.Text = "575438"
         TextBox10.Text = "4518765"
@@ -1578,10 +1577,4 @@ Public Class MDIPrincipal
 
     End Sub
 
-    Private Sub ToolStripStatusLabel4_Click(sender As Object, e As EventArgs)
-
-        frmNomen.MdiParent = Me
-        frmNomen.Show()
-
-    End Sub
 End Class

@@ -295,28 +295,28 @@ Partial Class frmDocumentacion
         '
         Me.contextMnuListaDestacado.Image = CType(resources.GetObject("contextMnuListaDestacado.Image"), System.Drawing.Image)
         Me.contextMnuListaDestacado.Name = "contextMnuListaDestacado"
-        Me.contextMnuListaDestacado.Size = New System.Drawing.Size(180, 22)
+        Me.contextMnuListaDestacado.Size = New System.Drawing.Size(158, 22)
         Me.contextMnuListaDestacado.Text = "Destacado"
         '
         'contextMnuListaRaro
         '
         Me.contextMnuListaRaro.Image = CType(resources.GetObject("contextMnuListaRaro.Image"), System.Drawing.Image)
         Me.contextMnuListaRaro.Name = "contextMnuListaRaro"
-        Me.contextMnuListaRaro.Size = New System.Drawing.Size(180, 22)
+        Me.contextMnuListaRaro.Size = New System.Drawing.Size(158, 22)
         Me.contextMnuListaRaro.Text = "Raro / Peculiar"
         '
         'contextMnuListaTop
         '
         Me.contextMnuListaTop.Image = CType(resources.GetObject("contextMnuListaTop.Image"), System.Drawing.Image)
         Me.contextMnuListaTop.Name = "contextMnuListaTop"
-        Me.contextMnuListaTop.Size = New System.Drawing.Size(180, 22)
+        Me.contextMnuListaTop.Size = New System.Drawing.Size(158, 22)
         Me.contextMnuListaTop.Text = "Cinco estrellas"
         '
         'contextMnuListaNone
         '
         Me.contextMnuListaNone.Image = CType(resources.GetObject("contextMnuListaNone.Image"), System.Drawing.Image)
         Me.contextMnuListaNone.Name = "contextMnuListaNone"
-        Me.contextMnuListaNone.Size = New System.Drawing.Size(180, 22)
+        Me.contextMnuListaNone.Size = New System.Drawing.Size(158, 22)
         Me.contextMnuListaNone.Text = "Eliminar marcas"
         '
         'Button3
@@ -594,13 +594,13 @@ Partial Class frmDocumentacion
         'mnuDetailMostrarWMS
         '
         Me.mnuDetailMostrarWMS.Name = "mnuDetailMostrarWMS"
-        Me.mnuDetailMostrarWMS.Size = New System.Drawing.Size(180, 22)
+        Me.mnuDetailMostrarWMS.Size = New System.Drawing.Size(162, 22)
         Me.mnuDetailMostrarWMS.Text = "Mostrar en WMS"
         '
         'mnuDetailOcultarWMS
         '
         Me.mnuDetailOcultarWMS.Name = "mnuDetailOcultarWMS"
-        Me.mnuDetailOcultarWMS.Size = New System.Drawing.Size(180, 22)
+        Me.mnuDetailOcultarWMS.Size = New System.Drawing.Size(162, 22)
         Me.mnuDetailOcultarWMS.Text = "Ocultar en WMS"
         '
         'DefinirTipoDeWMSToolStripMenuItem1
@@ -613,31 +613,31 @@ Partial Class frmDocumentacion
         'mnuDetailTipoWMS1
         '
         Me.mnuDetailTipoWMS1.Name = "mnuDetailTipoWMS1"
-        Me.mnuDetailTipoWMS1.Size = New System.Drawing.Size(180, 22)
+        Me.mnuDetailTipoWMS1.Size = New System.Drawing.Size(171, 22)
         Me.mnuDetailTipoWMS1.Text = "Planimetrías"
         '
         'mnuDetailTipoWMS2
         '
         Me.mnuDetailTipoWMS2.Name = "mnuDetailTipoWMS2"
-        Me.mnuDetailTipoWMS2.Size = New System.Drawing.Size(180, 22)
+        Me.mnuDetailTipoWMS2.Size = New System.Drawing.Size(171, 22)
         Me.mnuDetailTipoWMS2.Text = "Altimetrías"
         '
         'mnuDetailTipoWMS3
         '
         Me.mnuDetailTipoWMS3.Name = "mnuDetailTipoWMS3"
-        Me.mnuDetailTipoWMS3.Size = New System.Drawing.Size(180, 22)
+        Me.mnuDetailTipoWMS3.Size = New System.Drawing.Size(171, 22)
         Me.mnuDetailTipoWMS3.Text = "Hojas kilométricas"
         '
         'mnuDetailTipoWMS4
         '
         Me.mnuDetailTipoWMS4.Name = "mnuDetailTipoWMS4"
-        Me.mnuDetailTipoWMS4.Size = New System.Drawing.Size(180, 22)
+        Me.mnuDetailTipoWMS4.Size = New System.Drawing.Size(171, 22)
         Me.mnuDetailTipoWMS4.Text = "Mixto Plani+Alti"
         '
         'mnuDetailTipoWMS0
         '
         Me.mnuDetailTipoWMS0.Name = "mnuDetailTipoWMS0"
-        Me.mnuDetailTipoWMS0.Size = New System.Drawing.Size(180, 22)
+        Me.mnuDetailTipoWMS0.Size = New System.Drawing.Size(171, 22)
         Me.mnuDetailTipoWMS0.Text = "Sin definir"
         '
         'mnuSetZIndex
@@ -657,28 +657,28 @@ Partial Class frmDocumentacion
         '
         Me.contextMnuDetalleDestacado.Image = CType(resources.GetObject("contextMnuDetalleDestacado.Image"), System.Drawing.Image)
         Me.contextMnuDetalleDestacado.Name = "contextMnuDetalleDestacado"
-        Me.contextMnuDetalleDestacado.Size = New System.Drawing.Size(180, 22)
+        Me.contextMnuDetalleDestacado.Size = New System.Drawing.Size(158, 22)
         Me.contextMnuDetalleDestacado.Text = "Destacado"
         '
         'contextMnuDetalleRaro
         '
         Me.contextMnuDetalleRaro.Image = CType(resources.GetObject("contextMnuDetalleRaro.Image"), System.Drawing.Image)
         Me.contextMnuDetalleRaro.Name = "contextMnuDetalleRaro"
-        Me.contextMnuDetalleRaro.Size = New System.Drawing.Size(180, 22)
+        Me.contextMnuDetalleRaro.Size = New System.Drawing.Size(158, 22)
         Me.contextMnuDetalleRaro.Text = "Raro / Peculiar"
         '
         'contextMnuDetalleTop
         '
         Me.contextMnuDetalleTop.Image = CType(resources.GetObject("contextMnuDetalleTop.Image"), System.Drawing.Image)
         Me.contextMnuDetalleTop.Name = "contextMnuDetalleTop"
-        Me.contextMnuDetalleTop.Size = New System.Drawing.Size(180, 22)
+        Me.contextMnuDetalleTop.Size = New System.Drawing.Size(158, 22)
         Me.contextMnuDetalleTop.Text = "Cinco estrellas"
         '
         'contextMnuDetalleNone
         '
         Me.contextMnuDetalleNone.Image = CType(resources.GetObject("contextMnuDetalleNone.Image"), System.Drawing.Image)
         Me.contextMnuDetalleNone.Name = "contextMnuDetalleNone"
-        Me.contextMnuDetalleNone.Size = New System.Drawing.Size(180, 22)
+        Me.contextMnuDetalleNone.Size = New System.Drawing.Size(158, 22)
         Me.contextMnuDetalleNone.Text = "Eliminar marcas"
         '
         'Panel1
