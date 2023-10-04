@@ -871,4 +871,57 @@
 
         MessageBox.Show("Proyectos de recorte generados", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
     End Sub
+
+    Private Sub Button17_Click(sender As Object, e As EventArgs) Handles Button17.Click
+
+        Dim rcdTMP As New DataTable
+        Dim filas() As DataRow
+        Dim rutaFile As String
+        Dim contador As Integer
+        Dim cadsql As String
+        Dim listaSQL As New ArrayList
+
+        cadsql = "select archivo.idarchivo AS idarchivo,archivo2munihisto.munihisto_id,munihisto.cod_munihisto,territorios.idterritorio AS idterritorio from bdsidschema.archivo 
+                        inner join bdsidschema.archivo2munihisto on archivo.idarchivo=archivo2munihisto.archivo_id
+                        inner join bdsidschema.munihisto on munihisto.idmunihisto=archivo2munihisto.munihisto_id
+                        inner join bdsidschema.territorios on munihisto.cod_munihisto=territorios.munihisto
+                        where territorios.tipo in ('Municipio','Municipio histórico','Condominio','Condominio histórico')"
+        listaSQL.Add($"TRANCATE TABLEbdsidschema.archivo2territorios"
+        Try
+            If Not CargarDatatableMuni(cadsql, rcdTMP) Then
+                ModalExclamation("No se puede acceder a la vista de cdd_planospoblacion_report")
+                Exit Sub
+            End If
+            For Each fila As DataRow In rcdTMP.Select
+                contador += 1
+                ToolStripStatusLabel1.Text = $"Procesando elemento {contador}"
+                Application.DoEvents()
+                listaSQL.Add($"INSERT INTO bdsidschema.archivo2territorios (archivo_id,territorio_id) VALUES ({fila.Item("idarchivo")},{fila.Item("idterritorio")})")
+            Next
+
+        Catch ex As Exception
+            ModalError(ex.Message)
+        Finally
+            rcdTMP.Clear()
+            rcdTMP.Dispose()
+            rcdTMP = Nothing
+        End Try
+
+
+        If ModalQuestion($"¿Desea ejecutar {listaSQL.Count-1} sentencias de inserción en la tabla bdsidschema.archivo2territorios? Los datos existentes se eliminarán.") = DialogResult.No Then
+            listaSQL.Clear()
+            listaSQL = Nothing
+            Exit Sub
+        End If
+        If ExeTran(listaSQL) Then
+            ModalInfo("Proceso terminado con éxito")
+        Else
+            ModalExclamation("Se han producido errores")
+        End If
+
+
+
+
+
+    End Sub
 End Class

@@ -46,6 +46,13 @@ Partial Class frmDevel
         Me.txtPathGCP = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.Button16 = New System.Windows.Forms.Button()
+        Me.Button15 = New System.Windows.Forms.Button()
+        Me.Button14 = New System.Windows.Forms.Button()
+        Me.Button13 = New System.Windows.Forms.Button()
+        Me.Button12 = New System.Windows.Forms.Button()
+        Me.Button11 = New System.Windows.Forms.Button()
+        Me.Button10 = New System.Windows.Forms.Button()
         Me.Button9 = New System.Windows.Forms.Button()
         Me.Button8 = New System.Windows.Forms.Button()
         Me.Button6 = New System.Windows.Forms.Button()
@@ -55,13 +62,7 @@ Partial Class frmDevel
         Me.Button3 = New System.Windows.Forms.Button()
         Me.FolderBrowserDialog1 = New System.Windows.Forms.FolderBrowserDialog()
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
-        Me.Button10 = New System.Windows.Forms.Button()
-        Me.Button11 = New System.Windows.Forms.Button()
-        Me.Button12 = New System.Windows.Forms.Button()
-        Me.Button13 = New System.Windows.Forms.Button()
-        Me.Button14 = New System.Windows.Forms.Button()
-        Me.Button15 = New System.Windows.Forms.Button()
-        Me.Button16 = New System.Windows.Forms.Button()
+        Me.Button17 = New System.Windows.Forms.Button()
         Me.StatusStrip1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
@@ -82,7 +83,7 @@ Partial Class frmDevel
         'StatusStrip1
         '
         Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1})
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 452)
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 569)
         Me.StatusStrip1.Name = "StatusStrip1"
         Me.StatusStrip1.Size = New System.Drawing.Size(798, 22)
         Me.StatusStrip1.TabIndex = 1
@@ -91,7 +92,7 @@ Partial Class frmDevel
         'ToolStripStatusLabel1
         '
         Me.ToolStripStatusLabel1.Name = "ToolStripStatusLabel1"
-        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(121, 17)
+        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(119, 17)
         Me.ToolStripStatusLabel1.Text = "ToolStripStatusLabel1"
         '
         'Button2
@@ -118,7 +119,7 @@ Partial Class frmDevel
         Me.TabControl1.Location = New System.Drawing.Point(12, 12)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(774, 433)
+        Me.TabControl1.Size = New System.Drawing.Size(774, 554)
         Me.TabControl1.TabIndex = 4
         '
         'TabPage1
@@ -158,7 +159,7 @@ Partial Class frmDevel
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(540, 13)
         Me.Label6.TabIndex = 14
-        Me.Label6.Text = "Dado un directorio con GCPs en una proyección dada, los procesa reproyectándolos " & _
+        Me.Label6.Text = "Dado un directorio con GCPs en una proyección dada, los procesa reproyectándolos " &
     "a otro sistema de referencia"
         '
         'GroupBox2
@@ -296,6 +297,7 @@ Partial Class frmDevel
         '
         'TabPage2
         '
+        Me.TabPage2.Controls.Add(Me.Button17)
         Me.TabPage2.Controls.Add(Me.Button16)
         Me.TabPage2.Controls.Add(Me.Button15)
         Me.TabPage2.Controls.Add(Me.Button14)
@@ -314,10 +316,73 @@ Partial Class frmDevel
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(766, 407)
+        Me.TabPage2.Size = New System.Drawing.Size(766, 528)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "TabPage2"
         Me.TabPage2.UseVisualStyleBackColor = True
+        '
+        'Button16
+        '
+        Me.Button16.Location = New System.Drawing.Point(291, 180)
+        Me.Button16.Name = "Button16"
+        Me.Button16.Size = New System.Drawing.Size(195, 23)
+        Me.Button16.TabIndex = 14
+        Me.Button16.Text = "Plantilla Hojas kilométricas Cutter"
+        Me.Button16.UseVisualStyleBackColor = True
+        '
+        'Button15
+        '
+        Me.Button15.Location = New System.Drawing.Point(291, 151)
+        Me.Button15.Name = "Button15"
+        Me.Button15.Size = New System.Drawing.Size(195, 23)
+        Me.Button15.TabIndex = 13
+        Me.Button15.Text = "Plantilla Directorios Cutter"
+        Me.Button15.UseVisualStyleBackColor = True
+        '
+        'Button14
+        '
+        Me.Button14.Location = New System.Drawing.Point(291, 122)
+        Me.Button14.Name = "Button14"
+        Me.Button14.Size = New System.Drawing.Size(195, 23)
+        Me.Button14.TabIndex = 12
+        Me.Button14.Text = "Plantilla Edificación Cutter"
+        Me.Button14.UseVisualStyleBackColor = True
+        '
+        'Button13
+        '
+        Me.Button13.Location = New System.Drawing.Point(291, 93)
+        Me.Button13.Name = "Button13"
+        Me.Button13.Size = New System.Drawing.Size(195, 23)
+        Me.Button13.TabIndex = 11
+        Me.Button13.Text = "Plantilla Conjuntas Cutter"
+        Me.Button13.UseVisualStyleBackColor = True
+        '
+        'Button12
+        '
+        Me.Button12.Location = New System.Drawing.Point(291, 64)
+        Me.Button12.Name = "Button12"
+        Me.Button12.Size = New System.Drawing.Size(195, 23)
+        Me.Button12.TabIndex = 10
+        Me.Button12.Text = "Plantilla Planimetrías Cutter"
+        Me.Button12.UseVisualStyleBackColor = True
+        '
+        'Button11
+        '
+        Me.Button11.Location = New System.Drawing.Point(291, 35)
+        Me.Button11.Name = "Button11"
+        Me.Button11.Size = New System.Drawing.Size(195, 23)
+        Me.Button11.TabIndex = 9
+        Me.Button11.Text = "Plantilla Altimetrías Cutter"
+        Me.Button11.UseVisualStyleBackColor = True
+        '
+        'Button10
+        '
+        Me.Button10.Location = New System.Drawing.Point(291, 6)
+        Me.Button10.Name = "Button10"
+        Me.Button10.Size = New System.Drawing.Size(195, 23)
+        Me.Button10.TabIndex = 8
+        Me.Button10.Text = "Plantilla planos de población Cutter"
+        Me.Button10.UseVisualStyleBackColor = True
         '
         'Button9
         '
@@ -381,74 +446,20 @@ Partial Class frmDevel
         Me.Button3.Text = "TestECWExist"
         Me.Button3.UseVisualStyleBackColor = True
         '
-        'Button10
+        'Button17
         '
-        Me.Button10.Location = New System.Drawing.Point(291, 6)
-        Me.Button10.Name = "Button10"
-        Me.Button10.Size = New System.Drawing.Size(195, 23)
-        Me.Button10.TabIndex = 8
-        Me.Button10.Text = "Plantilla planos de población Cutter"
-        Me.Button10.UseVisualStyleBackColor = True
-        '
-        'Button11
-        '
-        Me.Button11.Location = New System.Drawing.Point(291, 35)
-        Me.Button11.Name = "Button11"
-        Me.Button11.Size = New System.Drawing.Size(195, 23)
-        Me.Button11.TabIndex = 9
-        Me.Button11.Text = "Plantilla Altimetrías Cutter"
-        Me.Button11.UseVisualStyleBackColor = True
-        '
-        'Button12
-        '
-        Me.Button12.Location = New System.Drawing.Point(291, 64)
-        Me.Button12.Name = "Button12"
-        Me.Button12.Size = New System.Drawing.Size(195, 23)
-        Me.Button12.TabIndex = 10
-        Me.Button12.Text = "Plantilla Planimetrías Cutter"
-        Me.Button12.UseVisualStyleBackColor = True
-        '
-        'Button13
-        '
-        Me.Button13.Location = New System.Drawing.Point(291, 93)
-        Me.Button13.Name = "Button13"
-        Me.Button13.Size = New System.Drawing.Size(195, 23)
-        Me.Button13.TabIndex = 11
-        Me.Button13.Text = "Plantilla Conjuntas Cutter"
-        Me.Button13.UseVisualStyleBackColor = True
-        '
-        'Button14
-        '
-        Me.Button14.Location = New System.Drawing.Point(291, 122)
-        Me.Button14.Name = "Button14"
-        Me.Button14.Size = New System.Drawing.Size(195, 23)
-        Me.Button14.TabIndex = 12
-        Me.Button14.Text = "Plantilla Edificación Cutter"
-        Me.Button14.UseVisualStyleBackColor = True
-        '
-        'Button15
-        '
-        Me.Button15.Location = New System.Drawing.Point(291, 151)
-        Me.Button15.Name = "Button15"
-        Me.Button15.Size = New System.Drawing.Size(195, 23)
-        Me.Button15.TabIndex = 13
-        Me.Button15.Text = "Plantilla Directorios Cutter"
-        Me.Button15.UseVisualStyleBackColor = True
-        '
-        'Button16
-        '
-        Me.Button16.Location = New System.Drawing.Point(291, 180)
-        Me.Button16.Name = "Button16"
-        Me.Button16.Size = New System.Drawing.Size(195, 23)
-        Me.Button16.TabIndex = 14
-        Me.Button16.Text = "Plantilla Hojas kilométricas Cutter"
-        Me.Button16.UseVisualStyleBackColor = True
+        Me.Button17.Location = New System.Drawing.Point(21, 401)
+        Me.Button17.Name = "Button17"
+        Me.Button17.Size = New System.Drawing.Size(254, 23)
+        Me.Button17.TabIndex = 15
+        Me.Button17.Text = "Obtener de cero la tabla archivo2territorios"
+        Me.Button17.UseVisualStyleBackColor = True
         '
         'frmDevel
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(798, 474)
+        Me.ClientSize = New System.Drawing.Size(798, 591)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.StatusStrip1)
         Me.Name = "frmDevel"
@@ -507,4 +518,5 @@ Partial Class frmDevel
     Friend WithEvents Button14 As System.Windows.Forms.Button
     Friend WithEvents Button15 As System.Windows.Forms.Button
     Friend WithEvents Button16 As System.Windows.Forms.Button
+    Friend WithEvents Button17 As Button
 End Class
