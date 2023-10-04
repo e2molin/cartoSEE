@@ -563,7 +563,7 @@ Public Class frmDocumentacion
         registrarDatabaseLog("CargarDatosSIDCARTO_By_MunicipioID:" & codMuniHisto)
         resultsetGeodocat = New docCartoSEEquery
         resultsetGeodocat.flag_CargarFicherosGEO = True
-        resultsetGeodocat.getDocsSIDDAE_ByFiltroSQL("munihisto.idmunihisto=" & codMuniHisto & filtroTiposDoc & filtroEstadoDoc & filterSQL)
+        resultsetGeodocat.getDocsSIDDAE_ByFiltroSQL("territorios.idterritorio=" & codMuniHisto & filtroTiposDoc & filtroEstadoDoc & filterSQL)
         resizingElements()
         populateListView()
 

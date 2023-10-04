@@ -456,28 +456,33 @@
             If CheckBox18.Checked = True And ListView1.Items.Count > 0 Then
                 If item.ProvinciaRepo <> CType(ListView1.Items(0).SubItems(4).Text, Integer) Then
                     If CheckBox20.Checked = False Then
-                        MessageBox.Show("La Provincia del documento debe ser la misma a la que pertenece " & _
-                                        "el primer municipio asignado. No se realizará ninguna modificación.", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+                        ModalExclamation("La Provincia del documento debe ser la misma a la que pertenece el primer municipio asignado. No se realizará ninguna modificación")
                         Exit Sub
                     End If
                     If CType(ComboBox6.SelectedItem, itemData).Valor <> ListView1.Items(0).SubItems(4).Text Then
-                        MessageBox.Show("La Provincia del documento debe ser la misma a la que pertenece " & _
-                                        "el primer municipio asignado. No se realizará ninguna modificación.", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+                        ModalExclamation("La Provincia del documento debe ser la misma a la que pertenece el primer municipio asignado. No se realizará ninguna modificación")
                         Exit Sub
                     End If
                 End If
 
-                ListaSQL.Add("DELETE FROM bdsidschema.archivo2munihisto where archivo_id=" & item.docIndex)
-                ListaSQL.Add("INSERT INTO bdsidschema.archivolog (archivo_id, sellado, usuario_update, tabla, tipo_variacion, valor_old, valor_new) " &
-                                 "VALUES (" & item.docIndex & ",'" & item.Sellado & "','" & usuarioMyApp.loginUser & "','archivo2munihisto','Desasignación municipio histórico',E'" & item.muniHistoLiteralConINEHistorico.Replace("'", "\'") & "',null)")
+
+
+                ListaSQL.Add($"DELETE FROM bdsidschema.archivo2territorios where archivo_id={item.docIndex}")
+                ListaSQL.Add($"INSERT INTO bdsidschema.archivolog (archivo_id, sellado, usuario_update, tabla, tipo_variacion, valor_old, valor_new) 
+                                 VALUES ({item.docIndex},'{ item.Sellado}','{usuarioMyApp.loginUser}','archivo2territorios','Desasignación municipio histórico',
+                                 E'{item.muniHistoLiteralConINEHistorico.Replace("'", "\'")}',null)")
+
                 For Each itemLV As ListViewItem In ListView1.Items
-                    ListaSQL.Add("INSERT INTO bdsidschema.archivo2munihisto (idarchivo2muni,munihisto_id,archivo_id) " &
-                                "VALUES (nextval('bdsidschema.archivo2munihisto_idarchivo2muni_seq')," &
-                                itemLV.SubItems(3).Text & "," & item.docIndex & ")")
-                    ListaSQL.Add("INSERT INTO bdsidschema.archivolog (archivo_id, sellado, usuario_update, tabla, tipo_variacion, valor_old, valor_new) " &
-                                "VALUES (" & item.docIndex & ",'" & item.Sellado & "','" & usuarioMyApp.loginUser & "','archivo2munihisto','Asignación municipio histórico',null," &
-                                "E'" & itemLV.SubItems(0).Text.Replace("'", "\'") & "(" & itemLV.SubItems(2).Text & ")" & "')")
+                    ListaSQL.Add($"INSERT INTO bdsidschema.archivo2territorios (territorio_id,archivo_id) VALUES ({itemLV.SubItems(3).Text},{item.docIndex})")
+                    ListaSQL.Add($"INSERT INTO bdsidschema.archivolog (archivo_id, sellado, usuario_update, tabla, tipo_variacion, valor_old, valor_new) 
+                                VALUES ({item.docIndex},'{item.Sellado}','{usuarioMyApp.loginUser}','archivo2munihisto','Asignación municipio histórico',null,
+                                E'{itemLV.SubItems(0).Text.Replace("'", "\'")}({itemLV.SubItems(2).Text})')")
                 Next
+
+
+
+
+
             End If
             'Si se han producido cambios en el tipo de documento o en los municipios o en el número de sellado
             'en las ediciones individuales, puede originarse un cambio de 
@@ -622,16 +627,15 @@
         Dim ficherosDelete As New ArrayList
 
         For Each elem As docCartoSEE In elementsInEdition.resultados
-            ListaSQL.Add("DELETE FROM bdsidschema.contornos WHERE archivo_id=" & elem.docIndex)
-            ListaSQL.Add("DELETE FROM bdsidschema.archivo2munihisto WHERE archivo_id=" & elem.docIndex)
-            ListaSQL.Add("DELETE FROM bdsidschema.archivo WHERE idarchivo=" & elem.docIndex)
+            ListaSQL.Add($"DELETE FROM bdsidschema.contornos WHERE archivo_id={elem.docIndex}")
+            ListaSQL.Add($"DELETE FROM bdsidschema.archivo2territorios WHERE archivo_id={elem.docIndex}")
+            ListaSQL.Add($"DELETE FROM bdsidschema.archivo WHERE idarchivo={elem.docIndex}")
 
             ficherosDelete.Add(elem.rutaFicheroAltaRes)
             ficherosDelete.Add(elem.rutaFicheroBajaRes)
             ficherosDelete.Add(elem.rutaFicheroThumb)
 
             For Each fileGEO As String In elem.listaFicherosGeo
-                Application.DoEvents()
                 ficherosDelete.Add(fileGEO)
             Next
 
@@ -642,7 +646,7 @@
                 GenerarLOG(sentenciaSQL)
             Next
             For Each ficheroParaBorrar As String In ficherosDelete
-                GenerarLOG("Se borrará el fichero: " & ficheroParaBorrar)
+                GenerarLOG($"Se borrará el fichero: {ficheroParaBorrar}")
             Next
             Return True
         End If
@@ -651,8 +655,7 @@
             Try
                 System.IO.File.Delete(pathFileGeo)
             Catch ex As Exception
-                MessageBox.Show("Se han producido errores al eliminar la información gráfica del documento.No se eliminó el documento." &
-                                System.Environment.NewLine & ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                ModalError($"Se han producido errores al eliminar la información gráfica del documento.No se eliminó el documento.{Environment.NewLine}{ex.Message}")
                 Exit Function
             End Try
         Next
@@ -660,7 +663,7 @@
         If ExeTran(ListaSQL) Then
             Return True
         Else
-            MessageBox.Show("No se han podido elimnar los documentos", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            ModalExclamation("No se han podido eliminar los documentos")
             Return False
         End If
 
