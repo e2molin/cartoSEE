@@ -51,7 +51,6 @@ Partial Class MDIPrincipal
         Me.mnuResconsulta9 = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuGenerarMetadatos = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuResconsulta7 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuResconsulta6 = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuResconsulta8 = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuExtraerContornos = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuExtraerCentroide = New System.Windows.Forms.ToolStripMenuItem()
@@ -135,7 +134,6 @@ Partial Class MDIPrincipal
         Me.ToolStripButton18 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripButton14 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripButton11 = New System.Windows.Forms.ToolStripButton()
-        Me.ToolStripButton10 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripButton8 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
         Me.ToolStripButton2 = New System.Windows.Forms.ToolStripButton()
@@ -246,6 +244,7 @@ Partial Class MDIPrincipal
         Me.Button6 = New System.Windows.Forms.Button()
         Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
         Me.ImageList2 = New System.Windows.Forms.ImageList(Me.components)
+        Me.ToolStripButton10 = New System.Windows.Forms.ToolStripButton()
         Me.MenuStrip.SuspendLayout()
         Me.ToolStrip.SuspendLayout()
         Me.StatusStrip.SuspendLayout()
@@ -399,7 +398,7 @@ Partial Class MDIPrincipal
         '
         'ToolStripMenuItem1
         '
-        Me.ToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuResConsulta1, Me.mnuResconsulta2, Me.mnuResconsulta3, Me.mnuResconsulta4, Me.mnuResconsulta5, Me.mnuResconsulta9, Me.mnuGenerarMetadatos, Me.mnuResconsulta7, Me.mnuResconsulta6, Me.mnuResconsulta8, Me.mnuExtraerContornos, Me.mnuExtraerCentroide, Me.mnuGenMiniatura})
+        Me.ToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuResConsulta1, Me.mnuResconsulta2, Me.mnuResconsulta3, Me.mnuResconsulta4, Me.mnuResconsulta5, Me.mnuResconsulta9, Me.mnuGenerarMetadatos, Me.mnuResconsulta7, Me.mnuResconsulta8, Me.mnuExtraerContornos, Me.mnuExtraerCentroide, Me.mnuGenMiniatura})
         Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
         Me.ToolStripMenuItem1.Size = New System.Drawing.Size(280, 22)
         Me.ToolStripMenuItem1.Text = "Resultado de la Consulta"
@@ -460,13 +459,6 @@ Partial Class MDIPrincipal
         Me.mnuResconsulta7.Name = "mnuResconsulta7"
         Me.mnuResconsulta7.Size = New System.Drawing.Size(402, 22)
         Me.mnuResconsulta7.Text = "Guardar documentos seleccionados"
-        '
-        'mnuResconsulta6
-        '
-        Me.mnuResconsulta6.Image = CType(resources.GetObject("mnuResconsulta6.Image"), System.Drawing.Image)
-        Me.mnuResconsulta6.Name = "mnuResconsulta6"
-        Me.mnuResconsulta6.Size = New System.Drawing.Size(402, 22)
-        Me.mnuResconsulta6.Text = "Mostrar y ocultar columnas"
         '
         'mnuResconsulta8
         '
@@ -807,7 +799,7 @@ Partial Class MDIPrincipal
         'ToolStrip
         '
         Me.ToolStrip.ImageScalingSize = New System.Drawing.Size(48, 48)
-        Me.ToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolConfig, Me.ToolStripSeparator1, Me.ToolStripButton5, Me.ToolStripButton6, Me.ToolStripButton15, Me.ToolStripSeparator9, Me.ToolStripButton12, Me.ToolStripButton17, Me.ToolStripSeparator3, Me.ToolStripButton9, Me.ButCarrito, Me.btnVisorMosaicos, Me.ToolStripButton20, Me.btnExportCdD, Me.ToolStripDropDownButton1, Me.ToolStripButton19, Me.ToolStripButton1, Me.ToolStripSeparator4, Me.ToolStripButton3, Me.ToolStripButton4, Me.ToolMiniaturas, Me.ToolStripButton7, Me.ToolStripButton16, Me.ToolStripButton18, Me.ToolStripButton14, Me.ToolStripButton11, Me.ToolStripButton10, Me.ToolStripButton8, Me.ToolStripSeparator2, Me.ToolStripButton2, Me.HelpToolStripButton, Me.ToolStripButton13})
+        Me.ToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolConfig, Me.ToolStripSeparator1, Me.ToolStripButton5, Me.ToolStripButton6, Me.ToolStripButton15, Me.ToolStripSeparator9, Me.ToolStripButton12, Me.ToolStripButton17, Me.ToolStripSeparator3, Me.ToolStripButton9, Me.ButCarrito, Me.btnVisorMosaicos, Me.ToolStripButton20, Me.ToolStripButton10, Me.btnExportCdD, Me.ToolStripDropDownButton1, Me.ToolStripButton19, Me.ToolStripButton1, Me.ToolStripSeparator4, Me.ToolStripButton3, Me.ToolStripButton4, Me.ToolMiniaturas, Me.ToolStripButton7, Me.ToolStripButton16, Me.ToolStripButton18, Me.ToolStripButton14, Me.ToolStripButton11, Me.ToolStripButton8, Me.ToolStripSeparator2, Me.ToolStripButton2, Me.HelpToolStripButton, Me.ToolStripButton13})
         Me.ToolStrip.Location = New System.Drawing.Point(0, 24)
         Me.ToolStrip.Name = "ToolStrip"
         Me.ToolStrip.Size = New System.Drawing.Size(1539, 55)
@@ -1091,15 +1083,6 @@ Partial Class MDIPrincipal
         Me.ToolStripButton11.Name = "ToolStripButton11"
         Me.ToolStripButton11.Size = New System.Drawing.Size(52, 52)
         Me.ToolStripButton11.Text = "Guardar los documentos seleccionados"
-        '
-        'ToolStripButton10
-        '
-        Me.ToolStripButton10.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.ToolStripButton10.Image = CType(resources.GetObject("ToolStripButton10.Image"), System.Drawing.Image)
-        Me.ToolStripButton10.ImageTransparentColor = System.Drawing.Color.Black
-        Me.ToolStripButton10.Name = "ToolStripButton10"
-        Me.ToolStripButton10.Size = New System.Drawing.Size(52, 52)
-        Me.ToolStripButton10.Text = "Mostrar y ocultar columnas"
         '
         'ToolStripButton8
         '
@@ -2210,6 +2193,17 @@ Partial Class MDIPrincipal
         Me.ImageList2.Images.SetKeyName(8, "destacar_32.png")
         Me.ImageList2.Images.SetKeyName(9, "Estrella_48.png")
         Me.ImageList2.Images.SetKeyName(10, "RaroInvertido_48.png")
+        Me.ImageList2.Images.SetKeyName(11, "CdDAdmin_24.png")
+        Me.ImageList2.Images.SetKeyName(12, "favicon NGBE - 32.png")
+        '
+        'ToolStripButton10
+        '
+        Me.ToolStripButton10.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.ToolStripButton10.Image = CType(resources.GetObject("ToolStripButton10.Image"), System.Drawing.Image)
+        Me.ToolStripButton10.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.ToolStripButton10.Name = "ToolStripButton10"
+        Me.ToolStripButton10.Size = New System.Drawing.Size(52, 52)
+        Me.ToolStripButton10.Text = "Municipios históricos"
         '
         'MDIPrincipal
         '
@@ -2260,7 +2254,6 @@ Partial Class MDIPrincipal
     Friend WithEvents TileHorizontalToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents HelpToolStripButton As System.Windows.Forms.ToolStripButton
     Friend WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
-    Friend WithEvents ToolStripButton10 As System.Windows.Forms.ToolStripButton
     Friend WithEvents ToolTip As System.Windows.Forms.ToolTip
     Friend WithEvents ToolStripStatusLabel As System.Windows.Forms.ToolStripStatusLabel
     Friend WithEvents StatusStrip As System.Windows.Forms.StatusStrip
@@ -2322,7 +2315,6 @@ Partial Class MDIPrincipal
     Friend WithEvents mnuResconsulta2 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuResconsulta3 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuResconsulta5 As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuResconsulta6 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuResconsulta7 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents Label14 As System.Windows.Forms.Label
     Friend WithEvents TextBox13 As System.Windows.Forms.TextBox
@@ -2472,4 +2464,5 @@ Partial Class MDIPrincipal
     Friend WithEvents btnGetStar As Button
     Friend WithEvents ToolStripStatusLabel3 As ToolStripStatusLabel
     Friend WithEvents btnGetCdD As Button
+    Friend WithEvents ToolStripButton10 As ToolStripButton
 End Class

@@ -262,7 +262,7 @@
         elementoLV = New ListViewItem
         elementoLV.Text = mMuniHEdit.nombreMuniActual
         elementoLV.SubItems.Add(String.Format("{0:00000}", mMuniHEdit.codineMuniActual))
-        elementoLV.Tag = mMuniHEdit.entidadID
+        elementoLV.Tag = mMuniHEdit.ngmep_id
         ListView1.Items.Add(elementoLV)
         elementoLV = Nothing
 
@@ -504,7 +504,7 @@
         If muniHEdit.nombreMuniHisto <> txtNombre.Text.Trim Then
             listaSQL.Add("UPDATE bdsidschema.munihisto SET nombremunicipiohistorico=E'" & txtNombre.Text.Replace("'", "\'").Trim & "' WHERE idmunihisto=" & muniHEdit.indice)
         End If
-        If muniHEdit.entidadID <> idMuni Then
+        If muniHEdit.ngmep_id <> idMuni Then
             listaSQL.Add("UPDATE bdsidschema.munihisto SET entidad_id=" & idMuni & " WHERE idmunihisto=" & muniHEdit.indice)
         End If
         If muniHEdit.codineMuniActual <> codMuniActual Then

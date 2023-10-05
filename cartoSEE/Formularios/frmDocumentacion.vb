@@ -2722,11 +2722,5 @@ Public Class frmDocumentacion
 
     End Sub
 
-    Private Sub lvAtributos_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lvAtributos.SelectedIndexChanged
 
-    End Sub
-
-    Private Sub lvAtributos_LocationChanged(sender As Object, e As EventArgs) Handles lvAtributos.LocationChanged
-
-    End Sub
 End Class

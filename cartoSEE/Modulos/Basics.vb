@@ -54,6 +54,8 @@ Module Basics
     Public rutaRepoThumbs As String
 
     Public Const visorCartociudad As String = "https://www.cartociudad.es/visor/"
+    Public urlCDDSearchEngine As String
+    Public urlGazetteerNGBESearchEngine As String
 
 
     'Encabezados para las consultas
@@ -82,6 +84,10 @@ Module Basics
         rutaCentroDescargas = LeeIni("Metadatos", "rutaCentroDescargas").Trim
         rutaRepoThumbs = LeeIni("Metadatos", "rutaRepoThumbs").Trim
         urlAbsysLink = LeeIni("Configuracion", "urlAbsysLink")
+        urlCDDSearchEngine = LeeIni("Configuracion", "urlCDDSearchEngine")
+        urlGazetteerNGBESearchEngine = LeeIni("Configuracion", "urlGazetteerNGBESearchEngine")
+
+
         canonicalURLCatalogoNew = LeeIni("Configuracion", "canonicalURLCatalogoNew")
 
         CalidadFavorita = LeeIni("Repositorio", "CalidadFavorita")
