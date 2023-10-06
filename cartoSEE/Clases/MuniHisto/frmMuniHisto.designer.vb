@@ -28,6 +28,7 @@ Partial Class frmMuniHisto
         Me.btnDetalles = New System.Windows.Forms.ToolStripButton()
         Me.btnExportar = New System.Windows.Forms.ToolStripButton()
         Me.btnRefresh = New System.Windows.Forms.ToolStripButton()
+        Me.btnAjustar = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripDropDownButton1 = New System.Windows.Forms.ToolStripDropDownButton()
         Me.mnuColumna1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuColumna2 = New System.Windows.Forms.ToolStripMenuItem()
@@ -81,7 +82,6 @@ Partial Class frmMuniHisto
         Me.ToolStripStatusLabel2 = New System.Windows.Forms.ToolStripStatusLabel()
         Me.ToolStripStatusLabel3 = New System.Windows.Forms.ToolStripStatusLabel()
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
-        Me.btnAjustar = New System.Windows.Forms.ToolStripButton()
         Me.ToolStrip1.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
@@ -151,6 +151,19 @@ Partial Class frmMuniHisto
         Me.btnRefresh.Text = "Refrescar"
         Me.btnRefresh.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         Me.btnRefresh.ToolTipText = "Actualizar datos"
+        '
+        'btnAjustar
+        '
+        Me.btnAjustar.AutoSize = False
+        Me.btnAjustar.Font = New System.Drawing.Font("Tahoma", 6.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnAjustar.Image = CType(resources.GetObject("btnAjustar.Image"), System.Drawing.Image)
+        Me.btnAjustar.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None
+        Me.btnAjustar.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.btnAjustar.Name = "btnAjustar"
+        Me.btnAjustar.Size = New System.Drawing.Size(60, 55)
+        Me.btnAjustar.Text = "Ajustar"
+        Me.btnAjustar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+        Me.btnAjustar.ToolTipText = "Ajustar ancho de las columnas a la ventana"
         '
         'ToolStripDropDownButton1
         '
@@ -662,19 +675,6 @@ Partial Class frmMuniHisto
         Me.ToolStripStatusLabel3.Name = "ToolStripStatusLabel3"
         Me.ToolStripStatusLabel3.Size = New System.Drawing.Size(119, 17)
         Me.ToolStripStatusLabel3.Text = "ToolStripStatusLabel3"
-        '
-        'btnAjustar
-        '
-        Me.btnAjustar.AutoSize = False
-        Me.btnAjustar.Font = New System.Drawing.Font("Tahoma", 6.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnAjustar.Image = CType(resources.GetObject("btnAjustar.Image"), System.Drawing.Image)
-        Me.btnAjustar.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None
-        Me.btnAjustar.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.btnAjustar.Name = "btnAjustar"
-        Me.btnAjustar.Size = New System.Drawing.Size(60, 55)
-        Me.btnAjustar.Text = "Ajustar"
-        Me.btnAjustar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
-        Me.btnAjustar.ToolTipText = "Ajustar ancho de las columnas a la ventana"
         '
         'frmMuniHisto
         '

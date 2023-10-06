@@ -5,17 +5,17 @@
     Dim variacionMunis As Boolean
     Dim mDialogResp As Boolean = False
     Dim mModo As String
-    Dim mMuniHEdit As MuniHisto
+    Dim territorioHistorico As MuniHisto
 
 
 #Region "Definición propiedades"
 
     Property muniHEdit() As MuniHisto
         Get
-            Return mMuniHEdit
+            Return territorioHistorico
         End Get
         Set(ByVal value As MuniHisto)
-            mMuniHEdit = value
+            territorioHistorico = value
         End Set
     End Property
 
@@ -49,8 +49,20 @@
     Friend WithEvents Button1 As System.Windows.Forms.Button
     Friend WithEvents Button2 As System.Windows.Forms.Button
     Friend WithEvents Label5 As System.Windows.Forms.Label
-    Friend WithEvents txtcodINE As System.Windows.Forms.TextBox
+    Friend WithEvents txtcodINEHisto As System.Windows.Forms.TextBox
     Friend WithEvents btnEliminar As System.Windows.Forms.Button
+    Friend WithEvents txtNGBE As TextBox
+    Friend WithEvents lblNGBE As Label
+    Friend WithEvents Label4 As Label
+    Friend WithEvents txtNGMEP As TextBox
+    Friend WithEvents txtObservaciones As TextBox
+    Friend WithEvents Label3 As Label
+    Friend WithEvents Label6 As Label
+    Friend WithEvents txtNombreCDD As TextBox
+    Friend WithEvents Label7 As Label
+    Friend WithEvents cboTipos As ComboBox
+    Friend WithEvents Label8 As Label
+    Friend WithEvents txtCentroide As TextBox
     Friend WithEvents Label1 As System.Windows.Forms.Label
 
     Public Sub New()
@@ -71,8 +83,20 @@
         Me.Button1 = New System.Windows.Forms.Button()
         Me.Button2 = New System.Windows.Forms.Button()
         Me.Label5 = New System.Windows.Forms.Label()
-        Me.txtcodINE = New System.Windows.Forms.TextBox()
+        Me.txtcodINEHisto = New System.Windows.Forms.TextBox()
         Me.btnEliminar = New System.Windows.Forms.Button()
+        Me.txtNGBE = New System.Windows.Forms.TextBox()
+        Me.lblNGBE = New System.Windows.Forms.Label()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.txtNGMEP = New System.Windows.Forms.TextBox()
+        Me.txtObservaciones = New System.Windows.Forms.TextBox()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.txtNombreCDD = New System.Windows.Forms.TextBox()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.cboTipos = New System.Windows.Forms.ComboBox()
+        Me.Label8 = New System.Windows.Forms.Label()
+        Me.txtCentroide = New System.Windows.Forms.TextBox()
         Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -90,7 +114,7 @@
         Me.txtNombre.Location = New System.Drawing.Point(84, 16)
         Me.txtNombre.Multiline = True
         Me.txtNombre.Name = "txtNombre"
-        Me.txtNombre.Size = New System.Drawing.Size(325, 34)
+        Me.txtNombre.Size = New System.Drawing.Size(485, 34)
         Me.txtNombre.TabIndex = 1
         '
         'GroupBox1
@@ -99,9 +123,9 @@
         Me.GroupBox1.Controls.Add(Me.ListView1)
         Me.GroupBox1.Controls.Add(Me.TextBox2)
         Me.GroupBox1.Controls.Add(Me.Label2)
-        Me.GroupBox1.Location = New System.Drawing.Point(84, 110)
+        Me.GroupBox1.Location = New System.Drawing.Point(84, 201)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(325, 157)
+        Me.GroupBox1.Size = New System.Drawing.Size(491, 175)
         Me.GroupBox1.TabIndex = 2
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Municipios con jurisdicción sobre el territorio"
@@ -111,15 +135,16 @@
         Me.ListBox1.FormattingEnabled = True
         Me.ListBox1.Location = New System.Drawing.Point(79, 44)
         Me.ListBox1.Name = "ListBox1"
-        Me.ListBox1.Size = New System.Drawing.Size(228, 95)
+        Me.ListBox1.Size = New System.Drawing.Size(406, 95)
         Me.ListBox1.Sorted = True
         Me.ListBox1.TabIndex = 2
         '
         'ListView1
         '
-        Me.ListView1.Location = New System.Drawing.Point(32, 67)
+        Me.ListView1.HideSelection = False
+        Me.ListView1.Location = New System.Drawing.Point(32, 51)
         Me.ListView1.Name = "ListView1"
-        Me.ListView1.Size = New System.Drawing.Size(275, 81)
+        Me.ListView1.Size = New System.Drawing.Size(453, 114)
         Me.ListView1.TabIndex = 3
         Me.ListView1.UseCompatibleStateImageBehavior = False
         '
@@ -127,7 +152,7 @@
         '
         Me.TextBox2.Location = New System.Drawing.Point(79, 25)
         Me.TextBox2.Name = "TextBox2"
-        Me.TextBox2.Size = New System.Drawing.Size(228, 20)
+        Me.TextBox2.Size = New System.Drawing.Size(406, 20)
         Me.TextBox2.TabIndex = 1
         '
         'Label2
@@ -142,9 +167,9 @@
         'Button1
         '
         Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
-        Me.Button1.Location = New System.Drawing.Point(424, 238)
+        Me.Button1.Location = New System.Drawing.Point(581, 441)
         Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(91, 30)
+        Me.Button1.Size = New System.Drawing.Size(91, 50)
         Me.Button1.TabIndex = 3
         Me.Button1.Text = "Nuevo"
         Me.Button1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
@@ -153,9 +178,9 @@
         'Button2
         '
         Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
-        Me.Button2.Location = New System.Drawing.Point(424, 202)
+        Me.Button2.Location = New System.Drawing.Point(581, 385)
         Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(91, 30)
+        Me.Button2.Size = New System.Drawing.Size(91, 50)
         Me.Button2.TabIndex = 4
         Me.Button2.Text = "Cerrar"
         Me.Button2.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
@@ -164,35 +189,151 @@
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(17, 59)
+        Me.Label5.Location = New System.Drawing.Point(403, 113)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(61, 13)
+        Me.Label5.Size = New System.Drawing.Size(69, 13)
         Me.Label5.TabIndex = 11
-        Me.Label5.Text = "Código INE"
+        Me.Label5.Text = "INE Histórico"
         '
-        'txtcodINE
+        'txtcodINEHisto
         '
-        Me.txtcodINE.Location = New System.Drawing.Point(84, 56)
-        Me.txtcodINE.Name = "txtcodINE"
-        Me.txtcodINE.Size = New System.Drawing.Size(78, 20)
-        Me.txtcodINE.TabIndex = 12
+        Me.txtcodINEHisto.Location = New System.Drawing.Point(482, 110)
+        Me.txtcodINEHisto.Name = "txtcodINEHisto"
+        Me.txtcodINEHisto.Size = New System.Drawing.Size(87, 20)
+        Me.txtcodINEHisto.TabIndex = 12
+        Me.txtcodINEHisto.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'btnEliminar
         '
         Me.btnEliminar.Image = CType(resources.GetObject("btnEliminar.Image"), System.Drawing.Image)
-        Me.btnEliminar.Location = New System.Drawing.Point(424, 16)
+        Me.btnEliminar.Location = New System.Drawing.Point(581, 16)
         Me.btnEliminar.Name = "btnEliminar"
-        Me.btnEliminar.Size = New System.Drawing.Size(91, 34)
+        Me.btnEliminar.Size = New System.Drawing.Size(91, 63)
         Me.btnEliminar.TabIndex = 13
         Me.btnEliminar.Text = "Eliminar"
         Me.btnEliminar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
         Me.btnEliminar.UseVisualStyleBackColor = True
         '
+        'txtNGBE
+        '
+        Me.txtNGBE.Location = New System.Drawing.Point(482, 59)
+        Me.txtNGBE.Name = "txtNGBE"
+        Me.txtNGBE.Size = New System.Drawing.Size(87, 20)
+        Me.txtNGBE.TabIndex = 14
+        Me.txtNGBE.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'lblNGBE
+        '
+        Me.lblNGBE.AutoSize = True
+        Me.lblNGBE.Location = New System.Drawing.Point(403, 62)
+        Me.lblNGBE.Name = "lblNGBE"
+        Me.lblNGBE.Size = New System.Drawing.Size(73, 13)
+        Me.lblNGBE.TabIndex = 15
+        Me.lblNGBE.Text = "Código NGBE"
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Location = New System.Drawing.Point(394, 87)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(82, 13)
+        Me.Label4.TabIndex = 16
+        Me.Label4.Text = "Código NGMEP"
+        '
+        'txtNGMEP
+        '
+        Me.txtNGMEP.Location = New System.Drawing.Point(482, 84)
+        Me.txtNGMEP.Name = "txtNGMEP"
+        Me.txtNGMEP.Size = New System.Drawing.Size(87, 20)
+        Me.txtNGMEP.TabIndex = 17
+        Me.txtNGMEP.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'txtObservaciones
+        '
+        Me.txtObservaciones.Location = New System.Drawing.Point(84, 398)
+        Me.txtObservaciones.Multiline = True
+        Me.txtObservaciones.Name = "txtObservaciones"
+        Me.txtObservaciones.Size = New System.Drawing.Size(491, 93)
+        Me.txtObservaciones.TabIndex = 18
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(84, 379)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(78, 13)
+        Me.Label3.TabIndex = 19
+        Me.Label3.Text = "Observaciones"
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Location = New System.Drawing.Point(10, 87)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(68, 13)
+        Me.Label6.TabIndex = 20
+        Me.Label6.Text = "Nombre CdD"
+        '
+        'txtNombreCDD
+        '
+        Me.txtNombreCDD.Location = New System.Drawing.Point(87, 87)
+        Me.txtNombreCDD.Multiline = True
+        Me.txtNombreCDD.Name = "txtNombreCDD"
+        Me.txtNombreCDD.Size = New System.Drawing.Size(285, 41)
+        Me.txtNombreCDD.TabIndex = 21
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Location = New System.Drawing.Point(50, 62)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(28, 13)
+        Me.Label7.TabIndex = 22
+        Me.Label7.Text = "Tipo"
+        '
+        'cboTipos
+        '
+        Me.cboTipos.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboTipos.FormattingEnabled = True
+        Me.cboTipos.Location = New System.Drawing.Point(87, 59)
+        Me.cboTipos.Name = "cboTipos"
+        Me.cboTipos.Size = New System.Drawing.Size(285, 21)
+        Me.cboTipos.TabIndex = 23
+        '
+        'Label8
+        '
+        Me.Label8.AutoSize = True
+        Me.Label8.Location = New System.Drawing.Point(403, 141)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(64, 13)
+        Me.Label8.TabIndex = 24
+        Me.Label8.Text = "Centroide Id"
+        '
+        'txtCentroide
+        '
+        Me.txtCentroide.Location = New System.Drawing.Point(482, 138)
+        Me.txtCentroide.Name = "txtCentroide"
+        Me.txtCentroide.Size = New System.Drawing.Size(87, 20)
+        Me.txtCentroide.TabIndex = 25
+        Me.txtCentroide.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
         'altaMuniH
         '
-        Me.ClientSize = New System.Drawing.Size(522, 284)
+        Me.ClientSize = New System.Drawing.Size(684, 507)
+        Me.Controls.Add(Me.txtCentroide)
+        Me.Controls.Add(Me.Label8)
+        Me.Controls.Add(Me.cboTipos)
+        Me.Controls.Add(Me.Label7)
+        Me.Controls.Add(Me.txtNombreCDD)
+        Me.Controls.Add(Me.Label6)
+        Me.Controls.Add(Me.Label3)
+        Me.Controls.Add(Me.txtObservaciones)
+        Me.Controls.Add(Me.txtNGMEP)
+        Me.Controls.Add(Me.Label4)
+        Me.Controls.Add(Me.lblNGBE)
+        Me.Controls.Add(Me.txtNGBE)
         Me.Controls.Add(Me.btnEliminar)
-        Me.Controls.Add(Me.txtcodINE)
+        Me.Controls.Add(Me.txtcodINEHisto)
         Me.Controls.Add(Me.Label5)
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.Button1)
@@ -219,6 +360,7 @@
         Dim dlg As New altaMuniH
 
         dlg.modo = "NEW"
+        dlg.formatearControles()
         dlg.Text = "Alta de Municipio histórico"
         dlg.ShowDialog()
         Return dlg.dialogResp
@@ -230,9 +372,8 @@
         Dim dlg As New altaMuniH
         dlg.muniHEdit = muniH
         dlg.rellenarControles()
-
         dlg.modo = "EDIT"
-        dlg.Text = "Edición de territorio histórico"
+        dlg.Text = $"Edición de {muniH.nombreMostrado}"
         dlg.ShowDialog()
         Return dlg.dialogResp
 
@@ -251,22 +392,49 @@
         ListBox1.Visible = False
         BuscarNomen = True
 
-    End Sub
+        cboTipos.Items.Add("Municipio histórico")
 
+    End Sub
+    Private Sub formatearControles()
+
+        txtNGBE.Text = "0"
+        txtNGMEP.Text = "0"
+        txtCentroide.Text = "0"
+
+    End Sub
     Private Sub rellenarControles()
 
         Dim elementoLV As ListViewItem
 
-        txtNombre.Text = mMuniHEdit.nombreMuniHisto
-        txtcodINE.Text = String.Format("{0:0000000}", mMuniHEdit.codineMuniHisto)
-        elementoLV = New ListViewItem
-        elementoLV.Text = mMuniHEdit.nombreMuniActual
-        elementoLV.SubItems.Add(String.Format("{0:00000}", mMuniHEdit.codineMuniActual))
-        elementoLV.Tag = mMuniHEdit.ngmep_id
-        ListView1.Items.Add(elementoLV)
-        elementoLV = Nothing
+        txtNombre.Text = territorioHistorico.nombreMuniHisto
+
+        txtNGBE.Text = territorioHistorico.ngbe_id
+        txtNGMEP.Text = territorioHistorico.ngmep_id
+        txtcodINEHisto.Text = String.Format("{0:0000000}", territorioHistorico.codineMuniHisto)
+        txtObservaciones.Text = territorioHistorico.observaciones
+        txtNombreCDD.Text = territorioHistorico.nombre4CdD
+
+        If territorioHistorico.tipo = "Municipio histórico" Then cboTipos.SelectedIndex = 0
+
+
+
+        For Each juris As String In territorioHistorico.lstJurisdiccion
+            Dim tmpTrozos() As String = juris.Split("|")
+            If tmpTrozos.Length = 3 Then
+                elementoLV = New ListViewItem
+                elementoLV.Text = tmpTrozos(1)
+                elementoLV.SubItems.Add(tmpTrozos(0))
+                elementoLV.Tag = tmpTrozos(2)
+                ListView1.Items.Add(elementoLV)
+                elementoLV = Nothing
+            End If
+        Next
 
         Button1.Text = "Guardar"
+        If territorioHistorico.tipo <> "Municipio histórico" Then
+            Button1.Enabled = False
+            btnEliminar.Enabled = False
+        End If
         variacionMunis = False
 
     End Sub
@@ -312,9 +480,9 @@
         Dim filas() As DataRow
 
         ListaNom = New DataTable
-        If CargarRecordset("SELECT identidad,nombre as nombremunicipio, inecorto as codine, codigoprov " & _
-                     "FROM ngmepschema.listamunicipios " & _
-                     "WHERE UPPER(translate(nombre, 'áéíóúÁÉÍÓÚ', 'aeiouAEIOU')) " & _
+        If CargarRecordset("SELECT identidad,nombre as nombremunicipio, inecorto as codine, codigoprov " &
+                     "FROM ngmepschema.listamunicipios " &
+                     "WHERE UPPER(translate(nombre, 'áéíóúÁÉÍÓÚ', 'aeiouAEIOU')) " &
                      "LIKE UPPER(translate('%" & Discri & "%', 'áéíóúÁÉÍÓÚ', 'aeiouAEIOU')) limit 40", ListaNom) = True Then
             If ListaNom.Rows.Count = 0 Then Exit Sub
             filas = ListaNom.Select
@@ -387,8 +555,7 @@
     'Acciones
     '----------------------------------------------------------------------------------------
 
-    Private Sub ejecutarAccion(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-                                                                        Handles Button1.Click, Button2.Click, btnEliminar.Click
+    Private Sub ejecutarAccion(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click, Button2.Click, btnEliminar.Click
 
         If sender.name = "Button1" Then
             If mModo = "NEW" Then
@@ -397,6 +564,56 @@
                 actualizarTerri()
             End If
         ElseIf sender.name = "btnEliminar" Then
+
+            Try
+                Dim numDocs As Integer = 0
+
+                ObtenerEscalar($"SELECT count(*) FROM bdsidschema.archivo2territorios where territorio_id={muniHEdit.indice}", numDocs)
+                If numDocs > 0 Then
+                    ModalExclamation($"Hay documentos {numDocs} de CartoSEE asociados a este municipio. Elimine estas asociaciones antes de borrarlo.")
+                    Exit Sub
+                End If
+
+                numDocs = 0
+                ObtenerEscalar($"SELECT count(*) FROM deslinschema.citaciones2territorios where territorio_id={muniHEdit.indice}", numDocs)
+                If numDocs > 0 Then
+                    ModalExclamation($"Hay documentos {numDocs} de citaciones de SIDDES asociados a este territorio.{Environment.NewLine}Elimine estas asociaciones antes de borrarlo.")
+                    Exit Sub
+                End If
+
+                numDocs = 0
+                ObtenerEscalar($"SELECT count(*) FROM deslinschema.correspondencia2territorios where territorio_id={muniHEdit.indice}", numDocs)
+                If numDocs > 0 Then
+                    ModalExclamation($"Hay documentos {numDocs} de correspondencias de SIDDES asociadas a este territorio.{Environment.NewLine}Elimine estas asociaciones antes de borrarlo.")
+                    Exit Sub
+                End If
+
+                numDocs = 0
+                ObtenerEscalar($"SELECT count(*) FROM deslinschema.cuadernos2territorios where territorio_id={muniHEdit.indice}", numDocs)
+                If numDocs > 0 Then
+                    ModalExclamation($"Hay documentos {numDocs} de cuadernos de SIDDES asociadas a este territorio.{Environment.NewLine}Elimine estas asociaciones antes de borrarlo.")
+                    Exit Sub
+                End If
+
+                numDocs = 0
+                ObtenerEscalar($"SELECT count(*) FROM deslinschema.expedientes2territorios where territorio_id={muniHEdit.indice}", numDocs)
+                If numDocs > 0 Then
+                    ModalExclamation($"Hay documentos {numDocs} de expedientes de SIDDES asociadas a este territorio.{Environment.NewLine}Elimine estas asociaciones antes de borrarlo.")
+                    Exit Sub
+                End If
+
+                numDocs = 0
+                ObtenerEscalar($"SELECT count(*) FROM deslinschema.inventario2terri where terri_id_a={muniHEdit.indice} or terri_id_b={muniHEdit.indice}", numDocs)
+                If numDocs > 0 Then
+                    ModalExclamation($"Hay documentos {numDocs} de inventario de SIDDES asociadas a este territorio.{Environment.NewLine}Elimine estas asociaciones antes de borrarlo.")
+                    Exit Sub
+                End If
+
+            Catch ex As Exception
+                ModalError(ex.Message)
+                Exit Sub
+            End Try
+
             BorrarMuniHisto()
         End If
         Me.Close()
@@ -412,54 +629,79 @@
         Dim listaSQL As ArrayList
         Dim cadpertenencia As Integer
         Dim codProv As Integer
-        Dim codMuni As Integer
-        Dim idMuni As Integer
+        Dim codMuniActual As Integer
         Dim codigoINEHisto As String
-        Dim resultado As String = ""
+        Dim renombrarDirectorios As Boolean = False
+        Dim codNGMEP As Integer = 0
+        Dim codMuniNGMEP As Integer = 0
+        Dim codNGBE As Integer = 0
+        Dim idCentroide As Integer = 0
+        Dim numCoincidentes As Integer = 0
+        Dim nombreShow As String = ""
 
         'Validamos
         If txtNombre.Text.Trim = "" Then
-            MessageBox.Show("Introduzca el nombre del territorio", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+            ModalExclamation("Introduzca el nombre del territorio")
             Exit Sub
         End If
         If ListView1.Items.Count <> 1 Then
-            MessageBox.Show("El municipio histórico debe asociarse a un municipio", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            ModalExclamation("El municipio histórico debe asociarse a un municipio")
             Exit Sub
         End If
-        If txtcodINE.Text.Trim.Length <> 7 Then
-            MessageBox.Show("El código histórico tiene siete dígitos", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+        If txtcodINEHisto.Text.Trim.Length <> 7 Then
+            ModalExclamation("El código histórico tiene siete dígitos")
+            Exit Sub
+        End If
+        If Not IsNumeric(txtNGBE.Text) Then
+            ModalExclamation("El código NGBE tiene que ser numérico")
             Exit Sub
         End If
 
-        codigoINEHisto = txtcodINE.Text.Trim
-        codprov = CType(codigoINEHisto.Substring(0, 2), Integer)
-        codMuni = CType(codigoINEHisto.Substring(0, 5), Integer)
-        cadpertenencia = CType(ListView1.Items(0).SubItems(1).Text, Integer)
-        idMuni = CType(ListView1.Items(0).Tag.ToString, Integer)
-
-        If cadpertenencia <> codMuni Then
-            MessageBox.Show("Los primeros 5 dígitos del código histórico deben coincidir con los del municipio al que pertenece", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+        If cboTipos.SelectedIndex = -1 Then
+            ModalExclamation("Indique el tipo de territorio")
             Exit Sub
         End If
+
+        Try
+            codigoINEHisto = txtcodINEHisto.Text.Trim
+            codProv = CType(codigoINEHisto.Substring(0, 2), Integer)
+            codMuniActual = CType(codigoINEHisto.Substring(0, 5), Integer)
+            cadpertenencia = CType(ListView1.Items(0).SubItems(1).Text, Integer)
+            codMuniNGMEP = CType(ListView1.Items(0).Tag.ToString, Integer)
+            codNGMEP = CType(txtNGMEP.Text.Trim, Integer)
+            codNGBE = CType(txtNGBE.Text.Trim, Integer)
+            idCentroide = CType(txtCentroide.Text.Trim, Integer)
+        Catch ex As Exception
+            ModalError(ex.Message)
+        End Try
+
+        If cadpertenencia <> codMuniActual Then
+            ModalExclamation("Los primeros 5 dígitos del código histórico deben coincidir con los del municipio al que pertenece")
+            Exit Sub
+        End If
+
+
         'Comprobamos que el código histórico no se encuentre asignado
-        ObtenerEscalar("SELECT idmunihisto FROM bdsidschema.munihisto where cod_munihisto='" & codigoINEHisto & "'", resultado)
-        If resultado <> "" Then
-            MessageBox.Show("El código histórico ya se encuentra asignado", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+        ObtenerEscalar($"SELECT idterritorio FROM bdsidschema.territorios where to_char(munihisto, 'FM0000000'::text)='{codigoINEHisto}'", numCoincidentes)
+        If numCoincidentes > 0 Then
+            ModalExclamation($"El código histórico {codigoINEHisto} ya se encuentra asignado")
             Exit Sub
         End If
 
-        If MessageBox.Show("Desea crear el nuevo municipio histórico", AplicacionTitulo, MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.No Then Exit Sub
-        listaSQL = New ArrayList
 
-        listaSQL.Add("INSERT INTO bdsidschema.munihisto(nombremunicipiohistorico,provincia_id,cod_muni,cod_munihisto,entidad_id) " &
-                    " VALUES (E'" & txtNombre.Text.Trim.Replace("'", "\'") & "'," &
-                    "" & codProv & "," &
-                    "" & codMuni & "," &
-                    "" & codigoINEHisto & "," &
-                    "" & idMuni & ")")
+
+        If ModalQuestion("Desea crear el nuevo municipio histórico") = DialogResult.No Then Exit Sub
+
+        listaSQL = New ArrayList
+        listaSQL.Add($"INSERT INTO bdsidschema.territorios(nombre,provincia,municipio,munihisto,tipo,pertenencia,poligono_carto,nombremostrado,observaciones,
+                        nomen_id,nombrecdd,ngbe_id,ngmep_muni_id)  VALUES (
+                        E'{txtNombre.Text.Trim.Replace("'", "\'")}',{codProv},{codMuniActual},{codigoINEHisto},'{cboTipos.Text}','{cadpertenencia}',
+                        {idCentroide},E'{nombreShow.Replace("'", "\'")}',E'{txtObservaciones.Text.Trim.Replace("'", "\'")}',{codNGMEP},E'{txtNombreCDD.Text.Replace("'", "\'")}',
+                        {codNGBE},{codMuniNGMEP})")
 
         Me.Cursor = Cursors.WaitCursor
         Me.dialogResp = ExeTran(listaSQL)
+        registrarDatabaseLog($"Creado municipiohistórico {txtNombre.Text.Trim.Replace("'", "\'")} con INE {codigoINEHisto}")
         Me.Cursor = Cursors.Default
 
     End Sub
@@ -470,79 +712,111 @@
         Dim cadpertenencia As Integer
         Dim codProv As Integer
         Dim codMuniActual As Integer
-        Dim idMuni As Integer
         Dim codigoINEHisto As String
-        Dim resultado As String = ""
         Dim renombrarDirectorios As Boolean = False
-
+        Dim codNGMEP As Integer = 0
+        Dim codMuniNGMEP As Integer = 0
+        Dim codNGBE As Integer = 0
+        Dim idCentroide As Integer = 0
         'Validamos
         If txtNombre.Text.Trim = "" Then
-            MessageBox.Show("Introduzca el nombre del territorio", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+            ModalExclamation("Introduzca el nombre del territorio")
             Exit Sub
         End If
+
+        If txtcodINEHisto.Text.Trim.Length <> 7 Then
+            ModalExclamation("El código histórico tiene siete dígitos")
+            Exit Sub
+        End If
+        If Not IsNumeric(txtNGBE.Text) Then
+            ModalExclamation("El código NGBE tiene que ser numérico")
+            Exit Sub
+        End If
+
         If ListView1.Items.Count <> 1 Then
-            MessageBox.Show("El municipio histórico debe asociarse a un municipio", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-            Exit Sub
-        End If
-        If txtcodINE.Text.Trim.Length <> 7 Then
-            MessageBox.Show("El código histórico tiene siete dígitos", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+            ModalExclamation("El municipio histórico debe asociarse a un municipio")
             Exit Sub
         End If
 
-        codigoINEHisto = txtcodINE.Text.Trim
-        codprov = CType(codigoINEHisto.Substring(0, 2), Integer)
-        codMuniActual = CType(ListView1.Items(0).SubItems(1).Text, Integer)
-        cadpertenencia = CType(ListView1.Items(0).SubItems(1).Text, Integer)
-        idMuni = CType(ListView1.Items(0).Tag.ToString, Integer)
+        Try
+            codigoINEHisto = txtcodINEHisto.Text.Trim
+            codProv = CType(codigoINEHisto.Substring(0, 2), Integer)
+            codMuniActual = CType(codigoINEHisto.Substring(0, 5), Integer)
+            cadpertenencia = CType(ListView1.Items(0).SubItems(1).Text, Integer)
+            codMuniNGMEP = CType(ListView1.Items(0).Tag.ToString, Integer)
+            codNGMEP = CType(txtNGMEP.Text.Trim, Integer)
+            codNGBE = CType(txtNGBE.Text.Trim, Integer)
+            idCentroide = CType(txtCentroide.Text.Trim, Integer)
+        Catch ex As Exception
+            ModalError(ex.Message)
+        End Try
 
-        If codigoINEHisto.Substring(0, 5) <> String.Format("{0:00000}", codMuniActual) Then
-            If MessageBox.Show("Los primeros 5 dígitos del código histórico no coinciden con los del municipio al que pertenece. ¿Desea continuar?", _
-                               AplicacionTitulo, MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.No Then Exit Sub
+        If codigoINEHisto.Substring(0, 5) <> String.Format("{0:00000}", cadpertenencia) Then
+            ModalExclamation("Los primeros 5 dígitos del código histórico no coinciden con los del municipio al que pertenece")
+            Exit Sub
         End If
 
         listaSQL = New ArrayList
         If muniHEdit.nombreMuniHisto <> txtNombre.Text.Trim Then
-            listaSQL.Add("UPDATE bdsidschema.munihisto SET nombremunicipiohistorico=E'" & txtNombre.Text.Replace("'", "\'").Trim & "' WHERE idmunihisto=" & muniHEdit.indice)
+            listaSQL.Add($"UPDATE bdsidschema.territorios SET nombre=E'{txtNombre.Text.Replace("'", "\'").Trim}' WHERE idterritorio={muniHEdit.indice}")
         End If
-        If muniHEdit.ngmep_id <> idMuni Then
-            listaSQL.Add("UPDATE bdsidschema.munihisto SET entidad_id=" & idMuni & " WHERE idmunihisto=" & muniHEdit.indice)
+        If muniHEdit.nombre4CdD <> txtNombreCDD.Text.Trim Then
+            listaSQL.Add($"UPDATE bdsidschema.territorios SET nombrecdd=E'{txtNombreCDD.Text.Replace("'", "\'").Trim}' WHERE idterritorio={muniHEdit.indice}")
         End If
-        If muniHEdit.codineMuniActual <> codMuniActual Then
-            listaSQL.Add("UPDATE bdsidschema.munihisto SET cod_muni=" & codMuniActual & " WHERE idmunihisto=" & muniHEdit.indice)
+        If muniHEdit.ngbe_id <> codNGBE Then
+            listaSQL.Add($"UPDATE bdsidschema.territorios SET ngbe_id={codNGBE} WHERE idterritorio={muniHEdit.indice}")
         End If
+        If muniHEdit.ngmep_id <> codNGMEP Then
+            listaSQL.Add($"UPDATE bdsidschema.territorios SET nomen_id={codNGMEP} WHERE idterritorio={muniHEdit.indice}")
+        End If
+        If muniHEdit.ngmep_muni_id <> codMuniNGMEP Then
+            listaSQL.Add($"UPDATE bdsidschema.territorios SET ngmep_muni_id={codNGMEP} WHERE idterritorio={muniHEdit.indice}")
+        End If
+
         If muniHEdit.codineMuniHisto <> codigoINEHisto Then
             If muniHEdit.codineMuniHisto.ToString.Substring(0, 2) = "28" Then
-                MessageBox.Show("El cambio de INE puede afectar al funcionamiento del SIDCECA. Contacte antes con el administrador", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                ModalExclamation("El cambio de INE puede afectar al funcionamiento del SIDCECA. Contacte antes con el administrador")
                 Exit Sub
             End If
-            listaSQL.Add("UPDATE bdsidschema.munihisto SET cod_munihisto=" & codigoINEHisto & " WHERE idmunihisto=" & muniHEdit.indice)
+            listaSQL.Add($"UPDATE bdsidschema.territorios SET munihisto={codigoINEHisto} WHERE idterritorio={muniHEdit.indice}")
+            listaSQL.Add($"UPDATE bdsidschema.territorios SET municipio={codMuniActual} WHERE idterritorio={muniHEdit.indice}")
+            listaSQL.Add($"UPDATE bdsidschema.territorios SET provincia={codProv} WHERE idterritorio={muniHEdit.indice}")
             renombrarDirectorios = True
         End If
-        If muniHEdit.codineMuniHisto <> codigoINEHisto Then
-            listaSQL.Add("UPDATE bdsidschema.munihisto SET cod_munihisto=" & codigoINEHisto & " WHERE idmunihisto=" & muniHEdit.indice)
+
+        If muniHEdit.observaciones <> txtObservaciones.Text.Trim Then
+            listaSQL.Add($"UPDATE bdsidschema.territorios SET observaciones=E'{txtObservaciones.Text.Replace("'", "\'").Trim}' WHERE idterritorio={muniHEdit.indice}")
         End If
 
-        Application.DoEvents()
-        Me.Cursor = Cursors.WaitCursor
-        Me.dialogResp = ExeTran(listaSQL)
-        GenerarLOG("Modificaciones en " & muniHEdit.nombreMuniHisto)
-        Me.Cursor = Cursors.Default
+        If muniHEdit.centroide_id <> idCentroide Then
+            listaSQL.Add($"UPDATE bdsidschema.territorios SET poligono_carto={cadpertenencia} WHERE idterritorio={muniHEdit.indice}")
+        End If
 
-        If renombrarDirectorios = True Then
-            If renombrarDirs(muniHEdit.codineMuniHisto, codigoINEHisto) = False Then
-                MessageBox.Show("No se pudieron renombrar los directorios del municipio.Complete la operación manualmente", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+        If listaSQL.Count > 0 Then
+            Me.Cursor = Cursors.WaitCursor
+            Me.dialogResp = ExeTran(listaSQL)
+            GenerarLOG("Modificaciones en " & muniHEdit.nombreMuniHisto)
+            If renombrarDirectorios = True Then
+                If renombrarDirs(muniHEdit.codineMuniHisto, codigoINEHisto) = False Then
+                    ModalExclamation("No se pudieron renombrar los directorios del municipio.Complete la operación manualmente")
+                End If
             End If
+            Me.Cursor = Cursors.Default
+        Else
+            ModalInfo("No se modificó ningún atributo")
+            Me.dialogResp = False
         End If
+
 
     End Sub
 
     Private Sub BorrarMuniHisto()
 
-        If MessageBox.Show("Confirma borrado del municipio histórico?", AplicacionTitulo, MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.No Then Exit Sub
+        If ModalQuestion("Confirma el borrado del municipio histórico?") = DialogResult.No Then Exit Sub
 
         Dim listaSQL As New ArrayList
-        GenerarLOG("DELETE FROM bdsidschema.munihisto WHERE idmunihisto=" & muniHEdit.indice & ". Eliminado " & muniHEdit.nombreMuniHisto)
-        listaSQL.Add("DELETE FROM bdsidschema.munihisto WHERE idmunihisto=" & muniHEdit.indice)
+        GenerarLOG($"DELETE FROM bdsidschema.munihisto WHERE idmunihisto={muniHEdit.indice}. Eliminado {muniHEdit.nombreMuniHisto}")
+        listaSQL.Add($"DELETE FROM bdsidschema.territorios WHERE idterritorio={muniHEdit.indice}")
 
         Me.Cursor = Cursors.WaitCursor
         Me.dialogResp = ExeTran(listaSQL)
@@ -563,7 +837,7 @@
         Nuevo = codNEW
         If Antiguo.Length <> 7 Or Nuevo.Length <> 7 Then Return False
         If Antiguo.Substring(0, 2) = "28" Then
-            MessageBox.Show("El cambio de INE puede afectar al funcionamiento del SIDCECA. Contacte antes con el administrador", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            ModalExclamation("El cambio de INE puede afectar al funcionamiento del SIDCECA. Contacte antes con el administrador")
             Return False
         End If
 

@@ -258,27 +258,27 @@
             If cboFiltros.SelectedIndex = 0 Or cboFiltros.SelectedIndex = -1 Then
                 If IsNumeric(txtSearch.Text.Trim) Then
                     If txtSearch.Text.Length <= 2 Then
-                        cadFiltro = "territorios.provincia = " & txtSearch.Text.Trim
+                        cadFiltro = "provincia_ine = " & txtSearch.Text.Trim
                     Else
-                        cadFiltro = "territorios.munihisto = " & txtSearch.Text.Trim
+                        cadFiltro = "cod_munihisto = " & txtSearch.Text.Trim
                     End If
                 Else
-                    cadFiltro = "territorios.nombre like '%" & txtSearch.Text.Trim & "%' OR " &
-                                "listamunicipios.nombre like '%" & txtSearch.Text.Trim & "%' OR " &
-                                "provincias.nombreprovincia like '%" & txtSearch.Text.Trim & "%'"
+                    cadFiltro = "nombre like '%" & txtSearch.Text.Trim & "%' OR " &
+                                "nombremunicipioactual like '%" & txtSearch.Text.Trim & "%' OR " &
+                                "nombreprovincia like '%" & txtSearch.Text.Trim & "%'"
                 End If
             ElseIf cboFiltros.SelectedIndex = 1 Then
-                cadFiltro = "territorios.nombre like '%" & txtSearch.Text.Trim & "%'"
+                cadFiltro = "nombre like '%" & txtSearch.Text.Trim & "%'"
             ElseIf cboFiltros.SelectedIndex = 2 Then
-                cadFiltro = "listamunicipios.nombre like '%" & txtSearch.Text.Trim & "%'"
+                cadFiltro = "nombremunicipioactual like '%" & txtSearch.Text.Trim & "%'"
             ElseIf cboFiltros.SelectedIndex = 3 Then
-                cadFiltro = "provincias.nombreprovincia like '%" & txtSearch.Text.Trim & "%'"
+                cadFiltro = "nombreprovincia like '%" & txtSearch.Text.Trim & "%'"
             ElseIf cboFiltros.SelectedIndex = 4 Then
                 If IsNumeric(txtSearch.Text.Trim) Then
                     If txtSearch.Text.Length <= 2 Then
-                        cadFiltro = "territorios.provincia = " & txtSearch.Text.Trim
+                        cadFiltro = "provincia_ine = " & txtSearch.Text.Trim
                     Else
-                        cadFiltro = "territorios.munihisto = " & txtSearch.Text.Trim
+                        cadFiltro = "cod_munihisto = " & txtSearch.Text.Trim
                     End If
                 End If
             End If
@@ -292,9 +292,14 @@
     Sub MostrarResConsulta(ByVal cadfiltro As String)
 
         If rcdMuniHistos Is Nothing Then Exit Sub
-        rcdMuniHistos.RowFilter = cadfiltro
-        DataGridView1.DataSource = rcdMuniHistos
-        DataGridView1.Update()
+        Try
+            rcdMuniHistos.RowFilter = cadfiltro
+            DataGridView1.DataSource = rcdMuniHistos
+            DataGridView1.Update()
+
+        Catch ex As Exception
+            ModalError(ex.Message)
+        End Try
         If cadfiltro = "" Then
             ToolStripStatusLabel2.Text = ""
         Else
@@ -502,11 +507,14 @@
         If DataGridView1.CurrentCell.RowIndex < 0 Then Exit Sub
 
         indiceGrid = DataGridView1.CurrentCell.RowIndex
-        idMuni = DataGridView1.Item("idmunihisto", indiceGrid).Value.ToString
+        idMuni = DataGridView1.Item("idterritorio", indiceGrid).Value.ToString
         If idMuni = 0 Then Exit Sub
         muniHEdit = New MuniHisto(idMuni)
 
-        Application.DoEvents()
+        If muniHEdit.tipo <> "Municipio histórico" Then
+            ModalExclamation("Sólo pueden modificarse territorios históricos")
+            Exit Sub
+        End If
 
         If altaMuniH.muniHEditorDialog(muniHEdit) = True Then
             Me.Cursor = Cursors.WaitCursor
@@ -537,6 +545,7 @@
     End Sub
 
     Private Sub redimensionLV(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvDetails.Resize, lvColin.Resize
+
         If lvDetails.Columns.Count = 2 Then
             lvDetails.Columns(0).Width = 130
             lvDetails.Columns(1).Width = lvDetails.Width - 140
@@ -613,4 +622,6 @@
         ResizeDatagridView()
 
     End Sub
+
+
 End Class
