@@ -60,6 +60,7 @@ Module Basics
 
     'Encabezados para las consultas
     Public Encabezados(20) As EncabezadosConsulta
+    Public TipoTerritoriosEditables() As String = {"Municipio histórico", "Territorio histórico"}
 
     Public Sub LeerConfiguracionINI()
 
@@ -425,6 +426,7 @@ Module Basics
     End Sub
 
     Sub LanzarSpinner(ByVal Texto As String)
+
         dlgSpinner.MdiParent = MDIPrincipal
         dlgSpinner.Label1.Text = Texto
         dlgSpinner.Show()

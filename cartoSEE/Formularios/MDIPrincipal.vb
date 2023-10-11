@@ -613,8 +613,7 @@ Public Class MDIPrincipal
             Dim FrmResult As New frmDocumentacion
             FrmResult.MdiParent = Me
             FrmResult.Text = "Provincia: " & DameProvinciaByINE(cProv.ToString) & DescripFiltro
-            FrmResult.CargarDatosSIDCARTO_By_Provincia(cProv, TiposDocumento,
-                                                            EstadosDocumento, CadFiltro)
+            FrmResult.CargarDatosSIDCARTO_By_Provincia(cProv, TiposDocumento, EstadosDocumento, CadFiltro)
             FrmResult.Show()
         ElseIf nSellado <> "" Then
             Dim FrmResult As New frmDocumentacion
@@ -640,8 +639,7 @@ Public Class MDIPrincipal
             Dim FrmResult As New frmDocumentacion
             FrmResult.MdiParent = Me
             FrmResult.Text = "Todas las provincias. " & DescripFiltro
-            FrmResult.CargarDatosSIDCARTO_By_Filtro(CadFiltro, EstadosDocumento,
-                                                            TiposDocumento)
+            FrmResult.CargarDatosSIDCARTO_By_Filtro(CadFiltro, EstadosDocumento, TiposDocumento)
             FrmResult.Show()
         End If
 
@@ -913,9 +911,12 @@ Public Class MDIPrincipal
                 MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
         ElseIf sender.name = "mnuMuniHisto" Or sender.name = "ToolStripButton10" Then
+            Me.Cursor = Cursors.WaitCursor
+            LanzarSpinner()
             Dim frmMuniH As New frmMuniHisto
             frmMuniH.MdiParent = Me
             frmMuniH.Show()
+            Me.Cursor = Cursors.Default
         ElseIf sender.name = "mnuAddECW" Then
             Dim frmAddECWs As New ImportECW
             frmAddECWs.MdiParent = Me

@@ -24,6 +24,7 @@
     ''' <returns></returns>
     Property ngmep_muni_id As Integer = 0
     Property centroide_id As Integer = 0
+    Property otros_centroides_id As String = ""
     Property observaciones As String
     Property nombre4CdD As String = ""
     ''' <summary>
@@ -33,8 +34,11 @@
     ''' </summary>
     ''' <returns></returns>
     Property seqJurisdiccion As String
+    ''' <summary>
+    ''' Cada elemento contiene, separado`por | : idterritorio|codine (5 dígitos)|{nombre|ngmep_muni_id
+    ''' </summary>
+    ''' <returns></returns>
     Property lstJurisdiccion As New ArrayList
-
 
     ReadOnly Property codineMuniHisto_toString() As String
         Get
@@ -75,7 +79,7 @@
                     provincias.nombreprovincia,provincias.comautonoma_id,
                     to_char(Territorios.munihisto, 'FM0000000'::text) AS cod_munihisto,
                     to_char(Territorios.Municipio, 'FM00000'::text) AS codine,
-                    to_char(Territorios.Provincia, 'FM00'::text) AS provincia_id, tipo, pertenencia, poligono_carto,
+                    to_char(Territorios.Provincia, 'FM00'::text) AS provincia_id, tipo, pertenencia, poligono_carto, otros_centroid_id,
 					nombremostrado, observaciones,nombrecdd, ngbe_id, nomen_id as ngmep_id, ngmep_muni_id
                     FROM bdsidschema.territorios 
                     LEFT JOIN bdsidschema.provincias ON provincias.idprovincia=territorios.provincia 
@@ -97,18 +101,15 @@
                 ngbe_id = fila.Item("ngbe_id")
                 ngmep_muni_id = fila.Item("ngmep_muni_id")
                 centroide_id = fila.Item("poligono_carto")
+                otros_centroides_id = fila.Item("otros_centroid_id").ToString
                 codineMuniActual = fila.Item("codine")
                 codineMuniHisto = fila.Item("cod_munihisto")
                 observaciones = fila.Item("observaciones").ToString
                 nombre4CdD = fila.Item("nombrecdd").ToString
                 seqJurisdiccion = fila.Item("pertenencia").ToString
+                getJurisdicciones()
 
-                jurisdicciones = seqJurisdiccion.Split(";")
-                If jurisdicciones.Length = 1 And fila.Item("pertenencia").ToString <> 0 Then
-                    lstJurisdiccion.Add($"{codineMuniActual}|{nombreMuniActual}|{ngmep_muni_id}")
-                Else
-                    getJurisdicciones()
-                End If
+
             Next
 
         Catch ex As Exception
@@ -126,11 +127,11 @@
         Try
 
             Dim rcdJurisdiccion As New DataTable
-            If Not CargarRecordset($"SELECT idterritorio,nombre,to_char(Territorios.Municipio, 'FM00000'::text) AS codine 
+            If Not CargarRecordset($"SELECT idterritorio,nombre,to_char(Territorios.Municipio, 'FM00000'::text) AS codine,ngmep_muni_id 
                                     FROM  bdsidschema.territorios 
-                                    WHERE tipo='Municipio' and codine in ({seqJurisdiccion})", rcdJurisdiccion) Then Exit Sub
+                                    WHERE tipo='Municipio' and municipio in ({seqJurisdiccion})", rcdJurisdiccion) Then Exit Sub
             For Each fila As DataRow In rcdJurisdiccion.Select
-
+                lstJurisdiccion.Add($"{fila.Item("idterritorio")}|{fila.Item("codine")}|{fila.Item("nombre")}|{fila.Item("ngmep_muni_id")}")
             Next
         Catch ex As Exception
 

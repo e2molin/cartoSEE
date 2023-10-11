@@ -139,7 +139,7 @@
 
         btnEdit.Enabled = usuarioMyApp.permisosLista.editarDocumentacion
         btnNew.Enabled = usuarioMyApp.permisosLista.editarDocumentacion
-
+        CerrarSpinner()
 
     End Sub
 
@@ -188,7 +188,7 @@
                 cadLinea = ""
                 For j As Integer = 1 To DataGridView1.ColumnCount - 1
                     If DataGridView1.Columns(j).Visible = True Then
-                        cadLinea = cadLinea & _
+                        cadLinea = cadLinea &
                                 DataGridView1.Item(j, DataGridView1.SelectedRows(i).Index).Value.ToString & ";"
                     End If
                 Next
@@ -207,7 +207,7 @@
                 cadLinea = ""
                 For j As Integer = 1 To DataGridView1.ColumnCount - 1
                     If DataGridView1.Columns(j).Visible = True Then
-                        cadLinea = cadLinea & _
+                        cadLinea = cadLinea &
                                 DataGridView1.Item(j, DataGridView1.Rows(i).Index).Value.ToString & ";"
                     End If
                 Next
@@ -417,7 +417,7 @@
                     FROM bdsidschema.territorios 
                     LEFT JOIN bdsidschema.provincias ON provincias.idprovincia=territorios.provincia 
                     LEFT JOIN ngmepschema.listamunicipios ON territorios.ngmep_muni_id = listamunicipios.identidad
-                    WHERE tipo IN ('Municipio','Municipio histórico') order by territorios.nombremostrado, nombremunicipioactual"
+                    WHERE tipo IN ('Municipio','Municipio histórico','Condominio','Condominio histórico','Territorio histórico','Exclave') order by territorios.nombremostrado, nombremunicipioactual"
         Try
             rcdMuniHistos = New DataView
             If Not CargarDataView(SQLBase, rcdMuniHistos) Then
@@ -489,12 +489,14 @@
 
 
     Private Sub btnNew_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew.Click
+
         If altaMuniH.muniHNewDialog = True Then
             Me.Cursor = Cursors.WaitCursor
             CargarListasMunicipios()
             Me.Cursor = Cursors.Default
-            ModalInfo("Municipio histórico creado")
+            ModalInfo("Territorio histórico creado")
         End If
+
     End Sub
 
 
@@ -505,22 +507,27 @@
         Dim idMuni As Integer
 
         If DataGridView1.CurrentCell.RowIndex < 0 Then Exit Sub
+        Try
+            indiceGrid = DataGridView1.CurrentCell.RowIndex
+            If Not TipoTerritoriosEditables.Contains(DataGridView1.Item("tipo", indiceGrid).Value.ToString, StringComparer.CurrentCultureIgnoreCase) Then 'case insensitive
+                ModalExclamation("Sólo pueden modificarse territorios y municipios históricos")
+                Exit Sub
+            End If
+        Catch ex As Exception
+            ModalError(ex.Message)
+            Exit Sub
+        End Try
 
-        indiceGrid = DataGridView1.CurrentCell.RowIndex
         idMuni = DataGridView1.Item("idterritorio", indiceGrid).Value.ToString
         If idMuni = 0 Then Exit Sub
         muniHEdit = New MuniHisto(idMuni)
 
-        If muniHEdit.tipo <> "Municipio histórico" Then
-            ModalExclamation("Sólo pueden modificarse territorios históricos")
-            Exit Sub
-        End If
 
         If altaMuniH.muniHEditorDialog(muniHEdit) = True Then
             Me.Cursor = Cursors.WaitCursor
             CargarListasMunicipios()
             Me.Cursor = Cursors.Default
-            ModalInfo("Municipio histórico modificado")
+            ModalInfo("Territorio histórico modificado")
         End If
 
     End Sub

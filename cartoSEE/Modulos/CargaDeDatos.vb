@@ -68,7 +68,7 @@ Module CargaDeDatos
             ListaMunicipiosHisto = New DataTable
             If Not CargarDatatableMuni("SELECT idterritorio as idmunihisto, nombre,provincia as provincia_id,munihisto as cod_munihisto,
                                         translate(nombre,'áéíóúàèìòùÁÉÍÓÚÀÈÌÒÙ','aeiouaeiouAEIOUAEIOU') as nombreSearch,municipio as inecortoActual 
-                                        FROM bdsidschema.territorios WHERE tipo IN ('Municipio','Municipio histórico')", ListaMunicipiosHisto) Then
+                                        FROM bdsidschema.territorios WHERE tipo IN ('Municipio','Municipio histórico','Condominio histórico','Territorio histórico','Exclave')", ListaMunicipiosHisto) Then
                 ModalExclamation("No se puede acceder a la tabla de territorios")
             End If
 
