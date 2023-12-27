@@ -795,7 +795,7 @@ Public Class frmDocumentacion
         End If
         ToolStripStatusLabel1.Text = "Resultados : " & ListView1.Items.Count.ToString & " documentos"
         CerrarSpinner()
-        Me.Parent.Cursor = DefaultCursor
+
 
     End Sub
 

@@ -22,13 +22,13 @@
                 "string_agg(territorios.nombre,'#') as listaMuniHisto,string_agg(to_char(territorios.munihisto, 'FM0000009'::text),'#') as listaCodMuniHisto," &
                 "string_agg(listamunicipios.nombre,'#') as listaMuniActual, string_agg(listamunicipios.inecorto,'#') as listaCodMuniActual, string_agg(provincias.nombreprovincia,'#') as nombreprovincia " &
         "FROM bdsidschema.archivo " &
-            "INNER JOIN bdsidschema.tbtipodocumento ON tbtipodocumento.idtipodoc=archivo.tipodoc_id " &
-            "INNER JOIN bdsidschema.tbestadodocumento ON tbestadodocumento.idestadodoc=archivo.estadodoc_id " &
-            "INNER JOIN  bdsidschema.archivo2territorios ON archivo2territorios.archivo_id=archivo.idarchivo " &
+            "LEFT JOIN bdsidschema.tbtipodocumento ON tbtipodocumento.idtipodoc=archivo.tipodoc_id " &
+            "LEFT JOIN bdsidschema.tbestadodocumento ON tbestadodocumento.idestadodoc=archivo.estadodoc_id " &
+            "LEFT JOIN  bdsidschema.archivo2territorios ON archivo2territorios.archivo_id=archivo.idarchivo " &
             "LEFT JOIN  bdsidschema.tbobservaciones  ON tbobservaciones.idobservestandar=archivo.observestandar_id " &
-            "INNER JOIN bdsidschema.territorios on territorios.idterritorio= archivo2munihisto.territorio_id " &
+            "LEFT JOIN bdsidschema.territorios on territorios.idterritorio= archivo2munihisto.territorio_id " &
             "LEFT JOIN ngmepschema.listamunicipios on territorios.nomen_id= listamunicipios.identidad " &
-            "INNER JOIN bdsidschema.provincias on territorios.provincia= provincias.idprovincia " &
+            "LEFT JOIN bdsidschema.provincias on territorios.provincia= provincias.idprovincia " &
             "LEFT JOIN bdsidschema.contornos ON archivo.idarchivo=contornos.archivo_id "
 
     Const consultaSQLBaseWithoutContour As String =
@@ -40,13 +40,13 @@
                 "string_agg(territorios.nombre,'#') as listaMuniHisto,string_agg(to_char(territorios.munihisto, 'FM0000009'::text),'#') as listaCodMuniHisto," &
                 "string_agg(listamunicipios.nombre,'#') as listaMuniActual, string_agg(listamunicipios.inecorto,'#') as listaCodMuniActual, string_agg(provincias.nombreprovincia,'#') as nombreprovincia " &
         "FROM bdsidschema.archivo " &
-            "INNER JOIN bdsidschema.tbtipodocumento ON tbtipodocumento.idtipodoc=archivo.tipodoc_id " &
-            "INNER JOIN bdsidschema.tbestadodocumento ON tbestadodocumento.idestadodoc=archivo.estadodoc_id " &
-            "INNER JOIN  bdsidschema.archivo2territorios  ON archivo2territorios.archivo_id=archivo.idarchivo " &
+            "LEFT JOIN bdsidschema.tbtipodocumento ON tbtipodocumento.idtipodoc=archivo.tipodoc_id " &
+            "LEFT JOIN bdsidschema.tbestadodocumento ON tbestadodocumento.idestadodoc=archivo.estadodoc_id " &
+            "LEFT JOIN  bdsidschema.archivo2territorios  ON archivo2territorios.archivo_id=archivo.idarchivo " &
             "LEFT JOIN  bdsidschema.tbobservaciones  ON tbobservaciones.idobservestandar=archivo.observestandar_id " &
-            "INNER JOIN bdsidschema.territorios on territorios.idterritorio= archivo2territorios.territorio_id " &
+            "LEFT JOIN bdsidschema.territorios on territorios.idterritorio= archivo2territorios.territorio_id " &
             "LEFT JOIN ngmepschema.listamunicipios on territorios.nomen_id= listamunicipios.identidad " &
-            "INNER JOIN bdsidschema.provincias on territorios.provincia= provincias.idprovincia "
+            "LEFT JOIN bdsidschema.provincias on territorios.provincia= provincias.idprovincia "
 
 
     Sub New()
@@ -261,16 +261,22 @@
             item.autorDocumento = dR("autor").ToString
             item.encabezadoABSYSdoc = dR("encabezado").ToString
 
+            Application.DoEvents()
+
             For Each elem As String In dR("listaMuniHisto").ToString.Split("#")
+                If elem = "" Then Continue For
                 item.listaMuniHistorico.Add(elem)
             Next
             For Each elem As String In dR("listaCodMuniHisto").ToString.Split("#")
+                If elem = "" Then Continue For
                 item.listaCodMuniHistorico.Add(elem)
             Next
             For Each elem As String In dR("listaMuniActual").ToString.Split("#")
+                If elem = "" Then Continue For
                 item.listaMuniActual.Add(elem)
             Next
             For Each elem As String In dR("listaCodMuniActual").ToString.Split("#")
+                If elem = "" Then Continue For
                 item.listaCodMuniActual.Add(elem)
             Next
 

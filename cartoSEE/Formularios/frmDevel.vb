@@ -871,4 +871,17 @@
 
         MessageBox.Show("Proyectos de recorte generados", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
     End Sub
+
+    Private Sub Button17_Click(sender As Object, e As EventArgs) Handles Button17.Click
+
+        Try
+            Dim FormularioCreacion As New frmEdicion
+            FormularioCreacion.MdiParent = MDIPrincipal
+            FormularioCreacion.ModoTrabajo("SIMPLE", TextBox1.Text)
+            FormularioCreacion.Show()
+            FormularioCreacion.Visible = True
+        Catch ex As Exception
+            ModalError(ex.Message)
+        End Try
+    End Sub
 End Class
