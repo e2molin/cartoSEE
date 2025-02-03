@@ -64,15 +64,20 @@ Module CargaDeDatos
     ''' </summary>
     Sub CargarListasMunicipios()
 
-        ListaMunicipiosHisto = New DataTable
+        Try
+            ListaMunicipiosHisto = New DataTable
+            If Not CargarDatatableMuni("SELECT idterritorio as idmunihisto, nombre,provincia as provincia_id,munihisto as cod_munihisto,
+                                        translate(nombre,'áéíóúàèìòùÁÉÍÓÚÀÈÌÒÙ','aeiouaeiouAEIOUAEIOU') as nombreSearch,municipio as inecortoActual 
+                                        FROM bdsidschema.territorios WHERE tipo IN ('Municipio','Municipio histórico','Condominio histórico','Territorio histórico','Exclave')", ListaMunicipiosHisto) Then
+                ModalExclamation("No se puede acceder a la tabla de territorios")
+            End If
 
-        If CargarDatatableMuni("SELECT idmunihisto,nombremunicipiohistorico as nombre,provincia_id,cod_munihisto," &
-                               "translate(nombremunicipiohistorico,'áéíóúàèìòùÁÉÍÓÚÀÈÌÒÙ','aeiouaeiouAEIOUAEIOU') as nombreSearch,cod_muni as inecortoActual " &
-                            "FROM bdsidschema.munihisto " &
-                            " ", ListaMunicipiosHisto) = False Then
-            MessageBox.Show("No se puede acceder a la tabla de municipios históricos",
-                            My.Application.Info.AssemblyName, MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End If
+        Catch ex As Exception
+            ModalError(ex.Message)
+        End Try
+
+
+
 
 
     End Sub
@@ -82,18 +87,19 @@ Module CargaDeDatos
     ''' </summary>
     Sub CargarListasMunicipiosActual()
         Dim cadSQL As String
-        ListaMunicipiosActual = New DataTable
 
-        cadSQL = "SELECT identidad as idmunihisto,nombre ,codigoprov as provincia_id,inecorto || '00' as cod_munihisto," & _
-                    "translate(listamunicipios.nombre,'áéíóúàèìòùÁÉÍÓÚÀÈÌÒÙ','aeiouaeiouAEIOUAEIOU') as nombreSearch,inecorto as inecortoActual " & _
+        Try
+            ListaMunicipiosActual = New DataTable
+            cadSQL = "SELECT identidad as idmunihisto,nombre ,codigoprov as provincia_id,inecorto || '00' as cod_munihisto," &
+                    "translate(listamunicipios.nombre,'áéíóúàèìòùÁÉÍÓÚÀÈÌÒÙ','aeiouaeiouAEIOUAEIOU') as nombreSearch,inecorto as inecortoActual " &
                     "FROM ngmepschema.listamunicipios"
-        'cadSQL = "SELECT identidad as idmunihisto,nombre ,provincia_id,munihisto.cod_munihisto as cod_munihisto," & _
-        '                       "translate(listamunicipios.nombre,'áéíóúàèìòùÁÉÍÓÚÀÈÌÒÙ','aeiouaeiouAEIOUAEIOU') as nombreSearch,inecorto as inecortoActual " & _
-        '                        "FROM ngmepschema.listamunicipios inner join munihisto on munihisto.entidad_id=listamunicipios.identidad"
-            
-        If CargarDatatableMuni(cadSQL, ListaMunicipiosActual) = False Then
-            MessageBox.Show("No se puede acceder a la tabla de municipios actuales", My.Application.Info.AssemblyName, MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End If
+            If Not CargarDatatableMuni(cadSQL, ListaMunicipiosActual) Then
+                ModalExclamation("No se puede acceder a la tabla de municipios actuales")
+            End If
+        Catch ex As Exception
+            ModalError(ex.Message)
+        End Try
+
 
 
     End Sub

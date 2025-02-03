@@ -114,6 +114,7 @@ Partial Class frmEdicion
         Me.Label22 = New System.Windows.Forms.Label()
         Me.TextBox2 = New System.Windows.Forms.TextBox()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
+        Me.Button10 = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.StatusStrip1.SuspendLayout()
@@ -122,6 +123,7 @@ Partial Class frmEdicion
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.Button10)
         Me.GroupBox1.Controls.Add(Me.CheckedListBox1)
         Me.GroupBox1.Controls.Add(Me.TextBox9)
         Me.GroupBox1.Controls.Add(Me.Label24)
@@ -953,7 +955,7 @@ Partial Class frmEdicion
         'Button5
         '
         Me.Button5.Image = CType(resources.GetObject("Button5.Image"), System.Drawing.Image)
-        Me.Button5.Location = New System.Drawing.Point(12, 12)
+        Me.Button5.Location = New System.Drawing.Point(117, 12)
         Me.Button5.Name = "Button5"
         Me.Button5.Size = New System.Drawing.Size(92, 38)
         Me.Button5.TabIndex = 50
@@ -964,9 +966,9 @@ Partial Class frmEdicion
         'Button6
         '
         Me.Button6.Image = CType(resources.GetObject("Button6.Image"), System.Drawing.Image)
-        Me.Button6.Location = New System.Drawing.Point(110, 12)
+        Me.Button6.Location = New System.Drawing.Point(12, 12)
         Me.Button6.Name = "Button6"
-        Me.Button6.Size = New System.Drawing.Size(92, 38)
+        Me.Button6.Size = New System.Drawing.Size(99, 38)
         Me.Button6.TabIndex = 51
         Me.Button6.Text = "Imágenes"
         Me.Button6.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
@@ -1044,6 +1046,18 @@ Partial Class frmEdicion
         'OpenFileDialog1
         '
         Me.OpenFileDialog1.FileName = "OpenFileDialog1"
+        '
+        'Button10
+        '
+        Me.Button10.Image = CType(resources.GetObject("Button10.Image"), System.Drawing.Image)
+        Me.Button10.Location = New System.Drawing.Point(682, 550)
+        Me.Button10.Name = "Button10"
+        Me.Button10.Size = New System.Drawing.Size(270, 40)
+        Me.Button10.TabIndex = 79
+        Me.Button10.Text = "Ver imagen del documento"
+        Me.Button10.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Button10.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.Button10.UseVisualStyleBackColor = True
         '
         'frmEdicion
         '
@@ -1160,4 +1174,5 @@ Partial Class frmEdicion
     Friend WithEvents Label24 As System.Windows.Forms.Label
     Friend WithEvents CheckBox24 As System.Windows.Forms.CheckBox
     Friend WithEvents CheckedListBox1 As CheckedListBox
+    Friend WithEvents Button10 As Button
 End Class

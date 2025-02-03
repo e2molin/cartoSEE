@@ -54,10 +54,13 @@ Module Basics
     Public rutaRepoThumbs As String
 
     Public Const visorCartociudad As String = "https://www.cartociudad.es/visor/"
+    Public urlCDDSearchEngine As String
+    Public urlGazetteerNGBESearchEngine As String
 
 
     'Encabezados para las consultas
     Public Encabezados(20) As EncabezadosConsulta
+    Public TipoTerritoriosEditables() As String = {"Municipio histórico", "Territorio histórico"}
 
     Public Sub LeerConfiguracionINI()
 
@@ -82,6 +85,10 @@ Module Basics
         rutaCentroDescargas = LeeIni("Metadatos", "rutaCentroDescargas").Trim
         rutaRepoThumbs = LeeIni("Metadatos", "rutaRepoThumbs").Trim
         urlAbsysLink = LeeIni("Configuracion", "urlAbsysLink")
+        urlCDDSearchEngine = LeeIni("Configuracion", "urlCDDSearchEngine")
+        urlGazetteerNGBESearchEngine = LeeIni("Configuracion", "urlGazetteerNGBESearchEngine")
+
+
         canonicalURLCatalogoNew = LeeIni("Configuracion", "canonicalURLCatalogoNew")
 
         CalidadFavorita = LeeIni("Repositorio", "CalidadFavorita")
@@ -419,6 +426,7 @@ Module Basics
     End Sub
 
     Sub LanzarSpinner(ByVal Texto As String)
+
         dlgSpinner.MdiParent = MDIPrincipal
         dlgSpinner.Label1.Text = Texto
         dlgSpinner.Show()

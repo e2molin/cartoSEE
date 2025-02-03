@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class frmDevel
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,7 +20,7 @@ Partial Class frmDevel
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
@@ -63,6 +63,8 @@ Partial Class frmDevel
         Me.FolderBrowserDialog1 = New System.Windows.Forms.FolderBrowserDialog()
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
         Me.Button17 = New System.Windows.Forms.Button()
+        Me.TextBox1 = New System.Windows.Forms.TextBox()
+        Me.Label7 = New System.Windows.Forms.Label()
         Me.StatusStrip1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
@@ -297,7 +299,6 @@ Partial Class frmDevel
         '
         'TabPage2
         '
-        Me.TabPage2.Controls.Add(Me.Button17)
         Me.TabPage2.Controls.Add(Me.Button16)
         Me.TabPage2.Controls.Add(Me.Button15)
         Me.TabPage2.Controls.Add(Me.Button14)
@@ -448,12 +449,66 @@ Partial Class frmDevel
         '
         'Button17
         '
-        Me.Button17.Location = New System.Drawing.Point(21, 401)
-        Me.Button17.Name = "Button17"
-        Me.Button17.Size = New System.Drawing.Size(254, 23)
-        Me.Button17.TabIndex = 15
-        Me.Button17.Text = "Obtener de cero la tabla archivo2territorios"
-        Me.Button17.UseVisualStyleBackColor = True
+        Me.Button10.Location = New System.Drawing.Point(291, 6)
+        Me.Button10.Name = "Button10"
+        Me.Button10.Size = New System.Drawing.Size(195, 23)
+        Me.Button10.TabIndex = 8
+        Me.Button10.Text = "Plantilla planos de población Cutter"
+        Me.Button10.UseVisualStyleBackColor = True
+        '
+        'Button11
+        '
+        Me.Button11.Location = New System.Drawing.Point(291, 35)
+        Me.Button11.Name = "Button11"
+        Me.Button11.Size = New System.Drawing.Size(195, 23)
+        Me.Button11.TabIndex = 9
+        Me.Button11.Text = "Plantilla Altimetrías Cutter"
+        Me.Button11.UseVisualStyleBackColor = True
+        '
+        'Button12
+        '
+        Me.Button12.Location = New System.Drawing.Point(291, 64)
+        Me.Button12.Name = "Button12"
+        Me.Button12.Size = New System.Drawing.Size(195, 23)
+        Me.Button12.TabIndex = 10
+        Me.Button12.Text = "Plantilla Planimetrías Cutter"
+        Me.Button12.UseVisualStyleBackColor = True
+        '
+        'Button13
+        '
+        Me.Button13.Location = New System.Drawing.Point(291, 93)
+        Me.Button13.Name = "Button13"
+        Me.Button13.Size = New System.Drawing.Size(195, 23)
+        Me.Button13.TabIndex = 11
+        Me.Button13.Text = "Plantilla Conjuntas Cutter"
+        Me.Button13.UseVisualStyleBackColor = True
+        '
+        'Button14
+        '
+        Me.Button14.Location = New System.Drawing.Point(291, 122)
+        Me.Button14.Name = "Button14"
+        Me.Button14.Size = New System.Drawing.Size(195, 23)
+        Me.Button14.TabIndex = 12
+        Me.Button14.Text = "Plantilla Edificación Cutter"
+        Me.Button14.UseVisualStyleBackColor = True
+        '
+        'Button15
+        '
+        Me.Button15.Location = New System.Drawing.Point(291, 151)
+        Me.Button15.Name = "Button15"
+        Me.Button15.Size = New System.Drawing.Size(195, 23)
+        Me.Button15.TabIndex = 13
+        Me.Button15.Text = "Plantilla Directorios Cutter"
+        Me.Button15.UseVisualStyleBackColor = True
+        '
+        'Button16
+        '
+        Me.Button16.Location = New System.Drawing.Point(291, 180)
+        Me.Button16.Name = "Button16"
+        Me.Button16.Size = New System.Drawing.Size(195, 23)
+        Me.Button16.TabIndex = 14
+        Me.Button16.Text = "Plantilla Hojas kilométricas Cutter"
+        Me.Button16.UseVisualStyleBackColor = True
         '
         'frmDevel
         '
@@ -474,6 +529,7 @@ Partial Class frmDevel
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         Me.TabPage2.ResumeLayout(False)
+        Me.TabPage2.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -518,5 +574,4 @@ Partial Class frmDevel
     Friend WithEvents Button14 As System.Windows.Forms.Button
     Friend WithEvents Button15 As System.Windows.Forms.Button
     Friend WithEvents Button16 As System.Windows.Forms.Button
-    Friend WithEvents Button17 As Button
 End Class

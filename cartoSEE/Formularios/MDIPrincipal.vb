@@ -1,7 +1,3 @@
-Imports System.Windows.Forms
-Imports System.Configuration
-
-
 Public Class MDIPrincipal
 
     Dim Autocompletar_municipios As Boolean
@@ -617,8 +613,7 @@ Public Class MDIPrincipal
             Dim FrmResult As New frmDocumentacion
             FrmResult.MdiParent = Me
             FrmResult.Text = "Provincia: " & DameProvinciaByINE(cProv.ToString) & DescripFiltro
-            FrmResult.CargarDatosSIDCARTO_By_Provincia(cProv, TiposDocumento,
-                                                            EstadosDocumento, CadFiltro)
+            FrmResult.CargarDatosSIDCARTO_By_Provincia(cProv, TiposDocumento, EstadosDocumento, CadFiltro)
             FrmResult.Show()
         ElseIf nSellado <> "" Then
             Dim FrmResult As New frmDocumentacion
@@ -644,8 +639,7 @@ Public Class MDIPrincipal
             Dim FrmResult As New frmDocumentacion
             FrmResult.MdiParent = Me
             FrmResult.Text = "Todas las provincias. " & DescripFiltro
-            FrmResult.CargarDatosSIDCARTO_By_Filtro(CadFiltro, EstadosDocumento,
-                                                            TiposDocumento)
+            FrmResult.CargarDatosSIDCARTO_By_Filtro(CadFiltro, EstadosDocumento, TiposDocumento)
             FrmResult.Show()
         End If
 
@@ -866,7 +860,7 @@ Public Class MDIPrincipal
 
 
     Sub ArranqueHerramientas(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-                                    Handles ToolStripButton9.Click,
+                                    Handles ToolStripButton9.Click, ToolStripButton10.Click,
                                     mnuTool_AltaDoc.Click,
                                     mnuGenerarRejilla.Click,
                                     mnuLanzarPlantilla.Click, mnuAddECW.Click, mnuAddContornos.Click, mnuMuniHisto.Click, mnuOpenPreferenceFolder.Click, mnuOpenLoggerFile.Click, mnuQueryLibrosRegistro.Click, ToolStripButton20.Click
@@ -916,10 +910,13 @@ Public Class MDIPrincipal
             Catch ex As Exception
                 MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
-        ElseIf sender.name = "mnuMuniHisto" Then
+        ElseIf sender.name = "mnuMuniHisto" Or sender.name = "ToolStripButton10" Then
+            Me.Cursor = Cursors.WaitCursor
+            LanzarSpinner()
             Dim frmMuniH As New frmMuniHisto
             frmMuniH.MdiParent = Me
             frmMuniH.Show()
+            Me.Cursor = Cursors.Default
         ElseIf sender.name = "mnuAddECW" Then
             Dim frmAddECWs As New ImportECW
             frmAddECWs.MdiParent = Me
@@ -1159,7 +1156,6 @@ Public Class MDIPrincipal
                             ToolStripButton16.Click, mnuResconsulta5.Click,
                             ToolStripButton14.Click, mnuGenerarMetadatos.Click,
                             ToolStripButton11.Click, mnuResconsulta7.Click,
-                            ToolStripButton10.Click, mnuResconsulta6.Click,
                             ToolStripButton8.Click, mnuResconsulta8.Click,
                             ToolStripButton18.Click, mnuResconsulta9.Click, mnuGenMiniatura.Click
 
@@ -1195,8 +1191,6 @@ Public Class MDIPrincipal
             frmAccion.ProcGenerarMetadatos(sender, e)
         ElseIf sender.name = "ToolStripButton11" Or sender.name = "mnuResconsulta7" Then
             frmAccion.LanzarTareaGuardarEnCarpeta(sender, e)
-        ElseIf sender.name = "ToolStripButton10" Or sender.name = "mnuResconsulta6" Then
-            frmAccion.SelectColumnas(sender, e)
         ElseIf sender.name = "ToolStripButton8" Or sender.name = "mnuResconsulta8" Then
             frmAccion.ExportarListaResultados2CSV(sender, e)
         ElseIf sender.name = "mnuExtraerContornos" Then
@@ -1536,7 +1530,7 @@ Public Class MDIPrincipal
         Try
             posicionCaptur = New GEOCoordenada(cadCoors(0), cadCoors(1), GEOCoordenada.srs.GOOGLE_SphericalMercator)
             salida = posicionCaptur.convertTo(GEOCoordenada.srs.GEO_ETRS89)
-            TextBox11.Text = Math.Round(posicionCaptur.eastingCoord, 0)
+            TextBox11.Text = Math.Round(posicionCaptur.EastingCoord, 0)
             TextBox12.Text = Math.Round(posicionCaptur.NorthingCoord, 0)
             'Monitores con resolución 1920x1080 -> Altura de la venta de cartociudad en navegador maximizado -> 800 píxeles
             'Monitores con resolución 3440x1440 -> Altura de la venta de cartociudad en navegador maximizado -> 1200 píxeles

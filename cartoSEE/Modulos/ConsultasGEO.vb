@@ -235,7 +235,7 @@ Module ConsultasGEO
         If CodigoINE = "82" Then CodigoINE = "28"
         If CodigoINE = "88" Then CodigoINE = "28"
         Dim fila() As DataRow = ListaProvincias.Select("INE=" & CodigoINE)
-        DirRepoProvinciaByINE = "Desconocida"
+        DirRepoProvinciaByINE = ""
         If fila.Length > 0 Then
             DirRepoProvinciaByINE = fila(0).ItemArray(3).ToString
         End If

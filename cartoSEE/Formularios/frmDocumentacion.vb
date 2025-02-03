@@ -563,7 +563,7 @@ Public Class frmDocumentacion
         registrarDatabaseLog("CargarDatosSIDCARTO_By_MunicipioID:" & codMuniHisto)
         resultsetGeodocat = New docCartoSEEquery
         resultsetGeodocat.flag_CargarFicherosGEO = True
-        resultsetGeodocat.getDocsSIDDAE_ByFiltroSQL("munihisto.idmunihisto=" & codMuniHisto & filtroTiposDoc & filtroEstadoDoc & filterSQL)
+        resultsetGeodocat.getDocsSIDDAE_ByFiltroSQL("territorios.idterritorio=" & codMuniHisto & filtroTiposDoc & filtroEstadoDoc & filterSQL)
         resizingElements()
         populateListView()
 
@@ -795,7 +795,7 @@ Public Class frmDocumentacion
         End If
         ToolStripStatusLabel1.Text = "Resultados : " & ListView1.Items.Count.ToString & " documentos"
         CerrarSpinner()
-        Me.Parent.Cursor = DefaultCursor
+
 
     End Sub
 
@@ -2722,11 +2722,5 @@ Public Class frmDocumentacion
 
     End Sub
 
-    Private Sub lvAtributos_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lvAtributos.SelectedIndexChanged
 
-    End Sub
-
-    Private Sub lvAtributos_LocationChanged(sender As Object, e As EventArgs) Handles lvAtributos.LocationChanged
-
-    End Sub
 End Class

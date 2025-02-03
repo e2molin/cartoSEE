@@ -258,6 +258,26 @@
             elementsInEdition = New docCartoSEEquery
             elementsInEdition.flag_CargarFicherosGEO = True
             elementsInEdition.getDocsSIDDAE_ByFiltroSellado("archivo.idarchivo=" & indice)
+
+            If elementsInEdition.resultados.Count <> 1 Then
+                If ModalQuestion($"No se localiza el documento con idarchivo = {indice}.¿Desea crearlo?") = DialogResult.Yes Then
+                    Me.Tag = "0"
+                    Me.Text = "Nuevo documento"
+                    ToolStripStatusLabel1.Text = "Nuevo documento."
+                    GroupBox1.Text = "Nuevo documento"
+                    Button5.Visible = True
+                    Button6.Visible = True
+                    Button9.Visible = False
+                    CheckBox23.Visible = True
+                    Exit Sub
+                Else
+                    Me.Close()
+                    Exit Sub
+                End If
+
+            End If
+
+
             Me.Text = "Edición del documento nº: " & elementsInEdition.resultados(0).sellado
             ToolStripStatusLabel1.Text = "Edición del documento."
             GroupBox1.Text = "Edición del documento"
@@ -455,29 +475,38 @@
             'y se introducen las nuevas
             If CheckBox18.Checked = True And ListView1.Items.Count > 0 Then
                 If item.ProvinciaRepo <> CType(ListView1.Items(0).SubItems(4).Text, Integer) Then
-                    If CheckBox20.Checked = False Then
-                        MessageBox.Show("La Provincia del documento debe ser la misma a la que pertenece " & _
-                                        "el primer municipio asignado. No se realizará ninguna modificación.", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
-                        Exit Sub
-                    End If
-                    If CType(ComboBox6.SelectedItem, itemData).Valor <> ListView1.Items(0).SubItems(4).Text Then
-                        MessageBox.Show("La Provincia del documento debe ser la misma a la que pertenece " & _
-                                        "el primer municipio asignado. No se realizará ninguna modificación.", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
-                        Exit Sub
+                    If item.ProvinciaRepo = 82 And CType(ListView1.Items(0).SubItems(4).Text, Integer) = 28 Then
+                        Application.DoEvents()
+                    Else
+                        If CheckBox20.Checked = False Then
+                            ModalExclamation("La Provincia del documento debe ser la misma a la que pertenece el primer municipio asignado. No se realizará ninguna modificación")
+                            Exit Sub
+                        End If
+                        If CType(ComboBox6.SelectedItem, itemData).Valor <> ListView1.Items(0).SubItems(4).Text Then
+                            ModalExclamation("La Provincia del documento debe ser la misma a la que pertenece el primer municipio asignado. No se realizará ninguna modificación")
+                            Exit Sub
+                        End If
                     End If
                 End If
 
-                ListaSQL.Add("DELETE FROM bdsidschema.archivo2munihisto where archivo_id=" & item.docIndex)
-                ListaSQL.Add("INSERT INTO bdsidschema.archivolog (archivo_id, sellado, usuario_update, tabla, tipo_variacion, valor_old, valor_new) " &
-                                 "VALUES (" & item.docIndex & ",'" & item.Sellado & "','" & usuarioMyApp.loginUser & "','archivo2munihisto','Desasignación municipio histórico',E'" & item.muniHistoLiteralConINEHistorico.Replace("'", "\'") & "',null)")
+
+
+                ListaSQL.Add($"DELETE FROM bdsidschema.archivo2territorios where archivo_id={item.docIndex}")
+                ListaSQL.Add($"INSERT INTO bdsidschema.archivolog (archivo_id, sellado, usuario_update, tabla, tipo_variacion, valor_old, valor_new) 
+                                 VALUES ({item.docIndex},'{ item.Sellado}','{usuarioMyApp.loginUser}','archivo2territorios','Desasignación municipio histórico',
+                                 E'{item.muniHistoLiteralConINEHistorico.Replace("'", "\'")}',null)")
+
                 For Each itemLV As ListViewItem In ListView1.Items
-                    ListaSQL.Add("INSERT INTO bdsidschema.archivo2munihisto (idarchivo2muni,munihisto_id,archivo_id) " &
-                                "VALUES (nextval('bdsidschema.archivo2munihisto_idarchivo2muni_seq')," &
-                                itemLV.SubItems(3).Text & "," & item.docIndex & ")")
-                    ListaSQL.Add("INSERT INTO bdsidschema.archivolog (archivo_id, sellado, usuario_update, tabla, tipo_variacion, valor_old, valor_new) " &
-                                "VALUES (" & item.docIndex & ",'" & item.Sellado & "','" & usuarioMyApp.loginUser & "','archivo2munihisto','Asignación municipio histórico',null," &
-                                "E'" & itemLV.SubItems(0).Text.Replace("'", "\'") & "(" & itemLV.SubItems(2).Text & ")" & "')")
+                    ListaSQL.Add($"INSERT INTO bdsidschema.archivo2territorios (territorio_id,archivo_id) VALUES ({itemLV.SubItems(3).Text},{item.docIndex})")
+                    ListaSQL.Add($"INSERT INTO bdsidschema.archivolog (archivo_id, sellado, usuario_update, tabla, tipo_variacion, valor_old, valor_new) 
+                                VALUES ({item.docIndex},'{item.Sellado}','{usuarioMyApp.loginUser}','archivo2munihisto','Asignación municipio histórico',null,
+                                E'{itemLV.SubItems(0).Text.Replace("'", "\'")}({itemLV.SubItems(2).Text})')")
                 Next
+
+
+
+
+
             End If
             'Si se han producido cambios en el tipo de documento o en los municipios o en el número de sellado
             'en las ediciones individuales, puede originarse un cambio de 
@@ -622,16 +651,15 @@
         Dim ficherosDelete As New ArrayList
 
         For Each elem As docCartoSEE In elementsInEdition.resultados
-            ListaSQL.Add("DELETE FROM bdsidschema.contornos WHERE archivo_id=" & elem.docIndex)
-            ListaSQL.Add("DELETE FROM bdsidschema.archivo2munihisto WHERE archivo_id=" & elem.docIndex)
-            ListaSQL.Add("DELETE FROM bdsidschema.archivo WHERE idarchivo=" & elem.docIndex)
+            ListaSQL.Add($"DELETE FROM bdsidschema.contornos WHERE archivo_id={elem.docIndex}")
+            ListaSQL.Add($"DELETE FROM bdsidschema.archivo2territorios WHERE archivo_id={elem.docIndex}")
+            ListaSQL.Add($"DELETE FROM bdsidschema.archivo WHERE idarchivo={elem.docIndex}")
 
             ficherosDelete.Add(elem.rutaFicheroAltaRes)
             ficherosDelete.Add(elem.rutaFicheroBajaRes)
             ficherosDelete.Add(elem.rutaFicheroThumb)
 
             For Each fileGEO As String In elem.listaFicherosGeo
-                Application.DoEvents()
                 ficherosDelete.Add(fileGEO)
             Next
 
@@ -642,7 +670,7 @@
                 GenerarLOG(sentenciaSQL)
             Next
             For Each ficheroParaBorrar As String In ficherosDelete
-                GenerarLOG("Se borrará el fichero: " & ficheroParaBorrar)
+                GenerarLOG($"Se borrará el fichero: {ficheroParaBorrar}")
             Next
             Return True
         End If
@@ -651,8 +679,7 @@
             Try
                 System.IO.File.Delete(pathFileGeo)
             Catch ex As Exception
-                MessageBox.Show("Se han producido errores al eliminar la información gráfica del documento.No se eliminó el documento." &
-                                System.Environment.NewLine & ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                ModalError($"Se han producido errores al eliminar la información gráfica del documento.No se eliminó el documento.{Environment.NewLine}{ex.Message}")
                 Exit Function
             End Try
         Next
@@ -660,7 +687,7 @@
         If ExeTran(ListaSQL) Then
             Return True
         Else
-            MessageBox.Show("No se han podido elimnar los documentos", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            ModalExclamation("No se han podido eliminar los documentos")
             Return False
         End If
 
@@ -718,6 +745,7 @@
         ListaSQL.Add(cadInsBase)
         'Si hay cambios en el municipio, se borran las asociaciones antiguas 
         'y se introducen las nuevas
+
         For Each itemLV As ListViewItem In ListView1.Items
             Application.DoEvents()
             GenerarLOG("INSERT INTO bdsidschema.archivo2munihisto (idarchivo2muni,munihisto_id,archivo_id) " &
@@ -726,6 +754,8 @@
             ListaSQL.Add("INSERT INTO bdsidschema.archivo2munihisto (idarchivo2muni,munihisto_id,archivo_id) " &
                         "VALUES (nextval('bdsidschema.archivo2munihisto_idarchivo2muni_seq')," &
                         itemLV.SubItems(3).Text & "," & nuevoDoc.Indice & ")")
+            ListaSQL.Add("INSERT INTO bdsidschema.archivo2territorios (territorio_id,archivo_id) " &
+                        "VALUES (" & itemLV.SubItems(3).Text & "," & nuevoDoc.Indice & ")")
         Next
 
         If CheckBox21.Checked = True Then
@@ -1219,8 +1249,7 @@
 
     End Sub
 
-    Private Sub TogglePanels(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-                Handles Button5.Click, Button6.Click
+    Private Sub TogglePanels(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button5.Click, Button6.Click
 
         If sender.name = "Button5" Then
             GroupBox1.Visible = True
@@ -1294,5 +1323,25 @@
 
     End Sub
 
-
+    Private Sub Button10_Click(sender As Object, e As EventArgs) Handles Button10.Click
+        Dim lstImagen As New ArrayList
+        Application.DoEvents()
+        If elementsInEdition.resultados.Count = 1 Then
+            lstImagen.Add(elementsInEdition.resultados(0).rutaFicheroBajaRes)
+        Else
+            For Each elem As docCartoSEE In elementsInEdition.resultados
+                lstImagen.Add(elem.rutaFicheroBajaRes)
+            Next
+        End If
+        If lstImagen.Count > 1 Then
+            If ModalQuestion($"Se abrirán {lstImagen.Count}, una por cada fichero. ¿Continuar?") = DialogResult.No Then Exit Sub
+        End If
+            Try
+            For Each imgFile As String In lstImagen
+                Process.Start(imgFile)
+            Next
+        Catch ex As Exception
+            ModalError(ex.Message)
+        End Try
+    End Sub
 End Class
