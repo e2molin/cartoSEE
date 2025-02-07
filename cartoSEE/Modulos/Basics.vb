@@ -8,6 +8,7 @@ Module Basics
     Public PlantillaGIS As String
     Public rutaRepo As String
     Public rutaRepoGeorref As String
+    Public rutaRepoGeorrefBase As String
     Public rutaRepoInventarioInfo As String
     Public CalidadFavorita As String
     Public rutaRepoWeb As String
@@ -45,7 +46,8 @@ Module Basics
     Public modoDelegaciones As Boolean = False
 
     'Carrito de la compra
-    Public CarritoCompra() As docSIDCARTO
+    Public CarritoCompra As New ArrayList
+    Public CarritoCompraOld() As docSIDCARTO
 
     'Plantillas metadatos
     Public RutasPlantillasMetadatos() As TiposDocumento
@@ -81,6 +83,7 @@ Module Basics
         rutaRepo = LeeIni("Repositorio", "rutaRepo")
         rutaRepoWeb = LeeIni("Repositorio", "rutaRepoWeb")
         rutaRepoGeorref = LeeIni("Repositorio", "rutaRepoGeorref")
+        rutaRepoGeorrefBase = LeeIni("Repositorio", "rutaRepoGeorrefBase")
         rutaRepoInventarioInfo = LeeIni("Repositorio", "rutaRepoInventarioInfo").Trim
         rutaCentroDescargas = LeeIni("Metadatos", "rutaCentroDescargas").Trim
         rutaRepoThumbs = LeeIni("Metadatos", "rutaRepoThumbs").Trim
@@ -157,7 +160,6 @@ Module Basics
 
     End Sub
 
-
     Public Function SacarFileDeRuta(ByVal PathCompleto As String) As String
 
         Dim i_path As Integer
@@ -229,6 +231,30 @@ Module Basics
         End If
 
     End Function
+
+    Sub cargarImagenFromWeb(ByVal Lienzo As PictureBox, ByVal RutaImagen As String, ByVal RutaDefault As String, Optional stretchMode As Boolean = True, Optional pathInTag As String = "")
+
+        Dim imageLoaded As String
+        Try
+            If IO.File.Exists(RutaImagen) Then
+                imageLoaded = RutaImagen
+            Else
+                imageLoaded = RutaDefault
+            End If
+            Lienzo.Load(imageLoaded)
+            Lienzo.SizeMode = IIf(stretchMode = True, PictureBoxSizeMode.StretchImage, PictureBoxSizeMode.Zoom)
+            If pathInTag = "" Then
+                Lienzo.Tag = imageLoaded
+            Else
+                Lienzo.Tag = pathInTag
+            End If
+
+        Catch ex As Exception
+            GenerarLOG(ex.Message)
+            ModalError(ex.Message)
+        End Try
+
+    End Sub
 
 
     Public Function ImprimirPDF(ByVal RutaPDF As String, ByVal Impresora As String) As Boolean

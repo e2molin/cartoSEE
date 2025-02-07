@@ -229,10 +229,7 @@ Public Class MDIPrincipal
         Filtros.Dispose()
         Filtros = Nothing
 
-        ComboBox8.Items.Clear()
-        ComboBox8.Items.Add("Indistinto")
-        ComboBox8.Items.Add("Cargados")
-        ComboBox8.Items.Add("Faltan")
+
 
 
 
@@ -276,6 +273,7 @@ Public Class MDIPrincipal
         Panel_GeoSearch.Visible = False
         RadioButton1.Checked = True
 
+        TextBox1.Tag = ""
         TextBox3.Text = "" '"4545100"
         TextBox7.Text = "" '"594250"
         TextBox9.Text = "" '"597250"
@@ -328,9 +326,16 @@ Public Class MDIPrincipal
         ComboBox5.Items.Add("igual")
         ComboBox5.Items.Add("mayor")
         ComboBox5.Items.Add("menor")
-        ComboBox6.Items.Add("-----")
+
+
+        ComboBox6.Items.Add("Indistinto")
         ComboBox6.Items.Add("Sí")
         ComboBox6.Items.Add("No")
+
+        ComboBox8.Items.Add("Indistinto")
+        ComboBox8.Items.Add("Cargados")
+        ComboBox8.Items.Add("Faltan")
+
         ComboBox1.Text = "-----"
         ComboBox2.Text = "-----"
         ComboBox4.Text = "-----"
@@ -468,8 +473,8 @@ Public Class MDIPrincipal
     End Sub
 
 
-    Sub LanzarConsulta(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click, btnGetImportant.Click, btnGetStar.Click,
-        btnGetWeird.Click, btnGetCdD.Click
+    Sub LanzarConsulta(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
+
 
         Dim FirmaYear As String = ""
         Dim EstadosDocumento As String = ""
@@ -790,7 +795,7 @@ Public Class MDIPrincipal
         ComboBox3.SelectedIndex = -1
         ComboBox4.Text = "-----"
         ComboBox5.Text = "-----"
-        ComboBox6.Text = "-----"
+        ComboBox6.SelectedIndex = -1
         ComboBox7.Text = "-----"
         ComboBox8.SelectedIndex = -1
         'ListBox1.Visible = False
@@ -1303,41 +1308,75 @@ Public Class MDIPrincipal
 
     Private Sub GestionCarrito(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButCarrito.Click, mnuCarrito.Click
 
-        If CarritoCompra Is Nothing Then
-            MessageBox.Show("El carrito esta vacío", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-            Exit Sub
-        End If
-        If CarritoCompra.Length = 0 Then
-            MessageBox.Show("El carrito esta vacío", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-            Exit Sub
-        End If
+        If CarritoCompra Is Nothing Then ModalExclamation("El carrito esta vacío") : Exit Sub
+        If CarritoCompra.Count = 0 Then ModalExclamation("El carrito esta vacío") : Exit Sub
+
+        'Comprobamos si el carrito está ya activo
         Dim ExisteCarrito As Boolean
-        For Each ChildForm As Form In Me.MdiChildren
-            If ChildForm.Tag = "Carrito de la Compra" Then
+        For Each ChildForm As resultGEODOCAT In Me.MdiChildren
+            If ChildForm.EsCarritoCompra Then
+                If ChildForm.DataGridView1.RowCount <> CarritoCompra.Count Then ChildForm.btnRefresh.PerformClick()
                 ChildForm.Focus()
                 ExisteCarrito = True
                 Exit For
             End If
         Next
-        Dim FrmCestaCompra As New frmDocumentacion
+
+
         If ExisteCarrito = True Then
-            Try
-                FrmCestaCompra = Me.ActiveMdiChild
-                If FrmCestaCompra Is Nothing Then Exit Sub
-            Catch ex As Exception
 
-            End Try
-            FrmCestaCompra.MostrarElementosCarrito()
-            FrmCestaCompra.Show()
-        Else
-            FrmCestaCompra.MdiParent = Me
-            FrmCestaCompra.Text = " Carrito de la Compra"
-            FrmCestaCompra.Tag = "Carrito de la Compra"
-            FrmCestaCompra.Button7.Image = Me.ImageList1.Images(6)
-            FrmCestaCompra.MostrarElementosCarrito()
-            FrmCestaCompra.Show()
-
+            Exit Sub
         End If
+
+        Dim frmResultados As New resultGEODOCAT
+        With frmResultados
+            .MdiParent = Me
+            .EsCarritoCompra = True
+            .typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosEnCarrito
+            .Show()
+        End With
+
+
+        'If CarritoCompraOld Is Nothing Then
+        '    MessageBox.Show("El carrito esta vacío", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+        '    Exit Sub
+        'End If
+        'If CarritoCompraOld.Length = 0 Then
+        '    MessageBox.Show("El carrito esta vacío", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+        '    Exit Sub
+        'End If
+
+
+
+
+
+        'Dim ExisteCarrito As Boolean
+        'For Each ChildForm As Form In Me.MdiChildren
+        '    If ChildForm.Tag = "Carrito de la Compra" Then
+        '        ChildForm.Focus()
+        '        ExisteCarrito = True
+        '        Exit For
+        '    End If
+        'Next
+        'Dim FrmCestaCompra As New frmDocumentacion
+        'If ExisteCarrito = True Then
+        '    Try
+        '        FrmCestaCompra = Me.ActiveMdiChild
+        '        If FrmCestaCompra Is Nothing Then Exit Sub
+        '    Catch ex As Exception
+
+        '    End Try
+        '    FrmCestaCompra.MostrarElementosCarrito()
+        '    FrmCestaCompra.Show()
+        'Else
+        '    FrmCestaCompra.MdiParent = Me
+        '    FrmCestaCompra.Text = " Carrito de la Compra"
+        '    FrmCestaCompra.Tag = "Carrito de la Compra"
+        '    FrmCestaCompra.Button7.Image = Me.ImageList1.Images(6)
+        '    FrmCestaCompra.MostrarElementosCarrito()
+        '    FrmCestaCompra.Show()
+
+        'End If
     End Sub
 
     Private Sub ComboBox3_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ComboBox3.Click
@@ -1393,11 +1432,12 @@ Public Class MDIPrincipal
 
     Private Sub itemUsermenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles itemUsermenu.Click, ToolStripButton2.Click, ToolStripStatusLabel3.Click
 
-        Dim frmUser As GestionUserNotificacion
-        frmUser = New GestionUserNotificacion
-        frmUser.modoAdmin = usuarioMyApp.permisosLista.editarDocumentacion
-        frmUser.MdiParent = Me
-        frmUser.Show()
+        ModalInfo("REvisar")
+
+        'Dim frmUser As New GestionUserNotificacion
+        'frmUser.modoAdmin = usuarioMyApp.permisosLista.editarDocumentacion
+        'frmUser.MdiParent = Me
+        'frmUser.Show()
 
     End Sub
 
@@ -1571,4 +1611,227 @@ Public Class MDIPrincipal
 
     End Sub
 
+    Private Sub Button11_Click(sender As Object, e As EventArgs) Handles Button11.Click, btnGetStar.Click, btnGetImportant.Click, btnGetWeird.Click, btnGetCdD.Click
+
+        Dim FirmaYear As String = ""
+        Dim EstadosDocumento As String = ""
+        Dim TiposDocumento As String = ""
+        Dim numTomo As String = ""
+        Dim DescripFiltro As String = ". "
+        Dim territorioId As Integer = 0
+        Dim CodMunicipioINEHistorico As Integer = 0
+        Dim CodMunicipioINEActual As Integer = 0
+        Dim nSellado As String = ""
+        Dim nSellado1 As String = ""
+        Dim nSellado2 As String = ""
+        Dim listaSellos As New ArrayList
+        Dim CadFiltro As String = ""
+        Dim ibucle As Integer
+        Dim cProv As Integer = 0
+        Dim proceHoja As String
+        Dim proceCarpeta As String
+
+        Application.DoEvents()
+        If Not String.IsNullOrEmpty(TextBox1.Tag) Then
+            Dim CodigosMuni() As String = TextBox1.Tag.ToString.Split("|")
+            CodMunicipioINEHistorico = CodigosMuni(0)
+            territorioId = CodigosMuni(1)
+            CodMunicipioINEActual = CodigosMuni(2)
+        ElseIf Not String.IsNullOrEmpty(TextBox23.Text) Then
+            If IsNumeric(TextBox23.Text.Trim) Then
+                nSellado = TextBox23.Text.Trim
+            ElseIf obtenerIntervalo(TextBox23.Text.Trim, "-", nSellado1, nSellado2) = True Then
+                Application.DoEvents()
+            ElseIf obtenerIntervalo(TextBox23.Text.Trim, "#", nSellado1, nSellado2) = True Then
+                Application.DoEvents()
+            ElseIf obtenerIntervalo(TextBox23.Text.Trim, ";", listaSellos) = True Then
+                Application.DoEvents()
+            Else
+                Exit Sub
+            End If
+
+        Else
+
+            If ComboBox3.SelectedIndex <> -1 Then
+                cProv = CType(ComboBox3.SelectedItem, itemData).Valor
+            ElseIf IsNumeric(TextBox1.Text.Trim) Then
+                nSellado = TextBox1.Text.Trim
+            ElseIf obtenerIntervalo(TextBox1.Text.Trim, "-", nSellado1, nSellado2) = True Then
+                Application.DoEvents()
+            ElseIf obtenerIntervalo(TextBox1.Text.Trim, "#", nSellado1, nSellado2) = True Then
+                Application.DoEvents()
+            ElseIf obtenerIntervalo(TextBox1.Text.Trim, ";", listaSellos) = True Then
+                Application.DoEvents()
+            Else
+                Exit Sub
+            End If
+        End If
+
+        '-----------------------------------------------------------------------------------
+        'Evalúo si se filtran los documentos por estado o por tipo
+        '-----------------------------------------------------------------------------------
+        TiposDocumento = ""
+        For Each Linea As itemData In CheckedListBox1.Items
+            If CheckedListBox1.GetItemChecked(CheckedListBox1.Items.IndexOf(Linea)) Then
+                TiposDocumento &= $"{IIf(TiposDocumento = "", Linea.Valor, $",{Linea.Valor}")}"
+            End If
+        Next
+        If CheckedListBox1.Items.Count = CheckedListBox1.CheckedItems.Count Then TiposDocumento = ""
+
+        EstadosDocumento = ""
+        For Each Linea As itemData In CheckedListBox2.Items
+            If CheckedListBox2.GetItemChecked(CheckedListBox2.Items.IndexOf(Linea)) Then
+                EstadosDocumento &= $"{IIf(EstadosDocumento = "", Linea.Valor, $",{Linea.Valor}")}"
+            End If
+        Next
+        If CheckedListBox2.Items.Count = CheckedListBox2.CheckedItems.Count Then EstadosDocumento = ""
+
+        'Extraemos otros filtros
+        numTomo = TextBox5.Text.Trim
+        proceHoja = TextBox4.Text.Trim
+        proceCarpeta = TextBox2.Text.Trim
+
+
+        Try
+            PictureBox3.Visible = True
+            Me.Cursor = Cursors.WaitCursor
+            LanzarSpinner("Cargando datos")
+            Dim frmResultados As New resultGEODOCAT
+            With frmResultados
+                .MdiParent = Me
+                .filterTipoDoc = TiposDocumento
+                .filterSubTipoDoc = TextBox22.Text.Trim
+                .filterEstadoDoc = EstadosDocumento
+                .filterFecha = FirmaYear
+                .filterJGE = IIf(ComboBox6.SelectedIndex > 0, ComboBox6.Text, "")
+                .filterEnABSYS = IIf(ComboBox8.SelectedIndex > 0, ComboBox8.Text, "")
+
+
+
+
+                If TextBox23.Text.Trim <> "" Then
+                    If IsNumeric(TextBox23.Text) Then
+                        .paramSQL1 = TextBox23.Text.Trim
+                        .typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosBySellado
+                    ElseIf obtenerIntervalo(TextBox23.Text.Trim, "-", nSellado1, nSellado2) = True Then
+                        Application.DoEvents()
+                        .paramSQL1 = nSellado1
+                        .paramSQL2 = nSellado2
+                        .typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosByListaNumSelladoEntreLimites
+                    ElseIf obtenerIntervalo(TextBox23.Text.Trim, "#", nSellado1, nSellado2) = True Then
+                        Application.DoEvents()
+                        .paramSQL1 = nSellado1
+                        .paramSQL2 = nSellado2
+                        .typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosByListaNumSelladoEntreLimites
+                    ElseIf obtenerIntervalo(TextBox23.Text.Trim, ";", nSellado1, nSellado2) = True Then
+                        Application.DoEvents()
+                        .paramSQL1 = nSellado1
+                        .paramSQL2 = nSellado2
+                        .typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosByListaNumSelladoEntreLimites
+                    End If
+                ElseIf TextBox6.Text.Trim <> "" Then
+                    Application.DoEvents()
+                    .paramSQL1 = TextBox6.Text.Trim
+                    .typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosBySignatura
+                ElseIf TextBox8.Text.Trim <> "" Then
+                    Application.DoEvents()
+                    .paramSQL1 = TextBox8.Text.Trim
+                    .typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosByColeccion
+                ElseIf TextBox19.Text.Trim <> "" Then
+                    Application.DoEvents()
+                    .paramSQL1 = TextBox19.Text.Trim
+                    .typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosByAnejo
+                ElseIf TextBox20.Text.Trim <> "" Then
+                    Application.DoEvents()
+                    .paramSQL1 = TextBox20.Text.Trim
+                    .typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosByComentario
+                ElseIf sender.name = "btnGetStar" Then
+                    Application.DoEvents()
+                    .paramSQL1 = "____1___________"
+                    .typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosByPatron
+                    .Text = "Documentos importantes"
+                ElseIf sender.name = "btnGetImportant" Then
+                    Application.DoEvents()
+                    .paramSQL1 = "__1_____________"
+                    .typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosByPatron
+                    .Text = "Documentos destacados"
+                ElseIf sender.name = "btnGetWeird" Then
+                    Application.DoEvents()
+                    .paramSQL1 = "_1______________"
+                    .typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosByPatron
+                    .Text = "Documentos raros"
+                ElseIf sender.name = "btnGetCdD" Then
+                    Application.DoEvents()
+                    .paramSQL1 = "1_______________"
+                    .typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosByPatron
+                    .Text = "Documentos  pendientes CdD"
+
+                ElseIf numTomo <> "" Then
+                    Application.DoEvents()
+                    If cProv = 0 Then
+                        ModalExclamation("Para buscar por Tomo, seleccione primero una provincia")
+                        frmResultados.Close()
+                        frmResultados.Dispose()
+                        frmResultados = Nothing
+                        Exit Sub
+                    End If
+                    .paramSQL1 = cProv
+                    .filterTomo = numTomo
+                    .typeSearch = resultGEODOCAT.TypeDataSearch.AllDocumentsByProvincia
+                ElseIf proceCarpeta <> "" Or proceHoja <> "" Then
+                    If proceCarpeta = "" And proceHoja <> "" Then
+                        ModalExclamation("Si busca una carpeta, debe especificar la Hoja")
+                        frmResultados.Close()
+                        frmResultados.Dispose()
+                        frmResultados = Nothing
+                        Exit Sub
+                    End If
+
+                ElseIf TextBox1.Tag.Trim <> "" Then
+                    If CheckBox1.Checked Then
+                        'Búsqueda por territorio/municipio actual. Usamos en la búsqueda el códigoINE actual
+                        .paramSQL1 = CodMunicipioINEActual
+                        .typeSearch = resultGEODOCAT.TypeDataSearch.AllDocumentsByTerritorioActual
+                        .Text = $"Documentos asociados al municipio actual {TextBox1.Text.Trim}"
+                    Else
+                        'Búsqueda por territorio/municipio histórico. Usamos en la búsqueda el idTerritorio
+                        .paramSQL1 = territorioId
+                        .typeSearch = resultGEODOCAT.TypeDataSearch.AllDocumentsByTerritorio
+                        .Text = $"Documentos asociados al municipio {TextBox1.Text.Trim}"
+                    End If
+                Else
+                    If cProv > 0 Then
+                        .paramSQL1 = cProv
+                        .typeSearch = resultGEODOCAT.TypeDataSearch.AllDocumentsByProvincia
+                    Else
+                        .typeSearch = resultGEODOCAT.TypeDataSearch.AllDocuments
+                    End If
+                End If
+
+
+                .Show()
+            End With
+
+
+
+
+
+
+        Catch ex As Exception
+            ModalError($"No se pueden identificar los documento: {ex.Message}")
+        Finally
+            CerrarSpinner()
+            PictureBox3.Visible = False
+            Me.Cursor = Cursors.Default
+
+        End Try
+
+
+
+
+
+
+
+
+    End Sub
 End Class

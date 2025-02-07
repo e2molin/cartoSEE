@@ -115,6 +115,7 @@ Partial Class MDIPrincipal
         Me.ButCarrito = New System.Windows.Forms.ToolStripButton()
         Me.btnVisorMosaicos = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripButton20 = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripButton10 = New System.Windows.Forms.ToolStripButton()
         Me.btnExportCdD = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripDropDownButton1 = New System.Windows.Forms.ToolStripDropDownButton()
         Me.mnuLinkCdDMIPAC = New System.Windows.Forms.ToolStripMenuItem()
@@ -152,12 +153,8 @@ Partial Class MDIPrincipal
         Me.btnGetWeird = New System.Windows.Forms.Button()
         Me.btnGetImportant = New System.Windows.Forms.Button()
         Me.btnGetStar = New System.Windows.Forms.Button()
-        Me.Label32 = New System.Windows.Forms.Label()
-        Me.CheckedListBox3 = New System.Windows.Forms.CheckedListBox()
         Me.Label28 = New System.Windows.Forms.Label()
         Me.ComboBox8 = New System.Windows.Forms.ComboBox()
-        Me.Label27 = New System.Windows.Forms.Label()
-        Me.TextBox22 = New System.Windows.Forms.TextBox()
         Me.ComboBox7 = New System.Windows.Forms.ComboBox()
         Me.Label23 = New System.Windows.Forms.Label()
         Me.Label26 = New System.Windows.Forms.Label()
@@ -180,13 +177,12 @@ Partial Class MDIPrincipal
         Me.ComboBox1 = New System.Windows.Forms.ComboBox()
         Me.TextBox15 = New System.Windows.Forms.TextBox()
         Me.Label18 = New System.Windows.Forms.Label()
-        Me.TextBox8 = New System.Windows.Forms.TextBox()
-        Me.Label8 = New System.Windows.Forms.Label()
         Me.TextBox4 = New System.Windows.Forms.TextBox()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.TextBox2 = New System.Windows.Forms.TextBox()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Panel_DocSearch = New System.Windows.Forms.Panel()
+        Me.Button11 = New System.Windows.Forms.Button()
         Me.lvMunicipios = New System.Windows.Forms.ListView()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.TextBox23 = New System.Windows.Forms.TextBox()
@@ -194,7 +190,9 @@ Partial Class MDIPrincipal
         Me.Button1 = New System.Windows.Forms.Button()
         Me.Label29 = New System.Windows.Forms.Label()
         Me.Label24 = New System.Windows.Forms.Label()
+        Me.Label27 = New System.Windows.Forms.Label()
         Me.TextBox1 = New System.Windows.Forms.TextBox()
+        Me.TextBox22 = New System.Windows.Forms.TextBox()
         Me.CheckBox1 = New System.Windows.Forms.CheckBox()
         Me.TextBox19 = New System.Windows.Forms.TextBox()
         Me.CheckedListBox1 = New System.Windows.Forms.CheckedListBox()
@@ -210,6 +208,8 @@ Partial Class MDIPrincipal
         Me.Label7 = New System.Windows.Forms.Label()
         Me.TextBox14 = New System.Windows.Forms.TextBox()
         Me.Label9 = New System.Windows.Forms.Label()
+        Me.TextBox8 = New System.Windows.Forms.TextBox()
+        Me.Label8 = New System.Windows.Forms.Label()
         Me.RadioButton2 = New System.Windows.Forms.RadioButton()
         Me.RadioButton1 = New System.Windows.Forms.RadioButton()
         Me.Panel_GeoSearch = New System.Windows.Forms.Panel()
@@ -244,7 +244,6 @@ Partial Class MDIPrincipal
         Me.Button6 = New System.Windows.Forms.Button()
         Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
         Me.ImageList2 = New System.Windows.Forms.ImageList(Me.components)
-        Me.ToolStripButton10 = New System.Windows.Forms.ToolStripButton()
         Me.MenuStrip.SuspendLayout()
         Me.ToolStrip.SuspendLayout()
         Me.StatusStrip.SuspendLayout()
@@ -916,6 +915,15 @@ Partial Class MDIPrincipal
         Me.ToolStripButton20.Text = "ToolStripButton20"
         Me.ToolStripButton20.ToolTipText = "Libros de registro del Archivo Topográfico"
         '
+        'ToolStripButton10
+        '
+        Me.ToolStripButton10.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.ToolStripButton10.Image = CType(resources.GetObject("ToolStripButton10.Image"), System.Drawing.Image)
+        Me.ToolStripButton10.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.ToolStripButton10.Name = "ToolStripButton10"
+        Me.ToolStripButton10.Size = New System.Drawing.Size(52, 52)
+        Me.ToolStripButton10.Text = "Municipios históricos"
+        '
         'btnExportCdD
         '
         Me.btnExportCdD.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
@@ -1199,12 +1207,8 @@ Partial Class MDIPrincipal
         Me.GroupBox5.Controls.Add(Me.btnGetWeird)
         Me.GroupBox5.Controls.Add(Me.btnGetImportant)
         Me.GroupBox5.Controls.Add(Me.btnGetStar)
-        Me.GroupBox5.Controls.Add(Me.Label32)
-        Me.GroupBox5.Controls.Add(Me.CheckedListBox3)
         Me.GroupBox5.Controls.Add(Me.Label28)
         Me.GroupBox5.Controls.Add(Me.ComboBox8)
-        Me.GroupBox5.Controls.Add(Me.Label27)
-        Me.GroupBox5.Controls.Add(Me.TextBox22)
         Me.GroupBox5.Controls.Add(Me.ComboBox7)
         Me.GroupBox5.Controls.Add(Me.Label23)
         Me.GroupBox5.Controls.Add(Me.Label26)
@@ -1227,8 +1231,6 @@ Partial Class MDIPrincipal
         Me.GroupBox5.Controls.Add(Me.ComboBox1)
         Me.GroupBox5.Controls.Add(Me.TextBox15)
         Me.GroupBox5.Controls.Add(Me.Label18)
-        Me.GroupBox5.Controls.Add(Me.TextBox8)
-        Me.GroupBox5.Controls.Add(Me.Label8)
         Me.GroupBox5.Controls.Add(Me.TextBox4)
         Me.GroupBox5.Controls.Add(Me.Label4)
         Me.GroupBox5.Controls.Add(Me.TextBox2)
@@ -1244,7 +1246,7 @@ Partial Class MDIPrincipal
         '
         Me.btnGetCdD.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.btnGetCdD.Image = CType(resources.GetObject("btnGetCdD.Image"), System.Drawing.Image)
-        Me.btnGetCdD.Location = New System.Drawing.Point(6, 729)
+        Me.btnGetCdD.Location = New System.Drawing.Point(15, 554)
         Me.btnGetCdD.Name = "btnGetCdD"
         Me.btnGetCdD.Size = New System.Drawing.Size(75, 50)
         Me.btnGetCdD.TabIndex = 43
@@ -1255,7 +1257,7 @@ Partial Class MDIPrincipal
         'btnGetWeird
         '
         Me.btnGetWeird.Image = CType(resources.GetObject("btnGetWeird.Image"), System.Drawing.Image)
-        Me.btnGetWeird.Location = New System.Drawing.Point(167, 674)
+        Me.btnGetWeird.Location = New System.Drawing.Point(159, 96)
         Me.btnGetWeird.Name = "btnGetWeird"
         Me.btnGetWeird.Size = New System.Drawing.Size(75, 50)
         Me.btnGetWeird.TabIndex = 42
@@ -1266,7 +1268,7 @@ Partial Class MDIPrincipal
         'btnGetImportant
         '
         Me.btnGetImportant.Image = CType(resources.GetObject("btnGetImportant.Image"), System.Drawing.Image)
-        Me.btnGetImportant.Location = New System.Drawing.Point(86, 673)
+        Me.btnGetImportant.Location = New System.Drawing.Point(82, 96)
         Me.btnGetImportant.Name = "btnGetImportant"
         Me.btnGetImportant.Size = New System.Drawing.Size(75, 50)
         Me.btnGetImportant.TabIndex = 41
@@ -1278,7 +1280,7 @@ Partial Class MDIPrincipal
         '
         Me.btnGetStar.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.btnGetStar.Image = CType(resources.GetObject("btnGetStar.Image"), System.Drawing.Image)
-        Me.btnGetStar.Location = New System.Drawing.Point(5, 673)
+        Me.btnGetStar.Location = New System.Drawing.Point(5, 96)
         Me.btnGetStar.Name = "btnGetStar"
         Me.btnGetStar.Size = New System.Drawing.Size(75, 50)
         Me.btnGetStar.TabIndex = 40
@@ -1286,29 +1288,10 @@ Partial Class MDIPrincipal
         Me.btnGetStar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         Me.btnGetStar.UseVisualStyleBackColor = True
         '
-        'Label32
-        '
-        Me.Label32.AutoSize = True
-        Me.Label32.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label32.Location = New System.Drawing.Point(6, 215)
-        Me.Label32.Name = "Label32"
-        Me.Label32.Size = New System.Drawing.Size(78, 13)
-        Me.Label32.TabIndex = 39
-        Me.Label32.Text = "Observaciones"
-        '
-        'CheckedListBox3
-        '
-        Me.CheckedListBox3.FormattingEnabled = True
-        Me.CheckedListBox3.Location = New System.Drawing.Point(5, 228)
-        Me.CheckedListBox3.Name = "CheckedListBox3"
-        Me.CheckedListBox3.Size = New System.Drawing.Size(229, 139)
-        Me.CheckedListBox3.Sorted = True
-        Me.CheckedListBox3.TabIndex = 38
-        '
         'Label28
         '
         Me.Label28.AutoSize = True
-        Me.Label28.Location = New System.Drawing.Point(5, 604)
+        Me.Label28.Location = New System.Drawing.Point(32, 424)
         Me.Label28.Name = "Label28"
         Me.Label28.Size = New System.Drawing.Size(58, 13)
         Me.Label28.TabIndex = 37
@@ -1318,31 +1301,15 @@ Partial Class MDIPrincipal
         '
         Me.ComboBox8.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox8.FormattingEnabled = True
-        Me.ComboBox8.Location = New System.Drawing.Point(66, 601)
+        Me.ComboBox8.Location = New System.Drawing.Point(96, 421)
         Me.ComboBox8.Name = "ComboBox8"
-        Me.ComboBox8.Size = New System.Drawing.Size(113, 21)
+        Me.ComboBox8.Size = New System.Drawing.Size(105, 21)
         Me.ComboBox8.TabIndex = 36
-        '
-        'Label27
-        '
-        Me.Label27.AutoSize = True
-        Me.Label27.Location = New System.Drawing.Point(2, 578)
-        Me.Label27.Name = "Label27"
-        Me.Label27.Size = New System.Drawing.Size(43, 13)
-        Me.Label27.TabIndex = 35
-        Me.Label27.Text = "Subtipo"
-        '
-        'TextBox22
-        '
-        Me.TextBox22.Location = New System.Drawing.Point(45, 575)
-        Me.TextBox22.Name = "TextBox22"
-        Me.TextBox22.Size = New System.Drawing.Size(134, 20)
-        Me.TextBox22.TabIndex = 34
         '
         'ComboBox7
         '
         Me.ComboBox7.FormattingEnabled = True
-        Me.ComboBox7.Location = New System.Drawing.Point(48, 637)
+        Me.ComboBox7.Location = New System.Drawing.Point(50, 522)
         Me.ComboBox7.Name = "ComboBox7"
         Me.ComboBox7.Size = New System.Drawing.Size(134, 21)
         Me.ComboBox7.TabIndex = 27
@@ -1350,7 +1317,7 @@ Partial Class MDIPrincipal
         'Label23
         '
         Me.Label23.AutoSize = True
-        Me.Label23.Location = New System.Drawing.Point(5, 640)
+        Me.Label23.Location = New System.Drawing.Point(7, 525)
         Me.Label23.Name = "Label23"
         Me.Label23.Size = New System.Drawing.Size(44, 13)
         Me.Label23.TabIndex = 26
@@ -1359,7 +1326,7 @@ Partial Class MDIPrincipal
         'Label26
         '
         Me.Label26.AutoSize = True
-        Me.Label26.Location = New System.Drawing.Point(1, 521)
+        Me.Label26.Location = New System.Drawing.Point(1, 364)
         Me.Label26.Name = "Label26"
         Me.Label26.Size = New System.Drawing.Size(89, 13)
         Me.Label26.TabIndex = 33
@@ -1369,16 +1336,16 @@ Partial Class MDIPrincipal
         '
         Me.Label30.AutoSize = True
         Me.Label30.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label30.Location = New System.Drawing.Point(6, 78)
+        Me.Label30.Location = New System.Drawing.Point(6, 151)
         Me.Label30.Name = "Label30"
-        Me.Label30.Size = New System.Drawing.Size(40, 13)
+        Me.Label30.Size = New System.Drawing.Size(122, 13)
         Me.Label30.TabIndex = 31
-        Me.Label30.Text = "Estado"
+        Me.Label30.Text = "Estado de conservación"
         '
         'Label25
         '
         Me.Label25.AutoSize = True
-        Me.Label25.Location = New System.Drawing.Point(5, 370)
+        Me.Label25.Location = New System.Drawing.Point(5, 54)
         Me.Label25.Name = "Label25"
         Me.Label25.Size = New System.Drawing.Size(60, 13)
         Me.Label25.TabIndex = 31
@@ -1386,39 +1353,40 @@ Partial Class MDIPrincipal
         '
         'TextBox20
         '
-        Me.TextBox20.Location = New System.Drawing.Point(6, 386)
+        Me.TextBox20.Location = New System.Drawing.Point(6, 70)
         Me.TextBox20.Name = "TextBox20"
-        Me.TextBox20.Size = New System.Drawing.Size(174, 20)
+        Me.TextBox20.Size = New System.Drawing.Size(228, 20)
         Me.TextBox20.TabIndex = 29
         '
         'CheckedListBox2
         '
         Me.CheckedListBox2.FormattingEnabled = True
-        Me.CheckedListBox2.Location = New System.Drawing.Point(5, 94)
+        Me.CheckedListBox2.Location = New System.Drawing.Point(5, 171)
         Me.CheckedListBox2.Name = "CheckedListBox2"
-        Me.CheckedListBox2.Size = New System.Drawing.Size(229, 109)
+        Me.CheckedListBox2.Size = New System.Drawing.Size(229, 79)
         Me.CheckedListBox2.Sorted = True
         Me.CheckedListBox2.TabIndex = 28
         '
         'TextBox21
         '
-        Me.TextBox21.Location = New System.Drawing.Point(102, 518)
+        Me.TextBox21.Location = New System.Drawing.Point(102, 361)
         Me.TextBox21.Name = "TextBox21"
         Me.TextBox21.Size = New System.Drawing.Size(76, 20)
         Me.TextBox21.TabIndex = 32
         '
         'ComboBox6
         '
+        Me.ComboBox6.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox6.FormattingEnabled = True
-        Me.ComboBox6.Location = New System.Drawing.Point(102, 546)
+        Me.ComboBox6.Location = New System.Drawing.Point(96, 392)
         Me.ComboBox6.Name = "ComboBox6"
-        Me.ComboBox6.Size = New System.Drawing.Size(76, 21)
+        Me.ComboBox6.Size = New System.Drawing.Size(105, 21)
         Me.ComboBox6.TabIndex = 25
         '
         'Label22
         '
         Me.Label22.AutoSize = True
-        Me.Label22.Location = New System.Drawing.Point(1, 549)
+        Me.Label22.Location = New System.Drawing.Point(1, 395)
         Me.Label22.Name = "Label22"
         Me.Label22.Size = New System.Drawing.Size(89, 13)
         Me.Label22.TabIndex = 24
@@ -1427,14 +1395,14 @@ Partial Class MDIPrincipal
         'ComboBox5
         '
         Me.ComboBox5.FormattingEnabled = True
-        Me.ComboBox5.Location = New System.Drawing.Point(65, 491)
+        Me.ComboBox5.Location = New System.Drawing.Point(65, 334)
         Me.ComboBox5.Name = "ComboBox5"
         Me.ComboBox5.Size = New System.Drawing.Size(52, 21)
         Me.ComboBox5.TabIndex = 23
         '
         'TextBox18
         '
-        Me.TextBox18.Location = New System.Drawing.Point(123, 492)
+        Me.TextBox18.Location = New System.Drawing.Point(123, 335)
         Me.TextBox18.Name = "TextBox18"
         Me.TextBox18.Size = New System.Drawing.Size(55, 20)
         Me.TextBox18.TabIndex = 22
@@ -1442,7 +1410,7 @@ Partial Class MDIPrincipal
         'Label21
         '
         Me.Label21.AutoSize = True
-        Me.Label21.Location = New System.Drawing.Point(22, 495)
+        Me.Label21.Location = New System.Drawing.Point(22, 338)
         Me.Label21.Name = "Label21"
         Me.Label21.Size = New System.Drawing.Size(37, 13)
         Me.Label21.TabIndex = 21
@@ -1451,14 +1419,14 @@ Partial Class MDIPrincipal
         'ComboBox4
         '
         Me.ComboBox4.FormattingEnabled = True
-        Me.ComboBox4.Location = New System.Drawing.Point(65, 464)
+        Me.ComboBox4.Location = New System.Drawing.Point(65, 307)
         Me.ComboBox4.Name = "ComboBox4"
         Me.ComboBox4.Size = New System.Drawing.Size(52, 21)
         Me.ComboBox4.TabIndex = 20
         '
         'TextBox17
         '
-        Me.TextBox17.Location = New System.Drawing.Point(123, 465)
+        Me.TextBox17.Location = New System.Drawing.Point(123, 308)
         Me.TextBox17.Name = "TextBox17"
         Me.TextBox17.Size = New System.Drawing.Size(55, 20)
         Me.TextBox17.TabIndex = 19
@@ -1466,7 +1434,7 @@ Partial Class MDIPrincipal
         'Label20
         '
         Me.Label20.AutoSize = True
-        Me.Label20.Location = New System.Drawing.Point(20, 467)
+        Me.Label20.Location = New System.Drawing.Point(20, 310)
         Me.Label20.Name = "Label20"
         Me.Label20.Size = New System.Drawing.Size(39, 13)
         Me.Label20.TabIndex = 18
@@ -1475,14 +1443,14 @@ Partial Class MDIPrincipal
         'ComboBox2
         '
         Me.ComboBox2.FormattingEnabled = True
-        Me.ComboBox2.Location = New System.Drawing.Point(65, 437)
+        Me.ComboBox2.Location = New System.Drawing.Point(65, 280)
         Me.ComboBox2.Name = "ComboBox2"
         Me.ComboBox2.Size = New System.Drawing.Size(52, 21)
         Me.ComboBox2.TabIndex = 17
         '
         'TextBox16
         '
-        Me.TextBox16.Location = New System.Drawing.Point(123, 438)
+        Me.TextBox16.Location = New System.Drawing.Point(123, 281)
         Me.TextBox16.Name = "TextBox16"
         Me.TextBox16.Size = New System.Drawing.Size(55, 20)
         Me.TextBox16.TabIndex = 16
@@ -1490,7 +1458,7 @@ Partial Class MDIPrincipal
         'Label19
         '
         Me.Label19.AutoSize = True
-        Me.Label19.Location = New System.Drawing.Point(5, 441)
+        Me.Label19.Location = New System.Drawing.Point(5, 284)
         Me.Label19.Name = "Label19"
         Me.Label19.Size = New System.Drawing.Size(54, 13)
         Me.Label19.TabIndex = 15
@@ -1499,14 +1467,14 @@ Partial Class MDIPrincipal
         'ComboBox1
         '
         Me.ComboBox1.FormattingEnabled = True
-        Me.ComboBox1.Location = New System.Drawing.Point(65, 411)
+        Me.ComboBox1.Location = New System.Drawing.Point(65, 254)
         Me.ComboBox1.Name = "ComboBox1"
         Me.ComboBox1.Size = New System.Drawing.Size(52, 21)
         Me.ComboBox1.TabIndex = 14
         '
         'TextBox15
         '
-        Me.TextBox15.Location = New System.Drawing.Point(123, 412)
+        Me.TextBox15.Location = New System.Drawing.Point(123, 255)
         Me.TextBox15.Name = "TextBox15"
         Me.TextBox15.Size = New System.Drawing.Size(55, 20)
         Me.TextBox15.TabIndex = 13
@@ -1514,27 +1482,11 @@ Partial Class MDIPrincipal
         'Label18
         '
         Me.Label18.AutoSize = True
-        Me.Label18.Location = New System.Drawing.Point(17, 415)
+        Me.Label18.Location = New System.Drawing.Point(17, 258)
         Me.Label18.Name = "Label18"
         Me.Label18.Size = New System.Drawing.Size(42, 13)
         Me.Label18.TabIndex = 12
         Me.Label18.Text = "Vertical"
-        '
-        'TextBox8
-        '
-        Me.TextBox8.Location = New System.Drawing.Point(63, 50)
-        Me.TextBox8.Name = "TextBox8"
-        Me.TextBox8.Size = New System.Drawing.Size(118, 20)
-        Me.TextBox8.TabIndex = 9
-        '
-        'Label8
-        '
-        Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(3, 53)
-        Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(54, 13)
-        Me.Label8.TabIndex = 8
-        Me.Label8.Text = "Colección"
         '
         'TextBox4
         '
@@ -1571,6 +1523,7 @@ Partial Class MDIPrincipal
         'Panel_DocSearch
         '
         Me.Panel_DocSearch.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
+        Me.Panel_DocSearch.Controls.Add(Me.Button11)
         Me.Panel_DocSearch.Controls.Add(Me.lvMunicipios)
         Me.Panel_DocSearch.Controls.Add(Me.PictureBox1)
         Me.Panel_DocSearch.Controls.Add(Me.TextBox23)
@@ -1578,7 +1531,9 @@ Partial Class MDIPrincipal
         Me.Panel_DocSearch.Controls.Add(Me.Button1)
         Me.Panel_DocSearch.Controls.Add(Me.Label29)
         Me.Panel_DocSearch.Controls.Add(Me.Label24)
+        Me.Panel_DocSearch.Controls.Add(Me.Label27)
         Me.Panel_DocSearch.Controls.Add(Me.TextBox1)
+        Me.Panel_DocSearch.Controls.Add(Me.TextBox22)
         Me.Panel_DocSearch.Controls.Add(Me.CheckBox1)
         Me.Panel_DocSearch.Controls.Add(Me.TextBox19)
         Me.Panel_DocSearch.Controls.Add(Me.CheckedListBox1)
@@ -1594,10 +1549,21 @@ Partial Class MDIPrincipal
         Me.Panel_DocSearch.Controls.Add(Me.Label7)
         Me.Panel_DocSearch.Controls.Add(Me.TextBox14)
         Me.Panel_DocSearch.Controls.Add(Me.Label9)
+        Me.Panel_DocSearch.Controls.Add(Me.TextBox8)
+        Me.Panel_DocSearch.Controls.Add(Me.Label8)
         Me.Panel_DocSearch.Location = New System.Drawing.Point(0, 0)
         Me.Panel_DocSearch.Name = "Panel_DocSearch"
         Me.Panel_DocSearch.Size = New System.Drawing.Size(250, 839)
         Me.Panel_DocSearch.TabIndex = 14
+        '
+        'Button11
+        '
+        Me.Button11.Location = New System.Drawing.Point(77, 621)
+        Me.Button11.Name = "Button11"
+        Me.Button11.Size = New System.Drawing.Size(75, 23)
+        Me.Button11.TabIndex = 36
+        Me.Button11.Text = "Button11"
+        Me.Button11.UseVisualStyleBackColor = True
         '
         'lvMunicipios
         '
@@ -1669,12 +1635,28 @@ Partial Class MDIPrincipal
         Me.Label24.TabIndex = 30
         Me.Label24.Text = "Anejo"
         '
+        'Label27
+        '
+        Me.Label27.AutoSize = True
+        Me.Label27.Location = New System.Drawing.Point(28, 378)
+        Me.Label27.Name = "Label27"
+        Me.Label27.Size = New System.Drawing.Size(43, 13)
+        Me.Label27.TabIndex = 35
+        Me.Label27.Text = "Subtipo"
+        '
         'TextBox1
         '
         Me.TextBox1.Location = New System.Drawing.Point(6, 94)
         Me.TextBox1.Name = "TextBox1"
         Me.TextBox1.Size = New System.Drawing.Size(238, 20)
         Me.TextBox1.TabIndex = 1
+        '
+        'TextBox22
+        '
+        Me.TextBox22.Location = New System.Drawing.Point(83, 375)
+        Me.TextBox22.Name = "TextBox22"
+        Me.TextBox22.Size = New System.Drawing.Size(161, 20)
+        Me.TextBox22.TabIndex = 34
         '
         'CheckBox1
         '
@@ -1698,7 +1680,7 @@ Partial Class MDIPrincipal
         Me.CheckedListBox1.FormattingEnabled = True
         Me.CheckedListBox1.Location = New System.Drawing.Point(9, 192)
         Me.CheckedListBox1.Name = "CheckedListBox1"
-        Me.CheckedListBox1.Size = New System.Drawing.Size(235, 229)
+        Me.CheckedListBox1.Size = New System.Drawing.Size(235, 169)
         Me.CheckedListBox1.Sorted = True
         Me.CheckedListBox1.TabIndex = 27
         '
@@ -1812,6 +1794,22 @@ Partial Class MDIPrincipal
         Me.Label9.Size = New System.Drawing.Size(61, 13)
         Me.Label9.TabIndex = 10
         Me.Label9.Text = "Subdivisión"
+        '
+        'TextBox8
+        '
+        Me.TextBox8.Location = New System.Drawing.Point(83, 401)
+        Me.TextBox8.Name = "TextBox8"
+        Me.TextBox8.Size = New System.Drawing.Size(161, 20)
+        Me.TextBox8.TabIndex = 9
+        '
+        'Label8
+        '
+        Me.Label8.AutoSize = True
+        Me.Label8.Location = New System.Drawing.Point(22, 404)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(54, 13)
+        Me.Label8.TabIndex = 8
+        Me.Label8.Text = "Colección"
         '
         'RadioButton2
         '
@@ -2196,15 +2194,6 @@ Partial Class MDIPrincipal
         Me.ImageList2.Images.SetKeyName(11, "CdDAdmin_24.png")
         Me.ImageList2.Images.SetKeyName(12, "favicon NGBE - 32.png")
         '
-        'ToolStripButton10
-        '
-        Me.ToolStripButton10.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.ToolStripButton10.Image = CType(resources.GetObject("ToolStripButton10.Image"), System.Drawing.Image)
-        Me.ToolStripButton10.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.ToolStripButton10.Name = "ToolStripButton10"
-        Me.ToolStripButton10.Size = New System.Drawing.Size(52, 52)
-        Me.ToolStripButton10.Text = "Municipios históricos"
-        '
         'MDIPrincipal
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -2444,8 +2433,6 @@ Partial Class MDIPrincipal
     Friend WithEvents TextBox23 As TextBox
     Friend WithEvents Label31 As Label
     Friend WithEvents Button2 As Button
-    Friend WithEvents Label32 As Label
-    Friend WithEvents CheckedListBox3 As CheckedListBox
     Friend WithEvents lvMunicipios As ListView
     Friend WithEvents Button8 As Button
     Friend WithEvents Label13 As Label
@@ -2465,4 +2452,5 @@ Partial Class MDIPrincipal
     Friend WithEvents ToolStripStatusLabel3 As ToolStripStatusLabel
     Friend WithEvents btnGetCdD As Button
     Friend WithEvents ToolStripButton10 As ToolStripButton
+    Friend WithEvents Button11 As Button
 End Class

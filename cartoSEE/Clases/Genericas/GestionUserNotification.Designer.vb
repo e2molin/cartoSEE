@@ -1,33 +1,28 @@
-﻿Public Class GestionUserNotificacion
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+Partial Class GestionUserNotification
     Inherits System.Windows.Forms.Form
 
-    Dim ListaIncidencias As ArrayList
-    Const incidenciasAppName As String = "CARTOSEE"
-    Property modoAdmin As Boolean = False
+    'Form reemplaza a Dispose para limpiar la lista de componentes.
+    <System.Diagnostics.DebuggerNonUserCode()> _
+    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Try
+            If disposing AndAlso components IsNot Nothing Then
+                components.Dispose()
+            End If
+        Finally
+            MyBase.Dispose(disposing)
+        End Try
+    End Sub
 
+    'Requerido por el Diseñador de Windows Forms
+    Private components As System.ComponentModel.IContainer
 
-#Region "Windows Controls Definition"
-    Friend WithEvents ListView1 As System.Windows.Forms.ListView
-    Friend WithEvents RadioButton1 As System.Windows.Forms.RadioButton
-    Friend WithEvents RadioButton2 As System.Windows.Forms.RadioButton
-    Friend WithEvents RadioButton3 As System.Windows.Forms.RadioButton
-    Friend WithEvents Label3 As System.Windows.Forms.Label
-    Friend WithEvents Label4 As System.Windows.Forms.Label
-    Friend WithEvents Label5 As System.Windows.Forms.Label
-    Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
-    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
-    Friend WithEvents Button2 As System.Windows.Forms.Button
-    Friend WithEvents Button3 As System.Windows.Forms.Button
-    Friend WithEvents TabPage2 As System.Windows.Forms.TabPage
-    Friend WithEvents Label1 As System.Windows.Forms.Label
-    Friend WithEvents TextBox1 As System.Windows.Forms.TextBox
-    Friend WithEvents Label2 As System.Windows.Forms.Label
-    Friend WithEvents TextBox2 As System.Windows.Forms.TextBox
-    Friend WithEvents Button1 As System.Windows.Forms.Button
-    Friend WithEvents TabPage1 As System.Windows.Forms.TabPage
-    Friend WithEvents TabControl1 As System.Windows.Forms.TabControl
+    'NOTA: el Diseñador de Windows Forms necesita el siguiente procedimiento
+    'Se puede modificar usando el Diseñador de Windows Forms.  
+    'No lo modifique con el editor de código.
+    <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(GestionUserNotificacion))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(GestionUserNotification))
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
         Me.Button1 = New System.Windows.Forms.Button()
@@ -36,9 +31,12 @@
         Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.btnLoadDoc = New System.Windows.Forms.Button()
+        Me.btnExport = New System.Windows.Forms.Button()
         Me.Button3 = New System.Windows.Forms.Button()
         Me.Button2 = New System.Windows.Forms.Button()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.Label7 = New System.Windows.Forms.Label()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
@@ -61,11 +59,11 @@
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.TabControl1.Controls.Add(Me.TabPage1)
         Me.TabControl1.Controls.Add(Me.TabPage2)
-        Me.TabControl1.Location = New System.Drawing.Point(9, 10)
+        Me.TabControl1.Location = New System.Drawing.Point(12, 12)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(487, 258)
-        Me.TabControl1.TabIndex = 3
+        Me.TabControl1.Size = New System.Drawing.Size(783, 516)
+        Me.TabControl1.TabIndex = 4
         '
         'TabPage1
         '
@@ -77,7 +75,7 @@
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(479, 232)
+        Me.TabPage1.Size = New System.Drawing.Size(775, 490)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Nueva incidencia"
         Me.TabPage1.UseVisualStyleBackColor = True
@@ -86,7 +84,7 @@
         '
         Me.Button1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
-        Me.Button1.Location = New System.Drawing.Point(368, 177)
+        Me.Button1.Location = New System.Drawing.Point(664, 435)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(105, 39)
         Me.Button1.TabIndex = 4
@@ -102,7 +100,7 @@
         Me.TextBox2.Location = New System.Drawing.Point(39, 107)
         Me.TextBox2.Multiline = True
         Me.TextBox2.Name = "TextBox2"
-        Me.TextBox2.Size = New System.Drawing.Size(323, 109)
+        Me.TextBox2.Size = New System.Drawing.Size(619, 367)
         Me.TextBox2.TabIndex = 3
         '
         'Label2
@@ -132,6 +130,8 @@
         '
         'TabPage2
         '
+        Me.TabPage2.Controls.Add(Me.btnLoadDoc)
+        Me.TabPage2.Controls.Add(Me.btnExport)
         Me.TabPage2.Controls.Add(Me.Button3)
         Me.TabPage2.Controls.Add(Me.Button2)
         Me.TabPage2.Controls.Add(Me.GroupBox1)
@@ -142,16 +142,40 @@
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(479, 232)
+        Me.TabPage2.Size = New System.Drawing.Size(598, 363)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Incidencias"
         Me.TabPage2.UseVisualStyleBackColor = True
+        '
+        'btnLoadDoc
+        '
+        Me.btnLoadDoc.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnLoadDoc.Image = CType(resources.GetObject("btnLoadDoc.Image"), System.Drawing.Image)
+        Me.btnLoadDoc.Location = New System.Drawing.Point(501, 224)
+        Me.btnLoadDoc.Name = "btnLoadDoc"
+        Me.btnLoadDoc.Size = New System.Drawing.Size(91, 36)
+        Me.btnLoadDoc.TabIndex = 10
+        Me.btnLoadDoc.Text = "Ver acta"
+        Me.btnLoadDoc.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.btnLoadDoc.UseVisualStyleBackColor = True
+        '
+        'btnExport
+        '
+        Me.btnExport.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnExport.Image = CType(resources.GetObject("btnExport.Image"), System.Drawing.Image)
+        Me.btnExport.Location = New System.Drawing.Point(501, 266)
+        Me.btnExport.Name = "btnExport"
+        Me.btnExport.Size = New System.Drawing.Size(91, 36)
+        Me.btnExport.TabIndex = 9
+        Me.btnExport.Text = "Exportar"
+        Me.btnExport.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.btnExport.UseVisualStyleBackColor = True
         '
         'Button3
         '
         Me.Button3.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button3.Image = CType(resources.GetObject("Button3.Image"), System.Drawing.Image)
-        Me.Button3.Location = New System.Drawing.Point(428, 177)
+        Me.Button3.Location = New System.Drawing.Point(547, 308)
         Me.Button3.Name = "Button3"
         Me.Button3.Size = New System.Drawing.Size(45, 36)
         Me.Button3.TabIndex = 6
@@ -161,7 +185,7 @@
         '
         Me.Button2.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
-        Me.Button2.Location = New System.Drawing.Point(382, 177)
+        Me.Button2.Location = New System.Drawing.Point(501, 308)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(45, 36)
         Me.Button2.TabIndex = 5
@@ -172,22 +196,35 @@
         Me.GroupBox1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.GroupBox1.Controls.Add(Me.Label7)
         Me.GroupBox1.Controls.Add(Me.PictureBox1)
         Me.GroupBox1.Controls.Add(Me.Label5)
         Me.GroupBox1.Controls.Add(Me.Label4)
         Me.GroupBox1.Controls.Add(Me.Label3)
         Me.GroupBox1.Location = New System.Drawing.Point(16, 22)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(360, 191)
+        Me.GroupBox1.Size = New System.Drawing.Size(479, 322)
         Me.GroupBox1.TabIndex = 4
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "GroupBox1"
+        '
+        'Label7
+        '
+        Me.Label7.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label7.BackColor = System.Drawing.Color.Silver
+        Me.Label7.Location = New System.Drawing.Point(23, 214)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(450, 82)
+        Me.Label7.TabIndex = 7
+        Me.Label7.Text = "Label7"
         '
         'PictureBox1
         '
         Me.PictureBox1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-        Me.PictureBox1.Location = New System.Drawing.Point(328, 14)
+        Me.PictureBox1.Location = New System.Drawing.Point(447, 14)
         Me.PictureBox1.Name = "PictureBox1"
         Me.PictureBox1.Size = New System.Drawing.Size(26, 27)
         Me.PictureBox1.TabIndex = 4
@@ -201,7 +238,7 @@
         Me.Label5.BackColor = System.Drawing.Color.Silver
         Me.Label5.Location = New System.Drawing.Point(23, 80)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(331, 98)
+        Me.Label5.Size = New System.Drawing.Size(450, 87)
         Me.Label5.TabIndex = 2
         Me.Label5.Text = "Label5"
         '
@@ -227,7 +264,7 @@
         '
         Me.RadioButton3.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.RadioButton3.AutoSize = True
-        Me.RadioButton3.Location = New System.Drawing.Point(382, 69)
+        Me.RadioButton3.Location = New System.Drawing.Point(501, 69)
         Me.RadioButton3.Name = "RadioButton3"
         Me.RadioButton3.Size = New System.Drawing.Size(89, 17)
         Me.RadioButton3.TabIndex = 3
@@ -239,7 +276,7 @@
         '
         Me.RadioButton2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.RadioButton2.AutoSize = True
-        Me.RadioButton2.Location = New System.Drawing.Point(382, 46)
+        Me.RadioButton2.Location = New System.Drawing.Point(501, 46)
         Me.RadioButton2.Name = "RadioButton2"
         Me.RadioButton2.Size = New System.Drawing.Size(78, 17)
         Me.RadioButton2.TabIndex = 2
@@ -252,7 +289,7 @@
         Me.RadioButton1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.RadioButton1.AutoSize = True
         Me.RadioButton1.Checked = True
-        Me.RadioButton1.Location = New System.Drawing.Point(382, 23)
+        Me.RadioButton1.Location = New System.Drawing.Point(501, 23)
         Me.RadioButton1.Name = "RadioButton1"
         Me.RadioButton1.Size = New System.Drawing.Size(55, 17)
         Me.RadioButton1.TabIndex = 1
@@ -269,16 +306,18 @@
         Me.ListView1.Location = New System.Drawing.Point(16, 22)
         Me.ListView1.MultiSelect = False
         Me.ListView1.Name = "ListView1"
-        Me.ListView1.Size = New System.Drawing.Size(360, 191)
+        Me.ListView1.Size = New System.Drawing.Size(479, 322)
         Me.ListView1.TabIndex = 0
         Me.ListView1.UseCompatibleStateImageBehavior = False
         '
-        'GestionUserNotificacion
+        'GestionUserNotification
         '
-        Me.ClientSize = New System.Drawing.Size(505, 278)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.ClientSize = New System.Drawing.Size(807, 540)
         Me.Controls.Add(Me.TabControl1)
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
-        Me.Name = "GestionUserNotificacion"
+        Me.Name = "GestionUserNotification"
+        Me.Text = "GestionUserNotification"
         Me.TabControl1.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)
         Me.TabPage1.PerformLayout()
@@ -290,182 +329,27 @@
         Me.ResumeLayout(False)
 
     End Sub
-#End Region
 
-
-    Public Sub New()
-        InitializeComponent()
-    End Sub
-
-    Private Sub frmIncidencias_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-
-
-        ListView1.Location = New Point(16, 22)
-        ListView1.Size = New Point(360, 190)
-        GroupBox1.Location = New Point(16, 22)
-        GroupBox1.Size = New Point(360, 190)
-        GroupBox1.Visible = False
-
-        ListView1.FullRowSelect = True
-        ListView1.View = View.Details
-        ListView1.Columns.Add("Referencia", 90, HorizontalAlignment.Left)
-        ListView1.Columns.Add("Fecha", 70, HorizontalAlignment.Left)
-        ListView1.Columns.Add("Usuario", 100, HorizontalAlignment.Left)
-        ListView1.Columns.Add("Estado", 60, HorizontalAlignment.Left)
-
-        Button2.Enabled = usuarioMyApp.permisosLista.editarDocumentacion
-        Button3.Enabled = usuarioMyApp.permisosLista.editarDocumentacion
-
-        CargarIncidencias()
-
-        TabControl1.SelectedTab = If(modoAdmin, TabControl1.TabPages(1), TabControl1.TabPages(0))
-
-    End Sub
-
-    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
-        Dim cadInsert As String
-
-        If TextBox2.Text.Trim = "" Then Exit Sub
-        If TextBox1.Text.Trim = "" Then
-            If MessageBox.Show("No ha indicado ninguna referencia o documento asociado.¿Continuar?",
-                            AplicacionTitulo, MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.No Then Exit Sub
-        End If
-
-        cadInsert = "INSERT INTO bdsidschema.incidencias (idincidencia,documento,usuario,estado,incidencia,aplicacion) " &
-                    "VALUES (" &
-                    "nextval('bdsidschema.incidencias_idincidencia_seq')," &
-                    "'" & TextBox1.Text.Trim & "'," &
-                    "'" & usuarioMyApp.loginUser & "'," &
-                    "'Abierta'," &
-                    "'" & TextBox2.Text.Replace("'", "\'").Trim & "','" & incidenciasAppName & "')"
-        Dim okProc As Boolean = ExeSinTran(cadInsert)
-        If okProc = True Then
-            MessageBox.Show("Incidencia notificada", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
-            CargarIncidencias()
-        Else
-            MessageBox.Show("No se creo ninguna incidencia", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-        End If
-
-    End Sub
-
-
-
-    Private Sub CargarIncidencias()
-
-        Dim cadSQL As String
-        Dim rcdIncidencia As DataTable
-        Dim filas() As DataRow
-        Dim notif As Notificacion
-
-        ListaIncidencias = New ArrayList
-
-        cadSQL = "SELECT * from bdsidschema.incidencias where aplicacion='" & incidenciasAppName & "' ORDER BY idincidencia"
-        rcdIncidencia = New DataTable
-        If CargarRecordset(cadSQL, rcdIncidencia) = True Then
-            filas = rcdIncidencia.Select
-            For Each dR As DataRow In filas
-                notif = New Notificacion
-                notif.id = dR("idincidencia").ToString
-                notif.referencia = dR("documento").ToString
-                notif.usuario = dR("usuario").ToString
-                notif.estado = dR("estado").ToString
-                notif.fecha = dR("fechacreacion")
-                notif.descripcion = dR("incidencia")
-                ListaIncidencias.Add(notif)
-                notif = Nothing
-            Next
-        End If
-        rcdIncidencia.Dispose()
-        rcdIncidencia = Nothing
-        Erase filas
-        RellenarLV()
-
-    End Sub
-
-
-
-
-
-    Private Sub ToggleMuestra(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles RadioButton1.Click, RadioButton2.Click, RadioButton3.Click
-        RellenarLV()
-    End Sub
-
-
-    Private Sub ListView1_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles ListView1.DoubleClick
-        GroupBox1.Visible = True
-        GroupBox1.Text = ListaIncidencias(ListView1.SelectedItems(0).Tag).referencia
-        Label3.Text = ListaIncidencias(ListView1.SelectedItems(0).Tag).usuario
-        Label4.Text = ListaIncidencias(ListView1.SelectedItems(0).Tag).fecha
-        Label5.Text = ListaIncidencias(ListView1.SelectedItems(0).Tag).descripcion
-        If ListaIncidencias(ListView1.SelectedItems(0).Tag).estado = "Cerrada" Then
-            Label3.ForeColor = Color.DarkGreen
-            Label4.ForeColor = Color.DarkGreen
-        ElseIf ListaIncidencias(ListView1.SelectedItems(0).Tag).estado = "Abierta" Then
-            Label3.ForeColor = Color.Red
-            Label4.ForeColor = Color.Red
-        End If
-    End Sub
-
-    Private Sub PictureBox1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PictureBox1.Click
-        GroupBox1.Visible = False
-    End Sub
-
-
-    Private Sub RellenarLV()
-        Dim elementoLV As ListViewItem
-        Dim contador As Integer
-        Dim mostrar As Boolean
-        If ListaIncidencias Is Nothing Then Exit Sub
-        ListView1.Items.Clear()
-
-        contador = -1
-        For Each incidencia As Notificacion In ListaIncidencias
-            contador = contador + 1
-            mostrar = False
-            If RadioButton1.Checked = True Then
-                mostrar = True
-            ElseIf RadioButton2.Checked = True Then
-                If incidencia.estado = "Abierta" Then mostrar = True
-            ElseIf RadioButton3.Checked = True Then
-                If incidencia.estado = "Cerrada" Then mostrar = True
-            End If
-            If mostrar = True Then
-                elementoLV = New ListViewItem
-                elementoLV.Text = incidencia.referencia
-                elementoLV.SubItems.Add(incidencia.fecha.ToString("d"))
-                elementoLV.SubItems.Add(incidencia.usuario)
-                elementoLV.SubItems.Add(incidencia.estado)
-                elementoLV.Tag = contador
-                If ListView1.Items.Count Mod 2 = 0 Then
-                    elementoLV.BackColor = Color.White
-                Else
-                    elementoLV.BackColor = Color.WhiteSmoke
-                End If
-                ListView1.Items.Add(elementoLV)
-                elementoLV = Nothing
-            End If
-
-        Next
-
-    End Sub
-
-    Private Sub CambiarEstado(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click, Button3.Click
-
-        Dim okProc As Boolean
-        Me.Cursor = Cursors.WaitCursor
-        GroupBox1.Visible = False
-        If sender.name = "Button2" Then
-            okProc = ExeSinTran("UPDATE bdsidschema.incidencias SET estado='Abierta' WHERE idincidencia=" & ListaIncidencias(ListView1.SelectedItems(0).Tag).id)
-        ElseIf sender.name = "Button3" Then
-            okProc = ExeSinTran("UPDATE bdsidschema.incidencias SET estado='Cerrada' WHERE idincidencia=" & ListaIncidencias(ListView1.SelectedItems(0).Tag).id)
-        End If
-        If okProc = True Then CargarIncidencias()
-        Me.Cursor = Cursors.Default
-
-    End Sub
-
-
-
-
+    Friend WithEvents TabControl1 As TabControl
+    Friend WithEvents TabPage1 As TabPage
+    Friend WithEvents Button1 As Button
+    Friend WithEvents TextBox2 As TextBox
+    Friend WithEvents Label2 As Label
+    Friend WithEvents TextBox1 As TextBox
+    Friend WithEvents Label1 As Label
+    Friend WithEvents TabPage2 As TabPage
+    Friend WithEvents btnLoadDoc As Button
+    Friend WithEvents btnExport As Button
+    Friend WithEvents Button3 As Button
+    Friend WithEvents Button2 As Button
+    Friend WithEvents GroupBox1 As GroupBox
+    Friend WithEvents Label7 As Label
+    Friend WithEvents PictureBox1 As PictureBox
+    Friend WithEvents Label5 As Label
+    Friend WithEvents Label4 As Label
+    Friend WithEvents Label3 As Label
+    Friend WithEvents RadioButton3 As RadioButton
+    Friend WithEvents RadioButton2 As RadioButton
+    Friend WithEvents RadioButton1 As RadioButton
+    Friend WithEvents ListView1 As ListView
 End Class

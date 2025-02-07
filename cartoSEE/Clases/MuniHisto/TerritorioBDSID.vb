@@ -2,24 +2,30 @@
 
     Property indice As Integer
     Property nombre As String
+    Property nombreMunicipioActual As String
     Property provinciaINE As Integer = 0
     Property autonomiaINE As Integer = 0
-    Property municipioINE As Integer
+    Property ineCorto As Integer
+    Property ineLargo As String
     Property municipioNombre As String
     Property tipo As String
-    Property poligonoCarto As Integer
+    Property centroideId As Integer
     Property observaciones As String
-    Property jurisdiccion As ArrayList
+    Property jurisdiccion As New ArrayList
+    Property ngbe_id As Integer
+    Property ngmep_id As Integer
+    Property ngmep_muni_id As Integer
+
 
     ReadOnly Property municipioINE_Format() As String
         Get
-            Return String.Format("{0:00000}", _municipioINE)
+            Return String.Format("{0:00000}", ineCorto)
         End Get
     End Property
 
     ReadOnly Property municipioINE_LongFormat() As String
         Get
-            Return "34" & String.Format("{0:00}", autonomiaINE) & String.Format("{0:00}", provinciaINE) & String.Format("{0:00000}", _municipioINE)
+            Return "34" & String.Format("{0:00}", autonomiaINE) & String.Format("{0:00}", provinciaINE) & String.Format("{0:00000}", _ineCorto)
         End Get
     End Property
 
@@ -53,33 +59,33 @@
 
     Function getNombreMunicipioFull() As String
 
-        Return _nombre & " (" & String.Format("{0:00000}", _municipioINE) & ")"
+        Return _nombre & " (" & String.Format("{0:00000}", _ineCorto) & ")"
 
     End Function
 
 
     Function getNombreExclaveFull() As String
 
-        Return _municipioNombre & " en " & _nombre & " (" & String.Format("{0:00000}", _municipioINE) & ")"
+        Return _municipioNombre & " en " & _nombre & " (" & String.Format("{0:00000}", _ineCorto) & ")"
 
     End Function
 
     Function getNombreCondominioFull() As String
 
-        Return _nombre & " (" & String.Format("{0:00000}", _municipioINE) & ")"
+        Return _nombre & " (" & String.Format("{0:00000}", _ineCorto) & ")"
 
     End Function
 
     Function getNombreFull() As String
 
         If _tipo = "Condominio" Then
-            Return _nombre & " (" & String.Format("{0:00000}", _municipioINE) & ")"
+            Return _nombre & " (" & String.Format("{0:00000}", _ineCorto) & ")"
         ElseIf _tipo = "Exclave" Then
-            Return _municipioNombre & " en " & _nombre & " (" & String.Format("{0:00000}", _municipioINE) & ")"
+            Return _municipioNombre & " en " & _nombre & " (" & String.Format("{0:00000}", _ineCorto) & ")"
         ElseIf _tipo = "Municipio" Then
-            Return _nombre & " (" & String.Format("{0:00000}", _municipioINE) & ")"
+            Return _nombre & " (" & String.Format("{0:00000}", _ineCorto) & ")"
         ElseIf _tipo = "Municipio extinto" Then
-            Return _nombre & " (" & String.Format("{0:00000}", _municipioINE) & ")(Extinto)"
+            Return _nombre & " (" & String.Format("{0:00000}", _ineCorto) & ")(Extinto)"
         ElseIf _tipo = "País" Then
             Return _nombre
         ElseIf _tipo = "Accidente geográfico" Then
@@ -95,7 +101,7 @@
 
         '34011111012
 
-        Return "34" & String.Format("{0:00}", _autonomiaINE) & String.Format("{0:00}", _provinciaINE) & String.Format("{0:00000}", _municipioINE)
+        Return "34" & String.Format("{0:00}", _autonomiaINE) & String.Format("{0:00}", _provinciaINE) & String.Format("{0:00000}", _ineCorto)
 
 
     End Function
@@ -108,40 +114,39 @@
         Dim filas() As DataRow
         Dim muni As MunicipioActual
 
-        cadSQL = "SELECT territorios.idterritorio,territorios.nombre,territorios.tipo,territorios.municipio," &
-                "territorios.poligono_carto,territorios.observaciones," &
-                "municipiosactuales.idmuni,municipiosactuales.nombremunicipio, municipiosactuales.codine, territorios.provincia as provincia_id,provincias.nombreprovincia,provincias.comautonoma_id " &
-                "FROM bdsidschema.territorios " &
-                "left JOIN bdsidschema.provincias on provincias.idprovincia=territorios.provincia " &
-                "left JOIN bdsidschema.territorios2muni on territorios.idterritorio=territorios2muni.territorio_id " &
-                "left JOIN bdsidschema.municipiosactuales on territorios2muni.codine=municipiosactuales.codine " &
-                "where idterritorio = " & idterritorio
+        cadSQL = $"SELECT territorios.idterritorio,territorios.nombre,territorios.tipo,territorios.municipio,listamunicipios.codigoine,listamunicipios.nombre as nombreMuniActual,
+                    territorios.poligono_carto as centroide_id,territorios.pertenencia,
+                    territorios.nomen_id as ngmep_id,territorios.ngbe_id as ngbe_id,territorios.ngmep_muni_id as ngmep_muni_id,
+				    territorios.provincia as provincia_id,provincias.nombreprovincia,provincias.comautonoma_id,territorios.observaciones
+                    FROM bdsidschema.territorios 
+                    left JOIN bdsidschema.provincias on provincias.idprovincia=territorios.provincia 
+                    left JOIN ngmepschema.listamunicipios on territorios.ngmep_muni_id=listamunicipios.identidad WHERE idterritorio={idterritorio}"
 
         rcdTmp = New DataTable
         If CargarRecordset(cadSQL, rcdTmp) = True Then
             filas = rcdTmp.Select
             For Each fila As DataRow In filas
-                _indice = idterritorio
-                _nombre = fila.Item("nombre")
-                _tipo = fila.Item("tipo")
-                If fila.Item("tipo") = "Condominio" Then
-                    _municipioNombre = fila.Item("nombre")
+                indice = fila.Item("idterritorio")
+                nombre = fila.Item("nombre").ToString
+                tipo = fila.Item("tipo").ToString
+                ineCorto = IIf(fila.Item("municipio").ToString = "", 0, fila.Item("municipio"))
+                ineLargo = IIf(fila.Item("codigoine").ToString = "", 0, fila.Item("codigoine"))
+                nombreMunicipioActual = IIf(fila.Item("nombreMuniActual").ToString = "", 0, fila.Item("nombreMuniActual").ToString)
+                provinciaINE = IIf(fila.Item("provincia_id").ToString = "", 0, fila.Item("provincia_id"))
+                autonomiaINE = IIf(fila.Item("comautonoma_id").ToString = "", 0, fila.Item("comautonoma_id"))
+                centroideId = IIf(fila.Item("centroide_id").ToString = "", 0, fila.Item("centroide_id"))
+                observaciones = fila.Item("observaciones").ToString
+                ngbe_id = fila.Item("ngbe_id").ToString
+                ngmep_id = fila.Item("ngmep_id").ToString
+                ngmep_muni_id = fila.Item("ngmep_muni_id").ToString
+
+                If tipo = "Condominio" Then
+                    For Each muniOwner As String In fila.Item("pertenencia").ToString.Split(",")
+                        jurisdiccion.Add(New TerritorioBSID(muniOwner))
+                    Next
                 End If
-                _provinciaINE = IIf(fila.Item("provincia_id").ToString = "", 0, fila.Item("provincia_id"))
-                _autonomiaINE = IIf(fila.Item("comautonoma_id").ToString = "", 0, fila.Item("comautonoma_id"))
-                _municipioINE = IIf(fila.Item("municipio").ToString = "", 0, fila.Item("municipio"))
-                _poligonoCarto = IIf(fila.Item("poligono_carto").ToString = "", 0, fila.Item("poligono_carto"))
-                _observaciones = fila.Item("observaciones").ToString
-                If fila.Item("idmuni").ToString <> "" Then
-                    muni = New MunicipioActual
-                    muni.indice = fila.Item("idmuni")
-                    muni.nombre = fila.Item("nombremunicipio")
-                    muni.codINE = fila.Item("codine")
-                    muni.provinciaId = fila.Item("provincia_id")
-                    muni.provinciaNombre = fila.Item("nombreprovincia")
-                    _jurisdiccion.Add(muni)
-                    muni = Nothing
-                End If
+
+
             Next
             Erase filas
         End If
@@ -158,40 +163,31 @@
         Dim filas() As DataRow
         Dim muni As MunicipioActual
 
-        cadSQL = "SELECT territorios.idterritorio,territorios.nombre,territorios.tipo,territorios.municipio," &
-                "territorios.poligono_carto,territorios.observaciones," &
-                "municipiosactuales.idmuni,municipiosactuales.nombremunicipio, municipiosactuales.codine, territorios.provincia as provincia_id,provincias.nombreprovincia,provincias.comautonoma_id " &
-                "FROM bdsidschema.territorios " &
-                "left JOIN bdsidschema.provincias on provincias.idprovincia=territorios.provincia " &
-                "left JOIN bdsidschema.territorios2muni on territorios.idterritorio=territorios2muni.territorio_id " &
-                "left JOIN bdsidschema.municipiosactuales on territorios2muni.codine=municipiosactuales.codine " &
-                "where tipo='Municipio' and  municipio = " & codigoine
+        cadSQL = $"SELECT territorios.idterritorio,territorios.nombre,territorios.tipo,territorios.municipio,listamunicipios.codigoine,listamunicipios.nombre as nombreMuniActual,
+                    territorios.poligono_carto as centroide_id,territorios.pertenencia,
+                    territorios.nomen_id as ngmep_id,territorios.ngbe_id as ngbe_id,territorios.ngmep_muni_id as ngmep_muni_id,
+				    territorios.provincia as provincia_id,provincias.nombreprovincia,provincias.comautonoma_id,territorios.observaciones
+                    FROM bdsidschema.territorios 
+                    left JOIN bdsidschema.provincias on provincias.idprovincia=territorios.provincia 
+                    left JOIN ngmepschema.listamunicipios on territorios.ngmep_muni_id=listamunicipios.identidad WHERE tipo='Municipio' and municipio={codigoine}"
 
         rcdTmp = New DataTable
         If CargarRecordset(cadSQL, rcdTmp) = True Then
             filas = rcdTmp.Select
             For Each fila As DataRow In filas
-                _indice = fila.Item("idterritorio")
-                _nombre = fila.Item("nombre")
-                _tipo = fila.Item("tipo")
-                If fila.Item("tipo") = "Condominio" Then
-                    _municipioNombre = fila.Item("nombre")
-                End If
-                _provinciaINE = IIf(fila.Item("provincia_id").ToString = "", 0, fila.Item("provincia_id"))
-                _autonomiaINE = IIf(fila.Item("comautonoma_id").ToString = "", 0, fila.Item("comautonoma_id"))
-                _municipioINE = IIf(fila.Item("municipio").ToString = "", 0, fila.Item("municipio"))
-                _poligonoCarto = IIf(fila.Item("poligono_carto").ToString = "", 0, fila.Item("poligono_carto"))
-                _observaciones = fila.Item("observaciones").ToString
-                If fila.Item("idmuni").ToString <> "" Then
-                    muni = New MunicipioActual
-                    muni.indice = fila.Item("idmuni")
-                    muni.nombre = fila.Item("nombremunicipio")
-                    muni.codINE = fila.Item("codine")
-                    muni.provinciaId = fila.Item("provincia_id")
-                    muni.provinciaNombre = fila.Item("nombreprovincia")
-                    _jurisdiccion.Add(muni)
-                    muni = Nothing
-                End If
+                indice = fila.Item("idterritorio")
+                nombre = fila.Item("nombre").ToString
+                tipo = fila.Item("tipo").ToString
+                ineCorto = IIf(fila.Item("municipio").ToString = "", 0, fila.Item("municipio"))
+                ineLargo = IIf(fila.Item("codigoine").ToString = "", 0, fila.Item("codigoine"))
+                nombreMunicipioActual = IIf(fila.Item("nombreMuniActual").ToString = "", 0, fila.Item("nombreMuniActual").ToString)
+                provinciaINE = IIf(fila.Item("provincia_id").ToString = "", 0, fila.Item("provincia_id"))
+                autonomiaINE = IIf(fila.Item("comautonoma_id").ToString = "", 0, fila.Item("comautonoma_id"))
+                centroideId = IIf(fila.Item("centroide_id").ToString = "", 0, fila.Item("centroide_id"))
+                observaciones = fila.Item("observaciones").ToString
+                ngbe_id = fila.Item("ngbe_id").ToString
+                ngmep_id = fila.Item("ngmep_id").ToString
+                ngmep_muni_id = fila.Item("ngmep_muni_id").ToString
             Next
             Erase filas
         End If

@@ -320,7 +320,7 @@ Public Class frmInformes
 
         For Each doc As docCartoSEE In resultsetGeodocat.resultados
             Application.DoEvents()
-            If doc.listaFicherosGeo.Count = 0 Then
+            If doc.listaFicherosGeo23030.Count = 0 Then
                 elementoLV = New ListViewItem
                 elementoLV.Text = doc.Provincias
                 elementoLV.SubItems.Add(doc.Sellado)

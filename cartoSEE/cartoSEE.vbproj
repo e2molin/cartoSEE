@@ -109,9 +109,6 @@
     <Compile Include="Clases\Autenticacion\GestionUserForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Clases\Autenticacion\GestionUserNotificacion.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Clases\Autenticacion\LoginForm.designer.vb">
       <DependentUpon>LoginForm.vb</DependentUpon>
     </Compile>
@@ -120,12 +117,12 @@
     </Compile>
     <Compile Include="Clases\Autenticacion\myAppProfile.vb" />
     <Compile Include="Clases\Autenticacion\myAppUser.vb" />
-    <Compile Include="Clases\Autenticacion\Notificacion.vb" />
     <Compile Include="Clases\Destildator.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\docCartoSEE.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\docCartoSEEquery.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\docCartoSEETipoDocu.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\docCartoSEEVariacion.vb" />
+    <Compile Include="Clases\DocCartoGEODOCAT\FileGeorref.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\FlagsProperties.vb" />
     <Compile Include="Clases\forms\dataViewerForm.Designer.vb">
       <DependentUpon>dataViewerForm.vb</DependentUpon>
@@ -135,6 +132,16 @@
     </Compile>
     <Compile Include="Clases\Genericas\BaseConversor.vb" />
     <Compile Include="Clases\Genericas\GEOCoordenada.vb" />
+    <Compile Include="Clases\Genericas\GestionUserNotification.Designer.vb">
+      <DependentUpon>GestionUserNotification.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Clases\Genericas\GestionUserNotification.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Clases\Genericas\ListDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Clases\Genericas\Notificacion.vb" />
     <Compile Include="Clases\InputDialog.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -248,6 +255,12 @@
     <Compile Include="Formularios\MDIPrincipal.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Formularios\resultGEODOCAT.Designer.vb">
+      <DependentUpon>resultGEODOCAT.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\resultGEODOCAT.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formularios\SplashScreen.designer.vb">
       <DependentUpon>SplashScreen.vb</DependentUpon>
     </Compile>
@@ -264,6 +277,7 @@
     <Compile Include="Modulos\GestionDocumentacion.vb" />
     <Compile Include="Modulos\ManagePDF.vb" />
     <Compile Include="Modulos\Procedimientos.vb" />
+    <Compile Include="Modulos\RichTextManager.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -285,14 +299,17 @@
     <EmbeddedResource Include="Clases\Autenticacion\GestionUserForm.resx">
       <DependentUpon>GestionUserForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Clases\Autenticacion\GestionUserNotificacion.resx">
-      <DependentUpon>GestionUserNotificacion.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Clases\Autenticacion\LoginForm.resx">
       <DependentUpon>LoginForm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Clases\forms\dataViewerForm.resx">
       <DependentUpon>dataViewerForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Clases\Genericas\GestionUserNotification.resx">
+      <DependentUpon>GestionUserNotification.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Clases\Genericas\ListDialog.resx">
+      <DependentUpon>ListDialog.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Clases\InputDialog.resx">
       <DependentUpon>InputDialog.vb</DependentUpon>
@@ -350,6 +367,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formularios\MDIPrincipal.resx">
       <DependentUpon>MDIPrincipal.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\resultGEODOCAT.resx">
+      <DependentUpon>resultGEODOCAT.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formularios\SplashScreen.resx">
       <DependentUpon>SplashScreen.vb</DependentUpon>

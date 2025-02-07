@@ -659,7 +659,7 @@
             ficherosDelete.Add(elem.rutaFicheroBajaRes)
             ficherosDelete.Add(elem.rutaFicheroThumb)
 
-            For Each fileGEO As String In elem.listaFicherosGeo
+            For Each fileGEO As String In elem.listaFicherosGeo23030
                 ficherosDelete.Add(fileGEO)
             Next
 
@@ -708,8 +708,8 @@
                 file.Close()
                 System.IO.File.Delete(rutaRepoGeorref & "\testdummy1234.txt")
             Catch ex As Exception
-                MessageBox.Show("No dispone de permiso de escritura en el repositorio." & Environment.NewLine() & _
-                                "Los cambios requieren traslado de documentos en el disco.", _
+                MessageBox.Show("No dispone de permiso de escritura en el repositorio." & Environment.NewLine() &
+                                "Los cambios requieren traslado de documentos en el disco.",
                                 AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                 Exit Sub
             End Try
@@ -766,16 +766,16 @@
         'Lo primero, compruebo que se hayan seleccionado ficheros
         If CheckBox23.Checked = False Then
             If TextBox2.Text.Trim = "" And TextBox3.Text.Trim = "" Then
-                If MessageBox.Show("¿Desea continuar sin agregar información gráfica?", AplicacionTitulo, _
+                If MessageBox.Show("¿Desea continuar sin agregar información gráfica?", AplicacionTitulo,
                                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.No Then Exit Sub
             Else
                 If System.IO.File.Exists(TextBox2.Text) = False Then
-                    MessageBox.Show("No se localiza el fichero origen:" & System.Environment.NewLine & _
+                    MessageBox.Show("No se localiza el fichero origen:" & System.Environment.NewLine &
                                     TextBox2.Text.Trim, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                     Exit Sub
                 End If
                 If System.IO.File.Exists(TextBox3.Text) = False Then
-                    MessageBox.Show("No se localiza el fichero origen:" & System.Environment.NewLine & _
+                    MessageBox.Show("No se localiza el fichero origen:" & System.Environment.NewLine &
                                     TextBox3.Text.Trim, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                     Exit Sub
                 End If
@@ -785,24 +785,24 @@
             If System.IO.File.Exists(TextBox2.Text) Then
                 ToolStripStatusLabel2.Text = "Copiando imagen calidad alta"
                 Try
-                    System.IO.File.Copy(TextBox2.Text, _
-                            rutaRepo & "\_Scan400\" & _
-                            DirRepoProvinciaByINE(nuevoDoc.ProvinciaRepo) & "\" & _
+                    System.IO.File.Copy(TextBox2.Text,
+                            rutaRepo & "\_Scan400\" &
+                            DirRepoProvinciaByINE(nuevoDoc.ProvinciaRepo) & "\" &
                             nuevoDoc.Sellado & ".jpg")
                 Catch ex As Exception
-                    MessageBox.Show("Se produjo un error." & System.Environment.NewLine & _
+                    MessageBox.Show("Se produjo un error." & System.Environment.NewLine &
                                     ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                 End Try
             End If
             If System.IO.File.Exists(TextBox3.Text) Then
                 ToolStripStatusLabel2.Text = "Copiando imagen calidad normal"
                 Try
-                    System.IO.File.Copy(TextBox3.Text, _
-                            rutaRepo & "\_Scan250\" & _
-                            DirRepoProvinciaByINE(nuevoDoc.ProvinciaRepo) & "250\" & _
+                    System.IO.File.Copy(TextBox3.Text,
+                            rutaRepo & "\_Scan250\" &
+                            DirRepoProvinciaByINE(nuevoDoc.ProvinciaRepo) & "250\" &
                             nuevoDoc.Sellado & ".jpg")
                 Catch ex As Exception
-                    MessageBox.Show("Se produjo un error." & System.Environment.NewLine & _
+                    MessageBox.Show("Se produjo un error." & System.Environment.NewLine &
                                     ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                 End Try
             End If
@@ -837,10 +837,10 @@
 
         GenerarCadInsertBase = ""
         FechaCreacion = Now
-        cadFechaCreacion = FechaCreacion.Year & _
-                        "/" & String.Format("{0:00}", CInt(FechaCreacion.Month.ToString)) & _
-                        "/" & String.Format("{0:00}", CInt(FechaCreacion.Day.ToString)) & " " & _
-                        String.Format("{0:00}", CInt(FechaCreacion.Hour.ToString)) & ":" & _
+        cadFechaCreacion = FechaCreacion.Year &
+                        "/" & String.Format("{0:00}", CInt(FechaCreacion.Month.ToString)) &
+                        "/" & String.Format("{0:00}", CInt(FechaCreacion.Day.ToString)) & " " &
+                        String.Format("{0:00}", CInt(FechaCreacion.Hour.ToString)) & ":" &
                         String.Format("{0:00}", CInt(FechaCreacion.Minute.ToString)) & ":00.00"
 
         If TextBox22.Text.Trim.Length <> 6 Then
@@ -865,13 +865,13 @@
             Exit Function
         Else
             If CType(ComboBox6.SelectedItem, itemData).Valor <> CType(TextBox22.Text.Substring(0, 2), Integer) Then
-                If MessageBox.Show("Los dos primeros dígitos del número de sellado no coinciden con el código de provincia. ¿Continuar?", _
+                If MessageBox.Show("Los dos primeros dígitos del número de sellado no coinciden con el código de provincia. ¿Continuar?",
                                 AplicacionTitulo, MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.No Then Exit Function
             End If
         End If
 
         If CType(ComboBox6.SelectedItem, itemData).Valor <> CType(TextBox22.Text.Substring(0, 2), Integer) Then
-            If MessageBox.Show("Los dos primeros dígitos del número de sellado no coinciden con el código de provincia. ¿Continuar?", _
+            If MessageBox.Show("Los dos primeros dígitos del número de sellado no coinciden con el código de provincia. ¿Continuar?",
                             AplicacionTitulo, MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.No Then Exit Function
         End If
 
@@ -945,8 +945,8 @@
         If IsDate(MaskedTextBox1.Text) = True Then
             fechaDoc = CType(MaskedTextBox1.Text, Date)
             'MessageBox.Show("Fecha válida")
-            cadFechaDoc = fechaDoc.Year & "/" & _
-                                String.Format("{0:00}", CInt(fechaDoc.Month.ToString)) & "/" & _
+            cadFechaDoc = fechaDoc.Year & "/" &
+                                String.Format("{0:00}", CInt(fechaDoc.Month.ToString)) & "/" &
                                 String.Format("{0:00}", CInt(fechaDoc.Day.ToString))
         Else
             MessageBox.Show("Fecha no válida. Introduzca una fecha correcta", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
@@ -1006,7 +1006,7 @@
         End If
         'Provincia
         If ListView1.Items.Count = 0 Then
-            MessageBox.Show("El documento debe tener asociado al menos un municipio.", _
+            MessageBox.Show("El documento debe tener asociado al menos un municipio.",
                             AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
             Exit Function
         End If
@@ -1080,21 +1080,21 @@
 
         GenerarCadUpdateLoteBase = ""
         FechaActualizacion = Now
-        cadFechaActualizacion = FechaActualizacion.Year & _
-                        "/" & String.Format("{0:00}", CInt(FechaActualizacion.Month.ToString)) & _
-                        "/" & String.Format("{0:00}", CInt(FechaActualizacion.Day.ToString)) & " " & _
-                        String.Format("{0:00}", CInt(FechaActualizacion.Hour.ToString)) & ":" & _
+        cadFechaActualizacion = FechaActualizacion.Year &
+                        "/" & String.Format("{0:00}", CInt(FechaActualizacion.Month.ToString)) &
+                        "/" & String.Format("{0:00}", CInt(FechaActualizacion.Day.ToString)) & " " &
+                        String.Format("{0:00}", CInt(FechaActualizacion.Hour.ToString)) & ":" &
                         String.Format("{0:00}", CInt(FechaActualizacion.Minute.ToString)) & ":00.00"
 
         CadenaUpdateLote = "UPDATE bdsidschema.archivo SET "
         If CheckBox22.Checked And TextBox22.Text.Trim <> "" Then
             If TextBox22.Text.Trim.Length <> 6 Then
-                MessageBox.Show("El número de sellado debe tener seis dígitos", _
+                MessageBox.Show("El número de sellado debe tener seis dígitos",
                                 AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                 Exit Function
             End If
             If CType(CType(ComboBox6.SelectedItem, itemData).Valor, Integer) <> CType(TextBox22.Text.Substring(0, 2), Integer) Then
-                MessageBox.Show("Los dos primeros dígitos del nº de sellado han de coincidir con el código INE de la provincia", _
+                MessageBox.Show("Los dos primeros dígitos del nº de sellado han de coincidir con el código INE de la provincia",
                                 AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                 Exit Function
             Else
@@ -1171,9 +1171,9 @@
                 Exit Function
             End If
             Application.DoEvents()
-            CadenaUpdateLote = CadenaUpdateLote & "fechaprincipal='" & _
-                                fechadoc.Year & "/" & _
-                                String.Format("{0:00}", CInt(fechadoc.Month.ToString)) & "/" & _
+            CadenaUpdateLote = CadenaUpdateLote & "fechaprincipal='" &
+                                fechadoc.Year & "/" &
+                                String.Format("{0:00}", CInt(fechadoc.Month.ToString)) & "/" &
                                 String.Format("{0:00}", CInt(fechadoc.Day.ToString)) & "',"
         End If
         If CheckBox10.Checked Then
@@ -1291,8 +1291,8 @@
             file.Close()
             System.IO.File.Delete(rutaRepoGeorref & "\testdummy1234.txt")
         Catch ex As Exception
-            MessageBox.Show("No dispone de permiso de escritura en el repositorio." & Environment.NewLine() & _
-                            "Los cambios requieren eliminación de documentos en el disco.", _
+            MessageBox.Show("No dispone de permiso de escritura en el repositorio." & Environment.NewLine() &
+                            "Los cambios requieren eliminación de documentos en el disco.",
                             AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
             Exit Sub
         End Try
@@ -1336,7 +1336,7 @@
         If lstImagen.Count > 1 Then
             If ModalQuestion($"Se abrirán {lstImagen.Count}, una por cada fichero. ¿Continuar?") = DialogResult.No Then Exit Sub
         End If
-            Try
+        Try
             For Each imgFile As String In lstImagen
                 Process.Start(imgFile)
             Next
