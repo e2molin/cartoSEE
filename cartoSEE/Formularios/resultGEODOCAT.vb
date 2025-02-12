@@ -18,7 +18,7 @@
         DocumentosByComentario = 15
         DocumentosByPatron = 16
         DocumentosByListaMatriculaPorBBOX = 17
-        DocumentosByMatriculaINE = 18
+        DocumentosByProcHojaCarpeta = 18
         DocumentosEnCarrito = 19
         DocumentoByIndice = 20
     End Enum
@@ -72,24 +72,25 @@
     'estado,                        12  Visible inicial					tbestadodocumento.estadodoc as Estado,
     'archivo.fechasmodificaciones,  13	Oculto inicio					archivo.fechasmodificaciones,
     'archivo.observaciones,         14	Oculto inicio					archivo.observaciones,
-    'archivo.anejo,                 15	Oculto inicio					archivo.anejo,
-    'archivo.procecarpeta,          16	Oculto inicio					archivo.procecarpeta,
-    'archivo.procehoja,             17									archivo.procehoja,
-    'archivo.juntaestadistica,      18	Oculto inicio					archivo.juntaestadistica,
-    'archivo.extraprops,            19  Oculto inicio					archivo.extraprops,
-    'archivo.cdd_url,               20									archivo.cdd_url,
-    'archivo.titn,                  21									archivo.titn,
-    'archivo.autor,                 22  Oculto inicio					archivo.autor,
-    'archivo.encabezado,            23									archivo.encabezado,
-    'nombreprovincia,               24  Oculto inicio					string_agg(provincias.nombreprovincia,'#') as nombreprovincia,
-    'listaCodMuniHisto,             25  Oculto inicio					string_agg(to_char(territorios.munihisto, 'FM0000009'::text),'#') as listaCodMuniHisto,
-    'listaMuniActual,               26									string_agg(listamunicipios.nombre,'#') as listaMuniActual,
-    'listaCodMuniActual,            27									string_agg(listamunicipios.inecorto,'#') as listaCodMuniActual
+    'archivo.proyecto,              15	Oculto inicio					archivo.observaciones,
+    'archivo.anejo,                 16	Oculto inicio					archivo.anejo,
+    'archivo.procecarpeta,          17	Oculto inicio					archivo.procecarpeta,
+    'archivo.procehoja,             18									archivo.procehoja,
+    'archivo.juntaestadistica,      19	Oculto inicio					archivo.juntaestadistica,
+    'archivo.extraprops,            20  Oculto inicio					archivo.extraprops,
+    'archivo.cdd_url,               21									archivo.cdd_url,
+    'archivo.titn,                  22									archivo.titn,
+    'archivo.autor,                 23  Oculto inicio					archivo.autor,
+    'archivo.encabezado,            24									archivo.encabezado,
+    'nombreprovincia,               25  Oculto inicio					string_agg(provincias.nombreprovincia,'#') as nombreprovincia,
+    'listaCodMuniHisto,             26  Oculto inicio					string_agg(to_char(territorios.munihisto, 'FM0000009'::text),'#') as listaCodMuniHisto,
+    'listaMuniActual,               27									string_agg(listamunicipios.nombre,'#') as listaMuniActual,
+    'listaCodMuniActual,            28									string_agg(listamunicipios.inecorto,'#') as listaCodMuniActual
 #End Region
 
     Const widthScrollLV As Integer = 30
     Dim FixedCols() As Integer = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11} 'Columnas con ancho fijo aunque crezca el tamaño del datagrid
-    Dim Hide_And_Show_Columns() As Integer = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 19, 22, 24} ' Índices de columnas que pueden mostrarse u ocultarse
+    Dim Hide_And_Show_Columns() As Integer = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 23, 25} ' Índices de columnas que pueden mostrarse u ocultarse
 
     Dim idArchivoLoaded As Integer = 0
     Dim idArchiveTagsLoaded As Integer = 0
@@ -248,7 +249,7 @@
             AddTitulo(container, $"{elemEntidadSel.Tipo} Nº {elemEntidadSel.Sellado}")
 
             .SelectionFont = New Font("Segoe UI Semibold", 10, FontStyle.Bold)
-            .AppendText($"{elemEntidadSel.getListaProvincias}. Tomo: {elemEntidadSel.Tomo}.Fecha: {elemEntidadSel.fechaPrincipal}{Environment.NewLine}")
+            .AppendText($"{elemEntidadSel.getListaProvincias}. Tomo: {elemEntidadSel.Tomo}.Fecha: {elemEntidadSel.FechaPrincipal}{Environment.NewLine}")
             .AppendText(Environment.NewLine)
 
             .SelectionColor = Color.FromArgb(47, 79, 79) 'DimSlateGray
@@ -527,17 +528,28 @@
                                             WHERE idarchivo>0 
                                 ) select idarchivo from dataprops where patron like '{paramSQL1}'
                              )"
-
             FillDocCARTOSEEwithFilter(complexFilter)
+
+        ElseIf typeSearch = TypeDataSearch.DocumentosByProcHojaCarpeta Then
+            Dim hoja As Integer
+            If paramSQL1.ToString = "" Then
+                ModalExclamation("Búsqueda por hoja no definida")
+                Exit Sub
+            End If
+            If Not Integer.TryParse(paramSQL1, hoja) Then
+                ModalExclamation("La hoja debe ser un número")
+                Exit Sub
+            End If
+            If paramSQL2.ToString = "" Then
+                FillDocCARTOSEEwithFilter($"archivo.procehoja={paramSQL1}")
+                Me.Text = $"Documentos de la hoja «{paramSQL1}»"
+            Else
+                FillDocCARTOSEEwithFilter($"archivo.procehoja={paramSQL1} and procecarpeta='{paramSQL2}'")
+                Me.Text = $"Documentos de la hoja «{paramSQL1}», carpeta «{paramSQL2}»"
+            End If
+
+
             '------------------------------------------------------------------------------------------------------------------------
-
-
-
-
-
-
-
-
 
 
         ElseIf typeSearch = TypeDataSearch.AllDocsPorFechaAltaEntreFechas Then
@@ -680,13 +692,15 @@
         elementoLV = New ListViewItem With {.Text = "Encabezado", .ImageIndex = 4, .Group = docGeneral}
         elementoLV.SubItems.Add(elemEntidadSel.encabezadoABSYSdoc) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
         elementoLV = New ListViewItem With {.Text = "Autoría", .ImageIndex = 4, .Group = docGeneral}
-        elementoLV.SubItems.Add(elemEntidadSel.autorDocumento) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
+        elementoLV.SubItems.Add(elemEntidadSel.autorEntidad) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
+        elementoLV = New ListViewItem With {.Text = "Proyecto", .ImageIndex = 4, .Group = docGeneral}
+        elementoLV.SubItems.Add(elemEntidadSel.Proyecto) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
         elementoLV = New ListViewItem With {.Text = "Colección", .ImageIndex = 4, .Group = docGeneral}
         elementoLV.SubItems.Add(elemEntidadSel.Coleccion) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
         elementoLV = New ListViewItem With {.Text = "Subdivisión", .ImageIndex = 4, .Group = docGeneral}
         elementoLV.SubItems.Add(elemEntidadSel.Subdivision) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
         elementoLV = New ListViewItem With {.Text = "Fecha documento", .ImageIndex = 4, .Group = docGeneral}
-        elementoLV.SubItems.Add(elemEntidadSel.fechaPrincipal) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
+        elementoLV.SubItems.Add(elemEntidadSel.FechaPrincipal) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
         elementoLV = New ListViewItem With {.Text = "Modificado en", .ImageIndex = 4, .Group = docGeneral}
         elementoLV.SubItems.Add(elemEntidadSel.fechasModificaciones) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
         elementoLV = New ListViewItem With {.Text = "JGE", .ImageIndex = 4, .Group = docGeneral}
@@ -810,6 +824,21 @@
         elementoLV.SubItems.Add(".JPG")
         elementoLV.ForeColor = IIf(Not IO.File.Exists(elemEntidadSel.rutaFicheroBajaRes), Color.Red, Color.DarkGreen)
         lvDocResources.Items.Add(elementoLV) : elementoLV = Nothing
+
+        If IO.File.Exists(elemEntidadSel.rutaFicheroPDF) Then
+            elementoLV = New ListViewItem With {
+                .Text = "Documento PDF",
+                .ImageIndex = 4,
+                .Tag = elemEntidadSel.rutaFicheroPDF,
+                .Group = docDigital
+        }
+            elementoLV.SubItems.Add(SacarFileDeRuta(elemEntidadSel.rutaFicheroPDF))
+            elementoLV.SubItems.Add(".PDF")
+            elementoLV.ForeColor = IIf(Not IO.File.Exists(elemEntidadSel.rutaFicheroPDF), Color.Red, Color.DarkGreen)
+            lvDocResources.Items.Add(elementoLV) : elementoLV = Nothing
+        End If
+
+
 
         'Así rellenamos usando el escaneo de directorios georreferenciados
         elemEntidadSel.getGeoFiles()
@@ -938,9 +967,9 @@
     Private Sub FillDocCARTOSEEwithFilter(mainFilter As String, Optional filtroTerris As String = "", Optional filtroTerrisAgrupado As String = "")
 
         'Ahora añadimos filtros.
-        If mainFilter = "" Then
-            mainFilter = "archivo.idarchivo>0"
-        End If
+        If mainFilter = "" Then mainFilter = "archivo.idarchivo>0"
+
+
 
         If filterTipoDoc <> "" Then mainFilter &= $" AND archivo.tipodoc_id in ({filterTipoDoc})"
         If filterEstadoDoc <> "" Then mainFilter &= $" AND archivo.estadodoc_id in ({filterEstadoDoc})"
@@ -957,7 +986,7 @@
         'Cuando hacemos filtro en la parte de territorios, activamos la claúsula inner join
         sqlBase = $"SELECT archivo.idarchivo,archivo.numdoc,tbtipodocumento.tipodoc as tipo,archivo.subtipo,archivo.tomo,archivo.escala,to_char(archivo.fechaprincipal, 'YYYY-MM-DD') as fechaprincipal,
                             string_agg(territorios.nombre,', ') as listaMuniHisto,archivo.signatura,archivo.horizontal || ' cm × '|| archivo.vertical || ' cm' as dimensiones,
-                            archivo.coleccion,archivo.subdivision,tbestadodocumento.estadodoc as Estado,archivo.fechasmodificaciones,archivo.observaciones,
+                            archivo.coleccion,archivo.subdivision,tbestadodocumento.estadodoc as Estado,archivo.fechasmodificaciones,archivo.observaciones,archivo.proyecto,
 		                    archivo.anejo,archivo.procecarpeta,archivo.procehoja,
 		                    archivo.juntaestadistica,archivo.extraprops,
 		                    archivo.cdd_url,archivo.titn,archivo.autor,archivo.encabezado,
@@ -975,7 +1004,7 @@
                     WHERE {mainFilter}
                       group by archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal,
   	                    archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, archivo.horizontal, archivo.procecarpeta, archivo.procehoja, 
-                        archivo.subtipo,archivo.juntaestadistica, archivo.signatura,archivo.extraprops, archivo.observaciones,
+                        archivo.subtipo,archivo.juntaestadistica, archivo.signatura,archivo.extraprops, archivo.observaciones,archivo.proyecto,
 	                    tbtipodocumento.tipodoc,archivo.cdd_url,archivo.titn,archivo.autor,archivo.encabezado,tbestadodocumento.estadodoc
                     order by archivo.idarchivo"
 
@@ -1588,29 +1617,39 @@
 
     Private Sub btnEditar_Click(sender As Object, e As EventArgs) Handles btnEditar.Click
 
-        ModalInfo("Revisar")
+
+        'Compruebo que no haya abierta previamente una ventana para modificar este documento
+        Dim nIndiceEdit As Integer
+
+        If DataGridView1.SelectedRows.Count <> 1 Then
+            ModalExclamation("Seleccione un único registro para editar")
+        End If
+        If DataGridView1.Item("idarchivo", DataGridView1.CurrentCell.RowIndex).Value.ToString = "" Then
+            ModalExclamation("")
+            Exit Sub
+        End If
+
+        nIndiceEdit = DataGridView1.Item("idarchivo", DataGridView1.CurrentCell.RowIndex).Value
+
+        For Each ChildForm As Form In MDIPrincipal.MdiChildren
+            If ChildForm.Tag = nIndiceEdit Then
+                ChildForm.Focus()
+                Exit Sub
+            End If
+        Next
+
+        Dim FormularioCreacion As New frmEdicion With {
+           .MdiParent = MDIPrincipal,
+           .IDArchivoEdition = nIndiceEdit,
+           .ModeEdition = frmEdicion.ModeEdition.EditSingleDocument
+        }
+        FormularioCreacion.Show()
 
 
-        'Dim nIndiceEdit As Integer
-
-        'If DataGridView1.RowCount = 0 Then Exit Sub
-
-        'If elemEntidadSel.indice > 0 Then
-        '    nIndiceEdit = elemEntidadSel.indice
-        'Else
-        '    Exit Sub
-        'End If
-
-        'For Each ChildForm As Form In MDIPrincipal.MdiChildren
-        '    If ChildForm.Tag = nIndiceEdit Then
-        '        ChildForm.Focus()
-        '        Exit Sub
-        '    End If
-        'Next
-        'Dim FormularioEdicion As New FrmEdicion
-        'FormularioEdicion.MdiParent = MDIPrincipal
-        'FormularioEdicion.Show()
-        'FormularioEdicion.ModoOperativo(nIndiceEdit)
+        'FormularioCreacion.MdiParent = MDIPrincipal
+        'FormularioCreacion.ModoTrabajo("SIMPLE", nIndiceEdit)
+        'FormularioCreacion.Show()
+        'FormularioCreacion.Visible = True
 
     End Sub
 
@@ -2120,6 +2159,38 @@
             End If
 
         Next
+
+    End Sub
+
+    Private Sub mnuLaunchECWCrop_Click(sender As Object, e As EventArgs) Handles mnuLaunchECWCrop.Click
+
+
+        Dim RutasECW As New ArrayList
+        Dim archivoId As Integer
+        Dim elemEntidadgeo As docCartoSEE
+
+        ModalInfo("La composición se generará en epsg:23030")
+
+        For i = 0 To DataGridView1.SelectedRows.Count - 1
+            archivoId = DataGridView1.Item(0, DataGridView1.SelectedRows(i).Index).Value
+            elemEntidadgeo = New docCartoSEE(archivoId)
+            elemEntidadgeo.getGeoFiles()
+            For Each rutaDoc As FileGeorref In elemEntidadgeo.listaFicherosGeo
+                Application.DoEvents()
+                If rutaDoc.EPSCode = "epsg23030" Then RutasECW.Add(rutaDoc.PathFile)
+            Next
+        Next
+
+        If RutasECW.Count = 0 Then
+            ModalInfo("No se ha localizado ningún documento georreferenciado")
+        Else
+            If GenerarProyectoGM(RutasECW, True) = True Then
+                LanzarVisorExterno(AppFolderSetting & "\LaunchGM.gmw")
+            End If
+        End If
+        RutasECW.Clear()
+        RutasECW = Nothing
+
 
     End Sub
 End Class

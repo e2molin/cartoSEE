@@ -248,6 +248,8 @@ Module CargaDeDatos
                 myComando.Transaction = myTrans
                 myComando.ExecuteNonQuery()
             Next
+            'myTrans.Rollback()
+            Application.DoEvents()
             myTrans.Commit()
             ExeTran = True
         Catch ex As Exception

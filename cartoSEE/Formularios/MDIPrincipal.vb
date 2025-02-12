@@ -871,11 +871,11 @@ Public Class MDIPrincipal
                                     mnuLanzarPlantilla.Click, mnuAddECW.Click, mnuAddContornos.Click, mnuMuniHisto.Click, mnuOpenPreferenceFolder.Click, mnuOpenLoggerFile.Click, mnuQueryLibrosRegistro.Click, ToolStripButton20.Click
 
         If sender.name = "ToolStripButton9" Or sender.name = "mnuTool_AltaDoc" Then
-            Dim FormularioCreacion As New frmEdicion
-            FormularioCreacion.MdiParent = Me
-            FormularioCreacion.ModoTrabajo("NUEVO", 0)
+            Dim FormularioCreacion As New frmEdicion With {
+                   .MdiParent = Me,
+                   .ModeEdition = frmEdicion.ModeEdition.CreateDocument
+                }
             FormularioCreacion.Show()
-            FormularioCreacion.Visible = True
         ElseIf sender.name = "mnuQueryLibrosRegistro" Or sender.name = "ToolStripButton20" Then
 
             Dim frmVista As New dataViewerForm
@@ -1686,6 +1686,11 @@ Public Class MDIPrincipal
         Next
         If CheckedListBox2.Items.Count = CheckedListBox2.CheckedItems.Count Then EstadosDocumento = ""
 
+
+
+
+
+
         'Extraemos otros filtros
         numTomo = TextBox5.Text.Trim
         proceHoja = TextBox4.Text.Trim
@@ -1779,14 +1784,16 @@ Public Class MDIPrincipal
                     .filterTomo = numTomo
                     .typeSearch = resultGEODOCAT.TypeDataSearch.AllDocumentsByProvincia
                 ElseIf proceCarpeta <> "" Or proceHoja <> "" Then
-                    If proceCarpeta = "" And proceHoja <> "" Then
+                    If proceHoja = "" And proceCarpeta <> "" Then
                         ModalExclamation("Si busca una carpeta, debe especificar la Hoja")
                         frmResultados.Close()
                         frmResultados.Dispose()
                         frmResultados = Nothing
                         Exit Sub
                     End If
-
+                    .paramSQL1 = proceHoja
+                    .paramSQL2 = proceCarpeta
+                    .typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosByProcHojaCarpeta
                 ElseIf TextBox1.Tag.Trim <> "" Then
                     If CheckBox1.Checked Then
                         'Búsqueda por territorio/municipio actual. Usamos en la búsqueda el códigoINE actual

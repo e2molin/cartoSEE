@@ -131,6 +131,12 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Clases\Genericas\BaseConversor.vb" />
+    <Compile Include="Clases\Genericas\CustomMsgbox.Designer.vb">
+      <DependentUpon>CustomMsgbox.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Clases\Genericas\CustomMsgbox.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Clases\Genericas\GEOCoordenada.vb" />
     <Compile Include="Clases\Genericas\GestionUserNotification.Designer.vb">
       <DependentUpon>GestionUserNotification.vb</DependentUpon>
@@ -304,6 +310,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Clases\forms\dataViewerForm.resx">
       <DependentUpon>dataViewerForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Clases\Genericas\CustomMsgbox.resx">
+      <DependentUpon>CustomMsgbox.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Clases\Genericas\GestionUserNotification.resx">
       <DependentUpon>GestionUserNotification.vb</DependentUpon>

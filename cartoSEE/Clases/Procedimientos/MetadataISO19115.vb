@@ -106,9 +106,9 @@
             ComboObservaciones = ComboObservaciones.Replace("..", ".")
             Contenido = Contenido.Replace("_Observaciones_", ComboObservaciones.Trim)
         End If
-        If Not docuAT.fechaPrincipal Is Nothing Then
-            If docuAT.fechaPrincipal.Length >= 10 Then
-                cadFechaPrincipal = docuAT.fechaPrincipal.ToString
+        If Not docuAT.FechaPrincipal Is Nothing Then
+            If docuAT.FechaPrincipal.Length >= 10 Then
+                cadFechaPrincipal = docuAT.FechaPrincipal.ToString
                 Contenido = Contenido.Replace("_FechaPrincipal_", cadFechaPrincipal)
             End If
         End If

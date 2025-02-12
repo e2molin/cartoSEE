@@ -11,15 +11,19 @@
     Property proceHoja As String
     Property proceCarpeta As String
     Property NumDisco As String
-    Property fechaPrincipal As String
+    Property FechaPrincipal As String
+    Property TipoFechaPrincipal As String
     Property fechasModificaciones As String
     Property Anejo As String
     Property Signatura As String
+    Property Proyecto As String
     Property Coleccion As String
     Property Subdivision As String
     Property Vertical As String
     Property Horizontal As String
     Property Observaciones As String
+    Property Comentarios As String
+    Property EdificiosCitados As String
     Property ObservacionesStandard As String
     Property extraProps As New FlagsProperties
     Property listaMuniHistorico As New ArrayList
@@ -48,7 +52,8 @@
     Property cddGeometria As String
 
     'Namespace ABSYS
-    Property autorDocumento As String
+    Property autorEntidad As String
+    Property autorPersona As String
     Property cargaABSYS As Boolean
     Property titnABSYSdoc As Integer
     Property encabezadoABSYSdoc As String
@@ -89,9 +94,9 @@
         Get
             Dim cadOut As String = ""
             Try
-                If Not fechaPrincipal Is Nothing Then
-                    If fechaPrincipal.Length >= 3 And (fechaPrincipal.Substring(4, 1) = "-" Or fechaPrincipal.Substring(4, 1) = "/") Then
-                        cadOut = fechaPrincipal.Substring(0, 4)
+                If Not FechaPrincipal Is Nothing Then
+                    If FechaPrincipal.Length >= 3 And (FechaPrincipal.Substring(4, 1) = "-" Or FechaPrincipal.Substring(4, 1) = "/") Then
+                        cadOut = FechaPrincipal.Substring(0, 4)
                     Else
                         cadOut = "Sin fecha"
                     End If
@@ -256,16 +261,24 @@
         End Get
     End Property
 
+    ReadOnly Property rutaFicheroPDF() As String
+        Get 'Opcional. No todos los documentos tienen recurso en PDF
+            Dim selladoFormat As String = String.Format("{0:00000000}", CType(Sellado, Integer))
+            Return $"{rutaRepo}\_pdf\{String.Format("{0:00}", ProvinciaRepo)}\{tipoDocumento.prefijoNombreCDD}{selladoFormat}.pdf"
+        End Get
+    End Property
+
     ReadOnly Property nameFilePropuestoParaCDD(Optional extension As String = "") As String
 
         Get
             Dim procTilde As New Destildator
             Return _tipoDocumento.prefijoNombreCDD &
                 String.Format("{0:000000}", Sellado) & "_" &
-                _fechaPrincipal.Substring(0, 4) & "_" &
+                _FechaPrincipal.Substring(0, 4) & "_" &
                 procTilde.destildar(municipiosHistoLiteral()).Replace(",", "-").ToUpper.Replace(" ", "_") &
                 IIf(extension <> "", "." & extension.ToLower, "")
         End Get
+
     End Property
 
     ReadOnly Property nameFile4CDD() As String
@@ -278,7 +291,7 @@
     'Nambre de la carpeta para guardar los documentos y después zippearlos para el centro de descargas
     ReadOnly Property nameFolder4CDD() As String
         Get
-            Return _tipoDocumento.NombreTipo.Substring(0, 5).Replace("ñ", "n").ToUpper & "_" & String.Format("{0:000000}", Sellado) & "_" & _fechaPrincipal.Substring(0, 4)
+            Return _tipoDocumento.NombreTipo.Substring(0, 5).Replace("ñ", "n").ToUpper & "_" & String.Format("{0:000000}", Sellado) & "_" & _FechaPrincipal.Substring(0, 4)
         End Get
     End Property
 
@@ -288,7 +301,7 @@
         Get
             For Each tipo As docCartoSEETipoDocu In tiposDocSIDCARTO
                 If tipoDocumento.idTipodoc = tipo.idTipodoc Then
-                    Return tipo.prefijoMetadatos & "_" & String.Format("{0:000000}", Sellado) & "_" & _fechaPrincipal.Substring(0, 4) & ".xml"
+                    Return tipo.prefijoMetadatos & "_" & String.Format("{0:000000}", Sellado) & "_" & _FechaPrincipal.Substring(0, 4) & ".xml"
                 End If
             Next
             Return ""
@@ -314,13 +327,13 @@
     ReadOnly Property nameFileECWJPG() As String
 
         Get
-            Return _tipoDocumento.NombreTipo.Substring(0, 5).Replace("ñ", "n").ToUpper & "_" & String.Format("{0:000000}", Sellado) & "_" & _fechaPrincipal.Substring(0, 4) & ".zip"
+            Return _tipoDocumento.NombreTipo.Substring(0, 5).Replace("ñ", "n").ToUpper & "_" & String.Format("{0:000000}", Sellado) & "_" & _FechaPrincipal.Substring(0, 4) & ".zip"
         End Get
     End Property
     ReadOnly Property nameFileHTML() As String
 
         Get
-            Return _tipoDocumento.NombreTipo.Substring(0, 5).Replace("ñ", "n").ToUpper & "_" & String.Format("{0:000000}", Sellado) & "_" & _fechaPrincipal.Substring(0, 4) & "-info.html"
+            Return _tipoDocumento.NombreTipo.Substring(0, 5).Replace("ñ", "n").ToUpper & "_" & String.Format("{0:000000}", Sellado) & "_" & _FechaPrincipal.Substring(0, 4) & "-info.html"
         End Get
     End Property
 
@@ -410,10 +423,10 @@
         If idArchivo > 0 Then
             'Si recibimos un iddocsiddae>0, cargamos datos de la database
 
-            consultaSQL = $"SELECT archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal,
+            consultaSQL = $"SELECT archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal,archivo.tipo_fechaprincipal,
 		                        archivo.fechasmodificaciones,archivo.anejo,archivo.vertical,archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja,
-		                        archivo.subtipo,archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.extraprops,archivo.observaciones,
-		                        archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.cdd_geometria,archivo.cdd_fecha,archivo.titn,archivo.autor,archivo.encabezado,
+		                        archivo.subtipo,archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.extraprops,archivo.observaciones,archivo.observ,archivo.proyecto,
+		                        archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.cdd_geometria,archivo.cdd_fecha,archivo.titn,archivo.autor,archivo.autor_persona,archivo.encabezado,archivo.nombreedificio,
 		                        tbtipodocumento.tipodoc as Tipo,tbestadodocumento.estadodoc as Estado, tbobservaciones.observestandar,
                                 archivo.provincia_id as repoprov,archivo.fechacreacion,archivo.fechamodificacion,
                                 string_agg(territorios.idterritorio::character varying,'#') as listaIdTerris,
@@ -429,11 +442,11 @@
 	                        LEFT JOIN ngmepschema.listamunicipios on territorios.nomen_id= listamunicipios.identidad 
 	                        LEFT JOIN bdsidschema.provincias on territorios.provincia= provincias.idprovincia 
                         WHERE archivo.idarchivo={idArchivo}
-                          group by archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal,
+                          group by archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal,archivo.tipo_fechaprincipal,
   	                        archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, archivo.horizontal, archivo.tipodoc_id, archivo.estadodoc_id, archivo.procecarpeta, 
-  	                        archivo.procehoja, archivo.subtipo,archivo.juntaestadistica, archivo.signatura, archivo.observestandar_id,archivo.extraprops, archivo.observaciones,
-	                        tbtipodocumento.tipodoc,archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.titn,archivo.autor,archivo.encabezado,tbestadodocumento.estadodoc, 
-	                        tbobservaciones.observestandar "
+  	                        archivo.procehoja, archivo.subtipo,archivo.juntaestadistica, archivo.signatura, archivo.observestandar_id,archivo.extraprops, archivo.observaciones,archivo.observ,
+                            archivo.proyecto,tbtipodocumento.tipodoc,archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.titn,archivo.autor,archivo.autor_persona,archivo.encabezado,archivo.nombreedificio,
+                            tbestadodocumento.estadodoc,tbobservaciones.observestandar "
             loadDocAttributesFromDatabase(consultaSQL)
         End If
 
@@ -476,10 +489,16 @@
             End If
             If dR("fechaprincipal").ToString.Length >= 10 Then
                 'ListaDoc(contador).fechaPrincipal = dR("fechaprincipal").ToString.Substring(0, 10)
-                fechaPrincipal = FormatearFecha(dR("fechaprincipal"), "GERMAN")
+                FechaPrincipal = FormatearFecha(dR("fechaprincipal"), "GERMAN")
             End If
-
+            TipoFechaPrincipal = dR("tipo_fechaprincipal").ToString
             fechasModificaciones = dR("fechasmodificaciones").ToString
+            For Each subItem As docCartoSEETipoDocu In tiposDocSIDCARTO
+                If subItem.idTipodoc = dR("tipodoc_id").ToString Then
+                    tipoDocumento = subItem
+                    Exit For
+                End If
+            Next
             Tipo = dR("Tipo").ToString
             CodTipo = dR("tipodoc_id").ToString
             For Each subItem As docCartoSEETipoDocu In tiposDocSIDCARTO
@@ -499,6 +518,7 @@
             NumDisco = "" 'dR("NumDisco").ToString
             Anejo = dR("Anejo").ToString
             Signatura = dR("Signatura").ToString
+            Proyecto = dR("proyecto").ToString
             Coleccion = dR("Coleccion").ToString
             Subdivision = dR("Subdivision").ToString
 
@@ -515,7 +535,8 @@
                 cargaABSYS = False
                 urlABSYSdoc = ""
             End If
-            autorDocumento = dR("autor").ToString
+            autorEntidad = dR("autor").ToString
+            autorPersona= dR("autor_persona").ToString
             encabezadoABSYSdoc = dR("encabezado").ToString
 
             For Each elem As String In dR("listaIdTerris").ToString.Split("#")
@@ -545,6 +566,8 @@
             JuntaEstadistica = IIf(dR("JuntaEstadistica").ToString = "1", "Sí", "No")
             ObservacionesStandard = dR("observestandar").ToString
             Observaciones = dR("observaciones").ToString
+            Comentarios = dR("observ").ToString
+            EdificiosCitados = dR("nombreedificio").ToString
             extraProps.propertyCode = dR("extraprops")
 
             createAt = IIf(dR("fechacreacion").ToString = "", "No registrada", dR("fechacreacion").ToString)
@@ -679,10 +702,10 @@
         BBOX_Xmax = CType(x2_tmp, String).Replace(",", ".")
         BBOX_Ymin = CType(y1_tmp, String).Replace(",", ".")
         BBOX_Ymax = CType(y2_tmp, String).Replace(",", ".")
-        BBOX4OL3 = "POLYGON((" & BBOX_Xmin & " " & BBOX_Ymin & "," & _
-                           "" & BBOX_Xmin & " " & BBOX_Ymax & "," & _
-                           "" & BBOX_Xmax & " " & BBOX_Ymax & "," & _
-                           "" & BBOX_Xmax & " " & BBOX_Ymin & "," & _
+        BBOX4OL3 = "POLYGON((" & BBOX_Xmin & " " & BBOX_Ymin & "," &
+                           "" & BBOX_Xmin & " " & BBOX_Ymax & "," &
+                           "" & BBOX_Xmax & " " & BBOX_Ymax & "," &
+                           "" & BBOX_Xmax & " " & BBOX_Ymin & "," &
                            "" & BBOX_Xmin & " " & BBOX_Ymin & "))"
         BBOXCenter4OL3_ByExtent = "[" & BBOX_Xmin & "," & BBOX_Ymin & "," & BBOX_Xmax & "," & BBOX_Ymax & "]"
 

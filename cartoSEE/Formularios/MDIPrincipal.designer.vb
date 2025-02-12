@@ -2193,6 +2193,8 @@ Partial Class MDIPrincipal
         Me.ImageList2.Images.SetKeyName(10, "RaroInvertido_48.png")
         Me.ImageList2.Images.SetKeyName(11, "CdDAdmin_24.png")
         Me.ImageList2.Images.SetKeyName(12, "favicon NGBE - 32.png")
+        Me.ImageList2.Images.SetKeyName(13, "Archivador 32.png")
+        Me.ImageList2.Images.SetKeyName(14, "editar_24.png")
         '
         'MDIPrincipal
         '

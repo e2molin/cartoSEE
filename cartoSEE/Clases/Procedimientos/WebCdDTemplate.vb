@@ -46,7 +46,7 @@
         _contenidoHTML = _contenidoHTML.Replace("_#SIZEDOC#_", docuAT.Horizontal.ToString.Replace(",", ".") & " x " & docuAT.Vertical.ToString.Replace(",", ".") & " cm.")
         _contenidoHTML = _contenidoHTML.Replace("_#CALIDADDOC#_", docuAT.Estado)
         _contenidoHTML = _contenidoHTML.Replace("_#SIGNATURA#_", docuAT.Signatura)
-        _contenidoHTML = _contenidoHTML.Replace("_#FECHAPRINCIPAL#_", docuAT.fechaPrincipal)
+        _contenidoHTML = _contenidoHTML.Replace("_#FECHAPRINCIPAL#_", docuAT.FechaPrincipal)
         _contenidoHTML = _contenidoHTML.Replace("_#FECHAMODIFICACION#_", docuAT.fechasModificaciones)
         _contenidoHTML = _contenidoHTML.Replace("_#PROVINCIADOCUMENTO#_", docuAT.Provincias)
         _contenidoHTML = _contenidoHTML.Replace("_#TOMODOC#_", docuAT.Tomo)

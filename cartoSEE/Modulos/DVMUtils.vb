@@ -203,6 +203,20 @@
 
     End Function
 
+    Public Function ModalQuestWriteDatabase(message As String, Optional titleModal As String = "") As DialogResult
+
+        Try
+            My.Forms.CustomMsgbox.messageText = message
+            My.Forms.CustomMsgbox.textCaption = titleModal
+            Return My.Forms.CustomMsgbox.ShowDialog()
+        Catch ex As Exception
+            ModalError(ex.Message)
+        End Try
+
+
+    End Function
+
+
 #End Region
 
     Function GenerarLOG(ByVal Frase As String) As Boolean

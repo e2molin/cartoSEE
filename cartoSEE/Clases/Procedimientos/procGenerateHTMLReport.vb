@@ -162,7 +162,7 @@
                                     "<td>" & documento.tipoDocumento.NombreTipo & "</td>" &
                                     "<td>" & documento.Sellado & "</td>" &
                                     "<td>" & documento.municipiosHistoLiteralHTML & "</td>" &
-                                    "<td>" & documento.fechaPrincipal & "</td>" &
+                                    "<td>" & documento.FechaPrincipal & "</td>" &
                                     "<td>" &
                                     "<a href=""" & documento.nameFileHTML & """ title=""Información del documento""><span class=""glyphicon glyphicon glyphicon-info-sign""></span></a> " &
                                     "<a href=""../zip/" & documento.nameFileHTML.Replace(".html", ".zip") & """ title=""Descarga del documento""><span class=""glyphicon glyphicon glyphicon-link""></span></a> " &
@@ -173,7 +173,7 @@
                                     "<td>" & documento.tipoDocumento.NombreTipo & "</td>" &
                                     "<td>" & documento.Sellado & "</td>" &
                                     "<td>" & documento.municipiosHistoLiteralHTML & "</td>" &
-                                    "<td>" & documento.fechaPrincipal & "</td>" &
+                                    "<td>" & documento.FechaPrincipal & "</td>" &
                                     "<td>" &
                                     "<a href=""" & documento.nameFileHTML & """ title=""Información del documento""><span class=""glyphicon glyphicon glyphicon-info-sign""></span></a> " &
                                     "<a href=""../zip/" & documento.nameFileHTML.Replace(".html", ".zip") & """ title=""Descarga del documento""><span class=""glyphicon glyphicon glyphicon-link""></span></a> " &
@@ -268,7 +268,7 @@
                                    "<td>" & documento.tipoDocumento.NombreTipo & "</td>" &
                                    "<td>" & documento.Sellado & "</td>" &
                                    "<td>" & documento.municipiosHistoLiteral & "</td>" &
-                                   "<td>" & documento.fechaPrincipal & "</td>" &
+                                   "<td>" & documento.FechaPrincipal & "</td>" &
                                     "<td>" &
                                     "<a href=""" & documento.nameFileHTML & """ title=""Información del documento""><span class=""glyphicon glyphicon glyphicon-info-sign""></span></a> " &
                                     "<a href=""../zip/" & documento.nameFileECWJPG & """ title=""Descarga del documento""><span class=""glyphicon glyphicon glyphicon-link""></span></a> " &
@@ -279,7 +279,7 @@
                                      "<td>" & documento.tipoDocumento.NombreTipo & "</td>" &
                                      "<td>" & documento.Sellado & "</td>" &
                                      "<td>" & documento.municipiosHistoLiteral & "</td>" &
-                                     "<td>" & documento.fechaPrincipal & "</td>" &
+                                     "<td>" & documento.FechaPrincipal & "</td>" &
                                      "<td>" &
                                      "<a href=""" & documento.nameFileHTML & """ title=""Información del documento""><span class=""glyphicon glyphicon glyphicon-info-sign""></span></a> " &
                                      "<a href=""../zip/" & documento.nameFileECWJPG & """ title=""Descarga del documento""><span class=""glyphicon glyphicon glyphicon-link""></span></a> " &
@@ -379,7 +379,7 @@
                                    "<td>" & documento.tipoDocumento.NombreTipo & "</td>" &
                                    "<td>" & documento.Sellado & "</td>" &
                                    "<td>" & documento.municipiosHistoLiteral & "</td>" &
-                                   "<td>" & documento.fechaPrincipal & "</td>" &
+                                   "<td>" & documento.FechaPrincipal & "</td>" &
                                     "<td>" &
                                     "<a href=""" & documento.nameFileHTML & """ title=""Información del documento""><span class=""glyphicon glyphicon glyphicon-info-sign""></span></a> " &
                                      "<a href=""../zip/" & documento.nameFileECWJPG & """ title=""Descarga del documento""><span class=""glyphicon glyphicon glyphicon-link""></span></a> " &
@@ -390,7 +390,7 @@
                                      "<td>" & documento.tipoDocumento.NombreTipo & "</td>" &
                                      "<td>" & documento.Sellado & "</td>" &
                                      "<td>" & documento.municipiosHistoLiteral & "</td>" &
-                                     "<td>" & documento.fechaPrincipal & "</td>" &
+                                     "<td>" & documento.FechaPrincipal & "</td>" &
                                     "<td>" &
                                     "<a href=""" & documento.nameFileHTML & """ title=""Información del documento""><span class=""glyphicon glyphicon glyphicon-info-sign""></span></a> " &
                                      "<a href=""../zip/" & documento.nameFileECWJPG & """ title=""Descarga del documento""><span class=""glyphicon glyphicon glyphicon-link""></span></a> " &
@@ -557,7 +557,7 @@
                                                    documento.tipoDocumento.tematicaCdD & ";" &
                                                    documento.getCdDAlias & ";" &
                                                    IIf(documento.Escala = 0, "Sin escala", documento.Escala.ToString) & ";" &
-                                                   IIf(documento.autorDocumento = "", "Desconocido", documento.autorDocumento.ToString) & ";" &
+                                                   IIf(documento.autorEntidad = "", "Desconocido", documento.autorEntidad.ToString) & ";" &
                                                    documento.yearFechaPrincipal & ";" & "JPG")
 
 
@@ -698,7 +698,7 @@
                                                    documento.tipoDocumento.tematicaCdD & ";" &
                                                    documento.getCdDAlias & ";" &
                                                    IIf(documento.Escala = 0, "Sin escala", documento.Escala.ToString) & ";" &
-                                                   IIf(documento.autorDocumento = "", "Desconocido", documento.autorDocumento.ToString) & ";" &
+                                                   IIf(documento.autorEntidad = "", "Desconocido", documento.autorEntidad.ToString) & ";" &
                                                    documento.yearFechaPrincipal & ";" & extensionFile)
 
                                     sentenciaSQL.WriteLine("UPDATE bdsidschema.archivo SET " &

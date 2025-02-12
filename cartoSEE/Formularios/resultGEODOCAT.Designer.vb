@@ -113,6 +113,7 @@ Partial Class resultGEODOCAT
         Me.lvImages = New System.Windows.Forms.ListView()
         Me.Panel8 = New System.Windows.Forms.Panel()
         Me.lvPropiedades = New System.Windows.Forms.ListView()
+        Me.mnuLaunchECWCrop = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStrip1.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
@@ -564,7 +565,7 @@ Partial Class resultGEODOCAT
         'ToolStripDropDownButton2
         '
         Me.ToolStripDropDownButton2.AutoSize = False
-        Me.ToolStripDropDownButton2.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnOpenInventary, Me.btnLinkCdD, Me.btnTVCNIG, Me.btnLinkABSYS, Me.btnAddingCarrito, Me.btnDeletingCarrito, Me.GenerarMetadatoNEMToolStripMenuItem, Me.mnuGenerateThumb})
+        Me.ToolStripDropDownButton2.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnOpenInventary, Me.btnLinkCdD, Me.btnTVCNIG, Me.btnLinkABSYS, Me.btnAddingCarrito, Me.btnDeletingCarrito, Me.GenerarMetadatoNEMToolStripMenuItem, Me.mnuGenerateThumb, Me.mnuLaunchECWCrop})
         Me.ToolStripDropDownButton2.Font = New System.Drawing.Font("Tahoma", 6.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ToolStripDropDownButton2.Image = CType(resources.GetObject("ToolStripDropDownButton2.Image"), System.Drawing.Image)
         Me.ToolStripDropDownButton2.ImageAlign = System.Drawing.ContentAlignment.TopCenter
@@ -747,7 +748,7 @@ Partial Class resultGEODOCAT
         Me.TableLayoutPanel2.ColumnCount = 3
         Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30.0!))
         Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70.0!))
-        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150.0!))
+        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 151.0!))
         Me.TableLayoutPanel2.Controls.Add(Me.PictureBox1, 0, 0)
         Me.TableLayoutPanel2.Controls.Add(Me.TableLayoutPanel3, 1, 0)
         Me.TableLayoutPanel2.Controls.Add(Me.Panel1, 2, 0)
@@ -785,7 +786,7 @@ Partial Class resultGEODOCAT
         Me.TableLayoutPanel3.Name = "TableLayoutPanel3"
         Me.TableLayoutPanel3.RowCount = 1
         Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel3.Size = New System.Drawing.Size(779, 308)
+        Me.TableLayoutPanel3.Size = New System.Drawing.Size(778, 308)
         Me.TableLayoutPanel3.TabIndex = 1
         '
         'RichTextBox1
@@ -795,7 +796,7 @@ Partial Class resultGEODOCAT
         Me.RichTextBox1.Font = New System.Drawing.Font("Segoe UI Semibold", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.RichTextBox1.Location = New System.Drawing.Point(3, 3)
         Me.RichTextBox1.Name = "RichTextBox1"
-        Me.RichTextBox1.Size = New System.Drawing.Size(381, 302)
+        Me.RichTextBox1.Size = New System.Drawing.Size(380, 302)
         Me.RichTextBox1.TabIndex = 0
         Me.RichTextBox1.Text = ""
         '
@@ -805,7 +806,7 @@ Partial Class resultGEODOCAT
         Me.lvFastView.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lvFastView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
         Me.lvFastView.HideSelection = False
-        Me.lvFastView.Location = New System.Drawing.Point(390, 3)
+        Me.lvFastView.Location = New System.Drawing.Point(389, 3)
         Me.lvFastView.Name = "lvFastView"
         Me.lvFastView.Size = New System.Drawing.Size(386, 302)
         Me.lvFastView.TabIndex = 1
@@ -819,9 +820,9 @@ Partial Class resultGEODOCAT
         Me.Panel1.Controls.Add(Me.Button2)
         Me.Panel1.Controls.Add(Me.Button1)
         Me.Panel1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Panel1.Location = New System.Drawing.Point(1124, 3)
+        Me.Panel1.Location = New System.Drawing.Point(1123, 3)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(145, 308)
+        Me.Panel1.Size = New System.Drawing.Size(146, 308)
         Me.Panel1.TabIndex = 2
         '
         'Button4
@@ -1106,6 +1107,13 @@ Partial Class resultGEODOCAT
         Me.lvPropiedades.TabIndex = 0
         Me.lvPropiedades.UseCompatibleStateImageBehavior = False
         '
+        'mnuLaunchECWCrop
+        '
+        Me.mnuLaunchECWCrop.Image = CType(resources.GetObject("mnuLaunchECWCrop.Image"), System.Drawing.Image)
+        Me.mnuLaunchECWCrop.Name = "mnuLaunchECWCrop"
+        Me.mnuLaunchECWCrop.Size = New System.Drawing.Size(335, 30)
+        Me.mnuLaunchECWCrop.Text = "Lanzar fichero georeferenciado recortado"
+        '
         'resultGEODOCAT
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1235,4 +1243,5 @@ Partial Class resultGEODOCAT
     Friend WithEvents Button6 As Button
     Friend WithEvents Button7 As Button
     Friend WithEvents btnLinkABSYS As ToolStripMenuItem
+    Friend WithEvents mnuLaunchECWCrop As ToolStripMenuItem
 End Class

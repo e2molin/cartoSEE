@@ -7,6 +7,7 @@
     Property autonomiaINE As Integer = 0
     Property ineCorto As Integer
     Property ineLargo As String
+    Property CodMuniHisto As String
     Property municipioNombre As String
     Property tipo As String
     Property centroideId As Integer
@@ -115,7 +116,7 @@
         Dim muni As MunicipioActual
 
         cadSQL = $"SELECT territorios.idterritorio,territorios.nombre,territorios.tipo,territorios.municipio,listamunicipios.codigoine,listamunicipios.nombre as nombreMuniActual,
-                    territorios.poligono_carto as centroide_id,territorios.pertenencia,
+                    territorios.poligono_carto as centroide_id,territorios.pertenencia,territorios.munihisto,
                     territorios.nomen_id as ngmep_id,territorios.ngbe_id as ngbe_id,territorios.ngmep_muni_id as ngmep_muni_id,
 				    territorios.provincia as provincia_id,provincias.nombreprovincia,provincias.comautonoma_id,territorios.observaciones
                     FROM bdsidschema.territorios 
@@ -131,6 +132,7 @@
                 tipo = fila.Item("tipo").ToString
                 ineCorto = IIf(fila.Item("municipio").ToString = "", 0, fila.Item("municipio"))
                 ineLargo = IIf(fila.Item("codigoine").ToString = "", 0, fila.Item("codigoine"))
+                CodMuniHisto = String.Format("{0:0000000}", fila.Item("munihisto"))
                 nombreMunicipioActual = IIf(fila.Item("nombreMuniActual").ToString = "", 0, fila.Item("nombreMuniActual").ToString)
                 provinciaINE = IIf(fila.Item("provincia_id").ToString = "", 0, fila.Item("provincia_id"))
                 autonomiaINE = IIf(fila.Item("comautonoma_id").ToString = "", 0, fila.Item("comautonoma_id"))
@@ -164,7 +166,7 @@
         Dim muni As MunicipioActual
 
         cadSQL = $"SELECT territorios.idterritorio,territorios.nombre,territorios.tipo,territorios.municipio,listamunicipios.codigoine,listamunicipios.nombre as nombreMuniActual,
-                    territorios.poligono_carto as centroide_id,territorios.pertenencia,
+                    territorios.poligono_carto as centroide_id,territorios.pertenencia,,territorios.munihisto,
                     territorios.nomen_id as ngmep_id,territorios.ngbe_id as ngbe_id,territorios.ngmep_muni_id as ngmep_muni_id,
 				    territorios.provincia as provincia_id,provincias.nombreprovincia,provincias.comautonoma_id,territorios.observaciones
                     FROM bdsidschema.territorios 
@@ -180,6 +182,7 @@
                 tipo = fila.Item("tipo").ToString
                 ineCorto = IIf(fila.Item("municipio").ToString = "", 0, fila.Item("municipio"))
                 ineLargo = IIf(fila.Item("codigoine").ToString = "", 0, fila.Item("codigoine"))
+                CodMuniHisto = String.Format("{0:0000000}", fila.Item("munihisto"))
                 nombreMunicipioActual = IIf(fila.Item("nombreMuniActual").ToString = "", 0, fila.Item("nombreMuniActual").ToString)
                 provinciaINE = IIf(fila.Item("provincia_id").ToString = "", 0, fila.Item("provincia_id"))
                 autonomiaINE = IIf(fila.Item("comautonoma_id").ToString = "", 0, fila.Item("comautonoma_id"))

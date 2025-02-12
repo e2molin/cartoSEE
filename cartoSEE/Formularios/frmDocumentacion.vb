@@ -763,7 +763,7 @@ Public Class frmDocumentacion
             If Encabezados(2).Visible = True Then elementoLV.SubItems.Add(docu.Tomo)
             If Encabezados(3).Visible = True Then elementoLV.SubItems.Add(docu.Estado)
             If Encabezados(4).Visible = True Then elementoLV.SubItems.Add(docu.Escala)
-            If Encabezados(5).Visible = True Then elementoLV.SubItems.Add(docu.fechaPrincipal)
+            If Encabezados(5).Visible = True Then elementoLV.SubItems.Add(docu.FechaPrincipal)
             If Encabezados(6).Visible = True Then elementoLV.SubItems.Add(docu.municipiosHistoLiteral)
             If Encabezados(7).Visible = True Then elementoLV.SubItems.Add(docu.Signatura)
             If Encabezados(8).Visible = True Then elementoLV.SubItems.Add(docu.Coleccion)
