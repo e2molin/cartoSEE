@@ -1049,7 +1049,7 @@ Public Class frmDocumentacion
 
         Next
 
-        'resultsetGeodocat.resultados(NumElemento).getGeoFiles()
+        resultsetGeodocat.resultados(NumElemento).getGeoFiles()
         iECW = 0
         For Each Rutageo As String In resultsetGeodocat.resultados(NumElemento).listaFicherosGeo
             Application.DoEvents()

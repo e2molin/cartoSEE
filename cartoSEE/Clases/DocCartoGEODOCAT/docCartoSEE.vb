@@ -62,6 +62,7 @@
     ' Historial de cambios
     Property createAt As String
     Property updateAt As String
+    Property userCreator As String
     Property historialCambios As New ArrayList
     Dim historialConsultado As Boolean = False
     Dim getGeoFilesFromDatabaseConsultado As Boolean = False
@@ -428,7 +429,7 @@
 		                        archivo.subtipo,archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.extraprops,archivo.observaciones,archivo.observ,archivo.proyecto,
 		                        archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.cdd_geometria,archivo.cdd_fecha,archivo.titn,archivo.autor,archivo.autor_persona,archivo.encabezado,archivo.nombreedificio,
 		                        tbtipodocumento.tipodoc as Tipo,tbestadodocumento.estadodoc as Estado, tbobservaciones.observestandar,
-                                archivo.provincia_id as repoprov,archivo.fechacreacion,archivo.fechamodificacion,
+                                archivo.provincia_id as repoprov,archivo.fechacreacion,archivo.fechamodificacion,archivo.user_create,
                                 string_agg(territorios.idterritorio::character varying,'#') as listaIdTerris,
 		                        string_agg(territorios.nombre,'#') as listaMuniHisto,string_agg(to_char(territorios.munihisto, 'FM0000009'::text),'#') as listaCodMuniHisto,
 		                        string_agg(listamunicipios.nombre,'#') as listaMuniActual, string_agg(listamunicipios.inecorto,'#') as listaCodMuniActual, 
@@ -446,7 +447,7 @@
   	                        archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, archivo.horizontal, archivo.tipodoc_id, archivo.estadodoc_id, archivo.procecarpeta, 
   	                        archivo.procehoja, archivo.subtipo,archivo.juntaestadistica, archivo.signatura, archivo.observestandar_id,archivo.extraprops, archivo.observaciones,archivo.observ,
                             archivo.proyecto,tbtipodocumento.tipodoc,archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.titn,archivo.autor,archivo.autor_persona,archivo.encabezado,archivo.nombreedificio,
-                            tbestadodocumento.estadodoc,tbobservaciones.observestandar "
+                            tbestadodocumento.estadodoc,tbobservaciones.observestandar,archivo.fechacreacion,archivo.fechamodificacion,archivo.user_create"
             loadDocAttributesFromDatabase(consultaSQL)
         End If
 
@@ -572,7 +573,7 @@
 
             createAt = IIf(dR("fechacreacion").ToString = "", "No registrada", dR("fechacreacion").ToString)
             updateAt = IIf(dR("fechamodificacion").ToString = "", "No hay ediciones", dR("fechamodificacion").ToString)
-
+            userCreator = dR("user_create").ToString
 
             'If flag_CargarFicherosGEO Then
             '    getGeoFiles()

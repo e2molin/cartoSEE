@@ -225,6 +225,7 @@
         'Si el usuario es superadministrador, paso sin validar ni siquiera el usuario de sistema
         If usuarioKeyboard.ToUpper = "E2MOLIN" And passwKeyboard.ToUpper = "ALMEO13" Then
             usuarioSystem = "ISTARI"
+            usuarioMyApp.loginUser = "e2molin"
             permisoISTARI()
             Return 1
         End If

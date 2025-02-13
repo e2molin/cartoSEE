@@ -127,6 +127,7 @@ Partial Class frmEdicion
         Me.Label26 = New System.Windows.Forms.Label()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.Button15 = New System.Windows.Forms.Button()
         Me.Label33 = New System.Windows.Forms.Label()
         Me.CheckBox31 = New System.Windows.Forms.CheckBox()
         Me.ComboBox3 = New System.Windows.Forms.ComboBox()
@@ -303,9 +304,9 @@ Partial Class frmEdicion
         Me.Label17.Font = New System.Drawing.Font("Segoe UI Semibold", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label17.Location = New System.Drawing.Point(46, 258)
         Me.Label17.Name = "Label17"
-        Me.Label17.Size = New System.Drawing.Size(36, 13)
+        Me.Label17.Size = New System.Drawing.Size(97, 13)
         Me.Label17.TabIndex = 67
-        Me.Label17.Text = "Fecha"
+        Me.Label17.Text = "Fecha documento"
         '
         'Label16
         '
@@ -992,7 +993,7 @@ Partial Class frmEdicion
         Me.Button12.Name = "Button12"
         Me.Button12.Size = New System.Drawing.Size(99, 45)
         Me.Button12.TabIndex = 11
-        Me.Button12.Text = "Consultar"
+        Me.Button12.Text = "Consultar Repo"
         Me.Button12.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
         Me.Button12.UseVisualStyleBackColor = True
         '
@@ -1003,7 +1004,7 @@ Partial Class frmEdicion
         Me.Button11.Name = "Button11"
         Me.Button11.Size = New System.Drawing.Size(99, 45)
         Me.Button11.TabIndex = 10
-        Me.Button11.Text = "Consultar"
+        Me.Button11.Text = "Consultar Repo"
         Me.Button11.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
         Me.Button11.UseVisualStyleBackColor = True
         '
@@ -1014,7 +1015,7 @@ Partial Class frmEdicion
         Me.Button6.Name = "Button6"
         Me.Button6.Size = New System.Drawing.Size(99, 45)
         Me.Button6.TabIndex = 9
-        Me.Button6.Text = "Consultar"
+        Me.Button6.Text = "Consultar Repo"
         Me.Button6.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
         Me.Button6.UseVisualStyleBackColor = True
         '
@@ -1161,6 +1162,7 @@ Partial Class frmEdicion
         'TabPage1
         '
         Me.TabPage1.BackColor = System.Drawing.Color.Gainsboro
+        Me.TabPage1.Controls.Add(Me.Button15)
         Me.TabPage1.Controls.Add(Me.Label33)
         Me.TabPage1.Controls.Add(Me.CheckBox31)
         Me.TabPage1.Controls.Add(Me.CheckBox23)
@@ -1238,7 +1240,18 @@ Partial Class frmEdicion
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
         Me.TabPage1.Size = New System.Drawing.Size(885, 514)
         Me.TabPage1.TabIndex = 0
-        Me.TabPage1.Text = "Atributos documento GEODOCAT"
+        Me.TabPage1.Text = "Atributos GEODOCAT"
+        '
+        'Button15
+        '
+        Me.Button15.Image = CType(resources.GetObject("Button15.Image"), System.Drawing.Image)
+        Me.Button15.Location = New System.Drawing.Point(676, 454)
+        Me.Button15.Name = "Button15"
+        Me.Button15.Size = New System.Drawing.Size(199, 43)
+        Me.Button15.TabIndex = 90
+        Me.Button15.Text = "«Atributos GEODOCAT»"
+        Me.Button15.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.Button15.UseVisualStyleBackColor = True
         '
         'Label33
         '
@@ -1638,4 +1651,5 @@ Partial Class frmEdicion
     Friend WithEvents Label35 As Label
     Friend WithEvents Label34 As Label
     Friend WithEvents Button14 As Button
+    Friend WithEvents Button15 As Button
 End Class

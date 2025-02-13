@@ -106,8 +106,7 @@
 
     End Sub
 
-    Private Sub SeleccionMunicipios(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-                Handles Button1.Click, Button2.Click
+    Private Sub SeleccionMunicipios(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click, Button2.Click
 
         If sender.name = "Button1" Or sender.name = "ListBox1" Or sender.name = "TextBox1" Then
             If TextBox1.Text <> "" Then
@@ -135,6 +134,8 @@
                 item.Remove()
             Next
         End If
+        CheckBox18.Checked = True
+
     End Sub
 #End Region
 
@@ -255,7 +256,7 @@
             TextBox14.Text = .Coleccion
             TextBox15.Text = .Anejo
             TextBox16.Text = .Observaciones
-            TextBox16.Text = .Proyecto
+            TextBox17.Text = .Proyecto
             TextBox18.Text = .Comentarios
             TextBox19.Text = .encabezadoABSYSdoc
             TextBox20.Text = .autorEntidad
@@ -376,9 +377,16 @@
         Button9.Enabled = False
         Button10.Enabled = False
         Button13.Enabled = True
+        Button14.Enabled = False
+        Button15.Enabled = False
         Button4.Enabled = True
         CheckBox23.Visible = True
-
+        Label34.Visible = False
+        Label35.Visible = False
+        Label36.Visible = False
+        Button6.Enabled = False
+        Button11.Enabled = False
+        Button12.Enabled = False
         CleanFields()
 
         For Each ctrl As Control In Me.TabPage1.Controls
@@ -535,6 +543,8 @@
 
         Dim cadUpBase As String = "UPDATE bdsidschema.archivo SET "
         Dim propsChanged As New ArrayList
+        Dim ListaSQL As New ArrayList
+        If editRegistro.docIndex < 1 Then Exit Function
 
         If CheckBox24.Checked Then propsChanged.Add($"subtipo={IIf(TextBox9.Text.Trim = "", "Null", $"E'{TextBox9.Text.Trim.Replace("'", "\'")}'")}")
         If CheckBox25.Checked Then propsChanged.Add($"proyecto={IIf(TextBox17.Text.Trim = "", "Null", $"E'{TextBox17.Text.Trim.Replace("'", "\'")}'")}")
@@ -545,22 +555,80 @@
         If CheckBox11.Checked Then propsChanged.Add($"tomo={IIf(TextBox11.Text.Trim = "", "Null", $"E'{TextBox11.Text.Trim.Replace("'", "\'")}'")}")
         If CheckBox15.Checked Then propsChanged.Add($"anejo={IIf(TextBox15.Text.Trim = "", "Null", $"E'{TextBox15.Text.Trim.Replace("'", "\'")}'")}")
         If CheckBox6.Checked Then propsChanged.Add($"procecarpeta={IIf(TextBox6.Text.Trim = "", "Null", $"E'{TextBox6.Text.Trim.Replace("'", "\'")}'")}")
-        If CheckBox31.Checked Then propsChanged.Add($"tipo_fechaprincipal={IIf(ComboBox3.SelectedItem <> -1, $"E'{ComboBox3.Text}'", "null")}")
+        If CheckBox31.Checked Then propsChanged.Add($"tipo_fechaprincipal={IIf(ComboBox3.SelectedIndex <> -1, $"E'{ComboBox3.Text}'", "null")}")
+
+
+        If CheckBox31.Checked Then propsChanged.Add($"provincia_id={IIf(ComboBox3.SelectedIndex <> -1, $"E'{ComboBox3.Text}'", "null")}")
+
+        If CheckBox20.Checked Then
+            If ComboBox6.SelectedIndex = -1 Then
+                ModalExclamation("Es necesario seleccionar la provincia para almacenar los documentos")
+                Exit Function
+            End If
+            If CType(ComboBox6.SelectedItem, itemData).Valor <> CType(TextBox22.Text.Substring(0, 2), Integer) Then
+                If ModalQuestion("Los dos primeros dígitos del número de sellado no coinciden con el código de provincia. ¿Continuar?") = Windows.Forms.DialogResult.No Then Exit Function
+            End If
+            propsChanged.Add($"provincia_id={CType(ComboBox6.SelectedItem, itemData).Valor}")
+        End If
+
+        If CheckBox17.Checked Then
+            If ComboBox1.SelectedIndex = -1 Then
+                ModalExclamation("Es necesario asociar un tipo de documento")
+                Exit Function
+            End If
+            propsChanged.Add($"tipodoc_id={CType(ComboBox1.SelectedItem, itemData).Valor}")
+        End If
+
+        If CheckBox2.Checked Then
+            If ComboBox2.SelectedIndex = -1 Then
+                ModalExclamation("Es necesario asociar un estado de conservación al documento")
+                Exit Function
+            End If
+            propsChanged.Add($"estadodoc_id={CType(ComboBox2.SelectedItem, itemData).Valor}")
+        End If
+        If CheckBox9.Checked Then
+            Dim fechaDoc As Date
+            Dim cadFechaDoc As String
+            Try
+                If IsDate(MaskedTextBox1.Text) Then
+                    fechaDoc = CType(MaskedTextBox1.Text, Date)
+                    cadFechaDoc = $"{fechaDoc.Year}-{String.Format("{0:00}", CInt(fechaDoc.Month.ToString))}-{String.Format("{0:00}", CInt(fechaDoc.Day.ToString))}"
+                Else
+                    ModalExclamation("Fecha no válida. Introduzca una fecha correcta")
+                    Exit Function
+                End If
+
+            Catch ex As Exception
+                ModalError(ex.Message)
+                Exit Function
+            End Try
+            propsChanged.Add($"fechaprincipal='{cadFechaDoc}'")
+        End If
 
         'Escala
         If CheckBox8.Checked Then propsChanged.Add($"escala={IIf(TextBox8.Text <> "", TextBox8.Text.Trim, 0)}")
         If CheckBox10.Checked Then propsChanged.Add($"procehoja={IIf(TextBox10.Text <> "", TextBox10.Text.Trim, 0)}")
 
-
-        'Double
         If CheckBox4.Checked Then propsChanged.Add($"vertical={IIf(TextBox4.Text <> "", Replace(TextBox4.Text, ",", "."), 0)}")
         If CheckBox5.Checked Then propsChanged.Add($"horizontal={IIf(TextBox5.Text <> "", Replace(TextBox5.Text, ",", "."), 0)}")
 
 
+        ListaSQL.Add($"{cadUpBase}{String.Join(",", propsChanged.ToArray)} WHERE idarchivo={editRegistro.docIndex}")
+
+        'Territorios
+        If CheckBox18.Checked And ListView1.Items.Count > 0 Then
+            ListaSQL.Add($"DELETE FROM bdsidschema.archivo2territorios WHERE archivo_id={editRegistro.docIndex}")
+            For Each itemLV As ListViewItem In ListView1.Items
+                Application.DoEvents()
+                ListaSQL.Add($"INSERT INTO bdsidschema.archivo2territorios (territorio_id,archivo_id) VALUES ({itemLV.SubItems(3).Text},{editRegistro.docIndex})")
+            Next
+        ElseIf CheckBox18.Checked And ListView1.Items.Count = 0 Then
+            ModalExclamation("Debe asociar el documento al menos a un municipio")
+            Exit Function
+        End If
 
 
-        cadUpBase &= $"{String.Join(",", propsChanged.ToArray)} WHERE idarchivo={editRegistro.docIndex}"
-        ActualizacionAtributos = ExeSinTran(cadUpBase)
+        ActualizacionAtributos = ExeTran(ListaSQL)
 
     End Function
 
@@ -853,17 +921,23 @@
         Dim okBaja As Boolean
         Dim okPDF As Boolean
 
-        If Not System.IO.File.Exists(docJPGAlta) Then
-            If ModalQuestion($"No se localiza el fichero origen:{Environment.NewLine}{docJPGAlta}{Environment.NewLine}¿Continuar?") = DialogResult.No Then Exit Sub
-            docJPGAlta = ""
+        If docJPGAlta <> "" Then
+            If Not System.IO.File.Exists(docJPGAlta) Then
+                If ModalQuestion($"No se localiza el fichero origen:{Environment.NewLine}{docJPGAlta}{Environment.NewLine}¿Continuar?") = DialogResult.No Then Exit Sub
+                docJPGAlta = ""
+            End If
         End If
-        If Not System.IO.File.Exists(docJPGBaja) Then
-            If ModalQuestion($"No se localiza el fichero origen:{Environment.NewLine}{docJPGBaja}{Environment.NewLine}¿Continuar?") = DialogResult.No Then Exit Sub
-            docJPGBaja = ""
+        If docJPGBaja <> "" Then
+            If Not System.IO.File.Exists(docJPGBaja) Then
+                If ModalQuestion($"No se localiza el fichero origen:{Environment.NewLine}{docJPGBaja}{Environment.NewLine}¿Continuar?") = DialogResult.No Then Exit Sub
+                docJPGBaja = ""
+            End If
         End If
-        If Not System.IO.File.Exists(docPDF) Then
-            If ModalQuestion($"No se localiza el fichero origen:{Environment.NewLine}{docPDF}{Environment.NewLine}¿Continuar?") = DialogResult.No Then Exit Sub
-            docPDF = ""
+        If docPDF <> "" Then
+            If Not System.IO.File.Exists(docPDF) Then
+                If ModalQuestion($"No se localiza el fichero origen:{Environment.NewLine}{docPDF}{Environment.NewLine}¿Continuar?") = DialogResult.No Then Exit Sub
+                docPDF = ""
+            End If
         End If
 
         Me.Cursor = Cursors.WaitCursor
@@ -896,7 +970,7 @@
             Me.Cursor = Cursors.Default
             ToolStripStatusLabel2.Text = "Ficheros actualizados"
             If okAlta Or okBaja Or okPDF Then
-                ModalInfo($"{IIf(okAlta = True, "Recurso JPG Alta actualizado", "")}{Environment.NewLine}{IIf(okBaja = True, "Recurso JPG Baja actualizado", "")}{Environment.NewLine}{IIf(okPDF = True, "Recurso PDF actualizado", "")}")
+                ModalInfo($"{IIf(okAlta = True, "Recurso JPG Alta actualizado", "El recurso JPG Alta NO se ha actualizado")}{Environment.NewLine}{IIf(okBaja = True, "Recurso JPG Baja actualizado", "El recurso JPG Baja NO se ha actualizado")}{Environment.NewLine}{IIf(okPDF = True, "Recurso PDF actualizado", "El recurso PDF NO se ha actualizado")}")
             End If
         End Try
 
@@ -1001,19 +1075,10 @@
         End If
         Me.Cursor = Cursors.Default
 
-
-        'Dim cadListaSQL() As String
-        'ReDim cadListaSQL(ListaSQL.Count - 1)
-        'ListaSQL.CopyTo(cadListaSQL)
-        'Application.DoEvents()
-        'Ejecucion = ExeTran(cadListaSQL)
-        'Application.DoEvents()
-        'Me.Cursor = Cursors.Default
-        'If Ejecucion = True Then
-        '    MessageBox.Show("El documento se ha cargado correctamente en la base de datos.", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
-        'End If
-        'LimpiarCampos(sender, e)
-
+        'Ahora copiamos los documentos digitales al repositorio
+        If CheckBox23.Checked Then
+            ModalInfo($"No se han añadido documentos digitalizados al repositorio.{Environment.NewLine}Pueden añadirse manualmente en cualquier momento o editanto el documento.")
+        End If
 
     End Sub
 
@@ -1193,7 +1258,7 @@
                 anejo,observaciones,observ,extraprops,provincia_id) VALUES (
                 {elementoInsert.docIndex},
                 '{elementoInsert.Sellado}',
-                '{usuarioMyApp.nombre}',
+                '{usuarioMyApp.loginUser}',
                 {elementoInsert.CodTipo},
                 {elementoInsert.CodEstado},
                 {elementoInsert.Escala},
@@ -1431,7 +1496,11 @@
     Private Sub Button9_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button9.Click
 
         Dim okProc As Boolean
+        Dim ListaSQL As New ArrayList
+        Dim ficherosDelete As New ArrayList
 
+        If Not usuarioMyApp.permisosLista.editarDocumentacion Then Exit Sub
+        If ModeEdition <> TypeModeEdition.EditSingleDocument Then Exit Sub
         Try
             Dim file As System.IO.FileStream
             file = System.IO.File.Create(rutaRepo & "\testdummy1234.txt")
@@ -1441,35 +1510,75 @@
             file.Close()
             System.IO.File.Delete(rutaRepoGeorref & "\testdummy1234.txt")
         Catch ex As Exception
-            MessageBox.Show("No dispone de permiso de escritura en el repositorio." & Environment.NewLine() &
-                            "Los cambios requieren eliminación de documentos en el disco.",
-                            AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            ModalError($"No dispone de permiso de escritura en el repositorio.{Environment.NewLine}Los cambios requieren eliminación de documentos en el disco.")
             Exit Sub
         End Try
-        If elementsInEdition.resultados.Count > 50 Then
-            MessageBox.Show("No se pueden eliminar más de 50 documentos a la vez", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+
+        ListaSQL.Add($"INSERT INTO bdsidschema.archivohisto
+	                    SELECT now() as fecha_elim, '{usuarioMyApp.loginUser}' as user_delete,
+	                    archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal,archivo.tipo_fechaprincipal,
+		                        archivo.fechasmodificaciones,archivo.anejo,archivo.vertical,archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja,
+		                        archivo.subtipo,archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.extraprops,archivo.observaciones,archivo.observ,archivo.proyecto,
+		                        archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.cdd_geometria,archivo.cdd_fecha,archivo.titn,archivo.autor,archivo.autor_persona,archivo.encabezado,archivo.nombreedificio,
+		                        tbtipodocumento.tipodoc as Tipo,tbestadodocumento.estadodoc as Estado, tbobservaciones.observestandar,
+                                archivo.provincia_id as repoprov, archivo.fechacreacion, archivo.fechamodificacion,
+                                string_agg(territorios.idterritorio::character varying,'#') as listaIdTerris,
+		                        string_agg(territorios.nombre,'#') as listaMuniHisto, string_agg(to_char(territorios.munihisto, 'FM0000009'::text),'#') as listaCodMuniHisto,
+		                        string_agg(listamunicipios.nombre,'#') as listaMuniActual, string_agg(listamunicipios.inecorto,'#') as listaCodMuniActual, 
+		                        string_agg(provincias.nombreprovincia,'#') as nombreprovincia 
+                        FROM bdsidschema.archivo 
+	                        LEFT JOIN bdsidschema.tbtipodocumento ON tbtipodocumento.idtipodoc=archivo.tipodoc_id 
+	                        LEFT JOIN bdsidschema.tbestadodocumento ON tbestadodocumento.idestadodoc=archivo.estadodoc_id 
+	                        LEFT JOIN bdsidschema.archivo2territorios  ON archivo2territorios.archivo_id=archivo.idarchivo 
+	                        LEFT JOIN bdsidschema.tbobservaciones  ON tbobservaciones.idobservestandar=archivo.observestandar_id 
+	                        LEFT JOIN bdsidschema.territorios on territorios.idterritorio= archivo2territorios.territorio_id 
+	                        LEFT JOIN ngmepschema.listamunicipios on territorios.nomen_id= listamunicipios.identidad 
+	                        LEFT JOIN bdsidschema.provincias on territorios.provincia= provincias.idprovincia 
+                        WHERE archivo.idarchivo={editRegistro.docIndex}
+                          GROUP BY archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal,archivo.tipo_fechaprincipal,
+  	                        archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, archivo.horizontal, archivo.tipodoc_id, archivo.estadodoc_id, archivo.procecarpeta, 
+  	                        archivo.procehoja, archivo.subtipo,archivo.juntaestadistica, archivo.signatura, archivo.observestandar_id,archivo.extraprops, archivo.observaciones,archivo.observ,
+                            archivo.proyecto,tbtipodocumento.tipodoc,archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.titn,archivo.autor,archivo.autor_persona,archivo.encabezado,archivo.nombreedificio,
+                            tbestadodocumento.estadodoc,tbobservaciones.observestandar")
+        ListaSQL.Add($"DELETE FROM bdsidschema.contornos WHERE archivo_id={editRegistro.docIndex}")
+        ListaSQL.Add($"DELETE FROM bdsidschema.archivo2territorios WHERE archivo_id={editRegistro.docIndex}")
+        ListaSQL.Add($"DELETE FROM bdsidschema.archivo WHERE idarchivo={editRegistro.docIndex}")
+
+
+        Try
+            If IO.File.Exists(editRegistro.rutaFicheroAltaRes) Then ficherosDelete.Add(editRegistro.rutaFicheroAltaRes)
+            If IO.File.Exists(editRegistro.rutaFicheroBajaRes) Then ficherosDelete.Add(editRegistro.rutaFicheroBajaRes)
+            If IO.File.Exists(editRegistro.rutaFicheroThumb) Then ficherosDelete.Add(editRegistro.rutaFicheroThumb)
+            If IO.File.Exists(editRegistro.rutaFicheroPDF) Then ficherosDelete.Add(editRegistro.rutaFicheroPDF)
+            For Each fileGEO As String In editRegistro.listaFicherosGeo23030
+                If IO.File.Exists(fileGEO) Then ficherosDelete.Add(fileGEO)
+            Next
+            For Each fileGEO As String In editRegistro.listaFicherosGeo25830
+                If IO.File.Exists(fileGEO) Then ficherosDelete.Add(fileGEO)
+            Next
+        Catch ex As Exception
+            ModalError(ex.Message)
             Exit Sub
-        End If
-        If MessageBox.Show("¿Desea eliminar " & elementsInEdition.resultados.Count & " documentos y sus imágenes asociadas",
-                        AplicacionTitulo, MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.No Then
-            Exit Sub
-        End If
-        Application.DoEvents()
+        End Try
+
+        If ModalQuestWriteDatabase($"¿Desea eliminar el documento con sellado nº {editRegistro.Sellado} y su información digital{Environment.NewLine}({ficherosDelete.Count} ficheros?") = DialogResult.No Then Exit Sub
 
         Me.Cursor = Cursors.WaitCursor
-        If borrarElementosEnEdicion() Then
-            If CheckBox1.Checked Then
-                MessageBox.Show("Resultado del simulacro de eliminación en el fichero LOG." & System.Environment.NewLine & "No se han eliminado ni ficheros ni registros.", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
-            Else
-                MessageBox.Show("Proceso de eliminación terminado", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
-            End If
-            Me.Cursor = Cursors.Default
-            Me.Close()
-        Else
-            MessageBox.Show("Se han encontrado problemas en el proceso de borrado. Consultar LOG", AplicacionTitulo, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation)
-            Me.Cursor = Cursors.Default
-        End If
 
+        'Borrado de ficheros
+        For Each pathFileGeo As String In ficherosDelete
+            If IsNothing(pathFileGeo) Then Continue For
+            Try
+                IO.File.Delete(pathFileGeo)
+            Catch ex As Exception
+                ModalError($"Se han producido errores al eliminar la información gráfica del documento.No se eliminó el documento.{Environment.NewLine}{ex.Message}")
+            End Try
+        Next
+
+        IIf(ExeTran(ListaSQL),ModalInfo("Proceso de eliminación completado"),ModalExclamation("No se han podido eliminar los documentos. Consultar LOG"))
+
+        Me.Cursor = Cursors.Default
+        Me.Close()
 
     End Sub
 
@@ -1535,7 +1644,7 @@
         Dim numSelladoImport As String = InputDialog.InputBox("Introduzca el número del documento que quiere importar", "Documento GEODOCAT", "")
 
         ObtenerEscalar($"SELECT idarchivo from bdsidschema.archivo where numdoc='{numSelladoImport}'", archivoIdImport)
-        docuImport = New docCartoSEE(archivoIdImport)
+            docuImport = New docCartoSEE(archivoIdImport)
         docuImport.getGeoFiles()
 
         If docuImport.docIndex = 0 Then
@@ -1550,7 +1659,9 @@
         TextBox2.Text = ""
         TextBox3.Text = ""
         TextBox23.Text = ""
-
+        TextBox2.Tag = ""
+        TextBox3.Tag = ""
+        TextBox23.Tag = ""
 
     End Sub
 
@@ -1569,7 +1680,10 @@
     End Sub
 
     Private Sub TextBox16_TextChanged(sender As Object, e As EventArgs) Handles TextBox16.TextChanged, TextBox18.TextChanged, TextBox19.TextChanged,
-                    TextBox20.TextChanged, TextBox24.TextChanged, TextBox21.TextChanged, CheckedListBox1.SelectedIndexChanged, ComboBox5.SelectedIndexChanged
+                    TextBox20.TextChanged, TextBox24.TextChanged, TextBox21.TextChanged, CheckedListBox1.SelectedIndexChanged, ComboBox5.SelectedIndexChanged,
+                    TextBox9.TextChanged, ComboBox1.SelectedIndexChanged, ComboBox2.SelectedIndexChanged, ComboBox3.SelectedIndexChanged, ComboBox6.SelectedIndexChanged, TextBox17.TextChanged,
+                    TextBox14.TextChanged, TextBox14.TextChanged, TextBox12.TextChanged, TextBox13.TextChanged, TextBox22.TextChanged, TextBox4.TextChanged, TextBox5.TextChanged,
+                    TextBox6.TextChanged, TextBox7.TextChanged, TextBox8.TextChanged, TextBox10.TextChanged, TextBox11.TextChanged, TextBox15.TextChanged
 
         If Not autoCheckFlag Then Exit Sub
         If sender.name = "TextBox16" Then CheckBox16.Checked = True
@@ -1580,6 +1694,25 @@
         If sender.name = "TextBox24" Then CheckBox30.Checked = True
         If sender.name = "ComboBox5" Then CheckBox19.Checked = True
         If sender.name = "CheckedListBox1" Then CheckBox3.Checked = True
+        If sender.name = "TextBox9" Then CheckBox24.Checked = True
+        If sender.name = "ComboBox1" Then CheckBox17.Checked = True
+        If sender.name = "ComboBox2" Then CheckBox2.Checked = True
+        If sender.name = "ComboBox3" Then CheckBox31.Checked = True
+        If sender.name = "ComboBox6" Then CheckBox20.Checked = True
+        If sender.name = "TextBox17" Then CheckBox25.Checked = True
+        If sender.name = "TextBox14" Then CheckBox14.Checked = True
+        If sender.name = "TextBox14" Then CheckBox14.Checked = True
+        If sender.name = "TextBox12" Then CheckBox12.Checked = True
+        If sender.name = "TextBox13" Then CheckBox13.Checked = True
+        If sender.name = "TextBox22" Then CheckBox22.Checked = True
+        If sender.name = "TextBox4" Then CheckBox4.Checked = True
+        If sender.name = "TextBox5" Then CheckBox5.Checked = True
+        If sender.name = "TextBox6" Then CheckBox6.Checked = True
+        If sender.name = "TextBox7" Then CheckBox7.Checked = True
+        If sender.name = "TextBox8" Then CheckBox8.Checked = True
+        If sender.name = "TextBox10" Then CheckBox10.Checked = True
+        If sender.name = "TextBox11" Then CheckBox11.Checked = True
+        If sender.name = "TextBox15" Then CheckBox15.Checked = True
 
     End Sub
 
@@ -1617,6 +1750,20 @@
             MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
 
+
+    End Sub
+
+    Private Sub Button15_Click(sender As Object, e As EventArgs) Handles Button15.Click
+
+        If Not usuarioMyApp.permisosLista.editarDocumentacion Then Exit Sub
+        If ModeEdition <> TypeModeEdition.EditSingleDocument Then Exit Sub
+        If ModalQuestWriteDatabase("¿Desea actualizar la información de la sección «Atributos GEODOCAT»?") = DialogResult.No Then Exit Sub
+
+        Me.Cursor = Cursors.WaitCursor
+        If ActualizacionAtributos() Then
+            ModalInfo("Los datos se han actualizado correctamente.")
+        End If
+        Me.Cursor = Cursors.Default
 
     End Sub
 

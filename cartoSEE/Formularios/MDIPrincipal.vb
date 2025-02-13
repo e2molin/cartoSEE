@@ -307,6 +307,8 @@ Public Class MDIPrincipal
         mnuGenerarRejilla.Visible = usuarioMyApp.permisosLista.isUserISTARI
         mnuLanzarPlantilla.Visible = usuarioMyApp.permisosLista.isUserISTARI
         Button9.Visible = usuarioMyApp.permisosLista.isUserISTARI
+        Button3.Visible = usuarioMyApp.permisosLista.isUserISTARI
+        Button11.Visible = usuarioMyApp.permisosLista.isUserISTARI
 
         Me.WindowState = FormWindowState.Maximized
 
@@ -815,7 +817,7 @@ Public Class MDIPrincipal
 
         If sender.name = "mnuEjecutar" Or sender.name = "ToolStripButton12" Then
             If Panel_DocSearch.Visible = True Then
-                LanzarConsulta(sender, e)
+                LaunchQuery(sender, e)
             End If
             If Panel_GeoSearch.Visible = True Then
                 LanzarConsultaGEO_SIDCARTO(sender, e)
@@ -1067,8 +1069,6 @@ Public Class MDIPrincipal
 
     Sub LanzarConsultaGEO_SIDCARTO(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button6.Click
 
-
-
         Dim Xmax As Double = 0
         Dim Ymax As Double = 0
         Dim Xmin As Double = 0
@@ -1088,7 +1088,8 @@ Public Class MDIPrincipal
                 Xmin = centroUTM30.EastingCoord - radioSearch
                 Ymin = centroUTM30.NorthingCoord - radioSearch
             Catch ex As Exception
-
+                ModalError(ex.Message)
+                Exit Sub
             End Try
 
             'Compruebo si las coordenadas estan en geograficas, y si es así las paso a UTMED50 para procesar
@@ -1098,19 +1099,6 @@ Public Class MDIPrincipal
             Ymax = CType(TextBox3.Text.Replace(".", ","), Double)
             Xmin = CType(TextBox9.Text.Replace(".", ","), Double)
             Ymin = CType(TextBox10.Text.Replace(".", ","), Double)
-            'If DentroEspaña(Xmax, Ymax) = True And DentroEspaña(Xmin, Ymin) = True Then
-            '    If ConversionLLWGS84_to_UTMED50_GSB(Xmax, Ymax) = True And ConversionLLWGS84_to_UTMED50_GSB(Xmin, Ymin) = True Then
-            '        Application.DoEvents()
-            '    Else
-            '        MessageBox.Show("Las coordenadas no pueden convertirse a UTM", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-            '        Exit Sub
-            '    End If
-            'Else
-            '    Xmax = CType(TextBox7.Text.Replace(".", ","), Double)
-            '    Ymax = CType(TextBox3.Text.Replace(".", ","), Double)
-            '    Xmin = CType(TextBox9.Text.Replace(".", ","), Double)
-            '    Ymin = CType(TextBox10.Text.Replace(".", ","), Double)
-            'End If
             TituloConsulta = "Búsqueda por entorno. (" & Xmax.ToString & "," & Ymax.ToString & ") (" & Xmin.ToString & "," & Ymin.ToString & ")"
         End If
 
@@ -1118,17 +1106,33 @@ Public Class MDIPrincipal
 
         If Xmax = 0 Or Ymax = 0 Or Xmin = 0 Or Ymin = 0 Then Exit Sub
         If Xmax - Xmin > 200000 Or Ymax - Ymin > 200000 Then
-            MessageBox.Show("Reduzca el entorno de la búsqueda", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+            ModalExclamation("Reduzca el entorno de la búsqueda")
             Exit Sub
         End If
 
-        PictureBox4.Visible = True
-        Dim FrmResult As New frmDocumentacion
-        FrmResult.MdiParent = Me
-        FrmResult.Text = TituloConsulta
-        FrmResult.CargarDatosSIDCARTO_By_Entorno(CType(Xmax, Integer), CType(Ymax, Integer), CType(Xmin, Integer), CType(Ymin, Integer))
-        FrmResult.Show()
-        PictureBox4.Visible = False
+        Dim cadWKTPolygon = $"'POLYGON(({CType(Xmin, Integer)} {CType(Ymax, Integer)},{CType(Xmax, Integer)} {CType(Ymax, Integer)},{CType(Xmax, Integer)} {CType(Ymin, Integer)},{ CType(Xmin, Integer)} {CType(Ymin, Integer)},{ CType(Xmin, Integer)} {CType(Ymax, Integer)}))'"
+
+        Try
+            PictureBox3.Visible = True
+            Me.Cursor = Cursors.WaitCursor
+            LanzarSpinner("Cargando datos")
+            Dim frmResultados As New resultGEODOCAT
+            With frmResultados
+                .MdiParent = Me
+                .typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosByBBOX
+                .paramSQL1 = cadWKTPolygon
+                .paramSQL2 = "23030"
+                .Show()
+            End With
+
+        Catch ex As Exception
+            ModalError($"No se pueden identificar los documento: {ex.Message}")
+        Finally
+            CerrarSpinner()
+            PictureBox3.Visible = False
+            Me.Cursor = Cursors.Default
+
+        End Try
 
     End Sub
 
@@ -1181,11 +1185,11 @@ Public Class MDIPrincipal
         ElseIf sender.name = "ToolMiniaturas" Or sender.name = "mnuResconsulta3" Then
             frmAccion.TabulacionVentanas(sender, e)
         ElseIf sender.name = "ToolStripButton4" Or sender.name = "mnuResconsulta2" Then
-            If frmAccion.ListView1.SelectedItems.Count > 0 Then
-                frmAccion.MostrarDetalle(frmAccion.ListView1.SelectedItems(0).Tag)
-            Else
-                frmAccion.MostrarDetalle(0)
-            End If
+            'If frmAccion.ListView1.SelectedItems.Count > 0 Then
+            '    frmAccion.TabulacionVentanas(frmAccion.ListView1.SelectedItems(0).Tag)
+            'Else
+            '    frmAccion.MostrarDetalle(0)
+            'End If
         ElseIf sender.name = "ToolStripButton7" Or sender.name = "mnuResconsulta4" Then
             frmAccion.LanzarVisordeJPG(sender, e)
         ElseIf sender.name = "ToolStripButton16" Or sender.name = "mnuResconsulta5" Then
@@ -1453,22 +1457,22 @@ Public Class MDIPrincipal
 
     Private Sub MDIPrincipal_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Resize
 
-        If Me.Size.Height < 820 Then
-            RadioButton1.Visible = False
-            RadioButton2.Visible = False
-            If Me.Size.Height < 780 Then
-                Button3.Visible = False
-                Button4.Visible = False
-            Else
-                Button3.Visible = True
-                Button4.Visible = True
-            End If
-        Else
-            RadioButton1.Visible = True
-            RadioButton2.Visible = True
-            Button3.Visible = True
-            Button4.Visible = True
-        End If
+        'If Me.Size.Height < 820 Then
+        '    RadioButton1.Visible = False
+        '    RadioButton2.Visible = False
+        '    If Me.Size.Height < 780 Then
+        '        Button3.Visible = False
+        '        Button4.Visible = False
+        '    Else
+        '        Button3.Visible = True
+        '        Button4.Visible = True
+        '    End If
+        'Else
+        '    RadioButton1.Visible = True
+        '    RadioButton2.Visible = True
+        '    Button3.Visible = True
+        '    Button4.Visible = True
+        'End If
 
     End Sub
 
@@ -1552,6 +1556,10 @@ Public Class MDIPrincipal
             cadAnaliz = linkCoordenadas.Replace("https://www.cartociudad.es/visor?", "")
         ElseIf linkCoordenadas.StartsWith("http://www.cartociudad.es/visor?") Then
             cadAnaliz = linkCoordenadas.Replace("http://www.cartociudad.es/visor?", "")
+        ElseIf linkCoordenadas.StartsWith("https://www.cartociudad.es/visor/?") Then
+            cadAnaliz = linkCoordenadas.Replace("https://www.cartociudad.es/visor/?", "")
+        ElseIf linkCoordenadas.StartsWith("http://www.cartociudad.es/visor/?") Then
+            cadAnaliz = linkCoordenadas.Replace("http://www.cartociudad.es/visor/?", "")
         Else
             MessageBox.Show("No se encuentran coordendas en el enlace  del portapapeles." & System.Environment.NewLine & linkCoordenadas, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
             Exit Sub
@@ -1611,7 +1619,7 @@ Public Class MDIPrincipal
 
     End Sub
 
-    Private Sub Button11_Click(sender As Object, e As EventArgs) Handles Button11.Click, btnGetStar.Click, btnGetImportant.Click, btnGetWeird.Click, btnGetCdD.Click
+    Private Sub LaunchQuery(sender As Object, e As EventArgs) Handles Button12.Click, btnGetStar.Click, btnGetImportant.Click, btnGetWeird.Click, btnGetCdD.Click
 
         Dim FirmaYear As String = ""
         Dim EstadosDocumento As String = ""
@@ -1839,6 +1847,60 @@ Public Class MDIPrincipal
 
 
 
+
+    End Sub
+
+    Private Sub Button11_Click(sender As Object, e As EventArgs) Handles Button11.Click
+
+        Dim Xmax As Double = 0
+        Dim Ymax As Double = 0
+        Dim Xmin As Double = 0
+        Dim Ymin As Double = 0
+        Dim TituloConsulta As String = ""
+
+        If TextBox11.Text <> "" And TextBox12.Text <> "" And TextBox13.Text <> "" And TextBox24.Text <> "" Then
+
+            'Dim searchCenter As New GEOCoordenada(TextBox11.Text, TextBox12.Text, TextBox24.Text)
+            Dim centroUTM30 As GEOCoordenada
+            Try
+                Dim searchCenter As New GEOCoordenada(TextBox11.Text, TextBox12.Text, TextBox24.Text)
+                centroUTM30 = searchCenter.convertTo(GEOCoordenada.srs.UTM30_SobreED50)
+                Dim radioSearch = CType(TextBox13.Text, Integer)
+                Xmax = centroUTM30.EastingCoord + radioSearch
+                Ymax = centroUTM30.NorthingCoord + radioSearch
+                Xmin = centroUTM30.EastingCoord - radioSearch
+                Ymin = centroUTM30.NorthingCoord - radioSearch
+            Catch ex As Exception
+                ModalError(ex.Message)
+                Exit Sub
+            End Try
+
+            'Compruebo si las coordenadas estan en geograficas, y si es así las paso a UTMED50 para procesar
+            TituloConsulta = "Búsqueda por entorno. (" & TextBox11.Text & "," & TextBox12.Text & ") y  radio " & TextBox13.Text & " m"
+        ElseIf TextBox7.Text <> "" And TextBox3.Text <> "" And TextBox9.Text <> "" And TextBox10.Text <> "" Then
+            Xmax = CType(TextBox7.Text.Replace(".", ","), Double)
+            Ymax = CType(TextBox3.Text.Replace(".", ","), Double)
+            Xmin = CType(TextBox9.Text.Replace(".", ","), Double)
+            Ymin = CType(TextBox10.Text.Replace(".", ","), Double)
+            TituloConsulta = "Búsqueda por entorno. (" & Xmax.ToString & "," & Ymax.ToString & ") (" & Xmin.ToString & "," & Ymin.ToString & ")"
+        End If
+
+        Application.DoEvents()
+
+        If Xmax = 0 Or Ymax = 0 Or Xmin = 0 Or Ymin = 0 Then Exit Sub
+        If Xmax - Xmin > 200000 Or Ymax - Ymin > 200000 Then
+            ModalExclamation("Reduzca el entorno de la búsqueda")
+            Exit Sub
+        End If
+
+
+        PictureBox4.Visible = True
+        Dim FrmResult As New frmDocumentacion
+        FrmResult.MdiParent = Me
+        FrmResult.Text = TituloConsulta
+        FrmResult.CargarDatosSIDCARTO_By_Entorno(CType(Xmax, Integer), CType(Ymax, Integer), CType(Xmin, Integer), CType(Ymin, Integer))
+        FrmResult.Show()
+        PictureBox4.Visible = False
 
     End Sub
 End Class

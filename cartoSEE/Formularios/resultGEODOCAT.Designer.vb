@@ -72,6 +72,7 @@ Partial Class resultGEODOCAT
         Me.btnDeletingCarrito = New System.Windows.Forms.ToolStripMenuItem()
         Me.GenerarMetadatoNEMToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuGenerateThumb = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuLaunchECWCrop = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripButton1 = New System.Windows.Forms.ToolStripButton()
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
         Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
@@ -103,6 +104,7 @@ Partial Class resultGEODOCAT
         Me.lvDocEditions = New System.Windows.Forms.ListView()
         Me.lvTagsM21 = New System.Windows.Forms.ListView()
         Me.TabPage3 = New System.Windows.Forms.TabPage()
+        Me.Button8 = New System.Windows.Forms.Button()
         Me.Button7 = New System.Windows.Forms.Button()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Button6 = New System.Windows.Forms.Button()
@@ -113,7 +115,7 @@ Partial Class resultGEODOCAT
         Me.lvImages = New System.Windows.Forms.ListView()
         Me.Panel8 = New System.Windows.Forms.Panel()
         Me.lvPropiedades = New System.Windows.Forms.ListView()
-        Me.mnuLaunchECWCrop = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuContornosExtract = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStrip1.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
@@ -565,7 +567,7 @@ Partial Class resultGEODOCAT
         'ToolStripDropDownButton2
         '
         Me.ToolStripDropDownButton2.AutoSize = False
-        Me.ToolStripDropDownButton2.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnOpenInventary, Me.btnLinkCdD, Me.btnTVCNIG, Me.btnLinkABSYS, Me.btnAddingCarrito, Me.btnDeletingCarrito, Me.GenerarMetadatoNEMToolStripMenuItem, Me.mnuGenerateThumb, Me.mnuLaunchECWCrop})
+        Me.ToolStripDropDownButton2.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnOpenInventary, Me.btnLinkCdD, Me.btnTVCNIG, Me.btnLinkABSYS, Me.btnAddingCarrito, Me.btnDeletingCarrito, Me.GenerarMetadatoNEMToolStripMenuItem, Me.mnuGenerateThumb, Me.mnuLaunchECWCrop, Me.mnuContornosExtract})
         Me.ToolStripDropDownButton2.Font = New System.Drawing.Font("Tahoma", 6.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ToolStripDropDownButton2.Image = CType(resources.GetObject("ToolStripDropDownButton2.Image"), System.Drawing.Image)
         Me.ToolStripDropDownButton2.ImageAlign = System.Drawing.ContentAlignment.TopCenter
@@ -631,6 +633,13 @@ Partial Class resultGEODOCAT
         Me.mnuGenerateThumb.Name = "mnuGenerateThumb"
         Me.mnuGenerateThumb.Size = New System.Drawing.Size(335, 30)
         Me.mnuGenerateThumb.Text = "Generar miniatura de los documentos seleccionados"
+        '
+        'mnuLaunchECWCrop
+        '
+        Me.mnuLaunchECWCrop.Image = CType(resources.GetObject("mnuLaunchECWCrop.Image"), System.Drawing.Image)
+        Me.mnuLaunchECWCrop.Name = "mnuLaunchECWCrop"
+        Me.mnuLaunchECWCrop.Size = New System.Drawing.Size(335, 30)
+        Me.mnuLaunchECWCrop.Text = "Lanzar fichero georeferenciado recortado"
         '
         'ToolStripButton1
         '
@@ -748,7 +757,7 @@ Partial Class resultGEODOCAT
         Me.TableLayoutPanel2.ColumnCount = 3
         Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30.0!))
         Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70.0!))
-        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 151.0!))
+        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 152.0!))
         Me.TableLayoutPanel2.Controls.Add(Me.PictureBox1, 0, 0)
         Me.TableLayoutPanel2.Controls.Add(Me.TableLayoutPanel3, 1, 0)
         Me.TableLayoutPanel2.Controls.Add(Me.Panel1, 2, 0)
@@ -833,7 +842,7 @@ Partial Class resultGEODOCAT
         Me.Button4.Name = "Button4"
         Me.Button4.Size = New System.Drawing.Size(85, 56)
         Me.Button4.TabIndex = 13
-        Me.Button4.Text = "Carpeta"
+        Me.Button4.Text = "Documento"
         Me.Button4.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         Me.Button4.UseVisualStyleBackColor = True
         '
@@ -986,6 +995,7 @@ Partial Class resultGEODOCAT
         '
         'TabPage3
         '
+        Me.TabPage3.Controls.Add(Me.Button8)
         Me.TabPage3.Controls.Add(Me.Button7)
         Me.TabPage3.Controls.Add(Me.Label1)
         Me.TabPage3.Controls.Add(Me.Button6)
@@ -998,6 +1008,15 @@ Partial Class resultGEODOCAT
         Me.TabPage3.TabIndex = 2
         Me.TabPage3.Text = "Recursos"
         Me.TabPage3.UseVisualStyleBackColor = True
+        '
+        'Button8
+        '
+        Me.Button8.Location = New System.Drawing.Point(536, 424)
+        Me.Button8.Name = "Button8"
+        Me.Button8.Size = New System.Drawing.Size(119, 43)
+        Me.Button8.TabIndex = 5
+        Me.Button8.Text = "Button8"
+        Me.Button8.UseVisualStyleBackColor = True
         '
         'Button7
         '
@@ -1107,12 +1126,11 @@ Partial Class resultGEODOCAT
         Me.lvPropiedades.TabIndex = 0
         Me.lvPropiedades.UseCompatibleStateImageBehavior = False
         '
-        'mnuLaunchECWCrop
+        'mnuContornosExtract
         '
-        Me.mnuLaunchECWCrop.Image = CType(resources.GetObject("mnuLaunchECWCrop.Image"), System.Drawing.Image)
-        Me.mnuLaunchECWCrop.Name = "mnuLaunchECWCrop"
-        Me.mnuLaunchECWCrop.Size = New System.Drawing.Size(335, 30)
-        Me.mnuLaunchECWCrop.Text = "Lanzar fichero georeferenciado recortado"
+        Me.mnuContornosExtract.Name = "mnuContornosExtract"
+        Me.mnuContornosExtract.Size = New System.Drawing.Size(335, 30)
+        Me.mnuContornosExtract.Text = "Extraer contornos"
         '
         'resultGEODOCAT
         '
@@ -1244,4 +1262,6 @@ Partial Class resultGEODOCAT
     Friend WithEvents Button7 As Button
     Friend WithEvents btnLinkABSYS As ToolStripMenuItem
     Friend WithEvents mnuLaunchECWCrop As ToolStripMenuItem
+    Friend WithEvents Button8 As Button
+    Friend WithEvents mnuContornosExtract As ToolStripMenuItem
 End Class

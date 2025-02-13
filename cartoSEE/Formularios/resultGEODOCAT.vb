@@ -17,7 +17,7 @@
         DocumentosByObservacion = 14
         DocumentosByComentario = 15
         DocumentosByPatron = 16
-        DocumentosByListaMatriculaPorBBOX = 17
+        DocumentosByBBOX = 17
         DocumentosByProcHojaCarpeta = 18
         DocumentosEnCarrito = 19
         DocumentoByIndice = 20
@@ -547,6 +547,23 @@
                 FillDocCARTOSEEwithFilter($"archivo.procehoja={paramSQL1} and procecarpeta='{paramSQL2}'")
                 Me.Text = $"Documentos de la hoja «{paramSQL1}», carpeta «{paramSQL2}»"
             End If
+        ElseIf typeSearch = TypeDataSearch.DocumentosByBBOX Then
+            If paramSQL1.ToString = "" Or paramSQL2.ToString = "" Then
+                ModalExclamation("Búsqueda por entorno no definida")
+                Exit Sub
+            End If
+            complexFilter = $"archivo.idarchivo IN (
+                                SELECT archivo_id FROM bdsidschema.contornos 
+                                    WHERE ST_Intersects(contornos.geom,ST_GeomFromText({paramSQL1},{paramSQL2}))
+                                )"
+            FillDocCARTOSEEwithFilter(complexFilter)
+            Me.Text = $"Documentos dentro de BBOX({paramSQL1}) en epsg:{paramSQL2}"
+
+
+
+
+
+
 
 
             '------------------------------------------------------------------------------------------------------------------------
@@ -598,20 +615,6 @@
             FillDocCARTOSEEwithFilter($"where docsiddae.comentario ilike '%{paramSQL1}%'")
             Me.Text = $"Documentos con comentario: {paramSQL1}"
 
-        ElseIf typeSearch = TypeDataSearch.DocumentosByListaMatriculaPorBBOX Then
-            If paramSQL1.ToString = "" Then
-                ModalExclamation("Búsqueda por entorno no definida")
-                Exit Sub
-            End If
-            complexFilter = $"WHERE docsiddae.iddocsiddae IN (
-                                select docsiddae_id from bdsidschema.docsiddae2limtram where matricula in 
-                                    (
-                                        select matricula from geoschema.limtram_vigente
-                                        WHERE ST_Intersects(the_geom,{paramSQL1})
-                                    )
-                                )"
-            FillDocCARTOSEEwithFilter(complexFilter)
-            Me.Text = paramSQL2
         ElseIf typeSearch = TypeDataSearch.DocumentosEnCarrito Then
             If CarritoCompra.Count = 0 Then
                 ModalExclamation("El carrito está vacío")
@@ -730,6 +733,10 @@
 
         elementoLV = New ListViewItem With {.Text = "Alta GEODOCAT", .ImageIndex = 4, .Group = docGeneral}
         elementoLV.SubItems.Add($"{elemEntidadSel.createAt}") : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
+        elementoLV = New ListViewItem With {.Text = "Creado por", .ImageIndex = 4, .Group = docGeneral}
+        elementoLV.SubItems.Add($"{elemEntidadSel.userCreator}") : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
+
+
         elementoLV = New ListViewItem With {.Text = "Edición GEODOCAT", .ImageIndex = 4, .Group = docGeneral}
         elementoLV.SubItems.Add(elemEntidadSel.updateAt) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
 
@@ -945,8 +952,13 @@
         ''Documento Cabina
         Button1.Enabled = IIf(elemEntidadSel.rutaFicheroBajaRes <> "", True, False)
         Button1.Tag = elemEntidadSel.rutaFicheroBajaRes
-        Button4.Enabled = IIf(elemEntidadSel.rutaFicheroBajaRes <> "", True, False)
-        Button4.Tag = elemEntidadSel.rutaFicheroBajaRes
+
+        Try
+            Button4.Enabled = IIf(elemEntidadSel.rutaFicheroPDF <> "", True, False)
+            Button4.Tag = elemEntidadSel.rutaFicheroPDF
+        Catch ex As Exception
+
+        End Try
 
         btnLinkABSYS.Tag = elemEntidadSel.urlABSYSdoc
 
@@ -1494,17 +1506,9 @@
     End Sub
 
     Private Sub DataGridView1_Click(sender As Object, e As EventArgs) Handles DataGridView1.Click
-        Debug.Print("Click")
+        If DataGridView1.Rows.Count = 0 Then Exit Sub
         FillDetailsReduced(DataGridView1.Item("idarchivo", DataGridView1.CurrentCell.RowIndex).Value.ToString)
 
-    End Sub
-    Private Sub DataGridView1_RowEnter(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView1.RowEnter
-        Debug.Print("RowEnter")
-
-    End Sub
-
-    Private Sub DataGridView1_KeyPress(sender As Object, e As KeyPressEventArgs) Handles DataGridView1.KeyPress
-        Debug.Print("KeyPress")
     End Sub
 
     Private Sub DataGridView1_CellEnter(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView1.CellEnter
@@ -1566,7 +1570,7 @@
     End Sub
 
 
-    Private Sub toolBtnActions(sender As Object, e As EventArgs) Handles btnDetail.Click, btnList.Click, btnResources.Click
+    Sub TabulacionVentanas(sender As Object, e As EventArgs) Handles btnDetail.Click, btnList.Click, btnResources.Click
 
         If DataGridView1.Rows.Count = 0 Then Exit Sub
         If DataGridView1.SelectedRows.Count > 1 Then
@@ -1620,6 +1624,7 @@
 
         'Compruebo que no haya abierta previamente una ventana para modificar este documento
         Dim nIndiceEdit As Integer
+        If DataGridView1.Rows.Count = 0 Then Exit Sub
 
         If DataGridView1.SelectedRows.Count <> 1 Then
             ModalExclamation("Seleccione un único registro para editar")
@@ -1817,6 +1822,7 @@
         Dim nTomo As String
         Dim cProv As Integer
         Dim filePDF As String
+        If DataGridView1.Rows.Count = 0 Then Exit Sub
 
         Try
             If Button3.Tag.ToString <> "" Then
@@ -1993,13 +1999,12 @@
 
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
 
-        Dim folderImage As String
-
+        Dim rutaPDF As String
 
         Try
             Me.Cursor = Cursors.WaitCursor
-            folderImage = SacarDirDeRuta(Button4.Tag)
-            If IO.Directory.Exists(folderImage) Then Process.Start(folderImage)
+            rutaPDF = Button4.Tag
+            If IO.File.Exists(rutaPDF) Then Process.Start(rutaPDF)
         Catch ex As Exception
             ModalError($"Error: {ex.Message}")
         Finally
@@ -2193,4 +2198,61 @@
 
 
     End Sub
+
+    Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click
+        Dim URLIberPOIX As String
+
+        URLIberPOIX = "https://iberpix.cnig.es/iberpix/visor?center=-180040.0454441969,4973227.835431779&zoom=16&layers=WMTS*https://www.ign.es/wmts/minutas-cartograficas*Minutas*GoogleMapsCompatible*Planimetrías (1870-1950)*true*image/png*true*true*true"
+
+
+    End Sub
+
+    Private Sub mnuContornosExtract_Click(sender As Object, e As EventArgs) Handles mnuContornosExtract.Click
+
+    End Sub
+
+
+    Sub ExtraerContornos(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuContornosExtract.Click
+
+        Dim NomFich As String = ""
+        Dim contador As Integer
+        Dim ListaDocs As New ArrayList
+
+        If DataGridView1.Rows.Count = 0 Then Exit Sub
+        If DataGridView1.SelectedRows.Count = 0 Then
+            ModalExclamation("Seleccione los documentos que quiere exportar")
+            Exit Sub
+        End If
+
+        Using sfd As New SaveFileDialog With {
+                            .Title = "Introduzca el nombre del fichero para los contornos",
+                            .Filter = "Archivos XYZ *.xyz|*.xyz"
+            }
+            If sfd.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                NomFich = sfd.FileName
+            End If
+        End Using
+        If NomFich = "" Then Exit Sub
+
+
+
+
+        LanzarSpinner("Procesando información...")
+        Me.Cursor = Cursors.WaitCursor
+
+        For i = 0 To DataGridView1.SelectedRows.Count - 1
+            ListaDocs.Add(DataGridView1.Item(0, DataGridView1.SelectedRows(i).Index).Value.ToString)
+        Next
+
+
+        Application.DoEvents()
+        'ExportarContornosDocumento2XYZ(ListaDocumentos(Linea.Tag), NomFich, True, listaCampos)
+
+        Me.Cursor = Cursors.Default
+        CerrarSpinner()
+
+        ModalInfo("Fichero de contornos generado")
+
+    End Sub
+
 End Class
