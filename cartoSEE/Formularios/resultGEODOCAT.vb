@@ -2207,9 +2207,7 @@
 
     End Sub
 
-    Private Sub mnuContornosExtract_Click(sender As Object, e As EventArgs) Handles mnuContornosExtract.Click
 
-    End Sub
 
 
     Sub ExtraerContornos(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuContornosExtract.Click
@@ -2246,7 +2244,7 @@
 
 
         Application.DoEvents()
-        'ExportarContornosDocumento2XYZ(ListaDocumentos(Linea.Tag), NomFich, True, listaCampos)
+        ExportarContornosDocumento2XYZ(ListaDocs, NomFich)
 
         Me.Cursor = Cursors.Default
         CerrarSpinner()

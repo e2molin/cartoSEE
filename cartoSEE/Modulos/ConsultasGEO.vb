@@ -487,78 +487,37 @@ Module ConsultasGEO
     End Sub
 
 
-    Function ExportarContornosDocumento2XYZ(ByVal docu As docSIDCARTO, _
-                                        ByVal RutaFich As String, Optional ByVal Appending As Boolean = False, _
-                                        Optional ByVal listaCampos As String = "") As Boolean
+    Function ExportarContornosDocumento2XYZ(ByVal listaDocs As ArrayList, rutaFich As String) As Boolean
 
 
         Dim reportTMP As DataTable
-        Dim CadSQL As String
-        Dim filas() As DataRow
-        Dim cadCoord As String
-        Dim cadVertex As String
-        Dim nombre As String
-        Dim anteriorNom As String
-        Dim columna As String
 
-        CadSQL = "SELECT nombre,dv_dumppoints(ST_AsText(geom)) as vertice FROM contornos WHERE sellado='" & docu.Sellado & "'"
-        reportTMP = New DataTable
-        If CargarRecordset(CadSQL, reportTMP) = True Then
-            filas = reportTMP.Select
-            If filas.Length = 0 Then
-                Application.DoEvents()
-            Else
-                Dim sw As New System.IO.StreamWriter(RutaFich, Appending, System.Text.Encoding.Unicode)
-                anteriorNom = ""
-                For Each fila As DataRow In filas
-                    nombre = fila.Item("nombre").ToString
-                    If nombre <> anteriorNom Then
-                        sw.WriteLine("DESCRIPTION=Unknown Area Type")
-                        sw.WriteLine("NAME=" & nombre)
-                        'Exportamos las columnas seleccionadas
-                        If listaCampos.IndexOf("Tipo,") > -1 Then sw.WriteLine("TIPO=" & docu.Tipo.ToString)
-                        If listaCampos.IndexOf("Tomo") > -1 Then sw.WriteLine("TOMO=" & docu.Tomo.ToString)
-                        If listaCampos.IndexOf("Estado") > -1 Then sw.WriteLine("ESTADO=" & docu.Estado.ToString)
-                        If listaCampos.IndexOf("Escala") > -1 Then sw.WriteLine("ESCALA=" & docu.Escala.ToString)
-                        If listaCampos.IndexOf("Fecha") > -1 Then
-                            If docu.fechaPrincipal Is Nothing Then
-                                sw.WriteLine("FECHA=Sin fecha")
-                            Else
-                                sw.WriteLine("FECHA=" & docu.fechaPrincipal.ToString)
-                            End If
-                        End If
-                        If listaCampos.IndexOf("Municipios") > -1 Then sw.WriteLine("MUNICIPIOS=" & docu.MunicipiosLiteral.ToString)
-                        If listaCampos.IndexOf("Signatura") > -1 Then sw.WriteLine("SIGNATURA=" & docu.Signatura.ToString)
-                        If listaCampos.IndexOf("Colección") > -1 Then sw.WriteLine("COLECCION=" & docu.Coleccion.ToString)
-                        If listaCampos.IndexOf("Subdivisión") > -1 Then sw.WriteLine("SUBDIVISION=" & docu.Subdivision.ToString)
-                        If listaCampos.IndexOf("Anejo") > -1 Then sw.WriteLine("ANEJO=" & docu.Anejo.ToString)
-                        If listaCampos.IndexOf("Observaciones") > -1 Then sw.WriteLine("OBSERVACIONES=" & docu.ObservacionesStandard.ToString)
-                        If listaCampos.IndexOf("Carpeta") > -1 Then sw.WriteLine("CARPETA=" & docu.proceCarpeta.ToString)
-                        If listaCampos.IndexOf("Hoja") > -1 Then sw.WriteLine("HOJA=" & docu.proceHoja.ToString)
-                        If listaCampos.IndexOf("Fecha Modificación") > -1 Then sw.WriteLine("MODIFICACION=" & docu.fechasModificaciones.ToString)
-                        If listaCampos.IndexOf("Dimensiones") > -1 Then sw.WriteLine("DIMENSIONES=" & docu.Horizontal & " x " & docu.Vertical)
-                        If listaCampos.IndexOf("Junta") > -1 Then sw.WriteLine("JUNTA=" & docu.JuntaEstadistica.ToString)
-                        If listaCampos.IndexOf("Provincia") > -1 Then sw.WriteLine("PROVINCIA=" & docu.Provincias.ToString)
-                        If listaCampos.IndexOf("Comentario") > -1 Then sw.WriteLine("COMENTARIO=" & docu.Observaciones.ToString)
-                        sw.WriteLine("CLOSED=YES")
-                        anteriorNom = nombre
-                    End If
-                    cadVertex = fila.Item("vertice").ToString.Replace("(", "").Replace(")", "")
-                    Dim vertexList() As String = cadVertex.Split(",")
-                    If vertexList.Length > 1 Then
-                        cadCoord = vertexList(0).ToString.Replace(",", ".") & "," & _
-                                    vertexList(1).ToString.Replace(",", ".") & "," & "-999999"
-                        sw.WriteLine(cadCoord)
-                    End If
-                Next
-                sw.Close() : sw.Dispose() : sw = Nothing
-            End If
-        Else
-            Application.DoEvents()
-        End If
-        reportTMP.Dispose()
-        reportTMP = Nothing
-        filas = Nothing
+        Application.DoEvents()
+
+
+        Dim cadSQL As String = $"SELECT ST_AsGeoJSON(subq.*) AS geojson 
+                                FROM(
+                                  SELECT idcontorno,geom, sellado, tipodoc, archivo_id 
+                                  From bdsidschema.contornos WHERE archivo_id IN ({String.Join(",", listaDocs.ToArray)})
+                                ) AS subq"
+
+
+        Try
+            Using sw As New IO.StreamWriter(rutaFich, False, System.Text.Encoding.Unicode)
+                reportTMP = New DataTable
+                If CargarRecordset(cadSQL, reportTMP) = True Then
+                    For Each fila As DataRow In reportTMP.Select
+                        sw.WriteLine(fila.Item("geojson").ToString)
+                    Next
+                End If
+                reportTMP.Dispose()
+                reportTMP = Nothing
+
+            End Using
+
+        Catch ex As Exception
+            ModalError(ex.Message)
+        End Try
 
 
     End Function

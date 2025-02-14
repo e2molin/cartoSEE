@@ -1683,7 +1683,7 @@ Public Class frmDocumentacion
             contador = contador + 1
             ToolStripStatusLabel1.Text = "Exportando contorno " & contador.ToString & " de " & ListView1.SelectedItems.Count.ToString
             Application.DoEvents()
-            ExportarContornosDocumento2XYZ(ListaDocumentos(Linea.Tag), NomFich, True, listaCampos)
+            'ExportarContornosDocumento2XYZ(ListaDocumentos(Linea.Tag), NomFich, True, listaCampos)
         Next
         'End If
         Me.Cursor = Cursors.Default
