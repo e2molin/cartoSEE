@@ -2224,7 +2224,7 @@
 
         Using sfd As New SaveFileDialog With {
                             .Title = "Introduzca el nombre del fichero para los contornos",
-                            .Filter = "Archivos XYZ *.xyz|*.xyz"
+                            .Filter = "Archivos GeoJSON *.geojson|*.geojson"
             }
             If sfd.ShowDialog() = Windows.Forms.DialogResult.OK Then
                 NomFich = sfd.FileName
@@ -2244,7 +2244,7 @@
 
 
         Application.DoEvents()
-        ExportarContornosDocumento2XYZ(ListaDocs, NomFich)
+        ExportarContourDocTsoGJSON(ListaDocs, NomFich)
 
         Me.Cursor = Cursors.Default
         CerrarSpinner()

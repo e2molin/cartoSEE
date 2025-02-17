@@ -487,7 +487,7 @@ Module ConsultasGEO
     End Sub
 
 
-    Function ExportarContornosDocumento2XYZ(ByVal listaDocs As ArrayList, rutaFich As String) As Boolean
+    Function ExportarContourDocTsoGJSON(ByVal listaDocs As ArrayList, rutaFich As String) As Boolean
 
 
         Dim reportTMP As DataTable
@@ -496,23 +496,24 @@ Module ConsultasGEO
 
 
         Dim cadSQL As String = $"SELECT ST_AsGeoJSON(subq.*) AS geojson 
-                                FROM(
+                                FROM (
                                   SELECT idcontorno,geom, sellado, tipodoc, archivo_id 
                                   From bdsidschema.contornos WHERE archivo_id IN ({String.Join(",", listaDocs.ToArray)})
                                 ) AS subq"
 
-
+        Dim utf8WithoutBom As New System.Text.UTF8Encoding(False) ' UTF8 encoding, without BOM
         Try
-            Using sw As New IO.StreamWriter(rutaFich, False, System.Text.Encoding.Unicode)
+            Using sw As New IO.StreamWriter(rutaFich, False, utf8WithoutBom)
                 reportTMP = New DataTable
                 If CargarRecordset(cadSQL, reportTMP) = True Then
+                    sw.WriteLine("{""type"": ""FeatureCollection"",""features"":[")
                     For Each fila As DataRow In reportTMP.Select
-                        sw.WriteLine(fila.Item("geojson").ToString)
+                        sw.WriteLine($"{fila.Item("geojson").ToString},")
                     Next
+                    sw.WriteLine("]}")
                 End If
                 reportTMP.Dispose()
                 reportTMP = Nothing
-
             End Using
 
         Catch ex As Exception
