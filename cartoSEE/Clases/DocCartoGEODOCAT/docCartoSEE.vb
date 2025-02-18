@@ -59,6 +59,16 @@
     Property encabezadoABSYSdoc As String
     Property urlABSYSdoc As String
 
+    ''' <summary>
+    ''' NO_APARECE_HR = 0
+    ''' SI_APARECE_HR_EN_TITULO_JURIDICO = 1
+    ''' SI_APARECE_HR_EN_DOCS_TECNICOS = 2
+    ''' SI_APARECE_HR_EN_OTROS_DOCUMENTOS = 3
+    ''' </summary>
+    ''' <returns></returns>
+    Property docTypeHR As Integer
+
+
     ' Historial de cambios
     Property createAt As String
     Property updateAt As String
@@ -429,7 +439,7 @@
 		                        archivo.subtipo,archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.extraprops,archivo.observaciones,archivo.observ,archivo.proyecto,
 		                        archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.cdd_geometria,archivo.cdd_fecha,archivo.titn,archivo.autor,archivo.autor_persona,archivo.encabezado,archivo.nombreedificio,
 		                        tbtipodocumento.tipodoc as Tipo,tbestadodocumento.estadodoc as Estado, tbobservaciones.observestandar,
-                                archivo.provincia_id as repoprov,archivo.fechacreacion,archivo.fechamodificacion,archivo.user_create,
+                                archivo.provincia_id as repoprov,archivo.fechacreacion,archivo.fechamodificacion,archivo.user_create,archivo.doctypehr,
                                 string_agg(territorios.idterritorio::character varying,'#') as listaIdTerris,
 		                        string_agg(territorios.nombre,'#') as listaMuniHisto,string_agg(to_char(territorios.munihisto, 'FM0000009'::text),'#') as listaCodMuniHisto,
 		                        string_agg(listamunicipios.nombre,'#') as listaMuniActual, string_agg(listamunicipios.inecorto,'#') as listaCodMuniActual, 
@@ -447,7 +457,7 @@
   	                        archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, archivo.horizontal, archivo.tipodoc_id, archivo.estadodoc_id, archivo.procecarpeta, 
   	                        archivo.procehoja, archivo.subtipo,archivo.juntaestadistica, archivo.signatura, archivo.observestandar_id,archivo.extraprops, archivo.observaciones,archivo.observ,
                             archivo.proyecto,tbtipodocumento.tipodoc,archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.titn,archivo.autor,archivo.autor_persona,archivo.encabezado,archivo.nombreedificio,
-                            tbestadodocumento.estadodoc,tbobservaciones.observestandar,archivo.fechacreacion,archivo.fechamodificacion,archivo.user_create"
+                            tbestadodocumento.estadodoc,tbobservaciones.observestandar,archivo.fechacreacion,archivo.fechamodificacion,archivo.user_create,archivo.doctypehr"
             loadDocAttributesFromDatabase(consultaSQL)
         End If
 
@@ -563,6 +573,7 @@
 
             Provincias = dR("nombreprovincia").ToString
             ProvinciaRepo = dR("repoprov")
+            docTypeHR = dR("doctypehr")
             FicheroJPG = DirRepoProvinciaByINE(ProvinciaRepo) & "\" & dR("numdoc").ToString & ".jpg"
             JuntaEstadistica = IIf(dR("JuntaEstadistica").ToString = "1", "Sí", "No")
             ObservacionesStandard = dR("observestandar").ToString

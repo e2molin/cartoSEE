@@ -163,8 +163,6 @@
         Autocompletar_municipios = True
         ToolStripStatusLabel2.Text = ""
 
-
-
         CargarFiltros()
 
         If ModeEdition = TypeModeEdition.CreateDocument Then
@@ -234,6 +232,12 @@
             CheckedListBox1.Items.Add(propItem, CheckState.Unchecked)
         Next
 
+        For Each item In docHRTypes
+            ComboBox7.Items.Add(New itemData(item.Value, item.Key))
+        Next
+        ComboBox7.SelectedIndex = 0
+
+
 
     End Sub
 
@@ -279,8 +283,9 @@
                 If item = .TipoFechaPrincipal Then ComboBox3.Text = .TipoFechaPrincipal
             Next
 
-
-
+            For Each item As itemData In ComboBox7.Items
+                If item.Valor = .docTypeHR Then ComboBox7.SelectedIndex = ComboBox7.Items.IndexOf(item)
+            Next
 
             For Each item As itemData In ComboBox6.Items
                 Application.DoEvents()
@@ -475,6 +480,8 @@
         ComboBox4.SelectedIndex = -1
         ComboBox5.SelectedIndex = -1
         ComboBox6.SelectedIndex = -1
+        ComboBox7.SelectedIndex = 0
+
         TextBox2.Text = ""
         TextBox3.Text = ""
         TextBox23.Text = ""
@@ -556,9 +563,9 @@
         If CheckBox15.Checked Then propsChanged.Add($"anejo={IIf(TextBox15.Text.Trim = "", "Null", $"E'{TextBox15.Text.Trim.Replace("'", "\'")}'")}")
         If CheckBox6.Checked Then propsChanged.Add($"procecarpeta={IIf(TextBox6.Text.Trim = "", "Null", $"E'{TextBox6.Text.Trim.Replace("'", "\'")}'")}")
         If CheckBox31.Checked Then propsChanged.Add($"tipo_fechaprincipal={IIf(ComboBox3.SelectedIndex <> -1, $"E'{ComboBox3.Text}'", "null")}")
+        If CheckBox32.Checked Then propsChanged.Add($"doctypehr={IIf(ComboBox7.SelectedIndex <> -1, $"{CType(ComboBox7.SelectedItem, itemData).Valor}", "0")}")
 
 
-        If CheckBox31.Checked Then propsChanged.Add($"provincia_id={IIf(ComboBox3.SelectedIndex <> -1, $"E'{ComboBox3.Text}'", "null")}")
 
         If CheckBox20.Checked Then
             If ComboBox6.SelectedIndex = -1 Then
@@ -1219,6 +1226,9 @@
         'Provincia repo
         elementoInsert.ProvinciaRepo = CType(ComboBox6.SelectedItem, itemData).Valor
 
+        'Presencia en la HR
+        elementoInsert.docTypeHR = CType(ComboBox7.SelectedItem, itemData).Valor
+
         'Encabezado
         elementoInsert.encabezadoABSYSdoc = IIf(TextBox19.Text.Trim <> "", TextBox19.Text.Trim.Replace(",", "."), "")
 
@@ -1255,7 +1265,7 @@
         ValidarNuevoDocumentoGEODOCAT = $"INSERT INTO bdsidschema.archivo 
                 (idarchivo,numdoc,user_create,tipodoc_id,estadodoc_id,escala,tomo,procehoja,procecarpeta,subtipo,fechaprincipal,tipo_fechaprincipal,
                 fechasmodificaciones,signatura,coleccion,subdivision,proyecto,vertical,horizontal,juntaestadistica,encabezado,autor,autor_persona,nombreedificio,
-                anejo,observaciones,observ,extraprops,provincia_id) VALUES (
+                anejo,observaciones,observ,doctypehr,extraprops,provincia_id) VALUES (
                 {elementoInsert.docIndex},
                 '{elementoInsert.Sellado}',
                 '{usuarioMyApp.loginUser}',
@@ -1283,6 +1293,7 @@
                 {IIf(elementoInsert.Anejo = "", "Null", $"E'{elementoInsert.Anejo}'")},
                 {IIf(elementoInsert.Observaciones = "", "Null", $"E'{elementoInsert.Observaciones}'")},
                 {IIf(elementoInsert.Comentarios = "", "Null", $"E'{elementoInsert.Comentarios}'")},
+                {elementoInsert.docTypeHR},
                 {elementoInsert.extraProps.propertyCode},
                 {elementoInsert.ProvinciaRepo})"
 
@@ -1681,7 +1692,7 @@
 
     Private Sub TextBox16_TextChanged(sender As Object, e As EventArgs) Handles TextBox16.TextChanged, TextBox18.TextChanged, TextBox19.TextChanged,
                     TextBox20.TextChanged, TextBox24.TextChanged, TextBox21.TextChanged, CheckedListBox1.SelectedIndexChanged, ComboBox5.SelectedIndexChanged,
-                    TextBox9.TextChanged, ComboBox1.SelectedIndexChanged, ComboBox2.SelectedIndexChanged, ComboBox3.SelectedIndexChanged, ComboBox6.SelectedIndexChanged, TextBox17.TextChanged,
+                    TextBox9.TextChanged, ComboBox1.SelectedIndexChanged, ComboBox2.SelectedIndexChanged, ComboBox3.SelectedIndexChanged, ComboBox6.SelectedIndexChanged, ComboBox7.SelectedIndexChanged, TextBox17.TextChanged,
                     TextBox14.TextChanged, TextBox14.TextChanged, TextBox12.TextChanged, TextBox13.TextChanged, TextBox22.TextChanged, TextBox4.TextChanged, TextBox5.TextChanged,
                     TextBox6.TextChanged, TextBox7.TextChanged, TextBox8.TextChanged, TextBox10.TextChanged, TextBox11.TextChanged, TextBox15.TextChanged
 
@@ -1699,6 +1710,7 @@
         If sender.name = "ComboBox2" Then CheckBox2.Checked = True
         If sender.name = "ComboBox3" Then CheckBox31.Checked = True
         If sender.name = "ComboBox6" Then CheckBox20.Checked = True
+        If sender.name = "ComboBox7" Then CheckBox32.Checked = True
         If sender.name = "TextBox17" Then CheckBox25.Checked = True
         If sender.name = "TextBox14" Then CheckBox14.Checked = True
         If sender.name = "TextBox14" Then CheckBox14.Checked = True

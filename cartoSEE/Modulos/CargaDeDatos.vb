@@ -12,6 +12,12 @@ Module CargaDeDatos
     Dim dA As DbDataAdapter
     Dim cmdSQL As DbCommand
 
+    Public docHRTypes As New Dictionary(Of Integer, String) From {
+                                    {0, "El documento no aparece citado en la Hoja registral"},
+                                    {1, "El documento aparece como Título jurídico"},
+                                    {2, "El documento aparece como Documento Técnico"},
+                                    {3, "El documento aparece como Otros Documentos"}
+                                }
 
     Function CargarListaTiposDocumento() As Boolean
 

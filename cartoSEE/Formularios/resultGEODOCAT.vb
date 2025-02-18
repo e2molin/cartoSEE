@@ -737,6 +737,12 @@
         elementoLV.SubItems.Add($"{elemEntidadSel.userCreator}") : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
 
 
+        Application.DoEvents()
+        elementoLV = New ListViewItem With {.Text = "Accesible desde HR", .ImageIndex = 4, .Group = docGeneral}
+        elementoLV.SubItems.Add($"{docHRTypes(elemEntidadSel.docTypeHR)}") : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
+        'docHRTypes
+
+
         elementoLV = New ListViewItem With {.Text = "Edición GEODOCAT", .ImageIndex = 4, .Group = docGeneral}
         elementoLV.SubItems.Add(elemEntidadSel.updateAt) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
 
