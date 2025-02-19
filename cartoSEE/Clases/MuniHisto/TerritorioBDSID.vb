@@ -107,6 +107,27 @@
 
     End Function
 
+    Function getNombreSencillo() As String
+
+        If _tipo = "Condominio" Then
+            Return nombre
+        ElseIf _tipo = "Exclave" Then
+            Return $"{_municipioNombre} en {nombre}"
+        ElseIf _tipo = "Municipio" Then
+            Return nombre
+        ElseIf _tipo = "Municipio histórico" Then
+            Return $"{nombre} (H), hoy {municipioNombre}"
+        ElseIf _tipo = "Municipio extinto" Then
+            Return $"{nombre} (H), hoy {municipioNombre}"
+        ElseIf _tipo = "País" Then
+            Return nombre
+        ElseIf _tipo = "Accidente geográfico" Then
+            Return nombre
+        Else
+            Application.DoEvents()
+        End If
+
+    End Function
 
     Private Sub cargaTerritorio(ByVal idterritorio As Integer)
 
@@ -166,7 +187,7 @@
         Dim muni As MunicipioActual
 
         cadSQL = $"SELECT territorios.idterritorio,territorios.nombre,territorios.tipo,territorios.municipio,listamunicipios.codigoine,listamunicipios.nombre as nombreMuniActual,
-                    territorios.poligono_carto as centroide_id,territorios.pertenencia,,territorios.munihisto,
+                    territorios.poligono_carto as centroide_id,territorios.pertenencia,territorios.munihisto,
                     territorios.nomen_id as ngmep_id,territorios.ngbe_id as ngbe_id,territorios.ngmep_muni_id as ngmep_muni_id,
 				    territorios.provincia as provincia_id,provincias.nombreprovincia,provincias.comautonoma_id,territorios.observaciones
                     FROM bdsidschema.territorios 

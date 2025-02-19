@@ -1,5 +1,48 @@
 Module ManagePDF
 
+    Function Ghost_ExtractPagesPDF2JPG(sourcePDF As String, folderOUT As String, Optional soloPortada As Boolean = False) As Boolean
+
+
+        'Dim rasterizer As New Ghostscript.NET.Rasterizer.GhostscriptRasterizer
+        'Dim widthFit As Integer = 0
+        'Dim heightFit As Integer = 0
+        'Dim numPages As Integer = 0
+        'Dim DPIDepth As Integer = 96
+
+        'Try
+        '    If IO.File.Exists(sourcePDF) Then
+        '        rasterizer.CustomSwitches.Add("-dPDFFitPage") ' Con esta opción ajustamos la imagen al tamaño de la hoja
+        '        rasterizer.Open(sourcePDF)
+        '        widthFit = rasterizer.GetPage(DPIDepth, 1).Width
+        '        heightFit = rasterizer.GetPage(DPIDepth, 1).Height
+        '        numPages = rasterizer.PageCount
+        '        rasterizer.Close()
+
+        '        'Ahora abrimos el PDF ajustado al tamaño de la hoja
+        '        rasterizer.CustomSwitches.Add("-dUseCropBox")
+        '        rasterizer.CustomSwitches.Add("-c")
+        '        rasterizer.CustomSwitches.Add($"[/CropBox [0 0 {widthFit} {heightFit}] /PAGES pdfmark")
+        '        rasterizer.CustomSwitches.Add("-f")
+        '        rasterizer.Open(sourcePDF)
+
+        '        'Una vez abierto, extraemos las páginas
+        '        If soloPortada Then
+        '            rasterizer.GetPage(DPIDepth, 1).Save($"{folderOUT}{SacarFileDeRuta(sourcePDF, False)}.jpg", Imaging.ImageFormat.Jpeg)
+        '        Else
+        '            For iPage As Integer = 1 To numPages
+        '                rasterizer.GetPage(DPIDepth, iPage).Save($"{folderOUT}imagen{iPage}.jpg", Imaging.ImageFormat.Jpeg)
+        '            Next
+        '        End If
+        '        rasterizer.Close()
+        '        Return True
+        '    End If
+        'Catch ex As Exception
+        '    GenerarLOG(ex.Message)
+        '    Return False
+        'End Try
+
+
+    End Function
     Function ObtenerInfoPDF(ByVal RutaPDF As String) As Integer
 
         Dim Reader As iTextSharp.text.pdf.PdfReader

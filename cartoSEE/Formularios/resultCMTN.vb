@@ -1,4 +1,4 @@
-﻿Public Class resultGEODOCAT
+﻿Public Class resultCMTN
     Public Enum TypeDataSearch As Integer
         AllDocuments = 0                                'OK
         AllDocumentsByTerritorio = 1                    'OK
@@ -1123,7 +1123,7 @@
 
     End Sub
 
-    Private Sub resultGEODOCAT_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub resultCMTN_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         Me.Size = New Point(1300, 780)
 
@@ -1528,7 +1528,7 @@
 
     End Sub
 
-    Private Sub resultGEODOCAT_ResizeEnd(sender As Object, e As EventArgs) Handles Me.ResizeEnd
+    Private Sub resultCMTN_ResizeEnd(sender As Object, e As EventArgs) Handles Me.ResizeEnd
         ResizeListViews()
     End Sub
 
@@ -1548,7 +1548,7 @@
         End If
     End Sub
 
-    Private Sub resultGEODOCAT_Resize(sender As Object, e As EventArgs) Handles Me.Resize
+    Private Sub resultCMTN_Resize(sender As Object, e As EventArgs) Handles Me.Resize
 
         Dim f As Form
         f = sender
@@ -1752,7 +1752,7 @@
             Next
             If nDocsAdded = 0 Then Exit Sub
             ModalInfo($"Se han añadido al carrito {nDocsAdded} documentos")
-            For Each ChildForm As resultGEODOCAT In Me.MdiChildren
+            For Each ChildForm As resultCMTN In Me.MdiChildren
                 If ChildForm.EsCarritoCompra Then
                     If ChildForm.DataGridView1.RowCount <> CarritoCompra.Count Then ChildForm.btnRefresh.PerformClick()
                     Exit For

@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class resultGEODOCAT
+Partial Class resultCMTN
     Inherits System.Windows.Forms.Form
 
     'Form reemplaza a Dispose para limpiar la lista de componentes.
@@ -22,7 +22,7 @@ Partial Class resultGEODOCAT
     'No lo modifique con el editor de código.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(resultGEODOCAT))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(resultCMTN))
         Me.ToolStrip1 = New System.Windows.Forms.ToolStrip()
         Me.btnList = New System.Windows.Forms.ToolStripButton()
         Me.btnDetail = New System.Windows.Forms.ToolStripButton()
@@ -1153,7 +1153,7 @@ Partial Class resultGEODOCAT
         Me.RichTextBox3.TabIndex = 6
         Me.RichTextBox3.Text = ""
         '
-        'resultGEODOCAT
+        'resultCMTN
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -1162,8 +1162,8 @@ Partial Class resultGEODOCAT
         Me.Controls.Add(Me.StatusStrip1)
         Me.Controls.Add(Me.ToolStrip1)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.Name = "resultGEODOCAT"
-        Me.Text = "resultGEODOCAT"
+        Me.Name = "resultCMTN"
+        Me.Text = "resultCMTN"
         Me.ToolStrip1.ResumeLayout(False)
         Me.ToolStrip1.PerformLayout()
         Me.StatusStrip1.ResumeLayout(False)

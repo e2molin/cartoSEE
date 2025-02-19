@@ -365,7 +365,7 @@ Public Class MDIPrincipal
             lvMunicipios.Items(0).Selected = True
         End If
         If e.KeyData = Keys.Enter Then
-            LanzarConsulta(sender, e)
+            LaunchQuery(sender, e)
         End If
 
     End Sub
@@ -373,7 +373,7 @@ Public Class MDIPrincipal
     Private Sub TextBox23_KeyUp(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TextBox23.KeyUp
 
         If e.KeyData = Keys.Enter Then
-            LanzarConsulta(sender, e)
+            LaunchQuery(sender, e)
         End If
 
     End Sub
@@ -457,7 +457,7 @@ Public Class MDIPrincipal
         lvMunicipios.Tag = Indices(1)
         Autocompletar_municipios = True
         lvMunicipios.Visible = False
-        If sender.name = "lvMunicipios" Then LanzarConsulta(sender, e)
+        If sender.name = "lvMunicipios" Then LaunchQuery(sender, e)
 
     End Sub
 
@@ -1146,14 +1146,29 @@ Public Class MDIPrincipal
     Private Sub IndexToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
                                     Handles IndexToolStripMenuItem.Click, HelpToolStripButton.Click
 
-        If System.IO.File.Exists(My.Application.Info.DirectoryPath & "\Ayuda.pdf") = False Then
-            MessageBox.Show("Ayuda no disponible", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-            Exit Sub
-        End If
+        Try
+            If System.IO.File.Exists(My.Application.Info.DirectoryPath & "\Ayuda.pdf") = False Then
+                ModalInfo("Fichero de ayuda no disponible")
+            Else
+                Process.Start(My.Application.Info.DirectoryPath & "\Ayuda.pdf")
+            End If
+        Catch ex As Exception
+            ModalError(ex.Message)
+        End Try
 
-        Process.Start(My.Application.Info.DirectoryPath & "\Ayuda.pdf")
 
+    End Sub
 
+    Private Sub ToolStripButton11_Click(sender As Object, e As EventArgs) Handles ToolStripButton11.Click
+        Try
+            If Not IO.File.Exists($"{My.Application.Info.DirectoryPath}\resources\nueva-ventana-consulta-cartosee.png") Then
+                ModalInfo("Fichero de ayuda no disponible")
+            Else
+                Process.Start($"{My.Application.Info.DirectoryPath}\resources\nueva-ventana-consulta-cartosee.png")
+            End If
+        Catch ex As Exception
+            ModalError(ex.Message)
+        End Try
     End Sub
 
     Sub LanzarTareasfrmDocumentacion(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -1164,7 +1179,7 @@ Public Class MDIPrincipal
                             ToolStripButton7.Click, mnuResconsulta4.Click,
                             ToolStripButton16.Click, mnuResconsulta5.Click,
                             ToolStripButton14.Click, mnuGenerarMetadatos.Click,
-                            ToolStripButton11.Click, mnuResconsulta7.Click,
+                            mnuResconsulta7.Click,
                             ToolStripButton8.Click, mnuResconsulta8.Click,
                             ToolStripButton18.Click, mnuResconsulta9.Click, mnuGenMiniatura.Click
 
@@ -1198,8 +1213,9 @@ Public Class MDIPrincipal
             frmAccion.LanzarImpresionJPG(sender, e)
         ElseIf sender.name = "ToolStripButton14" Or sender.name = "mnuGenerarMetadatos" Then
             frmAccion.ProcGenerarMetadatos(sender, e)
-        ElseIf sender.name = "ToolStripButton11" Or sender.name = "mnuResconsulta7" Then
-            frmAccion.LanzarTareaGuardarEnCarpeta(sender, e)
+        ElseIf sender.name = "ToolStripButton11" Then
+
+
         ElseIf sender.name = "ToolStripButton8" Or sender.name = "mnuResconsulta8" Then
             frmAccion.ExportarListaResultados2CSV(sender, e)
         ElseIf sender.name = "mnuExtraerContornos" Then
@@ -1487,7 +1503,7 @@ Public Class MDIPrincipal
 
     End Sub
 
-    Private Sub mnuLinkCdDMinutas_Click(sender As Object, e As EventArgs) Handles mnuLinkCdDMIPAC.Click, mnuLinkCdDPLPOB.Click, mnuLinkCdDPLEDI.Click, mnuLinkCdDHKPUP.Click, mnuLinkCdDAT.Click
+    Private Sub mnuLinkCdDMinutas_Click(sender As Object, e As EventArgs) Handles mnuLinkCdDMIPAC.Click, mnuLinkCdDPLPOB.Click, mnuLinkCdDPLEDI.Click, mnuLinkCdDHKPUP.Click, mnuLinkCdDAT.Click, mnuLinkCdDCCINT.Click
 
 
         If sender.name = "mnuLinkCdDAT" Then
@@ -1504,37 +1520,44 @@ Public Class MDIPrincipal
             Exit Sub
         End If
 
-        Dim CodigosMuni() As String = TextBox1.Tag.ToString.Split("|")
+
         Dim terriLink As TerritorioBSID
         Dim CodMunicipioINEHistorico As String
+        Dim CodMunicipioINEActual As String
         Dim MunicipioID As String
-        Dim linkCdD As String = ""
+        Dim linkCdD As String = "https://centrodedescargas.cnig.es/CentroDescargas/buscar.do?"
 
-        CodMunicipioINEHistorico = CodigosMuni(0)
-        MunicipioID = CodigosMuni(1)
-        Dim CodMunicipioINEActual As String = CodigosMuni(2)
-        terriLink = New TerritorioBSID(CodMunicipioINEActual)
-        Application.DoEvents()
-        If sender.name = "mnuLinkCdDMIPAC" Then
-            linkCdD = "https://centrodedescargas.cnig.es/CentroDescargas/buscar.do?filtro.codFamilia=MIPAC&filtro.codIne=" & terriLink.getCodigoINEFull
-        ElseIf sender.name = "mnuLinkCdDPLPOB" Then
-            linkCdD = "https://centrodedescargas.cnig.es/CentroDescargas/buscar.do?filtro.codFamilia=PLPOB&filtro.codIne=" & terriLink.getCodigoINEFull
-        ElseIf sender.name = "mnuLinkCdDPLEDI" Then
-            linkCdD = "https://centrodedescargas.cnig.es/CentroDescargas/buscar.do?filtro.codFamilia=PLEDI&filtro.codIne=" & terriLink.getCodigoINEFull
-        ElseIf sender.name = "mnuLinkCdDHKPUP" Then
-            linkCdD = "https://centrodedescargas.cnig.es/CentroDescargas/buscar.do?filtro.codFamilia=HKPUP&filtro.codIne=" & terriLink.getCodigoINEFull
-        End If
-
-        If linkCdD = "" Then
-            MessageBox.Show("Enlace no disponible", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Warning)
-            Exit Sub
-        End If
         Try
+            Dim CodigosMuni() As String = TextBox1.Tag.ToString.Split("|")
+            If CodigosMuni.Length = 3 Then
+                CodMunicipioINEHistorico = CodigosMuni(0)
+                MunicipioID = CodigosMuni(1)
+                CodMunicipioINEActual = CodigosMuni(2)
+            End If
+            Application.DoEvents()
+
+            terriLink = New TerritorioBSID(CodMunicipioINEActual)
+            Application.DoEvents()
+
+            If sender.name = "mnuLinkCdDMIPAC" Then
+                linkCdD &= $"filtro.codFamilia=MIPAC&filtro.codIne={terriLink.getCodigoINEFull}"
+            ElseIf sender.name = "mnuLinkCdDPLPOB" Then
+                linkCdD &= $"filtro.codFamilia=PLPOB&filtro.codIne={terriLink.getCodigoINEFull}"
+            ElseIf sender.name = "mnuLinkCdDPLEDI" Then
+                linkCdD &= $"filtro.codFamilia=PLEDI&filtro.codIne={terriLink.getCodigoINEFull}"
+            ElseIf sender.name = "mnuLinkCdDHKPUP" Then
+                linkCdD &= $"filtro.codFamilia=HKPUP&filtro.codIne={terriLink.getCodigoINEFull}"
+            ElseIf sender.name = "mnuLinkCdDCCINT" Then
+                linkCdD &= $"filtro.codFamilia=CCINT&filtro.codIne={terriLink.getCodigoINEFull}"
+            End If
             Process.Start(linkCdD)
         Catch ex As Exception
-            MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Error)
-            Exit Sub
+            ModalError(ex.Message)
         End Try
+
+
+
+
 
     End Sub
 
@@ -1903,4 +1926,6 @@ Public Class MDIPrincipal
         PictureBox4.Visible = False
 
     End Sub
+
+
 End Class

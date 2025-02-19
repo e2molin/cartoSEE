@@ -10,6 +10,7 @@ Module Basics
     Public rutaRepoGeorref As String
     Public rutaRepoGeorrefBase As String
     Public rutaRepoInventarioInfo As String
+    Public rutaRepoCI As String = "\\sfiignmad162.ign.fomento.es\docgeo$\DocGeo\Archivo\cuadernosinteriores\"
     Public CalidadFavorita As String
     Public rutaRepoWeb As String
     Public MapaBase As String
@@ -160,17 +161,9 @@ Module Basics
 
     End Sub
 
-    Public Function SacarFileDeRuta(ByVal PathCompleto As String) As String
+    Public Function SacarFileDeRuta(ByVal PathCompleto As String, Optional ConExtension As Boolean = True) As String
 
         Dim i_path As Integer
-        SacarFileDeRuta = ""
-        If String.IsNullOrEmpty(PathCompleto) Then
-            Exit Function
-        End If
-        If PathCompleto.Trim = "" Then
-            Exit Function
-        End If
-
 
         For i_path = PathCompleto.Length To 1 Step -1
             If PathCompleto.Substring(i_path - 1, 1) = "\" Then Exit For
@@ -181,6 +174,11 @@ Module Basics
         End If
         SacarFileDeRuta = Right(PathCompleto, Len(PathCompleto) - i_path)
         SacarFileDeRuta = PathCompleto.Substring(i_path, PathCompleto.Length - i_path)
+        If Not ConExtension Then
+            If SacarFileDeRuta.IndexOf(".") > 0 Then
+                SacarFileDeRuta = SacarFileDeRuta.Substring(0, SacarFileDeRuta.IndexOf("."))
+            End If
+        End If
 
     End Function
 

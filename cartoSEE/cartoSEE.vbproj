@@ -15,6 +15,7 @@
     <MyType>WindowsForms</MyType>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <TargetFrameworkProfile />
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -27,7 +28,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -122,6 +122,7 @@
     <Compile Include="Clases\DocCartoGEODOCAT\docCartoSEEquery.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\docCartoSEETipoDocu.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\docCartoSEEVariacion.vb" />
+    <Compile Include="Clases\DocCartoGEODOCAT\docCuadMTN.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\FileGeorref.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\FlagsProperties.vb" />
     <Compile Include="Clases\forms\dataViewerForm.Designer.vb">
@@ -261,6 +262,12 @@
     <Compile Include="Formularios\MDIPrincipal.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Formularios\resultCMTN.Designer.vb">
+      <DependentUpon>resultCMTN.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\resultCMTN.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formularios\resultGEODOCAT.Designer.vb">
       <DependentUpon>resultGEODOCAT.vb</DependentUpon>
     </Compile>
@@ -377,6 +384,9 @@
     <EmbeddedResource Include="Formularios\MDIPrincipal.resx">
       <DependentUpon>MDIPrincipal.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\resultCMTN.resx">
+      <DependentUpon>resultCMTN.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Formularios\resultGEODOCAT.resx">
       <DependentUpon>resultGEODOCAT.vb</DependentUpon>
     </EmbeddedResource>
@@ -428,6 +438,9 @@
     <Content Include="resources\docsidcarto-template.html" />
     <Content Include="resources\index-muni-template.html" />
     <Content Include="resources\index-template.html" />
+    <Content Include="resources\nueva-ventana-consulta-cartosee.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="resources\Plantilla_Altimetria.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

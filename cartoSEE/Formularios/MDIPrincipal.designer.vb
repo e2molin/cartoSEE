@@ -122,6 +122,7 @@ Partial Class MDIPrincipal
         Me.mnuLinkCdDPLPOB = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuLinkCdDPLEDI = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuLinkCdDHKPUP = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuLinkCdDCCINT = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator10 = New System.Windows.Forms.ToolStripSeparator()
         Me.mnuLinkCdDAT = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripButton19 = New System.Windows.Forms.ToolStripButton()
@@ -134,9 +135,9 @@ Partial Class MDIPrincipal
         Me.ToolStripButton16 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripButton18 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripButton14 = New System.Windows.Forms.ToolStripButton()
-        Me.ToolStripButton11 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripButton8 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
+        Me.ToolStripButton11 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripButton2 = New System.Windows.Forms.ToolStripButton()
         Me.HelpToolStripButton = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripButton13 = New System.Windows.Forms.ToolStripButton()
@@ -213,6 +214,7 @@ Partial Class MDIPrincipal
         Me.RadioButton2 = New System.Windows.Forms.RadioButton()
         Me.RadioButton1 = New System.Windows.Forms.RadioButton()
         Me.Panel_GeoSearch = New System.Windows.Forms.Panel()
+        Me.Button11 = New System.Windows.Forms.Button()
         Me.Button10 = New System.Windows.Forms.Button()
         Me.Button9 = New System.Windows.Forms.Button()
         Me.PictureBox5 = New System.Windows.Forms.PictureBox()
@@ -244,7 +246,6 @@ Partial Class MDIPrincipal
         Me.Button6 = New System.Windows.Forms.Button()
         Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
         Me.ImageList2 = New System.Windows.Forms.ImageList(Me.components)
-        Me.Button11 = New System.Windows.Forms.Button()
         Me.MenuStrip.SuspendLayout()
         Me.ToolStrip.SuspendLayout()
         Me.StatusStrip.SuspendLayout()
@@ -799,7 +800,7 @@ Partial Class MDIPrincipal
         'ToolStrip
         '
         Me.ToolStrip.ImageScalingSize = New System.Drawing.Size(48, 48)
-        Me.ToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolConfig, Me.ToolStripSeparator1, Me.ToolStripButton5, Me.ToolStripButton6, Me.ToolStripButton15, Me.ToolStripSeparator9, Me.ToolStripButton12, Me.ToolStripButton17, Me.ToolStripSeparator3, Me.ToolStripButton9, Me.ButCarrito, Me.btnVisorMosaicos, Me.ToolStripButton20, Me.ToolStripButton10, Me.btnExportCdD, Me.ToolStripDropDownButton1, Me.ToolStripButton19, Me.ToolStripButton1, Me.ToolStripSeparator4, Me.ToolStripButton3, Me.ToolStripButton4, Me.ToolMiniaturas, Me.ToolStripButton7, Me.ToolStripButton16, Me.ToolStripButton18, Me.ToolStripButton14, Me.ToolStripButton11, Me.ToolStripButton8, Me.ToolStripSeparator2, Me.ToolStripButton2, Me.HelpToolStripButton, Me.ToolStripButton13})
+        Me.ToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolConfig, Me.ToolStripSeparator1, Me.ToolStripButton5, Me.ToolStripButton6, Me.ToolStripButton15, Me.ToolStripSeparator9, Me.ToolStripButton12, Me.ToolStripButton17, Me.ToolStripSeparator3, Me.ToolStripButton9, Me.ButCarrito, Me.btnVisorMosaicos, Me.ToolStripButton20, Me.ToolStripButton10, Me.btnExportCdD, Me.ToolStripDropDownButton1, Me.ToolStripButton19, Me.ToolStripButton1, Me.ToolStripSeparator4, Me.ToolStripButton3, Me.ToolStripButton4, Me.ToolMiniaturas, Me.ToolStripButton7, Me.ToolStripButton16, Me.ToolStripButton18, Me.ToolStripButton14, Me.ToolStripButton8, Me.ToolStripSeparator2, Me.ToolStripButton11, Me.ToolStripButton2, Me.HelpToolStripButton, Me.ToolStripButton13})
         Me.ToolStrip.Location = New System.Drawing.Point(0, 24)
         Me.ToolStrip.Name = "ToolStrip"
         Me.ToolStrip.Size = New System.Drawing.Size(1539, 55)
@@ -938,7 +939,7 @@ Partial Class MDIPrincipal
         'ToolStripDropDownButton1
         '
         Me.ToolStripDropDownButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.ToolStripDropDownButton1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuLinkCdDMIPAC, Me.mnuLinkCdDPLPOB, Me.mnuLinkCdDPLEDI, Me.mnuLinkCdDHKPUP, Me.ToolStripSeparator10, Me.mnuLinkCdDAT})
+        Me.ToolStripDropDownButton1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuLinkCdDMIPAC, Me.mnuLinkCdDPLPOB, Me.mnuLinkCdDPLEDI, Me.mnuLinkCdDHKPUP, Me.mnuLinkCdDCCINT, Me.ToolStripSeparator10, Me.mnuLinkCdDAT})
         Me.ToolStripDropDownButton1.Image = CType(resources.GetObject("ToolStripDropDownButton1.Image"), System.Drawing.Image)
         Me.ToolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.ToolStripDropDownButton1.Name = "ToolStripDropDownButton1"
@@ -977,6 +978,14 @@ Partial Class MDIPrincipal
         Me.mnuLinkCdDHKPUP.Name = "mnuLinkCdDHKPUP"
         Me.mnuLinkCdDHKPUP.Size = New System.Drawing.Size(393, 22)
         Me.mnuLinkCdDHKPUP.Text = "Hojas kilométricas, Parcelario Urbano y Planos Directores"
+        '
+        'mnuLinkCdDCCINT
+        '
+        Me.mnuLinkCdDCCINT.Image = CType(resources.GetObject("mnuLinkCdDCCINT.Image"), System.Drawing.Image)
+        Me.mnuLinkCdDCCINT.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None
+        Me.mnuLinkCdDCCINT.Name = "mnuLinkCdDCCINT"
+        Me.mnuLinkCdDCCINT.Size = New System.Drawing.Size(393, 22)
+        Me.mnuLinkCdDCCINT.Text = "Cuadernos de itinerarios de planimetrías"
         '
         'ToolStripSeparator10
         '
@@ -1091,16 +1100,6 @@ Partial Class MDIPrincipal
         Me.ToolStripButton14.Text = "Generar metadatos de los documentos seleccionados"
         Me.ToolStripButton14.Visible = False
         '
-        'ToolStripButton11
-        '
-        Me.ToolStripButton11.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.ToolStripButton11.Image = CType(resources.GetObject("ToolStripButton11.Image"), System.Drawing.Image)
-        Me.ToolStripButton11.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.ToolStripButton11.Name = "ToolStripButton11"
-        Me.ToolStripButton11.Size = New System.Drawing.Size(52, 52)
-        Me.ToolStripButton11.Text = "Guardar los documentos seleccionados"
-        Me.ToolStripButton11.Visible = False
-        '
         'ToolStripButton8
         '
         Me.ToolStripButton8.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
@@ -1110,11 +1109,21 @@ Partial Class MDIPrincipal
         Me.ToolStripButton8.Size = New System.Drawing.Size(52, 52)
         Me.ToolStripButton8.Text = "Generar CSV con el resultado de la consulta"
         Me.ToolStripButton8.ToolTipText = "Exportar lista resultados a CSV"
+        Me.ToolStripButton8.Visible = False
         '
         'ToolStripSeparator2
         '
         Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
         Me.ToolStripSeparator2.Size = New System.Drawing.Size(6, 55)
+        '
+        'ToolStripButton11
+        '
+        Me.ToolStripButton11.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.ToolStripButton11.Image = CType(resources.GetObject("ToolStripButton11.Image"), System.Drawing.Image)
+        Me.ToolStripButton11.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.ToolStripButton11.Name = "ToolStripButton11"
+        Me.ToolStripButton11.Size = New System.Drawing.Size(52, 52)
+        Me.ToolStripButton11.Text = "Nueva ventana de consultas"
         '
         'ToolStripButton2
         '
@@ -1892,6 +1901,15 @@ Partial Class MDIPrincipal
         Me.Panel_GeoSearch.Size = New System.Drawing.Size(250, 828)
         Me.Panel_GeoSearch.TabIndex = 15
         '
+        'Button11
+        '
+        Me.Button11.Location = New System.Drawing.Point(12, 737)
+        Me.Button11.Name = "Button11"
+        Me.Button11.Size = New System.Drawing.Size(197, 30)
+        Me.Button11.TabIndex = 52
+        Me.Button11.Text = "Antigua búsqueda geo"
+        Me.Button11.UseVisualStyleBackColor = True
+        '
         'Button10
         '
         Me.Button10.Image = CType(resources.GetObject("Button10.Image"), System.Drawing.Image)
@@ -2208,15 +2226,6 @@ Partial Class MDIPrincipal
         Me.ImageList2.Images.SetKeyName(13, "Archivador 32.png")
         Me.ImageList2.Images.SetKeyName(14, "editar_24.png")
         '
-        'Button11
-        '
-        Me.Button11.Location = New System.Drawing.Point(12, 737)
-        Me.Button11.Name = "Button11"
-        Me.Button11.Size = New System.Drawing.Size(197, 30)
-        Me.Button11.TabIndex = 52
-        Me.Button11.Text = "Antigua búsqueda geo"
-        Me.Button11.UseVisualStyleBackColor = True
-        '
         'MDIPrincipal
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -2477,4 +2486,5 @@ Partial Class MDIPrincipal
     Friend WithEvents ToolStripButton10 As ToolStripButton
     Friend WithEvents Button12 As Button
     Friend WithEvents Button11 As Button
+    Friend WithEvents mnuLinkCdDCCINT As ToolStripMenuItem
 End Class
