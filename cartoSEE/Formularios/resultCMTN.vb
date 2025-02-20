@@ -52,7 +52,7 @@
 
 
     Dim rcdDataPrin As DataView
-    Dim elemEntidadSel As docCartoSEE
+    Dim elemEntidadSel As docCuadMTN
     Dim useEnterOnFilter As Boolean
     Dim minRows4useEnterOnFilter As Integer = 50 'Número de resultados a partir de los cuales hay que pulsar Enter para buscar.
 
@@ -89,8 +89,8 @@
 #End Region
 
     Const widthScrollLV As Integer = 30
-    Dim FixedCols() As Integer = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11} 'Columnas con ancho fijo aunque crezca el tamaño del datagrid
-    Dim Hide_And_Show_Columns() As Integer = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 23, 25} ' Índices de columnas que pueden mostrarse u ocultarse
+    Dim FixedCols() As Integer = {0, 1} 'Columnas con ancho fijo aunque crezca el tamaño del datagrid
+    Dim Hide_And_Show_Columns() As Integer = {2, 3, 4, 5, 6, 7, 8, 9} ' Índices de columnas que pueden mostrarse u ocultarse
 
     Dim idArchivoLoaded As Integer = 0
     Dim idArchiveTagsLoaded As Integer = 0
@@ -147,10 +147,6 @@
                 End If
             End If
         Next
-
-
-
-
 
         ResizeDatagridView()
 
@@ -226,7 +222,7 @@
         container.Image = Nothing
         Try
             If IO.File.Exists(thumbImageName) Then
-                cargarImagenFromWeb(container, thumbImageName, $"{My.Application.Info.DirectoryPath}\resources\thumbmap.jpg", False, elemEntidadSel.rutaFicheroBajaRes)
+                cargarImagenFromWeb(container, thumbImageName, $"{My.Application.Info.DirectoryPath}\resources\thumbmap.jpg", False, elemEntidadSel.rutaFicheroThumb)
             End If
         Catch ex As Exception
             GenerarLOG(ex.Message)
@@ -249,23 +245,21 @@
             AddTitulo(container, $"{elemEntidadSel.Tipo} Nº {elemEntidadSel.Sellado}")
 
             .SelectionFont = New Font("Segoe UI Semibold", 10, FontStyle.Bold)
-            .AppendText($"{elemEntidadSel.getListaProvincias}. Tomo: {elemEntidadSel.Tomo}.Fecha: {elemEntidadSel.FechaPrincipal}{Environment.NewLine}")
+            .AppendText($"{elemEntidadSel.ProvinciaNombre}. Tomo: {elemEntidadSel.Tomo}.Fecha: {elemEntidadSel.FechaDoc}{Environment.NewLine}")
             .AppendText(Environment.NewLine)
 
             .SelectionColor = Color.FromArgb(47, 79, 79) 'DimSlateGray
-            .AppendText(IIf(elemEntidadSel.subTipoDoc = "", "", $"Subtipo: {elemEntidadSel.subTipoDoc}"))
-            .AppendText($"Dimensiones {elemEntidadSel.Horizontal} cm × {elemEntidadSel.Vertical} cm.")
+            .AppendText(IIf(elemEntidadSel.Subtipo = "", "", $"Subtipo: {elemEntidadSel.Subtipo}"))
             .AppendText(Environment.NewLine)
-            .AppendText(IIf(elemEntidadSel.Coleccion = "", "Sin colección asociada.", elemEntidadSel.Coleccion))
-            .AppendText(Environment.NewLine)
-            .AppendText(IIf(elemEntidadSel.Subdivision = "", "", $"Subdivisión: {elemEntidadSel.Subdivision}.{Environment.NewLine}"))
+            AddSubTitulo(container, "Contenido")
+            .AppendText(IIf(elemEntidadSel.Contenido = "", "", $"{elemEntidadSel.Contenido}{Environment.NewLine}"))
 
             AddSubTitulo(container, "Notas / Observaciones originales")
             .SelectionColor = Color.FromArgb(47, 79, 79) 'DimSlateGray
             .SelectionFont = New Font("Segoe UI Semibold", 10, FontStyle.Bold)
 
-            If elemEntidadSel.Observaciones.ToString <> "" Then
-                .AppendText(IIf(elemEntidadSel.Observaciones.ToString <> "", elemEntidadSel.Observaciones.ToString, "No hay observaciones"))
+            If elemEntidadSel.Observaciones <> "" Then
+                .AppendText(IIf(elemEntidadSel.Observaciones <> "", elemEntidadSel.Observaciones, "No hay observaciones"))
                 .AppendText(Environment.NewLine)
             End If
 
@@ -435,13 +429,13 @@
 
         Me.Cursor = Cursors.WaitCursor
         If typeSearch = TypeDataSearch.AllDocuments Then
-            FillDocCARTOSEEwithFilter("")
+            FillDocCuadMTNEwithFilter("")
             Me.Text = "Todos los documentos"
         ElseIf typeSearch = TypeDataSearch.AllDocumentsByTerritorio Then
-            FillDocCARTOSEEwithFilter($"archivo.idarchivo in (select archivo_id from bdsidschema.archivo2territorios where territorio_id={paramSQL1})")
+            FillDocCuadMTNEwithFilter($"archivo.idarchivo in (select archivo_id from bdsidschema.archivo2territorios where territorio_id={paramSQL1})")
 
         ElseIf typeSearch = TypeDataSearch.AllDocumentsByTerritorioActual Then
-            FillDocCARTOSEEwithFilter($"archivo.idarchivo in (SELECT DISTINCT archivo_id 
+            FillDocCuadMTNEwithFilter($"archivo.idarchivo in (SELECT DISTINCT archivo_id 
     	                                FROM bdsidschema.archivo2territorios 
 	                                    INNER JOIN bdsidschema.territorios ON archivo2territorios.territorio_id=territorios.idterritorio
 	                                    WHERE territorios.municipio={paramSQL1})")
@@ -451,10 +445,10 @@
                 Exit Sub
             End If
             If paramSQL1 = "0" Then
-                FillDocCARTOSEEwithFilter($"archivo.provincia_id>0")
+                FillDocCuadMTNEwithFilter($"archivo.provincia_id>0")
                 Me.Text = $"Documentos CartoSEE de todas las provincias"
             Else
-                FillDocCARTOSEEwithFilter($"archivo.provincia_id={paramSQL1}")
+                FillDocCuadMTNEwithFilter($"archivo.provincia_id={paramSQL1}")
                 Me.Text = $"Documentos CartoSEE de {DameProvinciaByINE(paramSQL1)}"
             End If
         ElseIf typeSearch = TypeDataSearch.DocumentosBySellado Then
@@ -462,7 +456,7 @@
                 ModalExclamation("Búsqueda por número de sellado no definida")
                 Exit Sub
             End If
-            FillDocCARTOSEEwithFilter($"archivo.numdoc='{paramSQL1}'")
+            FillDocCuadMTNEwithFilter($"archivo.numdoc='{paramSQL1}'")
             Me.Text = $"Documento SIDDAE sellado nº {paramSQL1}"
         ElseIf typeSearch = TypeDataSearch.DocumentosByListaNumSellado Then
             If paramSQL1.ToString = "" Then
@@ -472,42 +466,42 @@
             For Each elem As String In paramSQL1.ToString.Split(",")
                 paramSQL2 &= IIf(paramSQL2 = "", $"'{elem.Replace("'", "")}'", $",'{elem.Replace("'", "")}'")
             Next
-            FillDocCARTOSEEwithFilter($"archivo.numdoc In ({paramSQL2})")
+            FillDocCuadMTNEwithFilter($"archivo.numdoc In ({paramSQL2})")
             Me.Text = $"Documentos con los nº de sellado: {paramSQL1}"
         ElseIf typeSearch = TypeDataSearch.DocumentosByListaNumSelladoEntreLimites Then
             If paramSQL1.ToString = "" Or paramSQL2.ToString = "" Then
                 ModalExclamation("Búsqueda entre números de sellado no definida")
                 Exit Sub
             End If
-            FillDocCARTOSEEwithFilter($"archivo.numdoc >= '{paramSQL1}' and archivo.numdoc <= '{paramSQL2}'")
+            FillDocCuadMTNEwithFilter($"archivo.numdoc >= '{paramSQL1}' and archivo.numdoc <= '{paramSQL2}'")
             Me.Text = $"Documentos con nº de sellado comprendidos entre {paramSQL1} y {paramSQL2}"
         ElseIf typeSearch = TypeDataSearch.DocumentosBySignatura Then
             If paramSQL1.ToString = "" Then
                 ModalExclamation("No se ha definido ninguna signatura")
                 Exit Sub
             End If
-            FillDocCARTOSEEwithFilter($"archivo.signatura = '{paramSQL1}'")
+            FillDocCuadMTNEwithFilter($"archivo.signatura = '{paramSQL1}'")
             Me.Text = $"Documentos con signatura {paramSQL1}"
         ElseIf typeSearch = TypeDataSearch.DocumentosByAnejo Then
             If paramSQL1.ToString = "" Then
                 ModalExclamation("No se ha definido ningún anejo")
                 Exit Sub
             End If
-            FillDocCARTOSEEwithFilter($"archivo.anejo ilike '%{paramSQL1}%'")
+            FillDocCuadMTNEwithFilter($"archivo.anejo ilike '%{paramSQL1}%'")
             Me.Text = $"Documentos con el anejo {paramSQL1}"
         ElseIf typeSearch = TypeDataSearch.DocumentosByColeccion Then
             If paramSQL1.ToString = "" Then
                 ModalExclamation("No se ha especificado ninguna colección")
                 Exit Sub
             End If
-            FillDocCARTOSEEwithFilter($"archivo.coleccion ilike '%{paramSQL1}%'")
+            FillDocCuadMTNEwithFilter($"archivo.coleccion ilike '%{paramSQL1}%'")
             Me.Text = $"Documentos asociados a la colección «{paramSQL1}»"
         ElseIf typeSearch = TypeDataSearch.DocumentosByComentario Then
             If paramSQL1.ToString = "" Then
                 ModalExclamation("No se ha especificado ningún comentario")
                 Exit Sub
             End If
-            FillDocCARTOSEEwithFilter($"(archivo.observ ilike E'%{paramSQL1.Replace("'", "\'")}%' or archivo.observaciones ilike E'%{paramSQL1.Replace("'", "\'")}%')")
+            FillDocCuadMTNEwithFilter($"(archivo.observ ilike E'%{paramSQL1.Replace("'", "\'")}%' or archivo.observaciones ilike E'%{paramSQL1.Replace("'", "\'")}%')")
             Me.Text = $"Documentos con el comentario «{paramSQL1}»"
         ElseIf typeSearch = TypeDataSearch.DocumentosByPatron Then
             If paramSQL1.ToString = "" Then
@@ -528,7 +522,7 @@
                                             WHERE idarchivo>0 
                                 ) select idarchivo from dataprops where patron like '{paramSQL1}'
                              )"
-            FillDocCARTOSEEwithFilter(complexFilter)
+            FillDocCuadMTNEwithFilter(complexFilter)
 
         ElseIf typeSearch = TypeDataSearch.DocumentosByProcHojaCarpeta Then
             Dim hoja As Integer
@@ -541,10 +535,10 @@
                 Exit Sub
             End If
             If paramSQL2.ToString = "" Then
-                FillDocCARTOSEEwithFilter($"archivo.procehoja={paramSQL1}")
+                FillDocCuadMTNEwithFilter($"archivo.procehoja={paramSQL1}")
                 Me.Text = $"Documentos de la hoja «{paramSQL1}»"
             Else
-                FillDocCARTOSEEwithFilter($"archivo.procehoja={paramSQL1} and procecarpeta='{paramSQL2}'")
+                FillDocCuadMTNEwithFilter($"archivo.procehoja={paramSQL1} and procecarpeta='{paramSQL2}'")
                 Me.Text = $"Documentos de la hoja «{paramSQL1}», carpeta «{paramSQL2}»"
             End If
         ElseIf typeSearch = TypeDataSearch.DocumentosByBBOX Then
@@ -556,7 +550,7 @@
                                 SELECT archivo_id FROM bdsidschema.contornos 
                                     WHERE ST_Intersects(contornos.geom,ST_GeomFromText({paramSQL1},{paramSQL2}))
                                 )"
-            FillDocCARTOSEEwithFilter(complexFilter)
+            FillDocCuadMTNEwithFilter(complexFilter)
             Me.Text = $"Documentos dentro de BBOX({paramSQL1}) en epsg:{paramSQL2}"
 
 
@@ -574,21 +568,21 @@
                 ModalExclamation("Búsqueda por fecha de alta no definida correctamente")
                 Exit Sub
             End If
-            FillDocCARTOSEEwithFilter($"WHERE docsiddae.fecha_alta between '{paramSQL1}' AND '{paramSQL2}'")
+            FillDocCuadMTNEwithFilter($"WHERE docsiddae.fecha_alta between '{paramSQL1}' AND '{paramSQL2}'")
             If nameQuery <> "" Then Me.Text = nameQuery
         ElseIf typeSearch = TypeDataSearch.AllDocsByFechaUpdate Then
             If paramSQL1.ToString = "" Then
                 ModalExclamation("Búsqueda por fecha de actualización no definida correctamente")
                 Exit Sub
             End If
-            FillDocCARTOSEEwithFilter($"WHERE docsiddae.fechamodificacion = '{paramSQL1}'")
+            FillDocCuadMTNEwithFilter($"WHERE docsiddae.fechamodificacion = '{paramSQL1}'")
             If nameQuery <> "" Then Me.Text = nameQuery
         ElseIf typeSearch = TypeDataSearch.AllDocsPorFechaUpdateEntreFechas Then
             If paramSQL1.ToString = "" Or paramSQL2.ToString = "" Then
                 ModalExclamation("Búsqueda por fecha de actualización no definida correctamente")
                 Exit Sub
             End If
-            FillDocCARTOSEEwithFilter($"WHERE docsiddae.fechamodificacion between '{paramSQL1}' AND '{paramSQL2}'")
+            FillDocCuadMTNEwithFilter($"WHERE docsiddae.fechamodificacion between '{paramSQL1}' AND '{paramSQL2}'")
             If nameQuery <> "" Then Me.Text = nameQuery
         ElseIf typeSearch = TypeDataSearch.DocumentosFiltroGenerico Then
             If paramSQL1.ToString = "" Then
@@ -596,7 +590,7 @@
                 Exit Sub
             End If
             If Not paramSQL1.ToLower.StartsWith("where ") Then paramSQL1 = $"WHERE {paramSQL1}"
-            FillDocCARTOSEEwithFilter(paramSQL1)
+            FillDocCuadMTNEwithFilter(paramSQL1)
             If nameQuery <> "" Then Me.Text = nameQuery
 
         ElseIf typeSearch = TypeDataSearch.DocumentoByIndice Then
@@ -604,7 +598,7 @@
                 ModalExclamation("Búsqueda por número de índice no definida")
                 Exit Sub
             End If
-            FillDocCARTOSEEwithFilter($"where docsiddae.iddocsiddae={paramSQL1}")
+            FillDocCuadMTNEwithFilter($"where docsiddae.iddocsiddae={paramSQL1}")
             Me.Text = $"Documento SIDDAE con Iddocsiddae nº {paramSQL1}"
 
         ElseIf typeSearch = TypeDataSearch.DocumentosByComentario Then
@@ -612,7 +606,7 @@
                 ModalExclamation("Búsqueda por comentario no definido")
                 Exit Sub
             End If
-            FillDocCARTOSEEwithFilter($"where docsiddae.comentario ilike '%{paramSQL1}%'")
+            FillDocCuadMTNEwithFilter($"where docsiddae.comentario ilike '%{paramSQL1}%'")
             Me.Text = $"Documentos con comentario: {paramSQL1}"
 
         ElseIf typeSearch = TypeDataSearch.DocumentosEnCarrito Then
@@ -621,7 +615,7 @@
                 Exit Sub
             End If
             Dim listaCarritoItems As String = String.Join(",", CarritoCompra.ToArray())
-            FillDocCARTOSEEwithFilter($"archivo.idarchivo in ({listaCarritoItems})")
+            FillDocCuadMTNEwithFilter($"archivo.idarchivo in ({listaCarritoItems})")
             Me.Text = "Carrito de la compra"
             Me.Tag = "Carrito de la Compra"
         End If
@@ -670,10 +664,10 @@
 
         Next
 
-        If elemEntidadSel.Anejo <> "" Then
+        If elemEntidadSel.Anejos <> "" Then
             elementoLV = New ListViewItem
             elementoLV.Text = "Anejos"
-            elementoLV.SubItems.Add(elemEntidadSel.Anejo)
+            elementoLV.SubItems.Add(elemEntidadSel.Anejos)
             elementoLV.ImageIndex = 4
             elementoLV.Group = docTerritorios
             lvTagsM21.Items.Add(elementoLV)
@@ -683,93 +677,54 @@
         elementoLV = New ListViewItem With {.Text = "Sellado", .ImageIndex = 4, .Group = docGeneral}
         elementoLV.SubItems.Add(elemEntidadSel.Sellado) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
         elementoLV = New ListViewItem With {.Text = "Tipo", .ImageIndex = 4, .Group = docGeneral}
-        elementoLV.SubItems.Add(elemEntidadSel.tipoDocumento.NombreTipo) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
+        elementoLV.SubItems.Add(elemEntidadSel.Tipo) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
         elementoLV = New ListViewItem With {.Text = "Subtipo", .ImageIndex = 4, .Group = docGeneral}
-        elementoLV.SubItems.Add(elemEntidadSel.subTipoDoc) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
+        elementoLV.SubItems.Add(elemEntidadSel.Subtipo) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
         elementoLV = New ListViewItem With {.Text = "Encabezado", .ImageIndex = 4, .Group = docGeneral}
-        elementoLV.SubItems.Add(elemEntidadSel.encabezadoABSYSdoc) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
+        elementoLV.SubItems.Add(elemEntidadSel.Encabezado) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
         elementoLV = New ListViewItem With {.Text = "Autoría", .ImageIndex = 4, .Group = docGeneral}
-        elementoLV.SubItems.Add(elemEntidadSel.autorEntidad) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
-        elementoLV = New ListViewItem With {.Text = "Proyecto", .ImageIndex = 4, .Group = docGeneral}
-        elementoLV.SubItems.Add(elemEntidadSel.Proyecto) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
-        elementoLV = New ListViewItem With {.Text = "Colección", .ImageIndex = 4, .Group = docGeneral}
-        elementoLV.SubItems.Add(elemEntidadSel.Coleccion) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
-        elementoLV = New ListViewItem With {.Text = "Subdivisión", .ImageIndex = 4, .Group = docGeneral}
-        elementoLV.SubItems.Add(elemEntidadSel.Subdivision) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
+        elementoLV.SubItems.Add(elemEntidadSel.AutorEntidad) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
+        elementoLV = New ListViewItem With {.Text = "Observador", .ImageIndex = 4, .Group = docGeneral}
+        elementoLV.SubItems.Add(elemEntidadSel.Observador) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
+
+        elementoLV = New ListViewItem With {.Text = "Itinerario/Perfil", .ImageIndex = 4, .Group = docGeneral}
+        elementoLV.SubItems.Add(elemEntidadSel.ItinType) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
         elementoLV = New ListViewItem With {.Text = "Fecha documento", .ImageIndex = 4, .Group = docGeneral}
-        elementoLV.SubItems.Add(elemEntidadSel.FechaPrincipal) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
-        elementoLV = New ListViewItem With {.Text = "Modificado en", .ImageIndex = 4, .Group = docGeneral}
-        elementoLV.SubItems.Add(elemEntidadSel.fechasModificaciones) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
-        elementoLV = New ListViewItem With {.Text = "JGE", .ImageIndex = 4, .Group = docGeneral}
-        elementoLV.SubItems.Add(elemEntidadSel.JuntaEstadistica) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
+        elementoLV.SubItems.Add(elemEntidadSel.FechaDoc) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
+        elementoLV = New ListViewItem With {.Text = "Tipo fecha", .ImageIndex = 4, .Group = docGeneral}
+        elementoLV.SubItems.Add(elemEntidadSel.FechaDocType) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
 
         elementoLV = New ListViewItem With {.Text = "Provincia", .ImageIndex = 4, .Group = docUbicacion}
-        elementoLV.SubItems.Add($"{elemEntidadSel.Provincias} ({elemEntidadSel.ProvinciaRepo})") : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
+        elementoLV.SubItems.Add($"{elemEntidadSel.ProvinciaNombre} ({elemEntidadSel.ProvinciaINE})") : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
         elementoLV = New ListViewItem With {.Text = "Tomo", .ImageIndex = 4, .Group = docUbicacion}
         elementoLV.SubItems.Add(elemEntidadSel.Tomo) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
-        elementoLV = New ListViewItem With {.Text = "Hoja", .ImageIndex = 4, .Group = docUbicacion}
-        elementoLV.SubItems.Add(elemEntidadSel.proceHoja) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
-        elementoLV = New ListViewItem With {.Text = "Carpeta", .ImageIndex = 4, .Group = docUbicacion}
-        elementoLV.SubItems.Add(elemEntidadSel.proceCarpeta) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
         elementoLV = New ListViewItem With {.Text = "Signatura", .ImageIndex = 4, .Group = docUbicacion}
         elementoLV.SubItems.Add(elemEntidadSel.Signatura) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
 
-        elementoLV = New ListViewItem With {.Text = "Escala", .ImageIndex = 4, .Group = docGeneral}
-        elementoLV.SubItems.Add(elemEntidadSel.Escala) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
-        elementoLV = New ListViewItem With {.Text = "Horizontal (cm)", .ImageIndex = 4, .Group = docGeneral}
-        elementoLV.SubItems.Add(elemEntidadSel.Horizontal) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
-        elementoLV = New ListViewItem With {.Text = "Vertical (cm)", .ImageIndex = 4, .Group = docGeneral}
-        elementoLV.SubItems.Add(elemEntidadSel.Vertical) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
-        elementoLV = New ListViewItem With {.Text = "Características", .ImageIndex = 4, .Group = docGeneral}
-        elementoLV.SubItems.Add(elemEntidadSel.extraProps.getTruePropertiesDescript) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
-        elementoLV = New ListViewItem With {.Text = "Estado de conservación", .ImageIndex = 4, .Group = docGeneral}
-        elementoLV.SubItems.Add(elemEntidadSel.Estado) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
-
         elementoLV = New ListViewItem With {.Text = "Alta GEODOCAT", .ImageIndex = 4, .Group = docGeneral}
-        elementoLV.SubItems.Add($"{elemEntidadSel.createAt}") : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
+        elementoLV.SubItems.Add($"{elemEntidadSel.Create_at}") : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
         elementoLV = New ListViewItem With {.Text = "Creado por", .ImageIndex = 4, .Group = docGeneral}
-        elementoLV.SubItems.Add($"{elemEntidadSel.userCreator}") : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
-
-        elementoLV = New ListViewItem With {.Text = "Accesible desde HR", .ImageIndex = 4, .Group = docGeneral}
-        elementoLV.SubItems.Add($"{docHRTypes(elemEntidadSel.docTypeHR)}") : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
-
-        elementoLV = New ListViewItem With {.Text = "Edición GEODOCAT", .ImageIndex = 4, .Group = docGeneral}
-        elementoLV.SubItems.Add(elemEntidadSel.updateAt) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
-
-        elementoLV = New ListViewItem With {.Text = "Cargado en ABSYS", .ImageIndex = 4, .Group = docABSYS}
-        elementoLV.SubItems.Add($"{elemEntidadSel.cargaABSYS}") : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
-        elementoLV = New ListViewItem With {.Text = "TITN en ABSYS", .ImageIndex = 4, .Group = docABSYS}
-        elementoLV.SubItems.Add(elemEntidadSel.titnABSYSdoc) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
-        elementoLV = New ListViewItem With {.Text = "URL ABSYS", .ImageIndex = 4, .Group = docABSYS}
-        elementoLV.SubItems.Add(elemEntidadSel.urlABSYSdoc) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
-        elementoLV = New ListViewItem With {.Text = "URL Catálogo", .ImageIndex = 4, .Group = docABSYS}
-        elementoLV.SubItems.Add(elemEntidadSel.GetURIFichaCatalogo) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
-        elementoLV = New ListViewItem With {.Text = "URL Metadatos", .ImageIndex = 4, .Group = docABSYS}
-        elementoLV.SubItems.Add(elemEntidadSel.GetURIMetadatoMARC21) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
-
-        btnLinkABSYS.Tag = elemEntidadSel.urlABSYSdoc
+        elementoLV.SubItems.Add($"{elemEntidadSel.Create_By}") : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
 
 
-        elemEntidadSel.cargarHistorial()
-        For Each item As docCartoSEEVariacion In elemEntidadSel.historialCambios
-            elementoLV = New ListViewItem
-            elementoLV.Text = item.fechaVariacion
-            elementoLV.SubItems.Add(item.usuario)
-            elementoLV.SubItems.Add(item.tipoVariacion)
-            elementoLV.SubItems.Add(item.valorOld)
-            elementoLV.SubItems.Add(item.ValorNew)
-            lvDocEditions.Items.Add(elementoLV)
-            elementoLV = Nothing
-        Next
+        'elemEntidadSel.cargarHistorial()
+        'For Each item As docCartoSEEVariacion In elemEntidadSel.historialCambios
+        '    elementoLV = New ListViewItem
+        '    elementoLV.Text = item.fechaVariacion
+        '    elementoLV.SubItems.Add(item.usuario)
+        '    elementoLV.SubItems.Add(item.tipoVariacion)
+        '    elementoLV.SubItems.Add(item.valorOld)
+        '    elementoLV.SubItems.Add(item.ValorNew)
+        '    lvDocEditions.Items.Add(elementoLV)
+        '    elementoLV = Nothing
+        'Next
 
         elementoLV = New ListViewItem With {.Text = "Producto", .ImageIndex = 4, .Group = docCDD}
-        elementoLV.SubItems.Add(elemEntidadSel.cddProducto) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
+        elementoLV.SubItems.Add(elemEntidadSel.ProductoCDD) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
         elementoLV = New ListViewItem With {.Text = "Recurso", .ImageIndex = 4, .Group = docCDD}
-        elementoLV.SubItems.Add(elemEntidadSel.cddNombreFichero) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
+        elementoLV.SubItems.Add(elemEntidadSel.NameFileCDD) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
         elementoLV = New ListViewItem With {.Text = "Fecha subida", .ImageIndex = 4, .Group = docCDD}
-        elementoLV.SubItems.Add(elemEntidadSel.cddFechaSubida) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
-        elementoLV = New ListViewItem With {.Text = "Geometría", .ImageIndex = 4, .Group = docCDD}
-        elementoLV.SubItems.Add(elemEntidadSel.cddGeometria) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
+        elementoLV.SubItems.Add(elemEntidadSel.FechaFileCDD) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
         elementoLV = New ListViewItem With {.Text = "Enlace CdD", .ImageIndex = 4, .Group = docCDD}
         elementoLV.SubItems.Add(elemEntidadSel.cddURL) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
 
@@ -801,27 +756,27 @@
 
         'Repositorio de documento imagen asociado
         '-----------------------------------------------------------------------------------------------------------------
-        elementoLV = New ListViewItem With {
-                .Text = "Alta resolución",
-                .ImageIndex = 4,
-                .Tag = elemEntidadSel.rutaFicheroAltaRes,
-                .Group = docDigital
-        }
-        elementoLV.SubItems.Add(SacarFileDeRuta(elemEntidadSel.rutaFicheroAltaRes))
-        elementoLV.SubItems.Add(".JPG")
-        elementoLV.ForeColor = IIf(Not IO.File.Exists(elemEntidadSel.rutaFicheroAltaRes), Color.Red, Color.DarkGreen)
-        lvDocResources.Items.Add(elementoLV) : elementoLV = Nothing
+        'elementoLV = New ListViewItem With {
+        '        .Text = "Documento Digital",
+        '        .ImageIndex = 4,
+        '        .Tag = elemEntidadSel,
+        '        .Group = docDigital
+        '}
+        'elementoLV.SubItems.Add(SacarFileDeRuta(elemEntidadSel.rutaFicheroAltaRes))
+        'elementoLV.SubItems.Add(".JPG")
+        'elementoLV.ForeColor = IIf(Not IO.File.Exists(elemEntidadSel.rutaFicheroAltaRes), Color.Red, Color.DarkGreen)
+        'lvDocResources.Items.Add(elementoLV) : elementoLV = Nothing
 
-        elementoLV = New ListViewItem With {
-                .Text = "Baja resolución",
-                .ImageIndex = 4,
-                .Tag = elemEntidadSel.rutaFicheroBajaRes,
-                .Group = docDigital
-        }
-        elementoLV.SubItems.Add(SacarFileDeRuta(elemEntidadSel.rutaFicheroBajaRes))
-        elementoLV.SubItems.Add(".JPG")
-        elementoLV.ForeColor = IIf(Not IO.File.Exists(elemEntidadSel.rutaFicheroBajaRes), Color.Red, Color.DarkGreen)
-        lvDocResources.Items.Add(elementoLV) : elementoLV = Nothing
+        'elementoLV = New ListViewItem With {
+        '        .Text = "Baja resolución",
+        '        .ImageIndex = 4,
+        '        .Tag = elemEntidadSel.rutaFicheroBajaRes,
+        '        .Group = docDigital
+        '}
+        'elementoLV.SubItems.Add(SacarFileDeRuta(elemEntidadSel.rutaFicheroBajaRes))
+        'elementoLV.SubItems.Add(".JPG")
+        'elementoLV.ForeColor = IIf(Not IO.File.Exists(elemEntidadSel.rutaFicheroBajaRes), Color.Red, Color.DarkGreen)
+        'lvDocResources.Items.Add(elementoLV) : elementoLV = Nothing
 
         If IO.File.Exists(elemEntidadSel.rutaFicheroPDF) Then
             elementoLV = New ListViewItem With {
@@ -839,37 +794,36 @@
 
 
         'Así rellenamos usando el escaneo de directorios georreferenciados
-        elemEntidadSel.getGeoFiles()
-        elemEntidadSel.getGeoFilesFromDatabase()
+        'elemEntidadSel.getGeoFiles()
+        'elemEntidadSel.getGeoFilesFromDatabase()
 
-        Dim pathGeorref As String
-        Dim epsgGeorref As String
-        For Each fila As DataRow In elemEntidadSel.rcdgeoFiles.Select()
-            pathGeorref = ""
-            epsgGeorref = ""
-            For Each geoFichero As FileGeorref In elemEntidadSel.listaFicherosGeo
-                If geoFichero.NameFile.ToLower = $"{fila.Item("nombre")}.ecw" Then
-                    pathGeorref = geoFichero.PathFile
-                    epsgGeorref = geoFichero.EPSCode
-                    elementoLV = New ListViewItem With {
-                        .Text = "Georreferenciado",
-                        .ImageIndex = 4,
-                        .Tag = pathGeorref,
-                        .Group = docGeorref
-            }
-                    elementoLV.SubItems.Add($"{fila.Item("nombre")}.ecw")
-                    elementoLV.SubItems.Add(".ECW")
-                    elementoLV.SubItems.Add(epsgGeorref)
-                    elementoLV.SubItems.Add($"{fila.Item("mostrarwms")}")
-                    elementoLV.SubItems.Add($"{fila.Item("tipowms")}")
-                    elementoLV.SubItems.Add($"{fila.Item("zindex")}")
-                    elementoLV.SubItems.Add($"{fila.Item("idcontorno")}")
-                    elementoLV.ForeColor = IIf(Not IO.File.Exists(pathGeorref), Color.Red, Color.DarkGreen)
-                    lvDocResources.Items.Add(elementoLV) : elementoLV = Nothing
-                End If
-            Next
-
-        Next
+        'Dim pathGeorref As String
+        'Dim epsgGeorref As String
+        'For Each fila As DataRow In elemEntidadSel.rcdgeoFiles.Select()
+        '    pathGeorref = ""
+        '    epsgGeorref = ""
+        '    For Each geoFichero As FileGeorref In elemEntidadSel.listaFicherosGeo
+        '        If geoFichero.NameFile.ToLower = $"{fila.Item("nombre")}.ecw" Then
+        '            pathGeorref = geoFichero.PathFile
+        '            epsgGeorref = geoFichero.EPSCode
+        '            elementoLV = New ListViewItem With {
+        '                .Text = "Georreferenciado",
+        '                .ImageIndex = 4,
+        '                .Tag = pathGeorref,
+        '                .Group = docGeorref
+        '    }
+        '            elementoLV.SubItems.Add($"{fila.Item("nombre")}.ecw")
+        '            elementoLV.SubItems.Add(".ECW")
+        '            elementoLV.SubItems.Add(epsgGeorref)
+        '            elementoLV.SubItems.Add($"{fila.Item("mostrarwms")}")
+        '            elementoLV.SubItems.Add($"{fila.Item("tipowms")}")
+        '            elementoLV.SubItems.Add($"{fila.Item("zindex")}")
+        '            elementoLV.SubItems.Add($"{fila.Item("idcontorno")}")
+        '            elementoLV.ForeColor = IIf(Not IO.File.Exists(pathGeorref), Color.Red, Color.DarkGreen)
+        '            lvDocResources.Items.Add(elementoLV) : elementoLV = Nothing
+        '        End If
+        '    Next
+        'Next
 
         'Rellenamos el cuadro de texto con algunos datos
         FillRichText(RichTextBox3, rowId)
@@ -900,16 +854,16 @@
         Me.Cursor = Cursors.WaitCursor
         lvFastView.Items.Clear()
         elemEntidadSel = Nothing
-        elemEntidadSel = New docCartoSEE(DataGridView1.Item("idarchivo", rowIdx).Value)
+        elemEntidadSel = New docCuadMTN(DataGridView1.Item("idarchivodocmtn", rowIdx).Value)
 
         elementoLV = New ListViewItem With {.Text = "Provincia", .ImageIndex = 4, .Group = gMain}
-        elementoLV.SubItems.Add(elemEntidadSel.getListaProvincias)
+        elementoLV.SubItems.Add(elemEntidadSel.ProvinciaNombre)
         lvFastView.Items.Add(elementoLV) : elementoLV = Nothing
         elementoLV = New ListViewItem With {.Text = "Tomo", .ImageIndex = 4, .Group = gMain}
         elementoLV.SubItems.Add(DataGridView1.Item("tomo", rowIdx).Value.ToString)
         lvFastView.Items.Add(elementoLV) : elementoLV = Nothing
         elementoLV = New ListViewItem With {.Text = "Sellado", .ImageIndex = 4, .Group = gMain}
-        elementoLV.SubItems.Add(DataGridView1.Item("numdoc", rowIdx).Value.ToString)
+        elementoLV.SubItems.Add(DataGridView1.Item("sellado", rowIdx).Value.ToString)
         lvFastView.Items.Add(elementoLV) : elementoLV = Nothing
         elementoLV = New ListViewItem With {.Text = "Tipo", .ImageIndex = 4, .Group = gMain}
         elementoLV.SubItems.Add(DataGridView1.Item("tipo", rowIdx).Value.ToString)
@@ -918,8 +872,8 @@
         elementoLV.SubItems.Add(DataGridView1.Item("subtipo", rowIdx).Value.ToString)
         lvFastView.Items.Add(elementoLV) : elementoLV = Nothing
 
-        If DataGridView1.Item("listaMuniHisto", rowIdx).Value.ToString <> "" Then
-            Dim terris() As String = DataGridView1.Item("listaMuniHisto", rowIdx).Value.ToString.Split(",")
+        If DataGridView1.Item("nombreTerris", rowIdx).Value.ToString <> "" Then
+            Dim terris() As String = DataGridView1.Item("nombreTerris", rowIdx).Value.ToString.Split(",")
             For Each terri In terris
                 elementoLV = New ListViewItem With {.Text = "Territorio", .ImageIndex = 4, .Group = gTerri}
                 elementoLV.SubItems.Add(terri.Trim)
@@ -933,7 +887,7 @@
         ''Enlaces externos
 
         'Enlace al tomo del inventario
-        Button3.Tag = $"{elemEntidadSel.ProvinciaRepo}|{elemEntidadSel.Tomo}"
+        Button3.Tag = $"{elemEntidadSel.ProvinciaINE}|{elemEntidadSel.Tomo}"
 
         ''Documento Cabina
         Button1.Enabled = IIf(elemEntidadSel.rutaFicheroBajaRes <> "", True, False)
@@ -945,8 +899,6 @@
         Catch ex As Exception
 
         End Try
-
-        btnLinkABSYS.Tag = elemEntidadSel.urlABSYSdoc
 
         'CDD
         'https://centrodedescargas.cnig.es/CentroDescargas/busquedaIdProductor.do?idProductor=50940&Serie=ACLLI
@@ -962,70 +914,49 @@
 
     End Sub
 
-    Private Sub FillDocCARTOSEEwithFilter(mainFilter As String, Optional filtroTerris As String = "", Optional filtroTerrisAgrupado As String = "")
+    Private Sub FillDocCuadMTNEwithFilter(mainFilter As String)
 
         'Ahora añadimos filtros.
-        If mainFilter = "" Then mainFilter = "archivo.idarchivo>0"
-
-
-
-        If filterTipoDoc <> "" Then mainFilter &= $" AND archivo.tipodoc_id in ({filterTipoDoc})"
-        If filterEstadoDoc <> "" Then mainFilter &= $" AND archivo.estadodoc_id in ({filterEstadoDoc})"
-        If filterSubTipoDoc <> "" Then mainFilter &= $" AND archivo.subtipo ilike E'%{filterSubTipoDoc.Replace("'", "\'")}%'"
-        If filterTomo <> "" Then mainFilter &= $" AND archivo.tomo=E'{filterTomo.Replace("'", "\'")}'"
-
-        If filterEnABSYS <> "" Then mainFilter &= $" AND archivo.subidoabsys={IIf(filterEnABSYS = "Cargados", "true", "false")}'"
-        If filterJGE <> "" Then mainFilter &= $" AND archivo.juntaestadistica={IIf(filterJGE = "Sí", "1", "0")}"
-
-        'If filterFecha <> "" Then mainFilter &= $" AND docsiddae.firmas like '%{filterFecha}%'"
-        'If filterObservaciones <> "" Then mainFilter &= $" AND docsiddae.comentario ilike '%{filterObservaciones}%'"
-        ' If filterLugaresYDemas <> "" Then mainFilter &= $" AND (docsiddae.anejos ilike '%{filterLugaresYDemas}%' OR docsiddae.lugares ilike '%{filterLugaresYDemas}%' OR docsiddae.cambiosnombre ilike '%{filterLugaresYDemas}%') "
-
+        If mainFilter = "" Then mainFilter = "archivodocmtn.idarchivodocmtn>0"
         'Cuando hacemos filtro en la parte de territorios, activamos la claúsula inner join
-        sqlBase = $"SELECT archivo.idarchivo,archivo.numdoc,tbtipodocumento.tipodoc as tipo,archivo.subtipo,archivo.tomo,archivo.escala,to_char(archivo.fechaprincipal, 'YYYY-MM-DD') as fechaprincipal,
-                            string_agg(territorios.nombre,', ') as listaMuniHisto,archivo.signatura,archivo.horizontal || ' cm × '|| archivo.vertical || ' cm' as dimensiones,
-                            archivo.coleccion,archivo.subdivision,tbestadodocumento.estadodoc as Estado,archivo.fechasmodificaciones,archivo.observaciones,archivo.proyecto,
-		                    archivo.anejo,archivo.procecarpeta,archivo.procehoja,
-		                    archivo.juntaestadistica,archivo.extraprops,
-		                    archivo.cdd_url,archivo.titn,archivo.autor,archivo.encabezado,
-                            string_agg(DISTINCT provincias.nombreprovincia,'#') as nombreprovincia,
-		                    string_agg(to_char(territorios.munihisto, 'FM0000009'::text),'#') as listaCodMuniHisto,
-		                    string_agg(listamunicipios.nombre,'#') as listaMuniActual,
-                            string_agg(listamunicipios.inecorto,'#') as listaCodMuniActual
-                    FROM bdsidschema.archivo 
-	                    LEFT JOIN bdsidschema.tbtipodocumento ON tbtipodocumento.idtipodoc=archivo.tipodoc_id 
-	                    LEFT JOIN bdsidschema.tbestadodocumento ON tbestadodocumento.idestadodoc=archivo.estadodoc_id 
-	                    LEFT JOIN bdsidschema.archivo2territorios  ON archivo2territorios.archivo_id=archivo.idarchivo 
-	                    LEFT JOIN bdsidschema.territorios on territorios.idterritorio= archivo2territorios.territorio_id 
-	                    LEFT JOIN ngmepschema.listamunicipios on territorios.nomen_id= listamunicipios.identidad 
-	                    LEFT JOIN bdsidschema.provincias on territorios.provincia= provincias.idprovincia 
-                    WHERE {mainFilter}
-                      group by archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal,
-  	                    archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, archivo.horizontal, archivo.procecarpeta, archivo.procehoja, 
-                        archivo.subtipo,archivo.juntaestadistica, archivo.signatura,archivo.extraprops, archivo.observaciones,archivo.proyecto,
-	                    tbtipodocumento.tipodoc,archivo.cdd_url,archivo.titn,archivo.autor,archivo.encabezado,tbestadodocumento.estadodoc
-                    order by archivo.idarchivo"
+        sqlBase = $"SELECT 
+	                archivodocmtn.idarchivodocmtn, archivodocmtn.sellado,archivodocmtn.tipo,archivodocmtn.subtipo,
+		                archivodocmtn.tomo,archivodocmtn.fecha,string_agg(Territorios.Nombre,', ') as nombreTerris,
+		                'Zona ' || COALESCE (zona_num || '. ', 'no definida. ') || 
+		                COALESCE (subdivision_tipo || ': ' || subdivision_num || '. ','') ||
+		                'Cuaderno ' ||  COALESCE (cuaderno, 'no definido') || '. ' ||
+		                COALESCE (cuad_tipo ||'. ','') || 
+		                COALESCE (itin_tipo || ': ' || itin_num || '. ','') ||
+		                COALESCE (archivodocmtn.observaciones || '.' ,'') as contenido,
+		                provincias.nombreprovincia,archivodocmtn.create_at
+                FROM bdsidschema.archivodocmtn 
+				LEFT JOIN bdsidschema.provincias on archivodocmtn.codprov= provincias.idprovincia 
+                LEFT JOIN bdsidschema.archivodocmtn2terris ON archivodocmtn.idarchivodocmtn=archivodocmtn2terris.archivodocmtn_id 
+                LEFT JOIN bdsidschema.territorios ON archivodocmtn2terris.territorio_id=territorios.idterritorio  
+                WHERE {mainFilter} 
+                group by archivodocmtn.idarchivodocmtn,archivodocmtn.create_at,archivodocmtn.tipo,archivodocmtn.subtipo,archivodocmtn.tomo,
+				archivodocmtn.sellado,archivodocmtn.fecha,provincias.nombreprovincia,archivodocmtn.zona_num"
 
         rcdDataPrin = New DataView
         If CargarDataView(sqlBase, rcdDataPrin) = False Then
             ModalExclamation("No se pueden cargar los datos")
             Exit Sub
         End If
-        FormatDatagridCARTOSEE()
+        FormatDatagridCuadMTN()
         'If columnVisualiz = 1 Then FormatDatagridMapsReduced()
 
 
     End Sub
 
     'Este formto muestra todos los campos en columnas
-    Private Sub FormatDatagridCARTOSEE()
+    Private Sub FormatDatagridCuadMTN()
 
         DataGridView1.DataSource = rcdDataPrin
         'Seguidas ponemos las columnas visibles con su anchura
-        DataGridView1.Columns(0).HeaderText = "idarchivo"
+        DataGridView1.Columns(0).HeaderText = "idarchivodocmtn"
         DataGridView1.Columns(0).Visible = False
-        DataGridView1.Columns("numdoc").HeaderText = "Sellado"
-        DataGridView1.Columns("numdoc").Width = 70
+        DataGridView1.Columns("Sellado").HeaderText = "Sellado"
+        DataGridView1.Columns("Sellado").Width = 70
         DataGridView1.Columns("tipo").HeaderText = "Tipo"
         DataGridView1.Columns("tipo").Width = 150
         DataGridView1.Columns("subtipo").HeaderText = "Subtipo"
@@ -1034,35 +965,23 @@
         DataGridView1.Columns("tomo").HeaderText = "Tomo"
         DataGridView1.Columns("tomo").Width = 60
         DataGridView1.Columns("tomo").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
-        DataGridView1.Columns("escala").HeaderText = "Escala"
-        DataGridView1.Columns("escala").Width = 40
-        DataGridView1.Columns("escala").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
-        DataGridView1.Columns("fechaprincipal").HeaderText = "Fecha"
-        DataGridView1.Columns("fechaprincipal").Width = 80
-        DataGridView1.Columns("listaMuniHisto").HeaderText = "Territorios"
-        DataGridView1.Columns("listaMuniHisto").Width = 200
-        DataGridView1.Columns("listaMuniHisto").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
-        DataGridView1.Columns("signatura").HeaderText = "Signatura"
-        DataGridView1.Columns("signatura").Width = 50
-        DataGridView1.Columns("signatura").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
-        DataGridView1.Columns("dimensiones").HeaderText = "Ancho × Alto"
-        DataGridView1.Columns("dimensiones").Width = 85
-        DataGridView1.Columns("dimensiones").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
-        DataGridView1.Columns("coleccion").HeaderText = "Colección"
-        DataGridView1.Columns("coleccion").Width = 75
-        DataGridView1.Columns("coleccion").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
-        DataGridView1.Columns("subdivision").HeaderText = "Subdivisión"
-        DataGridView1.Columns("subdivision").Width = 75
-        DataGridView1.Columns("subdivision").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
-        DataGridView1.Columns("estado").HeaderText = "Estado"
-        DataGridView1.Columns("estado").Width = 40
-        DataGridView1.Columns("estado").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
-
-        DataGridView1.Columns("fechasmodificaciones").HeaderText = "Modificaciones en"
-        DataGridView1.Columns("observaciones").HeaderText = "Observaciones"
+        DataGridView1.Columns("fecha").HeaderText = "Fecha"
+        DataGridView1.Columns("fecha").Width = 80
+        DataGridView1.Columns("nombreterris").HeaderText = "Territorios"
+        DataGridView1.Columns("nombreterris").Width = 200
+        DataGridView1.Columns("nombreterris").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+        DataGridView1.Columns("contenido").HeaderText = "Contenido"
+        DataGridView1.Columns("contenido").Width = 50
+        DataGridView1.Columns("contenido").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
+        DataGridView1.Columns("nombreprovincia").HeaderText = "Provincia"
+        DataGridView1.Columns("nombreprovincia").Width = 85
+        DataGridView1.Columns("nombreprovincia").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
+        DataGridView1.Columns("create_at").HeaderText = "Fecha alta"
+        DataGridView1.Columns("create_at").Width = 75
+        DataGridView1.Columns("create_at").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
 
         'Ocultamos el resto de columnas
-        For iCol = 13 To DataGridView1.ColumnCount - 1
+        For iCol = 10 To DataGridView1.ColumnCount - 1
             DataGridView1.Columns(iCol).Visible = False
         Next
 
@@ -1369,7 +1288,7 @@
 
     Private Sub DataGridView1_Click(sender As Object, e As EventArgs) Handles DataGridView1.Click
         If DataGridView1.Rows.Count = 0 Then Exit Sub
-        FillDetailsReduced(DataGridView1.Item("idarchivo", DataGridView1.CurrentCell.RowIndex).Value.ToString)
+        FillDetailsReduced(DataGridView1.Item("idarchivodocmtn", DataGridView1.CurrentCell.RowIndex).Value.ToString)
 
     End Sub
 
@@ -1377,11 +1296,11 @@
 
         Debug.Print("CellEnter")
         If DataGridView1.CurrentCell IsNot Nothing Then
-            If DataGridView1.Item("idarchivo", DataGridView1.CurrentCell.RowIndex).Value.ToString = "" Then
+            If DataGridView1.Item("idarchivodocmtn", DataGridView1.CurrentCell.RowIndex).Value.ToString = "" Then
                 ModalExclamation("Índice TITN no definido")
                 Exit Sub
             End If
-            If Not gettingDetails Then FillDetailsReduced(DataGridView1.Item("idarchivo", DataGridView1.CurrentCell.RowIndex).Value.ToString)
+            If Not gettingDetails Then FillDetailsReduced(DataGridView1.Item("idarchivodocmtn", DataGridView1.CurrentCell.RowIndex).Value.ToString)
         End If
 
     End Sub
@@ -1471,7 +1390,7 @@
         ElseIf TabControl1.SelectedIndex = 1 Then
             If DataGridView1.CurrentCell Is Nothing Then Exit Sub
             If idArchivoLoaded <> idArchiveTagsLoaded Then
-                FillMarc21Tags(DataGridView1.Item("idarchivo", DataGridView1.CurrentCell.RowIndex).Value.ToString, DataGridView1.CurrentCell.RowIndex)
+                FillMarc21Tags(DataGridView1.Item("idarchivodocmtn", DataGridView1.CurrentCell.RowIndex).Value.ToString, DataGridView1.CurrentCell.RowIndex)
             End If
         ElseIf TabControl1.SelectedIndex = 2 Then
             If DataGridView1.CurrentCell Is Nothing Then Exit Sub

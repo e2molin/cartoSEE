@@ -1927,5 +1927,263 @@ Public Class MDIPrincipal
 
     End Sub
 
+    Private Sub Button13_Click(sender As Object, e As EventArgs) Handles Button13.Click
 
+        Dim FirmaYear As String = ""
+        Dim EstadosDocumento As String = ""
+        Dim TiposDocumento As String = ""
+        Dim numTomo As String = ""
+        Dim DescripFiltro As String = ". "
+        Dim territorioId As Integer = 0
+        Dim CodMunicipioINEHistorico As Integer = 0
+        Dim CodMunicipioINEActual As Integer = 0
+        Dim nSellado As String = ""
+        Dim nSellado1 As String = ""
+        Dim nSellado2 As String = ""
+        Dim listaSellos As New ArrayList
+        Dim CadFiltro As String = ""
+        Dim ibucle As Integer
+        Dim cProv As Integer = 0
+        Dim proceHoja As String
+        Dim proceCarpeta As String
+
+
+        If Not String.IsNullOrEmpty(TextBox1.Tag) Then
+            Dim CodigosMuni() As String = TextBox1.Tag.ToString.Split("|")
+            CodMunicipioINEHistorico = CodigosMuni(0)
+            territorioId = CodigosMuni(1)
+            CodMunicipioINEActual = CodigosMuni(2)
+        ElseIf Not String.IsNullOrEmpty(TextBox23.Text) Then
+            If IsNumeric(TextBox23.Text.Trim) Then
+                nSellado = TextBox23.Text.Trim
+            ElseIf obtenerIntervalo(TextBox23.Text.Trim, "-", nSellado1, nSellado2) = True Then
+                Application.DoEvents()
+            ElseIf obtenerIntervalo(TextBox23.Text.Trim, "#", nSellado1, nSellado2) = True Then
+                Application.DoEvents()
+            ElseIf obtenerIntervalo(TextBox23.Text.Trim, ";", listaSellos) = True Then
+                Application.DoEvents()
+            Else
+                Exit Sub
+            End If
+
+        Else
+
+            If ComboBox3.SelectedIndex <> -1 Then
+                cProv = CType(ComboBox3.SelectedItem, itemData).Valor
+            ElseIf IsNumeric(TextBox1.Text.Trim) Then
+                nSellado = TextBox1.Text.Trim
+            ElseIf obtenerIntervalo(TextBox1.Text.Trim, "-", nSellado1, nSellado2) = True Then
+                Application.DoEvents()
+            ElseIf obtenerIntervalo(TextBox1.Text.Trim, "#", nSellado1, nSellado2) = True Then
+                Application.DoEvents()
+            ElseIf obtenerIntervalo(TextBox1.Text.Trim, ";", listaSellos) = True Then
+                Application.DoEvents()
+            Else
+                Exit Sub
+            End If
+        End If
+
+        Try
+            PictureBox3.Visible = True
+            Me.Cursor = Cursors.WaitCursor
+            LanzarSpinner("Cargando datos")
+            Dim frmResultadosCuadMTN As New resultCMTN
+            With frmResultadosCuadMTN
+                .MdiParent = Me
+                If cProv > 0 Then
+                    .paramSQL1 = cProv
+                    .typeSearch = resultGEODOCAT.TypeDataSearch.AllDocumentsByProvincia
+                Else
+                    .typeSearch = resultGEODOCAT.TypeDataSearch.AllDocuments
+                End If
+                .Show()
+            End With
+        Catch ex As Exception
+            ModalError($"No se pueden identificar los documento: {ex.Message}")
+        Finally
+            CerrarSpinner()
+            PictureBox3.Visible = False
+            Me.Cursor = Cursors.Default
+
+        End Try
+
+
+
+
+
+
+
+
+
+
+        ''-----------------------------------------------------------------------------------
+        ''Evalúo si se filtran los documentos por estado o por tipo
+        ''-----------------------------------------------------------------------------------
+        'TiposDocumento = ""
+        'For Each Linea As itemData In CheckedListBox1.Items
+        '    If CheckedListBox1.GetItemChecked(CheckedListBox1.Items.IndexOf(Linea)) Then
+        '        TiposDocumento &= $"{IIf(TiposDocumento = "", Linea.Valor, $",{Linea.Valor}")}"
+        '    End If
+        'Next
+        'If CheckedListBox1.Items.Count = CheckedListBox1.CheckedItems.Count Then TiposDocumento = ""
+
+        'EstadosDocumento = ""
+        'For Each Linea As itemData In CheckedListBox2.Items
+        '    If CheckedListBox2.GetItemChecked(CheckedListBox2.Items.IndexOf(Linea)) Then
+        '        EstadosDocumento &= $"{IIf(EstadosDocumento = "", Linea.Valor, $",{Linea.Valor}")}"
+        '    End If
+        'Next
+        'If CheckedListBox2.Items.Count = CheckedListBox2.CheckedItems.Count Then EstadosDocumento = ""
+
+
+
+
+
+
+        ''Extraemos otros filtros
+        'numTomo = TextBox5.Text.Trim
+        'proceHoja = TextBox4.Text.Trim
+        'proceCarpeta = TextBox2.Text.Trim
+
+
+        'Try
+        '    PictureBox3.Visible = True
+        '    Me.Cursor = Cursors.WaitCursor
+        '    LanzarSpinner("Cargando datos")
+        '    Dim frmResultados As New resultGEODOCAT
+        '    With frmResultados
+        '        .MdiParent = Me
+        '        .filterTipoDoc = TiposDocumento
+        '        .filterSubTipoDoc = TextBox22.Text.Trim
+        '        .filterEstadoDoc = EstadosDocumento
+        '        .filterFecha = FirmaYear
+        '        .filterJGE = IIf(ComboBox6.SelectedIndex > 0, ComboBox6.Text, "")
+        '        .filterEnABSYS = IIf(ComboBox8.SelectedIndex > 0, ComboBox8.Text, "")
+
+
+
+
+        '        If TextBox23.Text.Trim <> "" Then
+        '            If IsNumeric(TextBox23.Text) Then
+        '                .paramSQL1 = TextBox23.Text.Trim
+        '                .typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosBySellado
+        '            ElseIf obtenerIntervalo(TextBox23.Text.Trim, "-", nSellado1, nSellado2) = True Then
+        '                Application.DoEvents()
+        '                .paramSQL1 = nSellado1
+        '                .paramSQL2 = nSellado2
+        '                .typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosByListaNumSelladoEntreLimites
+        '            ElseIf obtenerIntervalo(TextBox23.Text.Trim, "#", nSellado1, nSellado2) = True Then
+        '                Application.DoEvents()
+        '                .paramSQL1 = nSellado1
+        '                .paramSQL2 = nSellado2
+        '                .typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosByListaNumSelladoEntreLimites
+        '            ElseIf obtenerIntervalo(TextBox23.Text.Trim, ";", nSellado1, nSellado2) = True Then
+        '                Application.DoEvents()
+        '                .paramSQL1 = nSellado1
+        '                .paramSQL2 = nSellado2
+        '                .typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosByListaNumSelladoEntreLimites
+        '            End If
+        '        ElseIf TextBox6.Text.Trim <> "" Then
+        '            Application.DoEvents()
+        '            .paramSQL1 = TextBox6.Text.Trim
+        '            .typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosBySignatura
+        '        ElseIf TextBox8.Text.Trim <> "" Then
+        '            Application.DoEvents()
+        '            .paramSQL1 = TextBox8.Text.Trim
+        '            .typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosByColeccion
+        '        ElseIf TextBox19.Text.Trim <> "" Then
+        '            Application.DoEvents()
+        '            .paramSQL1 = TextBox19.Text.Trim
+        '            .typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosByAnejo
+        '        ElseIf TextBox20.Text.Trim <> "" Then
+        '            Application.DoEvents()
+        '            .paramSQL1 = TextBox20.Text.Trim
+        '            .typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosByComentario
+        '        ElseIf sender.name = "btnGetStar" Then
+        '            Application.DoEvents()
+        '            .paramSQL1 = "____1___________"
+        '            .typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosByPatron
+        '            .Text = "Documentos importantes"
+        '        ElseIf sender.name = "btnGetImportant" Then
+        '            Application.DoEvents()
+        '            .paramSQL1 = "__1_____________"
+        '            .typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosByPatron
+        '            .Text = "Documentos destacados"
+        '        ElseIf sender.name = "btnGetWeird" Then
+        '            Application.DoEvents()
+        '            .paramSQL1 = "_1______________"
+        '            .typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosByPatron
+        '            .Text = "Documentos raros"
+        '        ElseIf sender.name = "btnGetCdD" Then
+        '            Application.DoEvents()
+        '            .paramSQL1 = "1_______________"
+        '            .typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosByPatron
+        '            .Text = "Documentos  pendientes CdD"
+
+        '        ElseIf numTomo <> "" Then
+        '            Application.DoEvents()
+        '            If cProv = 0 Then
+        '                ModalExclamation("Para buscar por Tomo, seleccione primero una provincia")
+        '                frmResultados.Close()
+        '                frmResultados.Dispose()
+        '                frmResultados = Nothing
+        '                Exit Sub
+        '            End If
+        '            .paramSQL1 = cProv
+        '            .filterTomo = numTomo
+        '            .typeSearch = resultGEODOCAT.TypeDataSearch.AllDocumentsByProvincia
+        '        ElseIf proceCarpeta <> "" Or proceHoja <> "" Then
+        '            If proceHoja = "" And proceCarpeta <> "" Then
+        '                ModalExclamation("Si busca una carpeta, debe especificar la Hoja")
+        '                frmResultados.Close()
+        '                frmResultados.Dispose()
+        '                frmResultados = Nothing
+        '                Exit Sub
+        '            End If
+        '            .paramSQL1 = proceHoja
+        '            .paramSQL2 = proceCarpeta
+        '            .typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosByProcHojaCarpeta
+        '        ElseIf TextBox1.Tag.Trim <> "" Then
+        '            If CheckBox1.Checked Then
+        '                'Búsqueda por territorio/municipio actual. Usamos en la búsqueda el códigoINE actual
+        '                .paramSQL1 = CodMunicipioINEActual
+        '                .typeSearch = resultGEODOCAT.TypeDataSearch.AllDocumentsByTerritorioActual
+        '                .Text = $"Documentos asociados al municipio actual {TextBox1.Text.Trim}"
+        '            Else
+        '                'Búsqueda por territorio/municipio histórico. Usamos en la búsqueda el idTerritorio
+        '                .paramSQL1 = territorioId
+        '                .typeSearch = resultGEODOCAT.TypeDataSearch.AllDocumentsByTerritorio
+        '                .Text = $"Documentos asociados al municipio {TextBox1.Text.Trim}"
+        '            End If
+        '        Else
+        '            If cProv > 0 Then
+        '                .paramSQL1 = cProv
+        '                .typeSearch = resultGEODOCAT.TypeDataSearch.AllDocumentsByProvincia
+        '            Else
+        '                .typeSearch = resultGEODOCAT.TypeDataSearch.AllDocuments
+        '            End If
+        '        End If
+
+
+        '        .Show()
+        '    End With
+
+
+
+
+
+
+        'Catch ex As Exception
+        '    ModalError($"No se pueden identificar los documento: {ex.Message}")
+        'Finally
+        '    CerrarSpinner()
+        '    PictureBox3.Visible = False
+        '    Me.Cursor = Cursors.Default
+
+        'End Try
+
+
+
+
+    End Sub
 End Class

@@ -4,10 +4,15 @@
     Property Tipo As String
     Property Subtipo As String
     Property Tomo As String
+    Property Signatura As String
     Property FechaDoc As String
     Property FechaDocType As String
+    Property Encabezado As String
+    Property AutorEntidad As String
+    Property Observador As String
     Property NumPag As Integer
     Property ProvinciaINE As Integer
+    Property ProvinciaNombre As String
     Property DivZona As String
     Property SubDivType As String
     Property SubDivNum As String
@@ -17,31 +22,26 @@
     Property CuadernoType As String
     Property OldName As String
     Property NewName As String
-    Property Anejos As String
     Property Create_at As String
-    Property UserAlta As String
+    Property Create_By As String
     Property FechaModificacion As String
     Property Ambito As String
     Property Observaciones As String
     Property ficheroPDF As String
     Property listaTerritorios As New ArrayList
+    Property Anejos As String
 
+    ' Referencias al CdD
+    Property ProductoCDD As String
     Property NameFileCDD As String ' Si el documento ya está en el CdD, esta propiedad almacena el nombre con el que se ha pasado. Si nunca ha estado, es nulo
     Property FechaFileCDD As String
+    Property cddURL As String
+    Property esDistribuiblePorCDD As Boolean = True
 
     Property TaxonomiaWebSemanticaCode As String = "2.4.1.1.2"
     Property TaxonomiaWebSemanticaName As String = "Actas, cuadernos, reseñas y gráficos de líneas límite "
 
     'Propiedades temporales que uso en Runtime
-    Property esDistribuiblePorCDD As Boolean = True
-
-
-    ReadOnly Property ProvinciaNombre() As String
-        Get
-            Return ListaProvincias.Rows(ProvinciaINE - 1).Item(1).ToString
-        End Get
-    End Property
-
     ReadOnly Property nameFile4CDD() As String
 
         Get
@@ -55,6 +55,51 @@
             Return $"CMTN{String.Format("{0:00000000}", Sellado)}"
         End Get
     End Property
+
+    ReadOnly Property Contenido() As String
+
+        Get
+            Dim cadReturn As String = ""
+            cadReturn &= IIf(DivZona <> "", $"Zona {DivZona}. ", "Zona no definida. ")
+            cadReturn &= IIf(SubDivType <> "", $"{SubDivType}: {SubDivNum}. ", "")
+            cadReturn &= IIf(Cuaderno <> "", $"Cuaderno {Cuaderno}. ", "Cuaderno no definido. ")
+            cadReturn &= IIf(CuadernoType <> "", $"{CuadernoType}. ", "")
+            cadReturn &= IIf(ItinType <> "" And ItinNum <> "", $"{ItinType}: {ItinNum}. ", "")
+            Return cadReturn
+        End Get
+    End Property
+
+    ReadOnly Property rutaFicheroPDF() As String
+
+        Get
+            Return $"{rutaRepoCI}\{String.Format("{0:00}", ProvinciaINE)}\CMTN{String.Format("{0:00000000}", Sellado)}.pdf"
+        End Get
+    End Property
+
+    ReadOnly Property rutaFicheroThumb() As String
+
+        Get
+            Return $"{rutaRepoCI}\miniaturas\{String.Format("{0:00}", ProvinciaINE)}\CMTN{String.Format("{0:00000000}", Sellado)}.jpg"
+        End Get
+    End Property
+
+    ReadOnly Property rutaFicheroBajaAlta() As String
+
+        Get
+            Return $""
+        End Get
+    End Property
+
+    ReadOnly Property rutaFicheroBajaRes() As String
+
+        Get
+            Return $""
+        End Get
+    End Property
+
+
+
+
 
     ReadOnly Property Alias4CDD() As String
 
@@ -126,20 +171,22 @@
         Dim consultaSQL As String = $"SELECT archivodocmtn.idarchivodocmtn,archivodocmtn.create_at,archivodocmtn.tipo,archivodocmtn.subtipo,archivodocmtn.tomo,archivodocmtn.sellado,
                 archivodocmtn.codprov,archivodocmtn.fecha,archivodocmtn.nota_fecha,archivodocmtn.pag,archivodocmtn.zona_num,archivodocmtn.subdivision_tipo,
                 archivodocmtn.subdivision_num,archivodocmtn.itin_tipo,archivodocmtn.itin_num,archivodocmtn.cuaderno,archivodocmtn.cuad_tipo, archivodocmtn.anejos, archivodocmtn.nombre_old, archivodocmtn.nombre_new,
-                archivodocmtn.observaciones,archivodocmtn.create_by,archivodocmtn.ambito,archivodocmtn.namefilecdd,archivodocmtn.fechafilecdd,
+                archivodocmtn.observaciones,archivodocmtn.create_by,archivodocmtn.ambito,archivodocmtn.namefilecdd,archivodocmtn.fechafilecdd,archivodocmtn.observador,provincias.nombreprovincia,
                 string_agg(territorios.idterritorio::text,'|') as idTerris,
                 string_agg(Territorios.Nombre,'|') as nombreTerris,
                 string_agg(Territorios.Tipo,'|') as tipoTerris,
                 string_agg(Territorios.poligono_carto::text,'|') as poligonocarto,
                 string_agg(Territorios.Municipio::text,'|') as muniTerris 
                 FROM bdsidschema.archivodocmtn 
-                INNER JOIN bdsidschema.archivodocmtn2terris ON archivodocmtn.idarchivodocmtn=archivodocmtn2terris.archivodocmtn_id 
-                INNER JOIN bdsidschema.territorios ON archivodocmtn2terris.territorio_id=territorios.idterritorio  
-                WHERE {idCuadernoMTN} 
+                LEFT JOIN bdsidschema.provincias on archivodocmtn.codprov= provincias.idprovincia 
+                LEFT JOIN bdsidschema.archivodocmtn2terris ON archivodocmtn.idarchivodocmtn=archivodocmtn2terris.archivodocmtn_id 
+                LEFT JOIN bdsidschema.territorios ON archivodocmtn2terris.territorio_id=territorios.idterritorio  
+                WHERE archivodocmtn.idarchivodocmtn={idCuadernoMTN} 
                 group by archivodocmtn.idarchivodocmtn,archivodocmtn.create_at,archivodocmtn.tipo,archivodocmtn.subtipo,archivodocmtn.tomo,archivodocmtn.sellado,
                 archivodocmtn.codprov,archivodocmtn.fecha,archivodocmtn.nota_fecha,archivodocmtn.pag,archivodocmtn.zona_num,archivodocmtn.subdivision_tipo,
                 archivodocmtn.subdivision_num,archivodocmtn.cuaderno,archivodocmtn.itin_tipo, archivodocmtn.itin_num, archivodocmtn.cuad_tipo, 
-                archivodocmtn.anejos, archivodocmtn.nombre_old, archivodocmtn.nombre_new,archivodocmtn.observaciones,archivodocmtn.create_by,archivodocmtn.ambito,archivodocmtn.namefilecdd,archivodocmtn.fechafilecdd"
+                archivodocmtn.anejos, archivodocmtn.nombre_old, archivodocmtn.nombre_new,archivodocmtn.observaciones,archivodocmtn.create_by,
+                archivodocmtn.ambito,archivodocmtn.namefilecdd,archivodocmtn.fechafilecdd,provincias.nombreprovincia"
 
         rellenarDataset(consultaSQL)
 
@@ -185,22 +232,31 @@
                 GenerarLOG("El documento no tiene provincia asignada:" & dR("sellado").ToString)
             End Try
 
-            NumPag = dR("pag")
+
             Observaciones = dR("observaciones").ToString
 
-            Anejos = dR("anejos").ToString
+
 
             'InfoCDD
+            ProductoCDD = "Cuadernos topográficos (interiores)"
             NameFileCDD = dR("namefilecdd").ToString
             FechaFileCDD = dR("fechafilecdd").ToString
+            cddURL = $"https://centrodedescargas.cnig.es/CentroDescargas/busquedaIdProductor.do?idProductor={Sellado}&Serie=CCINT"
 
-            'Carga de la información sobre las provisionalidades
+            'Contenido
+            Cuaderno = dR("cuaderno").ToString
+            CuadernoType = dR("cuad_tipo").ToString
             DivZona = dR("zona_num").ToString
             SubDivType = dR("subdivision_tipo").ToString
             SubDivNum = dR("subdivision_num").ToString
             ItinType = dR("itin_tipo").ToString
             ItinNum = dR("itin_num").ToString
             Ambito = dR("ambito").ToString
+
+            Observador = dR("observador").ToString
+            AutorEntidad = "Instituto Geográfico y Estadístico"
+            Encabezado = "Trabajos Topográficos"
+            Signatura = "Archivo Compacto"
 
             Dim idTerris() As String = dR("idTerris").ToString.Split("|")
             Dim nombreTerris() As String = dR("nombreTerris").ToString.Split("|")
@@ -213,7 +269,8 @@
                 listaTerritorios.Add(New TerritorioBSID(CType(elem, Integer)))
             Next
 
-
+            Anejos = dR("anejos").ToString
+            ProvinciaNombre = dR("nombreprovincia").ToString
 
             'For iBucle As Integer = 0 To idTerris.Count - 1
             '    Try

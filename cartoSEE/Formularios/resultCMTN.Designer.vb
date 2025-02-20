@@ -105,6 +105,7 @@ Partial Class resultCMTN
         Me.lvDocEditions = New System.Windows.Forms.ListView()
         Me.lvTagsM21 = New System.Windows.Forms.ListView()
         Me.TabPage3 = New System.Windows.Forms.TabPage()
+        Me.RichTextBox3 = New System.Windows.Forms.RichTextBox()
         Me.Button8 = New System.Windows.Forms.Button()
         Me.Button7 = New System.Windows.Forms.Button()
         Me.Label1 = New System.Windows.Forms.Label()
@@ -116,7 +117,6 @@ Partial Class resultCMTN
         Me.lvImages = New System.Windows.Forms.ListView()
         Me.Panel8 = New System.Windows.Forms.Panel()
         Me.lvPropiedades = New System.Windows.Forms.ListView()
-        Me.RichTextBox3 = New System.Windows.Forms.RichTextBox()
         Me.ToolStrip1.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
@@ -583,70 +583,70 @@ Partial Class resultCMTN
         '
         Me.btnOpenInventary.Image = CType(resources.GetObject("btnOpenInventary.Image"), System.Drawing.Image)
         Me.btnOpenInventary.Name = "btnOpenInventary"
-        Me.btnOpenInventary.Size = New System.Drawing.Size(335, 30)
+        Me.btnOpenInventary.Size = New System.Drawing.Size(327, 22)
         Me.btnOpenInventary.Text = "Abrir entrada en el registro de Archivo"
         '
         'btnLinkCdD
         '
         Me.btnLinkCdD.Image = CType(resources.GetObject("btnLinkCdD.Image"), System.Drawing.Image)
         Me.btnLinkCdD.Name = "btnLinkCdD"
-        Me.btnLinkCdD.Size = New System.Drawing.Size(335, 30)
+        Me.btnLinkCdD.Size = New System.Drawing.Size(327, 22)
         Me.btnLinkCdD.Text = "Enlace al Centro de Descargas / Recurso online"
         '
         'btnTVCNIG
         '
         Me.btnTVCNIG.Image = CType(resources.GetObject("btnTVCNIG.Image"), System.Drawing.Image)
         Me.btnTVCNIG.Name = "btnTVCNIG"
-        Me.btnTVCNIG.Size = New System.Drawing.Size(335, 30)
+        Me.btnTVCNIG.Size = New System.Drawing.Size(327, 22)
         Me.btnTVCNIG.Text = "Abrir documento digitalizado"
         '
         'btnLinkABSYS
         '
         Me.btnLinkABSYS.Image = CType(resources.GetObject("btnLinkABSYS.Image"), System.Drawing.Image)
         Me.btnLinkABSYS.Name = "btnLinkABSYS"
-        Me.btnLinkABSYS.Size = New System.Drawing.Size(335, 30)
+        Me.btnLinkABSYS.Size = New System.Drawing.Size(327, 22)
         Me.btnLinkABSYS.Text = "Enlace Catálogo ABSYS"
         '
         'btnAddingCarrito
         '
         Me.btnAddingCarrito.Image = CType(resources.GetObject("btnAddingCarrito.Image"), System.Drawing.Image)
         Me.btnAddingCarrito.Name = "btnAddingCarrito"
-        Me.btnAddingCarrito.Size = New System.Drawing.Size(335, 30)
+        Me.btnAddingCarrito.Size = New System.Drawing.Size(327, 22)
         Me.btnAddingCarrito.Text = "Añadir documento al carrito"
         '
         'btnDeletingCarrito
         '
         Me.btnDeletingCarrito.Image = CType(resources.GetObject("btnDeletingCarrito.Image"), System.Drawing.Image)
         Me.btnDeletingCarrito.Name = "btnDeletingCarrito"
-        Me.btnDeletingCarrito.Size = New System.Drawing.Size(335, 30)
+        Me.btnDeletingCarrito.Size = New System.Drawing.Size(327, 22)
         Me.btnDeletingCarrito.Text = "Eliminar documento del carrito"
         '
         'GenerarMetadatoNEMToolStripMenuItem
         '
         Me.GenerarMetadatoNEMToolStripMenuItem.Image = CType(resources.GetObject("GenerarMetadatoNEMToolStripMenuItem.Image"), System.Drawing.Image)
         Me.GenerarMetadatoNEMToolStripMenuItem.Name = "GenerarMetadatoNEMToolStripMenuItem"
-        Me.GenerarMetadatoNEMToolStripMenuItem.Size = New System.Drawing.Size(335, 30)
+        Me.GenerarMetadatoNEMToolStripMenuItem.Size = New System.Drawing.Size(327, 22)
         Me.GenerarMetadatoNEMToolStripMenuItem.Text = "Generar metadato NEM"
         '
         'mnuGenerateThumb
         '
         Me.mnuGenerateThumb.Image = CType(resources.GetObject("mnuGenerateThumb.Image"), System.Drawing.Image)
         Me.mnuGenerateThumb.Name = "mnuGenerateThumb"
-        Me.mnuGenerateThumb.Size = New System.Drawing.Size(335, 30)
+        Me.mnuGenerateThumb.Size = New System.Drawing.Size(327, 22)
         Me.mnuGenerateThumb.Text = "Generar miniatura de los documentos seleccionados"
         '
         'mnuLaunchECWCrop
         '
         Me.mnuLaunchECWCrop.Image = CType(resources.GetObject("mnuLaunchECWCrop.Image"), System.Drawing.Image)
         Me.mnuLaunchECWCrop.Name = "mnuLaunchECWCrop"
-        Me.mnuLaunchECWCrop.Size = New System.Drawing.Size(335, 30)
+        Me.mnuLaunchECWCrop.Size = New System.Drawing.Size(327, 22)
         Me.mnuLaunchECWCrop.Text = "Lanzar fichero georeferenciado recortado"
         '
         'mnuContornosExtract
         '
         Me.mnuContornosExtract.Image = CType(resources.GetObject("mnuContornosExtract.Image"), System.Drawing.Image)
         Me.mnuContornosExtract.Name = "mnuContornosExtract"
-        Me.mnuContornosExtract.Size = New System.Drawing.Size(335, 30)
+        Me.mnuContornosExtract.Size = New System.Drawing.Size(327, 22)
         Me.mnuContornosExtract.Text = "Extraer contornos"
         '
         'ToolStripButton1
@@ -765,7 +765,7 @@ Partial Class resultCMTN
         Me.TableLayoutPanel2.ColumnCount = 3
         Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30.0!))
         Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70.0!))
-        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 152.0!))
+        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 153.0!))
         Me.TableLayoutPanel2.Controls.Add(Me.PictureBox1, 0, 0)
         Me.TableLayoutPanel2.Controls.Add(Me.TableLayoutPanel3, 1, 0)
         Me.TableLayoutPanel2.Controls.Add(Me.Panel1, 2, 0)
@@ -803,7 +803,7 @@ Partial Class resultCMTN
         Me.TableLayoutPanel3.Name = "TableLayoutPanel3"
         Me.TableLayoutPanel3.RowCount = 1
         Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel3.Size = New System.Drawing.Size(772, 313)
+        Me.TableLayoutPanel3.Size = New System.Drawing.Size(771, 313)
         Me.TableLayoutPanel3.TabIndex = 1
         '
         'RichTextBox1
@@ -825,7 +825,7 @@ Partial Class resultCMTN
         Me.lvFastView.HideSelection = False
         Me.lvFastView.Location = New System.Drawing.Point(386, 3)
         Me.lvFastView.Name = "lvFastView"
-        Me.lvFastView.Size = New System.Drawing.Size(383, 307)
+        Me.lvFastView.Size = New System.Drawing.Size(382, 307)
         Me.lvFastView.TabIndex = 1
         Me.lvFastView.UseCompatibleStateImageBehavior = False
         '
@@ -837,16 +837,16 @@ Partial Class resultCMTN
         Me.Panel1.Controls.Add(Me.Button2)
         Me.Panel1.Controls.Add(Me.Button1)
         Me.Panel1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Panel1.Location = New System.Drawing.Point(1114, 3)
+        Me.Panel1.Location = New System.Drawing.Point(1113, 3)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(147, 313)
+        Me.Panel1.Size = New System.Drawing.Size(148, 313)
         Me.Panel1.TabIndex = 2
         '
         'Button4
         '
         Me.Button4.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button4.Image = CType(resources.GetObject("Button4.Image"), System.Drawing.Image)
-        Me.Button4.Location = New System.Drawing.Point(17, 244)
+        Me.Button4.Location = New System.Drawing.Point(17, 182)
         Me.Button4.Name = "Button4"
         Me.Button4.Size = New System.Drawing.Size(85, 56)
         Me.Button4.TabIndex = 13
@@ -892,9 +892,10 @@ Partial Class resultCMTN
         '
         'Button1
         '
+        Me.Button1.Enabled = False
         Me.Button1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
-        Me.Button1.Location = New System.Drawing.Point(17, 182)
+        Me.Button1.Location = New System.Drawing.Point(17, 244)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(85, 56)
         Me.Button1.TabIndex = 9
@@ -1017,6 +1018,17 @@ Partial Class resultCMTN
         Me.TabPage3.TabIndex = 2
         Me.TabPage3.Text = "Recursos"
         Me.TabPage3.UseVisualStyleBackColor = True
+        '
+        'RichTextBox3
+        '
+        Me.RichTextBox3.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.RichTextBox3.Location = New System.Drawing.Point(536, 324)
+        Me.RichTextBox3.Name = "RichTextBox3"
+        Me.RichTextBox3.Size = New System.Drawing.Size(556, 290)
+        Me.RichTextBox3.TabIndex = 6
+        Me.RichTextBox3.Text = ""
         '
         'Button8
         '
@@ -1141,17 +1153,6 @@ Partial Class resultCMTN
         Me.lvPropiedades.Size = New System.Drawing.Size(454, 302)
         Me.lvPropiedades.TabIndex = 0
         Me.lvPropiedades.UseCompatibleStateImageBehavior = False
-        '
-        'RichTextBox3
-        '
-        Me.RichTextBox3.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.RichTextBox3.Location = New System.Drawing.Point(536, 324)
-        Me.RichTextBox3.Name = "RichTextBox3"
-        Me.RichTextBox3.Size = New System.Drawing.Size(556, 290)
-        Me.RichTextBox3.TabIndex = 6
-        Me.RichTextBox3.Text = ""
         '
         'resultCMTN
         '

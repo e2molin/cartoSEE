@@ -246,6 +246,7 @@ Partial Class MDIPrincipal
         Me.Button6 = New System.Windows.Forms.Button()
         Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
         Me.ImageList2 = New System.Windows.Forms.ImageList(Me.components)
+        Me.Button13 = New System.Windows.Forms.Button()
         Me.MenuStrip.SuspendLayout()
         Me.ToolStrip.SuspendLayout()
         Me.StatusStrip.SuspendLayout()
@@ -1541,6 +1542,7 @@ Partial Class MDIPrincipal
         'Panel_DocSearch
         '
         Me.Panel_DocSearch.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
+        Me.Panel_DocSearch.Controls.Add(Me.Button13)
         Me.Panel_DocSearch.Controls.Add(Me.Button12)
         Me.Panel_DocSearch.Controls.Add(Me.lvMunicipios)
         Me.Panel_DocSearch.Controls.Add(Me.PictureBox1)
@@ -2226,6 +2228,15 @@ Partial Class MDIPrincipal
         Me.ImageList2.Images.SetKeyName(13, "Archivador 32.png")
         Me.ImageList2.Images.SetKeyName(14, "editar_24.png")
         '
+        'Button13
+        '
+        Me.Button13.Location = New System.Drawing.Point(12, 663)
+        Me.Button13.Name = "Button13"
+        Me.Button13.Size = New System.Drawing.Size(223, 39)
+        Me.Button13.TabIndex = 38
+        Me.Button13.Text = "Cuadernos MTN"
+        Me.Button13.UseVisualStyleBackColor = True
+        '
         'MDIPrincipal
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -2487,4 +2498,5 @@ Partial Class MDIPrincipal
     Friend WithEvents Button12 As Button
     Friend WithEvents Button11 As Button
     Friend WithEvents mnuLinkCdDCCINT As ToolStripMenuItem
+    Friend WithEvents Button13 As Button
 End Class
