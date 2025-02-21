@@ -222,7 +222,15 @@
         container.Image = Nothing
         Try
             If IO.File.Exists(thumbImageName) Then
-                cargarImagenFromWeb(container, thumbImageName, $"{My.Application.Info.DirectoryPath}\resources\thumbmap.jpg", False, elemEntidadSel.rutaFicheroThumb)
+                cargarImagenFromWeb(container, thumbImageName, $"{My.Application.Info.DirectoryPath}\resources\thumb-cuad.jpg", False, elemEntidadSel.rutaFicheroThumb)
+            Else
+                If elemEntidadSel.Subtipo = "Itinerarios con brújula" Then
+                    cargarImagenFromWeb(container, "{My.Application.Info.DirectoryPath}\resources\thumb-cuad-plani.jpg", $"{My.Application.Info.DirectoryPath}\resources\thumb-cuad-plani.jpg", False, "")
+                ElseIf elemEntidadSel.Subtipo = "Nivelación" Then
+                    cargarImagenFromWeb(container, "{My.Application.Info.DirectoryPath}\resources\thumb-cuad-alti.jpg", $"{My.Application.Info.DirectoryPath}\resources\thumb-cuad-alti.jpg", False, "")
+                Else
+                    cargarImagenFromWeb(container, "{My.Application.Info.DirectoryPath}\resources\thumb-cuad-plani.jpg", $"{My.Application.Info.DirectoryPath}\resources\thumb-cuad-plani.jpg", False, "")
+                End If
             End If
         Catch ex As Exception
             GenerarLOG(ex.Message)
@@ -445,10 +453,10 @@
                 Exit Sub
             End If
             If paramSQL1 = "0" Then
-                FillDocCuadMTNEwithFilter($"archivo.provincia_id>0")
+                FillDocCuadMTNEwithFilter($"archivodocmtn.codprov>0")
                 Me.Text = $"Documentos CartoSEE de todas las provincias"
             Else
-                FillDocCuadMTNEwithFilter($"archivo.provincia_id={paramSQL1}")
+                FillDocCuadMTNEwithFilter($"archivodocmtn.codprov={paramSQL1}")
                 Me.Text = $"Documentos CartoSEE de {DameProvinciaByINE(paramSQL1)}"
             End If
         ElseIf typeSearch = TypeDataSearch.DocumentosBySellado Then
@@ -961,10 +969,10 @@
         DataGridView1.Columns("tipo").Width = 150
         DataGridView1.Columns("subtipo").HeaderText = "Subtipo"
         DataGridView1.Columns("subtipo").Width = 80
-        DataGridView1.Columns("subtipo").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
+        DataGridView1.Columns("subtipo").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
         DataGridView1.Columns("tomo").HeaderText = "Tomo"
         DataGridView1.Columns("tomo").Width = 60
-        DataGridView1.Columns("tomo").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
+        DataGridView1.Columns("tomo").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
         DataGridView1.Columns("fecha").HeaderText = "Fecha"
         DataGridView1.Columns("fecha").Width = 80
         DataGridView1.Columns("nombreterris").HeaderText = "Territorios"
@@ -972,10 +980,10 @@
         DataGridView1.Columns("nombreterris").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
         DataGridView1.Columns("contenido").HeaderText = "Contenido"
         DataGridView1.Columns("contenido").Width = 50
-        DataGridView1.Columns("contenido").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
+        DataGridView1.Columns("contenido").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
         DataGridView1.Columns("nombreprovincia").HeaderText = "Provincia"
         DataGridView1.Columns("nombreprovincia").Width = 85
-        DataGridView1.Columns("nombreprovincia").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
+        DataGridView1.Columns("nombreprovincia").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
         DataGridView1.Columns("create_at").HeaderText = "Fecha alta"
         DataGridView1.Columns("create_at").Width = 75
         DataGridView1.Columns("create_at").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
@@ -1234,11 +1242,11 @@
                 Exit Sub
             End If
         End If
-        If DataGridView1.Item("idarchivo", DataGridView1.CurrentCell.RowIndex).Value.ToString = "" Then
+        If DataGridView1.Item("idarchivodocmtn", DataGridView1.CurrentCell.RowIndex).Value.ToString = "" Then
             ModalExclamation("")
             Exit Sub
         End If
-        FillDetailsReduced(DataGridView1.Item("idarchivo", DataGridView1.CurrentCell.RowIndex).Value.ToString)
+        FillDetailsReduced(DataGridView1.Item("idarchivodocmtn", DataGridView1.CurrentCell.RowIndex).Value.ToString)
 
         'If idArchivoLoaded <> titnMTagsLoaded Then
         '    FillMarc21Tags(DataGridView1.Item(0, DataGridView1.CurrentCell.RowIndex).Value.ToString, DataGridView1.CurrentCell.RowIndex)
@@ -1410,12 +1418,12 @@
         If DataGridView1.SelectedRows.Count <> 1 Then
             ModalExclamation("Seleccione un único registro para editar")
         End If
-        If DataGridView1.Item("idarchivo", DataGridView1.CurrentCell.RowIndex).Value.ToString = "" Then
+        If DataGridView1.Item("idarchivodocmtn", DataGridView1.CurrentCell.RowIndex).Value.ToString = "" Then
             ModalExclamation("")
             Exit Sub
         End If
 
-        nIndiceEdit = DataGridView1.Item("idarchivo", DataGridView1.CurrentCell.RowIndex).Value
+        nIndiceEdit = DataGridView1.Item("idarchivodocmtn", DataGridView1.CurrentCell.RowIndex).Value
 
         For Each ChildForm As Form In MDIPrincipal.MdiChildren
             If ChildForm.Tag = nIndiceEdit Then
@@ -1424,7 +1432,7 @@
             End If
         Next
 
-        Dim FormularioCreacion As New frmEdicion With {
+        Dim FormularioCreacion As New frmEditCuad With {
            .MdiParent = MDIPrincipal,
            .IDArchivoEdition = nIndiceEdit,
            .ModeEdition = frmEdicion.ModeEdition.EditSingleDocument

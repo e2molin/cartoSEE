@@ -125,6 +125,7 @@
     <Compile Include="Clases\DocCartoGEODOCAT\docCuadMTN.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\FileGeorref.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\FlagsProperties.vb" />
+    <Compile Include="Clases\DocCartoGEODOCAT\FlagsPropertiesCuaderno.vb" />
     <Compile Include="Clases\forms\dataViewerForm.Designer.vb">
       <DependentUpon>dataViewerForm.vb</DependentUpon>
     </Compile>
@@ -224,6 +225,12 @@
       <DependentUpon>frmEdicionesTablas.vb</DependentUpon>
     </Compile>
     <Compile Include="Formularios\frmEdicionesTablas.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formularios\frmEditCuad.Designer.vb">
+      <DependentUpon>frmEditCuad.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\frmEditCuad.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Formularios\frmExportCdD.Designer.vb">
@@ -366,6 +373,9 @@
     <EmbeddedResource Include="Formularios\frmEdicionesTablas.resx">
       <DependentUpon>frmEdicionesTablas.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\frmEditCuad.resx">
+      <DependentUpon>frmEditCuad.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Formularios\frmExportCdD.resx">
       <DependentUpon>frmExportCdD.vb</DependentUpon>
     </EmbeddedResource>
@@ -461,6 +471,12 @@
     </Content>
     <Content Include="resources\Plantilla_PlanoPoblacionJuntaSI.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\thumb-cuad-alti.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\thumb-cuad-plani.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="vendor\iTextsharp 5\itextsharp.dll" />
     <Content Include="vendor\Npgsql\Mono.Security.dll" />

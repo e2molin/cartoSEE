@@ -4,6 +4,8 @@
     Property Tipo As String
     Property Subtipo As String
     Property Tomo As String
+    Property ProceHoja As String
+    Property ProceCarpeta As String
     Property Signatura As String
     Property FechaDoc As String
     Property FechaDocType As String
@@ -30,6 +32,8 @@
     Property ficheroPDF As String
     Property listaTerritorios As New ArrayList
     Property Anejos As String
+
+    Property extraProps As New FlagsPropertiesCuaderno
 
     ' Referencias al CdD
     Property ProductoCDD As String
@@ -83,7 +87,7 @@
         End Get
     End Property
 
-    ReadOnly Property rutaFicheroBajaAlta() As String
+    ReadOnly Property rutaFicheroAltaRes() As String
 
         Get
             Return $""
@@ -169,7 +173,7 @@
     Sub New(idCuadernoMTN As Integer)
 
         Dim consultaSQL As String = $"SELECT archivodocmtn.idarchivodocmtn,archivodocmtn.create_at,archivodocmtn.tipo,archivodocmtn.subtipo,archivodocmtn.tomo,archivodocmtn.sellado,
-                archivodocmtn.codprov,archivodocmtn.fecha,archivodocmtn.nota_fecha,archivodocmtn.pag,archivodocmtn.zona_num,archivodocmtn.subdivision_tipo,
+                archivodocmtn.codprov,archivodocmtn.fecha,archivodocmtn.nota_fecha,archivodocmtn.pag,archivodocmtn.zona_num,archivodocmtn.subdivision_tipo,archivodocmtn.extraprops,
                 archivodocmtn.subdivision_num,archivodocmtn.itin_tipo,archivodocmtn.itin_num,archivodocmtn.cuaderno,archivodocmtn.cuad_tipo, archivodocmtn.anejos, archivodocmtn.nombre_old, archivodocmtn.nombre_new,
                 archivodocmtn.observaciones,archivodocmtn.create_by,archivodocmtn.ambito,archivodocmtn.namefilecdd,archivodocmtn.fechafilecdd,archivodocmtn.observador,provincias.nombreprovincia,
                 string_agg(territorios.idterritorio::text,'|') as idTerris,
@@ -184,7 +188,7 @@
                 WHERE archivodocmtn.idarchivodocmtn={idCuadernoMTN} 
                 group by archivodocmtn.idarchivodocmtn,archivodocmtn.create_at,archivodocmtn.tipo,archivodocmtn.subtipo,archivodocmtn.tomo,archivodocmtn.sellado,
                 archivodocmtn.codprov,archivodocmtn.fecha,archivodocmtn.nota_fecha,archivodocmtn.pag,archivodocmtn.zona_num,archivodocmtn.subdivision_tipo,
-                archivodocmtn.subdivision_num,archivodocmtn.cuaderno,archivodocmtn.itin_tipo, archivodocmtn.itin_num, archivodocmtn.cuad_tipo, 
+                archivodocmtn.subdivision_num,archivodocmtn.cuaderno,archivodocmtn.itin_tipo, archivodocmtn.itin_num, archivodocmtn.cuad_tipo,archivodocmtn.extraprops, 
                 archivodocmtn.anejos, archivodocmtn.nombre_old, archivodocmtn.nombre_new,archivodocmtn.observaciones,archivodocmtn.create_by,
                 archivodocmtn.ambito,archivodocmtn.namefilecdd,archivodocmtn.fechafilecdd,provincias.nombreprovincia"
 
@@ -235,7 +239,8 @@
 
             Observaciones = dR("observaciones").ToString
 
-
+            Create_at = dR("create_at").ToString
+            Create_By = dR("create_by").ToString
 
             'InfoCDD
             ProductoCDD = "Cuadernos topográficos (interiores)"
@@ -252,6 +257,8 @@
             ItinType = dR("itin_tipo").ToString
             ItinNum = dR("itin_num").ToString
             Ambito = dR("ambito").ToString
+            extraProps.propertyCode = dR("extraprops")
+
 
             Observador = dR("observador").ToString
             AutorEntidad = "Instituto Geográfico y Estadístico"
