@@ -275,46 +275,36 @@
                                             .FechaDoc.Substring(0, 4)
                 End If
             End If
-            For Each item As itemData In ComboBox3.Items
-                If item.Name = .FechaDocType Then ComboBox3.SelectedIndex = ComboBox3.Items.IndexOf(item)
+            For Each item In ComboBox3.Items
+                If item = .FechaDocType Then ComboBox3.SelectedItem = item : Exit For
             Next
             TextBox17.Text = .DivZona
             TextBox14.Text = .SubDivType
             TextBox12.Text = .SubDivNum
-            For Each item As itemData In ComboBox5.Items
-                If item.Name = .ItinType Then ComboBox5.SelectedIndex = ComboBox5.Items.IndexOf(item)
+
+            For Each item In ComboBox5.Items
+                If item = .ItinType Then ComboBox5.SelectedItem = item : Exit For
             Next
+            For Each item As itemData In ComboBox6.Items
+                Application.DoEvents()
+                If item.Valor = .ProvinciaINE Then ComboBox6.SelectedIndex = ComboBox6.Items.IndexOf(item)
+            Next
+
             TextBox8.Text = .ItinNum
             For Each item As itemData In ComboBox7.Items
-                If item.Name = .CuadernoType Then ComboBox5.SelectedIndex = ComboBox7.Items.IndexOf(item)
+                If item.Name = .CuadernoType Then ComboBox7.SelectedIndex = ComboBox7.Items.IndexOf(item)
             Next
 
             TextBox7.Text = .Signatura
             TextBox11.Text = .Tomo
-            TextBox6.Text = .ProceCarpeta
-            TextBox10.Text = .ProceHoja
-
+            TextBox7.Text = .Cuaderno
             TextBox15.Text = .Anejos
             TextBox16.Text = .Observaciones
             TextBox20.Text = .AutorEntidad
             TextBox24.Text = .Observador
             TextBox19.Text = .Encabezado
 
-
-            'TextBox4.Text = .Vertical
-            'TextBox5.Text = .Horizontal
-            'TextBox8.Text = .Escala
-            'TextBox9.Text = .subTipoDoc
-            'TextBox13.Text = .fechasModificaciones
-            'TextBox18.Text = .Comentarios
-            'TextBox21.Text = .EdificiosCitados
-            'TextBox22.Text = .Sellado
-
-
-
-
             CheckBox23.Visible = False
-
 
             'Rellenamos los items de propiedades
             Dim propPatron As String = .extraProps.propertyPatron.ToString
@@ -344,7 +334,7 @@
 
 
             Try
-                If IO.File.Exists(.rutaFicheroAltaRes) Then
+                If IO.File.Exists(.rutaFicheroThumb) Then
                     Label34.Text = "Este recurso existe en el repositorio"
                     Label34.Tag = .rutaFicheroAltaRes
                     Label34.ForeColor = Color.DarkGreen
@@ -354,17 +344,6 @@
                     Label34.Tag = ""
                     Label34.ForeColor = Color.Crimson
                     Button6.Enabled = False
-                End If
-                If IO.File.Exists(.rutaFicheroBajaRes) Then
-                    Label35.Text = "Este recurso existe en el repositorio"
-                    Label35.Tag = .rutaFicheroBajaRes
-                    Label35.ForeColor = Color.DarkGreen
-                    Button11.Enabled = True
-                Else
-                    Label35.Text = "Este recurso NO existe en el repositorio"
-                    Label35.Tag = ""
-                    Label35.ForeColor = Color.Crimson
-                    Button11.Enabled = False
                 End If
                 If IO.File.Exists(.rutaFicheroPDF) Then
                     Label36.Text = "Este recurso existe en el repositorio"
@@ -392,22 +371,18 @@
 
         Me.Text = "Crear nuevo documento"
         Button3.Text = "Crear"
-        ToolStripStatusLabel1.Text = "Crear nuevo documento."
+        ToolStripStatusLabel1.Text = "Crear nuevo cuaderno interior"
         Button9.Enabled = False
         Button10.Enabled = False
         Button13.Enabled = True
         Button14.Enabled = False
         Button15.Enabled = False
         Button4.Enabled = True
-        CheckBox23.Visible = True
         Label34.Visible = False
-        Label35.Visible = False
         Label36.Visible = False
         Button6.Enabled = False
-        Button11.Enabled = False
         Button12.Enabled = False
         CleanFields()
-
         For Each ctrl As Control In Me.TabPage1.Controls
             If TypeOf ctrl Is CheckBox Then
                 DirectCast(ctrl, CheckBox).Visible = False
@@ -423,6 +398,10 @@
                 DirectCast(ctrl, CheckBox).Visible = False
             End If
         Next
+
+        CheckBox21.Visible = True
+        CheckBox23.Visible = True
+
 
     End Sub
 
@@ -496,7 +475,6 @@
         ComboBox7.SelectedIndex = 0
 
         TextBox2.Text = ""
-        TextBox3.Text = ""
         TextBox23.Text = ""
         ListView1.Items.Clear()
         MaskedTextBox1.Text = ""
@@ -538,22 +516,19 @@
     Private Function ActualizacionAutorAndComentarios() As Boolean
 
 
-        Dim cadUpBase As String = "UPDATE bdsidschema.archivo SET "
+        Dim cadUpBase As String = "UPDATE bdsidschema.archivodocmtn SET "
         Dim propsChanged As New ArrayList
 
-        If CheckBox19.Checked Then propsChanged.Add($"juntaestadistica={IIf(ComboBox5.Text = "Sí", 1, 0)}")
         If CheckBox27.Checked Then propsChanged.Add($"encabezado={IIf(TextBox19.Text.Trim = "", "Null", $"E'{TextBox19.Text.Trim.Replace("'", "\'")}'")}")
-        If CheckBox28.Checked Then propsChanged.Add($"autor={IIf(TextBox20.Text.Trim = "", "Null", $"E'{TextBox20.Text.Trim.Replace("'", "\'")}'")}")
-        If CheckBox29.Checked Then propsChanged.Add($"nombreedificio={IIf(TextBox21.Text.Trim = "", "Null", $"E'{TextBox21.Text.Trim.Replace("'", "\'")}'")}")
-        If CheckBox30.Checked Then propsChanged.Add($"autor_persona={IIf(TextBox24.Text.Trim = "", "Null", $"E'{TextBox24.Text.Trim.Replace("'", "\'")}'")}")
+        If CheckBox28.Checked Then propsChanged.Add($"autor_entidad={IIf(TextBox20.Text.Trim = "", "Null", $"E'{TextBox20.Text.Trim.Replace("'", "\'")}'")}")
+        If CheckBox30.Checked Then propsChanged.Add($"observador={IIf(TextBox24.Text.Trim = "", "Null", $"E'{TextBox24.Text.Trim.Replace("'", "\'")}'")}")
         If CheckBox16.Checked Then propsChanged.Add($"observaciones={IIf(TextBox16.Text.Trim = "", "Null", $"E'{TextBox16.Text.Trim.Replace("'", "\'")}'")}")
-        If CheckBox29.Checked Then propsChanged.Add($"observ={IIf(TextBox18.Text.Trim = "", "Null", $"E'{TextBox18.Text.Trim.Replace("'", "\'")}'")}")
         If CheckBox3.Checked Then
             Dim flagPropos As New FlagsProperties()
             If flagPropos.assignByContainer(CheckedListBox1) Then propsChanged.Add($"extraprops={flagPropos.propertyCode}")
         End If
 
-        cadUpBase &= $"{String.Join(",", propsChanged.ToArray)} WHERE idarchivo={editRegistro.docIndex}"
+        cadUpBase &= $"{String.Join(",", propsChanged.ToArray)} WHERE idarchivo={editRegistro.IdarchivodocMTN}"
         ActualizacionAutorAndComentarios = ExeSinTran(cadUpBase)
 
     End Function
@@ -561,51 +536,14 @@
     Private Function ActualizacionAtributos() As Boolean
 
 
-        Dim cadUpBase As String = "UPDATE bdsidschema.archivo SET "
+        Dim cadUpBase As String = "UPDATE bdsidschema.archivodocmtn SET "
         Dim propsChanged As New ArrayList
         Dim ListaSQL As New ArrayList
-        If editRegistro.docIndex < 1 Then Exit Function
 
-        If CheckBox24.Checked Then propsChanged.Add($"subtipo={IIf(TextBox9.Text.Trim = "", "Null", $"E'{TextBox9.Text.Trim.Replace("'", "\'")}'")}")
-        If CheckBox25.Checked Then propsChanged.Add($"proyecto={IIf(TextBox17.Text.Trim = "", "Null", $"E'{TextBox17.Text.Trim.Replace("'", "\'")}'")}")
-        If CheckBox14.Checked Then propsChanged.Add($"coleccion={IIf(TextBox14.Text.Trim = "", "Null", $"E'{TextBox14.Text.Trim.Replace("'", "\'")}'")}")
-        If CheckBox12.Checked Then propsChanged.Add($"subdivision={IIf(TextBox12.Text.Trim = "", "Null", $"E'{TextBox12.Text.Trim.Replace("'", "\'")}'")}")
-        If CheckBox13.Checked Then propsChanged.Add($"fechamodificacion={IIf(TextBox13.Text.Trim = "", "Null", $"E'{TextBox13.Text.Trim.Replace("'", "\'")}'")}")
-        If CheckBox7.Checked Then propsChanged.Add($"signatura={IIf(TextBox7.Text.Trim = "", "Null", $"E'{TextBox7.Text.Trim.Replace("'", "\'")}'")}")
-        If CheckBox11.Checked Then propsChanged.Add($"tomo={IIf(TextBox11.Text.Trim = "", "Null", $"E'{TextBox11.Text.Trim.Replace("'", "\'")}'")}")
-        If CheckBox15.Checked Then propsChanged.Add($"anejo={IIf(TextBox15.Text.Trim = "", "Null", $"E'{TextBox15.Text.Trim.Replace("'", "\'")}'")}")
-        If CheckBox6.Checked Then propsChanged.Add($"procecarpeta={IIf(TextBox6.Text.Trim = "", "Null", $"E'{TextBox6.Text.Trim.Replace("'", "\'")}'")}")
-        If CheckBox31.Checked Then propsChanged.Add($"tipo_fechaprincipal={IIf(ComboBox3.SelectedIndex <> -1, $"E'{ComboBox3.Text}'", "null")}")
-        If CheckBox32.Checked Then propsChanged.Add($"doctypehr={IIf(ComboBox7.SelectedIndex <> -1, $"{CType(ComboBox7.SelectedItem, itemData).Valor}", "0")}")
+        If editRegistro.IdarchivodocMTN < 1 Then Exit Function
 
-
-
-        If CheckBox20.Checked Then
-            If ComboBox6.SelectedIndex = -1 Then
-                ModalExclamation("Es necesario seleccionar la provincia para almacenar los documentos")
-                Exit Function
-            End If
-            If CType(ComboBox6.SelectedItem, itemData).Valor <> CType(TextBox22.Text.Substring(0, 2), Integer) Then
-                If ModalQuestion("Los dos primeros dígitos del número de sellado no coinciden con el código de provincia. ¿Continuar?") = Windows.Forms.DialogResult.No Then Exit Function
-            End If
-            propsChanged.Add($"provincia_id={CType(ComboBox6.SelectedItem, itemData).Valor}")
-        End If
-
-        If CheckBox17.Checked Then
-            If ComboBox1.SelectedIndex = -1 Then
-                ModalExclamation("Es necesario asociar un tipo de documento")
-                Exit Function
-            End If
-            propsChanged.Add($"tipodoc_id={CType(ComboBox1.SelectedItem, itemData).Valor}")
-        End If
-
-        If CheckBox2.Checked Then
-            If ComboBox2.SelectedIndex = -1 Then
-                ModalExclamation("Es necesario asociar un estado de conservación al documento")
-                Exit Function
-            End If
-            propsChanged.Add($"estadodoc_id={CType(ComboBox2.SelectedItem, itemData).Valor}")
-        End If
+        If CheckBox17.Checked Then propsChanged.Add($"tipo={IIf(ComboBox1.SelectedIndex = -1, "Null", $"E'{ComboBox1.Text}'")}")
+        If CheckBox24.Checked Then propsChanged.Add($"subtipo={IIf(ComboBox2.SelectedIndex = -1, "Null", $"E'{ComboBox2.Text}'")}")
         If CheckBox9.Checked Then
             Dim fechaDoc As Date
             Dim cadFechaDoc As String
@@ -622,25 +560,42 @@
                 ModalError(ex.Message)
                 Exit Function
             End Try
-            propsChanged.Add($"fechaprincipal='{cadFechaDoc}'")
+            propsChanged.Add($"fecha='{cadFechaDoc}'")
+        End If
+        If CheckBox31.Checked Then propsChanged.Add($"nota_fecha={IIf(ComboBox3.SelectedIndex <> -1, $"E'{ComboBox3.Text}'", "null")}")
+        If CheckBox25.Checked Then propsChanged.Add($"zona_num={IIf(TextBox17.Text.Trim = "", "Null", $"E'{TextBox17.Text.Trim.Replace("'", "\'")}'")}")
+        If CheckBox14.Checked Then propsChanged.Add($"subdivision_tipo={IIf(TextBox14.Text.Trim = "", "Null", $"E'{TextBox14.Text.Trim.Replace("'", "\'")}'")}")
+        If CheckBox12.Checked Then propsChanged.Add($"subdivision_num={IIf(TextBox12.Text.Trim = "", "Null", $"E'{TextBox12.Text.Trim.Replace("'", "\'")}'")}")
+        If CheckBox19.Checked Then
+            propsChanged.Add($"itin_tipo={IIf(ComboBox5.SelectedIndex <> -1, $"E'{ComboBox5.Text}'", "null")}")
+            propsChanged.Add($"itin_num={IIf(TextBox8.Text.Trim = "", "Null", $"E'{TextBox8.Text.Trim.Replace("'", "\'")}'")}")
+        End If
+        If CheckBox2.Checked Then propsChanged.Add($"cuad_tipo={IIf(ComboBox7.SelectedIndex <> -1, $"E'{ComboBox7.Text}'", "null")}")
+        If CheckBox4.Checked Then propsChanged.Add($"cuaderno={IIf(TextBox4.Text.Trim = "", "Null", $"E'{TextBox4.Text.Trim.Replace("'", "\'")}'")}")
+
+        If CheckBox20.Checked Then
+            If ComboBox6.SelectedIndex = -1 Then
+                ModalExclamation("Es necesario seleccionar la provincia para almacenar los documentos")
+                Exit Function
+            End If
+            propsChanged.Add($"codprov={CType(ComboBox6.SelectedItem, itemData).Valor}")
         End If
 
-        'Escala
-        If CheckBox8.Checked Then propsChanged.Add($"escala={IIf(TextBox8.Text <> "", TextBox8.Text.Trim, 0)}")
-        If CheckBox10.Checked Then propsChanged.Add($"procehoja={IIf(TextBox10.Text <> "", TextBox10.Text.Trim, 0)}")
-
-        If CheckBox4.Checked Then propsChanged.Add($"vertical={IIf(TextBox4.Text <> "", Replace(TextBox4.Text, ",", "."), 0)}")
-        If CheckBox5.Checked Then propsChanged.Add($"horizontal={IIf(TextBox5.Text <> "", Replace(TextBox5.Text, ",", "."), 0)}")
 
 
-        ListaSQL.Add($"{cadUpBase}{String.Join(",", propsChanged.ToArray)} WHERE idarchivo={editRegistro.docIndex}")
+        If CheckBox7.Checked Then propsChanged.Add($"signatura={IIf(TextBox7.Text.Trim = "", "Null", $"E'{TextBox7.Text.Trim.Replace("'", "\'")}'")}")
+        If CheckBox11.Checked Then propsChanged.Add($"tomo={IIf(TextBox11.Text.Trim = "", "Null", $"E'{TextBox11.Text.Trim.Replace("'", "\'")}'")}")
+        If CheckBox15.Checked Then propsChanged.Add($"anejos={IIf(TextBox15.Text.Trim = "", "Null", $"E'{TextBox15.Text.Trim.Replace("'", "\'")}'")}")
+
+
+        ListaSQL.Add($"{cadUpBase}{String.Join(",", propsChanged.ToArray)} WHERE idarchivodocmtn={editRegistro.IdarchivodocMTN}")
 
         'Territorios
         If CheckBox18.Checked And ListView1.Items.Count > 0 Then
-            ListaSQL.Add($"DELETE FROM bdsidschema.archivo2territorios WHERE archivo_id={editRegistro.docIndex}")
+            ListaSQL.Add($"DELETE FROM bdsidschema.archivodocmtn2terris WHERE archivodocmtn_id={editRegistro.IdarchivodocMTN}")
             For Each itemLV As ListViewItem In ListView1.Items
                 Application.DoEvents()
-                ListaSQL.Add($"INSERT INTO bdsidschema.archivo2territorios (territorio_id,archivo_id) VALUES ({itemLV.SubItems(3).Text},{editRegistro.docIndex})")
+                ListaSQL.Add($"INSERT INTO bdsidschema.archivodocmtn2terris (territorio_id,archivodocmtn_id) VALUES ({itemLV.SubItems(3).Text},{editRegistro.IdarchivodocMTN})")
             Next
         ElseIf CheckBox18.Checked And ListView1.Items.Count = 0 Then
             ModalExclamation("Debe asociar el documento al menos a un municipio")
@@ -932,29 +887,21 @@
     End Function
 
 
-    Private Sub UpdateDigitalResources(nuevoDoc As docCartoSEE)
+    Private Sub UpdateDigitalResources(nuevoDoc As docCuadMTN)
 
-        Dim docJPGAlta As String = TextBox2.Text.Trim
-        Dim docJPGBaja As String = TextBox3.Text.Trim
         Dim docPDF As String = TextBox23.Text.Trim
-        Dim okAlta As Boolean
-        Dim okBaja As Boolean
+        Dim docThumb As String = TextBox2.Text.Trim
+        Dim okThumb As Boolean
         Dim okPDF As Boolean
 
-        If docJPGAlta <> "" Then
-            If Not System.IO.File.Exists(docJPGAlta) Then
-                If ModalQuestion($"No se localiza el fichero origen:{Environment.NewLine}{docJPGAlta}{Environment.NewLine}¿Continuar?") = DialogResult.No Then Exit Sub
-                docJPGAlta = ""
-            End If
-        End If
-        If docJPGBaja <> "" Then
-            If Not System.IO.File.Exists(docJPGBaja) Then
-                If ModalQuestion($"No se localiza el fichero origen:{Environment.NewLine}{docJPGBaja}{Environment.NewLine}¿Continuar?") = DialogResult.No Then Exit Sub
-                docJPGBaja = ""
+        If docThumb <> "" Then
+            If Not IO.File.Exists(docThumb) Then
+                If ModalQuestion($"No se localiza el fichero origen:{Environment.NewLine}{docThumb}{Environment.NewLine}¿Continuar?") = DialogResult.No Then Exit Sub
+                docThumb = ""
             End If
         End If
         If docPDF <> "" Then
-            If Not System.IO.File.Exists(docPDF) Then
+            If Not IO.File.Exists(docPDF) Then
                 If ModalQuestion($"No se localiza el fichero origen:{Environment.NewLine}{docPDF}{Environment.NewLine}¿Continuar?") = DialogResult.No Then Exit Sub
                 docPDF = ""
             End If
@@ -963,42 +910,40 @@
         Me.Cursor = Cursors.WaitCursor
 
         Try
-            If docJPGAlta <> "" Then
-                ToolStripStatusLabel2.Text = "Copiando imagen calidad alta"
-                IO.File.Copy(docJPGAlta, $"{rutaRepo}\_Scan400\{DirRepoProvinciaByINE(nuevoDoc.ProvinciaRepo)}\{nuevoDoc.Sellado}.jpg", True)
-                okAlta = True
+            Dim selladoFormat As String = String.Format("{0:00000000}", CType(nuevoDoc.Sellado, Integer))
+            If docThumb <> "" Then
+                ToolStripStatusLabel2.Text = "Copiando imagen miniatura"
+                If Not IO.Directory.Exists($"{rutaRepoCI}\_Miniaturas\{String.Format("{0:00}", nuevoDoc.ProvinciaINE)}") Then
+                    IO.Directory.CreateDirectory($"{rutaRepoCI}\_Miniaturas\{String.Format("{0:00}", nuevoDoc.ProvinciaINE)}")
+                End If
+                IO.File.Copy(docThumb, $"{rutaRepoCI}\_Miniaturas\{String.Format("{0:00}", nuevoDoc.ProvinciaINE)}\CMTN{selladoFormat}.jpg", True)
+                okThumb = True
             End If
-            If docJPGBaja <> "" Then
-                ToolStripStatusLabel2.Text = "Copiando imagen calidad normal"
-                IO.File.Copy(docJPGAlta, $"{rutaRepo}\_Scan250\{DirRepoProvinciaByINE(nuevoDoc.ProvinciaRepo)}250\{nuevoDoc.Sellado}.jpg", True)
-                okBaja = True
-            End If
+
             If docPDF <> "" Then
                 ToolStripStatusLabel2.Text = "Copiando documento PDF"
-                If Not IO.Directory.Exists($"{rutaRepo}\_pdf\{DirRepoProvinciaByINE(nuevoDoc.ProvinciaRepo)}") Then
-                    IO.Directory.CreateDirectory($"{rutaRepo}\_pdf\{DirRepoProvinciaByINE(nuevoDoc.ProvinciaRepo)}")
-                    okPDF = True
+                If Not IO.Directory.Exists($"{rutaRepoCI}\_pdf\{String.Format("{0:00}", nuevoDoc.ProvinciaINE)}") Then
+                    IO.Directory.CreateDirectory($"{rutaRepoCI}\_pdf\{String.Format("{0:00}", nuevoDoc.ProvinciaINE)}")
                 End If
-                Dim selladoFormat As String = String.Format("{0:00000000}", CType(nuevoDoc.Sellado, Integer))
-
-                IO.File.Copy(docPDF, $"{rutaRepo}\_pdf\{String.Format("{0:00}", nuevoDoc.ProvinciaRepo)}\{nuevoDoc.tipoDocumento.prefijoNombreCDD}{selladoFormat}.pdf", True)
-
+                IO.File.Copy(docPDF, $"{rutaRepoCI}\_pdf\{String.Format("{0:00}", nuevoDoc.ProvinciaINE)}\CMTN{selladoFormat}.pdf", True)
+                okPDF = True
             End If
         Catch ex As Exception
             ModalError($"Se produjo un error al copiar.{Environment.NewLine}{ex.Message}")
         Finally
             Me.Cursor = Cursors.Default
             ToolStripStatusLabel2.Text = "Ficheros actualizados"
-            If okAlta Or okBaja Or okPDF Then
-                ModalInfo($"{IIf(okAlta = True, "Recurso JPG Alta actualizado", "El recurso JPG Alta NO se ha actualizado")}{Environment.NewLine}{IIf(okBaja = True, "Recurso JPG Baja actualizado", "El recurso JPG Baja NO se ha actualizado")}{Environment.NewLine}{IIf(okPDF = True, "Recurso PDF actualizado", "El recurso PDF NO se ha actualizado")}")
+            If okThumb Or okPDF Then
+                ModalInfo($"{IIf(okThumb = True, "Recurso JPG Miniatura actualizado", "El recurso JPG Miniatura NO se ha actualizado")}{Environment.NewLine}{IIf(okPDF = True, "Recurso PDF actualizado", "El recurso PDF NO se ha actualizado")}")
             End If
+            ToolStripStatusLabel2.Text = ""
         End Try
 
 
     End Sub
 
 
-    Private Sub CrearNuevoElemento()
+    Private Sub CrearNuevoCuadernoMTN()
 
         'Compuebo que tengamos permiso de escritura en disco de datos, ya que modificar estos campos
         'seguramente implica mover documentos.
@@ -1026,7 +971,7 @@
         Dim cadInsBase As String
         Dim NuevoMuni As String = ""
         Dim NuevoTipo As Integer = -1
-        Dim nuevoDoc As New docCartoSEE
+        Dim nuevoDoc As New docCuadMTN
         'Generamos la cadena base de la ejecución en lote
         cadInsBase = ValidarNuevoCuadernoMTN(nuevoDoc)
 
@@ -1053,8 +998,7 @@
 
         For Each itemLV As ListViewItem In ListView1.Items
             Application.DoEvents()
-            ListaSQL.Add("INSERT INTO bdsidschema.archivo2territorios (territorio_id,archivo_id) " &
-                        "VALUES (" & itemLV.SubItems(3).Text & "," & nuevoDoc.docIndex & ")")
+            ListaSQL.Add($"INSERT INTO bdsidschema.archivodocmtn2terris (territorio_id,archivodocmtn_id) VALUES ({itemLV.SubItems(3).Text},(SELECT idarchivodocmtn FROM bdsidschema.archivodocmtn WHERE sellado={nuevoDoc.Sellado}))")
         Next
 
         If CheckBox21.Checked = True Then
@@ -1084,7 +1028,7 @@
         Dim Ejecucion As Boolean = False
         Dim contador As Integer = 0
 
-        If ModalQuestion("Se va a cargar información en la base dedatos.¿Desea continuar") = DialogResult.No Then Exit Sub
+        If ModalQuestWriteDatabase("Se va a cargar información en la base dedatos.¿Desea continuar") = DialogResult.No Then Exit Sub
 
         Me.Cursor = Cursors.WaitCursor
 
@@ -1128,48 +1072,21 @@
             Exit Function
         End If
 
-        If CType(ComboBox6.SelectedItem, itemData).Valor <> ListView1.Items(0).SubItems(4).Text Then
-            If ModalQuestion("La provincia no coincide con la del primer municipio asociado.¿Continuar?") = DialogResult.No Then Exit Function
-        End If
-
         Dim Resultado As Integer = 0
-        ObtenerEscalar($"SELECT idarchivo from bdsidschema.archivo where numdoc='{TextBox22.Text.Trim}'", Resultado)
-        If Resultado > 0 Then ModalExclamation($"El número de sellado {TextBox22.Text.Trim} ya existe en GEODOCAT") : Exit Function
+        ObtenerEscalar($"SELECT idarchivodocmtn from bdsidschema.archivodocmtn where sellado={TextBox22.Text.Trim}", Resultado)
+        If Resultado > 0 Then ModalExclamation($"El número de sellado {TextBox22.Text.Trim} ya existe") : Exit Function
         elementoInsert.Sellado = TextBox22.Text.Trim
 
         If ComboBox1.SelectedIndex = -1 Then ModalExclamation("Seleccione un tipo de documento.") : Exit Function
-        elementoInsert.CodTipo = CType(ComboBox1.SelectedItem, itemData).Valor
+        elementoInsert.Tipo = CType(ComboBox1.SelectedItem, itemData).Name
 
-        For Each subItem As docCartoSEETipoDocu In tiposDocSIDCARTO
-            If subItem.idTipodoc = elementoInsert.CodTipo Then
-                elementoInsert.tipoDocumento = subItem
-                Exit For
-            End If
-        Next
 
-        If ComboBox2.SelectedIndex = -1 Then ModalExclamation("Asocie un estado de conservación al documento.") : Exit Function
-        elementoInsert.CodEstado = CType(ComboBox2.SelectedItem, itemData).Valor
+        elementoInsert.Subtipo = CType(ComboBox2.SelectedItem, itemData).Name
 
-        'Escala
-        elementoInsert.Escala = IIf(CType(TextBox8.Text.Trim, Integer) > 0, TextBox8.Text.Trim, "0").Replace("'", "\'")
 
         'Tomo
         If TextBox11.Text.Trim <> "" Then elementoInsert.Tomo = TextBox11.Text.Trim.Replace("'", "\'")
 
-        'ProceHoja
-        If TextBox10.Text.Trim <> "" Then
-            If IsNumeric(TextBox10.Text.Trim) Then
-                elementoInsert.ProceHoja = TextBox10.Text.Trim
-            Else
-                ModalExclamation("El campo procedimiento por Hoja debe de ser un número")
-                Exit Function
-            End If
-        End If
-        'ProceCarpeta
-        If TextBox6.Text.Trim <> "" Then elementoInsert.ProceCarpeta = TextBox6.Text.Trim.Replace("'", "\'")
-
-        'Subtipo de documento
-        If TextBox9.Text.Trim <> "" Then elementoInsert.subTipoDoc = TextBox9.Text.Trim.Replace("'", "\'")
 
         'FechaPrincipal
         Dim fechaDoc As Date
@@ -1182,58 +1099,39 @@
             Exit Function
         End If
         If ComboBox3.SelectedIndex = -1 Then ModalExclamation("Seleccione la precisión de la fecha.") : Exit Function
-        elementoInsert.TipoFechaPrincipal = ComboBox3.Text
+        elementoInsert.FechaDocType = ComboBox3.Text
 
-        'Fechas Modificaciones
-        If TextBox13.Text.Trim <> "" Then elementoInsert.fechasModificaciones = TextBox13.Text.Trim.Replace("'", "\'")
+
+        If ComboBox5.SelectedIndex = -1 Then ModalExclamation("Seleccione si el documento contiene itinerartios o perfiles.") : Exit Function
+        elementoInsert.ItinType = ComboBox5.SelectedItem.ToString
+        elementoInsert.ItinNum = TextBox8.Text.Trim.Replace(",", ".")
+
 
         'Signatura
-        If TextBox7.Text.Trim <> "" Then elementoInsert.Signatura = TextBox7.Text.Trim.Replace("'", "\'")
-
-        'Coleccion
-        If TextBox14.Text.Trim <> "" Then elementoInsert.Coleccion = TextBox14.Text.Trim.Replace("'", "\'")
-
-        'Subdivisión
-        If TextBox12.Text.Trim <> "" Then elementoInsert.Subdivision = TextBox12.Text.Trim.Replace("'", "\'")
-
-        'Proyecto
-        elementoInsert.Proyecto = IIf(TextBox17.Text.Trim <> "", TextBox17.Text.Trim.Replace(",", "."), "")
-
-        'Vertical
-        elementoInsert.Vertical = IIf(TextBox4.Text.Trim <> "" And IsNumeric(TextBox4.Text.Trim), TextBox4.Text.Trim.Replace(",", "."), "0")
-
-        'Horizontal
-        elementoInsert.Horizontal = IIf(TextBox5.Text.Trim <> "" And IsNumeric(TextBox5.Text.Trim), TextBox5.Text.Trim.Replace(",", "."), "0")
+        elementoInsert.Signatura = IIf(TextBox7.Text.Trim <> "", TextBox7.Text.Trim.Replace("'", "\'"), "")
 
         'Anejos
-        elementoInsert.Anejo = IIf(TextBox15.Text.Trim <> "", TextBox15.Text.Trim.Replace(",", "."), "")
-
-        'Es Junta Estadística
-        elementoInsert.JuntaEstadistica = IIf(ComboBox5.Text = "SI", "1", "0")
+        elementoInsert.Anejos = IIf(TextBox15.Text.Trim <> "", TextBox15.Text.Trim.Replace(",", "."), "")
 
         'Observaciones
         elementoInsert.Observaciones = IIf(TextBox16.Text.Trim <> "", TextBox16.Text.Trim.Replace("'", "\'"), "")
 
-        'Comentarios ABSYS
-        elementoInsert.Comentarios = IIf(TextBox18.Text.Trim <> "", TextBox18.Text.Trim.Replace("'", "\'"), "")
+
 
         'Provincia repo
-        elementoInsert.ProvinciaRepo = CType(ComboBox6.SelectedItem, itemData).Valor
+        elementoInsert.ProvinciaINE = CType(ComboBox6.SelectedItem, itemData).Valor
 
-        'Presencia en la HR
-        elementoInsert.docTypeHR = CType(ComboBox7.SelectedItem, itemData).Valor
 
         'Encabezado
-        elementoInsert.encabezadoABSYSdoc = IIf(TextBox19.Text.Trim <> "", TextBox19.Text.Trim.Replace(",", "."), "")
+        elementoInsert.Encabezado = IIf(TextBox19.Text.Trim <> "", TextBox19.Text.Trim.Replace(",", "."), "")
 
         'Autoría entidad
         elementoInsert.AutorEntidad = IIf(TextBox20.Text.Trim <> "", TextBox20.Text.Trim.Replace(",", "."), "")
 
         'Autoría persona
-        elementoInsert.autorPersona = IIf(TextBox24.Text.Trim <> "", TextBox24.Text.Trim.Replace(",", "."), "")
+        elementoInsert.Observador = IIf(TextBox24.Text.Trim <> "", TextBox24.Text.Trim.Replace(",", "."), "")
 
-        'Edificios citados
-        elementoInsert.EdificiosCitados = IIf(TextBox21.Text.Trim <> "", TextBox21.Text.Trim.Replace(",", "."), "")
+
 
         'FlagProperties
         'elementoInsert.extraProps.propertyCode = 0
@@ -1248,49 +1146,38 @@
             Exit Function
         End If
 
-        Dim Result As String
-        ObtenerEscalar("SELECT nextval('bdsidschema.archivo_idarchivo_seq')", Result)
-        elementoInsert.docIndex = IIf(IsNumeric(Result), CType(Result, Integer), 0)
-        If elementoInsert.docIndex = 0 Then
-            ModalExclamation("No se puede asignar un índice al documento")
-            Exit Function
-        End If
-
-        ValidarNuevoCuadernoMTN = $"INSERT INTO bdsidschema.archivo 
-                (idarchivo,numdoc,user_create,tipodoc_id,estadodoc_id,escala,tomo,procehoja,procecarpeta,subtipo,fechaprincipal,tipo_fechaprincipal,
-                fechasmodificaciones,signatura,coleccion,subdivision,proyecto,vertical,horizontal,juntaestadistica,encabezado,autor,autor_persona,nombreedificio,
-                anejo,observaciones,observ,doctypehr,extraprops,provincia_id) VALUES (
-                {elementoInsert.docIndex},
-                '{elementoInsert.Sellado}',
-                '{usuarioMyApp.loginUser}',
-                {elementoInsert.CodTipo},
-                {elementoInsert.CodEstado},
-                {elementoInsert.Escala},
-                E'{elementoInsert.Tomo}',
-                {IIf(elementoInsert.ProceHoja = "", "Null", elementoInsert.ProceHoja)},
-                {IIf(elementoInsert.ProceCarpeta = "", "Null", $"E'{elementoInsert.ProceCarpeta}'")},
-                {IIf(elementoInsert.subTipoDoc = "", "Null", $"E'{elementoInsert.subTipoDoc}'")},
+        ValidarNuevoCuadernoMTN = $"INSERT INTO bdsidschema.archivodocmtn
+                (sellado,tomo,tipo,subtipo,fecha,nota_fecha,pag,zona_num,subdivision_tipo,subdivision_num,cuaderno,cuad_tipo,anejos,
+                encabezado,nombre_old,nombre_new,itin_tipo,itin_num,observaciones,ambito,autor_entidad,signatura,create_at,create_by,codprov,observador,extraprops) VALUES (
+                {elementoInsert.Sellado},
+                {IIf(elementoInsert.Tomo = "", "Null", $"E'{elementoInsert.Tomo}'")},
+                {IIf(elementoInsert.Tipo = "", "Null", $"E'{elementoInsert.Tipo}'")},
+                {IIf(elementoInsert.Subtipo = "", "Null", $"E'{elementoInsert.Subtipo}'")},
                 '{cadFechaDoc}',
-                '{elementoInsert.TipoFechaPrincipal}',
-                '{elementoInsert.fechasModificaciones}',
-                {IIf(elementoInsert.Signatura = "", "Null", $"E'{elementoInsert.Signatura}'")},
-                {IIf(elementoInsert.Coleccion = "", "Null", $"E'{elementoInsert.Coleccion}'")},
-                {IIf(elementoInsert.Subdivision = "", "Null", $"E'{elementoInsert.Subdivision}'")},
-                {IIf(elementoInsert.Proyecto = "", "Null", $"E'{elementoInsert.Proyecto}'")},
-                {elementoInsert.Vertical},
-                {elementoInsert.Horizontal},
-                {elementoInsert.JuntaEstadistica},
-                {IIf(elementoInsert.encabezadoABSYSdoc = "", "Null", $"E'{elementoInsert.encabezadoABSYSdoc}'")},
-                {IIf(elementoInsert.AutorEntidad = "", "Null", $"E'{elementoInsert.AutorEntidad}'")},
-                {IIf(elementoInsert.autorPersona = "", "Null", $"E'{elementoInsert.autorPersona}'")},
-                {IIf(elementoInsert.EdificiosCitados = "", "Null", $"E'{elementoInsert.EdificiosCitados}'")},
-                {IIf(elementoInsert.Anejo = "", "Null", $"E'{elementoInsert.Anejo}'")},
+                '{elementoInsert.FechaDocType}',
+                {elementoInsert.NumPag},
+                {IIf(elementoInsert.DivZona = "", "Null", $"E'{elementoInsert.DivZona}'")},
+                {IIf(elementoInsert.SubDivType = "", "Null", $"E'{elementoInsert.SubDivType}'")},
+                {IIf(elementoInsert.SubDivNum = "", "Null", $"E'{elementoInsert.SubDivNum}'")},
+                {IIf(elementoInsert.Cuaderno = "", "Null", $"E'{elementoInsert.Cuaderno}'")},
+                {IIf(elementoInsert.CuadernoType = "", "Null", $"E'{elementoInsert.CuadernoType}'")},
+                {IIf(elementoInsert.Anejos = "", "Null", $"E'{elementoInsert.Anejos}'")},
+                {IIf(elementoInsert.Encabezado = "", "Null", $"E'{elementoInsert.Encabezado}'")},
+                {IIf(elementoInsert.NombreOLD = "", "Null", $"E'{elementoInsert.NombreOLD}'")},
+                {IIf(elementoInsert.NombreNEW = "", "Null", $"E'{elementoInsert.NombreNEW}'")},
+                {IIf(elementoInsert.ItinType = "", "Null", $"E'{elementoInsert.ItinType}'")},
+                {IIf(elementoInsert.ItinNum = "", "Null", $"E'{elementoInsert.ItinNum}'")},
                 {IIf(elementoInsert.Observaciones = "", "Null", $"E'{elementoInsert.Observaciones}'")},
-                {IIf(elementoInsert.Comentarios = "", "Null", $"E'{elementoInsert.Comentarios}'")},
-                {elementoInsert.docTypeHR},
-                {elementoInsert.extraProps.propertyCode},
-                {elementoInsert.ProvinciaRepo})"
+                {IIf(elementoInsert.Ambito = "", "Null", $"E'{elementoInsert.Ambito}'")},
+                {IIf(elementoInsert.AutorEntidad = "", "Null", $"E'{elementoInsert.AutorEntidad}'")},
+                {IIf(elementoInsert.Signatura = "", "Null", $"E'{elementoInsert.Signatura}'")},
+                now(),
+                '{usuarioMyApp.loginUser}',
+                {elementoInsert.ProvinciaINE},
+                {IIf(elementoInsert.Observador = "", "Null", $"E'{elementoInsert.Observador}'")},
+                {elementoInsert.extraProps.propertyCode})"
 
+        Application.DoEvents()
 
 
     End Function
@@ -1315,7 +1202,7 @@
 
 
             Dim Resultado As String = ""
-            ObtenerEscalar("SELECT idarchivodocmtn from bdsidschema.archivodocmtn where sellado={TextBox22.Text.Trim}" & , Resultado)
+            ObtenerEscalar($"SELECT idarchivodocmtn from bdsidschema.archivodocmtn where sellado={TextBox22.Text.Trim}", Resultado)
             Application.DoEvents()
             If CType(Resultado, Integer) > 0 Then
                 ModalInfo("El número de sellado ya existe")
@@ -1343,35 +1230,10 @@
             End If
         End If
 
-        If CheckBox4.Checked And TextBox4.Text.Trim <> "" Then
-            CadenaUpdateLote = CadenaUpdateLote & "vertical=" & CType(TextBox4.Text.Trim.Replace(".", ","), Integer) & ","
-        End If
-        If CheckBox5.Checked And TextBox5.Text.Trim <> "" Then
-            CadenaUpdateLote = CadenaUpdateLote & "horizontal=" & CType(TextBox5.Text.Trim.Replace(".", ","), Integer) & ","
-        End If
-        If CheckBox6.Checked Then
-            If TextBox6.Text.Trim <> "" Then
-                CadenaUpdateLote = CadenaUpdateLote & "procecarpeta=E'" & TextBox6.Text.Trim.Replace("'", "\'") & "',"
-            Else
-                CadenaUpdateLote = CadenaUpdateLote & "procecarpeta=Null,"
-            End If
-        End If
-
-        'Subtipo de documento
-        If CheckBox24.Checked Then
-            If TextBox9.Text.Trim <> "" Then
-                CadenaUpdateLote = CadenaUpdateLote & "subtipo=E'" & TextBox9.Text.Trim.Replace("'", "\'") & "',"
-            Else
-                CadenaUpdateLote = CadenaUpdateLote & "subtipo=null,"
-            End If
-        End If
-
         If CheckBox7.Checked And TextBox7.Text.Trim <> "" Then
             CadenaUpdateLote = CadenaUpdateLote & "signatura='" & TextBox7.Text.Trim.Replace("'", "\'") & "',"
         End If
-        If CheckBox8.Checked And TextBox8.Text.Trim <> "" Then
-            CadenaUpdateLote = CadenaUpdateLote & "escala=" & CType(TextBox8.Text.Trim.Replace(".", ","), Integer) & ","
-        End If
+
         If CheckBox9.Checked Then
             Dim fechadoc As Date
             If IsDate(MaskedTextBox1.Text) = True Then
@@ -1387,27 +1249,14 @@
                                 String.Format("{0:00}", CInt(fechadoc.Month.ToString)) & "/" &
                                 String.Format("{0:00}", CInt(fechadoc.Day.ToString)) & "',"
         End If
-        If CheckBox10.Checked Then
-            If TextBox10.Text.Trim <> "" Then
-                If IsNumeric(TextBox10.Text.Trim) Then
-                    CadenaUpdateLote = CadenaUpdateLote & "procehoja=" & CType(TextBox10.Text.Trim.Replace(".", ","), Integer) & ","
-                Else
-                    MessageBox.Show("Valor no válido para el campo Hoja", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-                    Exit Function
-                End If
-            Else
-                CadenaUpdateLote = CadenaUpdateLote & "procehoja=Null,"
-            End If
-        End If
+
         If CheckBox11.Checked And TextBox11.Text.Trim <> "" Then
             CadenaUpdateLote = CadenaUpdateLote & "tomo='" & TextBox11.Text.Trim.Replace("'", "\'") & "',"
         End If
         If CheckBox12.Checked And TextBox12.Text.Trim <> "" Then
             CadenaUpdateLote = CadenaUpdateLote & "subdivision='" & TextBox12.Text.Trim.Replace("'", "\'") & "',"
         End If
-        If CheckBox13.Checked And TextBox13.Text.Trim <> "" Then
-            CadenaUpdateLote = CadenaUpdateLote & "fechasmodificaciones='" & TextBox13.Text.Trim.Replace("'", "\'") & "',"
-        End If
+
         If CheckBox14.Checked Then
             CadenaUpdateLote = CadenaUpdateLote & "coleccion='" & TextBox14.Text.Trim.Replace("'", "\'") & "',"
         End If
@@ -1452,7 +1301,7 @@
 
     Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
 
-        If ModeEdition = TypeModeEdition.CreateDocument Then CrearNuevoElemento()
+        If ModeEdition = TypeModeEdition.CreateDocument Then CrearNuevoCuadernoMTN()
         If ModeEdition = TypeModeEdition.EditSingleDocument Then ActualizacionLote()
 
         'If Me.Tag = 0 Then
@@ -1463,19 +1312,13 @@
 
     End Sub
 
-    Private Sub SelecciónImagen(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button5.Click, Button7.Click, Button8.Click
+    Private Sub SelecciónImagen(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button5.Click, Button7.Click
 
         If sender.name = "Button7" Then
             OpenFileDialog1.Title = "Selecciona imagen resolución alta"
             OpenFileDialog1.Filter = "Archivos de imagen JPG (*.jpg)|*.jpg"
             If OpenFileDialog1.ShowDialog = Windows.Forms.DialogResult.OK Then
                 TextBox2.Text = OpenFileDialog1.FileName
-            End If
-        ElseIf sender.name = "Button8" Then
-            OpenFileDialog1.Title = "Selecciona imagen resolución normal"
-            OpenFileDialog1.Filter = "Archivos de imagen JPG (*.jpg)|*.jpg"
-            If OpenFileDialog1.ShowDialog = Windows.Forms.DialogResult.OK Then
-                TextBox3.Text = OpenFileDialog1.FileName
             End If
         ElseIf sender.name = "Button5" Then
             OpenFileDialog1.Title = "Selecciona documento PDF"
@@ -1507,71 +1350,73 @@
             Exit Sub
         End Try
 
-        ListaSQL.Add($"INSERT INTO bdsidschema.archivohisto
-	                    SELECT now() as fecha_elim, '{usuarioMyApp.loginUser}' as user_delete,
-	                    archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal,archivo.tipo_fechaprincipal,
-		                        archivo.fechasmodificaciones,archivo.anejo,archivo.vertical,archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja,
-		                        archivo.subtipo,archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.extraprops,archivo.observaciones,archivo.observ,archivo.proyecto,
-		                        archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.cdd_geometria,archivo.cdd_fecha,archivo.titn,archivo.autor,archivo.autor_persona,archivo.encabezado,archivo.nombreedificio,
-		                        tbtipodocumento.tipodoc as Tipo,tbestadodocumento.estadodoc as Estado, tbobservaciones.observestandar,
-                                archivo.provincia_id as repoprov, archivo.fechacreacion, archivo.fechamodificacion,
-                                string_agg(territorios.idterritorio::character varying,'#') as listaIdTerris,
-		                        string_agg(territorios.nombre,'#') as listaMuniHisto, string_agg(to_char(territorios.munihisto, 'FM0000009'::text),'#') as listaCodMuniHisto,
-		                        string_agg(listamunicipios.nombre,'#') as listaMuniActual, string_agg(listamunicipios.inecorto,'#') as listaCodMuniActual, 
-		                        string_agg(provincias.nombreprovincia,'#') as nombreprovincia 
-                        FROM bdsidschema.archivo 
-	                        LEFT JOIN bdsidschema.tbtipodocumento ON tbtipodocumento.idtipodoc=archivo.tipodoc_id 
-	                        LEFT JOIN bdsidschema.tbestadodocumento ON tbestadodocumento.idestadodoc=archivo.estadodoc_id 
-	                        LEFT JOIN bdsidschema.archivo2territorios  ON archivo2territorios.archivo_id=archivo.idarchivo 
-	                        LEFT JOIN bdsidschema.tbobservaciones  ON tbobservaciones.idobservestandar=archivo.observestandar_id 
-	                        LEFT JOIN bdsidschema.territorios on territorios.idterritorio= archivo2territorios.territorio_id 
-	                        LEFT JOIN ngmepschema.listamunicipios on territorios.nomen_id= listamunicipios.identidad 
-	                        LEFT JOIN bdsidschema.provincias on territorios.provincia= provincias.idprovincia 
-                        WHERE archivo.idarchivo={editRegistro.docIndex}
-                          GROUP BY archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal,archivo.tipo_fechaprincipal,
-  	                        archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, archivo.horizontal, archivo.tipodoc_id, archivo.estadodoc_id, archivo.procecarpeta, 
-  	                        archivo.procehoja, archivo.subtipo,archivo.juntaestadistica, archivo.signatura, archivo.observestandar_id,archivo.extraprops, archivo.observaciones,archivo.observ,
-                            archivo.proyecto,tbtipodocumento.tipodoc,archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.titn,archivo.autor,archivo.autor_persona,archivo.encabezado,archivo.nombreedificio,
-                            tbestadodocumento.estadodoc,tbobservaciones.observestandar")
-        ListaSQL.Add($"DELETE FROM bdsidschema.contornos WHERE archivo_id={editRegistro.docIndex}")
-        ListaSQL.Add($"DELETE FROM bdsidschema.archivo2territorios WHERE archivo_id={editRegistro.docIndex}")
-        ListaSQL.Add($"DELETE FROM bdsidschema.archivo WHERE idarchivo={editRegistro.docIndex}")
+        ModalInfo("Borrado de datos)")
+
+        'ListaSQL.Add($"INSERT INTO bdsidschema.archivohisto
+        '             SELECT now() as fecha_elim, '{usuarioMyApp.loginUser}' as user_delete,
+        '             archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal,archivo.tipo_fechaprincipal,
+        '                  archivo.fechasmodificaciones,archivo.anejo,archivo.vertical,archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja,
+        '                  archivo.subtipo,archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.extraprops,archivo.observaciones,archivo.observ,archivo.proyecto,
+        '                  archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.cdd_geometria,archivo.cdd_fecha,archivo.titn,archivo.autor,archivo.autor_persona,archivo.encabezado,archivo.nombreedificio,
+        '                  tbtipodocumento.tipodoc as Tipo,tbestadodocumento.estadodoc as Estado, tbobservaciones.observestandar,
+        '                        archivo.provincia_id as repoprov, archivo.fechacreacion, archivo.fechamodificacion,
+        '                        string_agg(territorios.idterritorio::character varying,'#') as listaIdTerris,
+        '                  string_agg(territorios.nombre,'#') as listaMuniHisto, string_agg(to_char(territorios.munihisto, 'FM0000009'::text),'#') as listaCodMuniHisto,
+        '                  string_agg(listamunicipios.nombre,'#') as listaMuniActual, string_agg(listamunicipios.inecorto,'#') as listaCodMuniActual, 
+        '                  string_agg(provincias.nombreprovincia,'#') as nombreprovincia 
+        '                FROM bdsidschema.archivo 
+        '                 LEFT JOIN bdsidschema.tbtipodocumento ON tbtipodocumento.idtipodoc=archivo.tipodoc_id 
+        '                 LEFT JOIN bdsidschema.tbestadodocumento ON tbestadodocumento.idestadodoc=archivo.estadodoc_id 
+        '                 LEFT JOIN bdsidschema.archivo2territorios  ON archivo2territorios.archivo_id=archivo.idarchivo 
+        '                 LEFT JOIN bdsidschema.tbobservaciones  ON tbobservaciones.idobservestandar=archivo.observestandar_id 
+        '                 LEFT JOIN bdsidschema.territorios on territorios.idterritorio= archivo2territorios.territorio_id 
+        '                 LEFT JOIN ngmepschema.listamunicipios on territorios.nomen_id= listamunicipios.identidad 
+        '                 LEFT JOIN bdsidschema.provincias on territorios.provincia= provincias.idprovincia 
+        '                WHERE archivo.idarchivo={editRegistro.docIndex}
+        '                  GROUP BY archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal,archivo.tipo_fechaprincipal,
+        '                   archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, archivo.horizontal, archivo.tipodoc_id, archivo.estadodoc_id, archivo.procecarpeta, 
+        '                   archivo.procehoja, archivo.subtipo,archivo.juntaestadistica, archivo.signatura, archivo.observestandar_id,archivo.extraprops, archivo.observaciones,archivo.observ,
+        '                    archivo.proyecto,tbtipodocumento.tipodoc,archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.titn,archivo.autor,archivo.autor_persona,archivo.encabezado,archivo.nombreedificio,
+        '                    tbestadodocumento.estadodoc,tbobservaciones.observestandar")
+        'ListaSQL.Add($"DELETE FROM bdsidschema.contornos WHERE archivo_id={editRegistro.docIndex}")
+        'ListaSQL.Add($"DELETE FROM bdsidschema.archivo2territorios WHERE archivo_id={editRegistro.docIndex}")
+        'ListaSQL.Add($"DELETE FROM bdsidschema.archivo WHERE idarchivo={editRegistro.docIndex}")
 
 
-        Try
-            If IO.File.Exists(editRegistro.rutaFicheroAltaRes) Then ficherosDelete.Add(editRegistro.rutaFicheroAltaRes)
-            If IO.File.Exists(editRegistro.rutaFicheroBajaRes) Then ficherosDelete.Add(editRegistro.rutaFicheroBajaRes)
-            If IO.File.Exists(editRegistro.rutaFicheroThumb) Then ficherosDelete.Add(editRegistro.rutaFicheroThumb)
-            If IO.File.Exists(editRegistro.rutaFicheroPDF) Then ficherosDelete.Add(editRegistro.rutaFicheroPDF)
-            For Each fileGEO As String In editRegistro.listaFicherosGeo23030
-                If IO.File.Exists(fileGEO) Then ficherosDelete.Add(fileGEO)
-            Next
-            For Each fileGEO As String In editRegistro.listaFicherosGeo25830
-                If IO.File.Exists(fileGEO) Then ficherosDelete.Add(fileGEO)
-            Next
-        Catch ex As Exception
-            ModalError(ex.Message)
-            Exit Sub
-        End Try
+        'Try
+        '    If IO.File.Exists(editRegistro.rutaFicheroAltaRes) Then ficherosDelete.Add(editRegistro.rutaFicheroAltaRes)
+        '    If IO.File.Exists(editRegistro.rutaFicheroBajaRes) Then ficherosDelete.Add(editRegistro.rutaFicheroBajaRes)
+        '    If IO.File.Exists(editRegistro.rutaFicheroThumb) Then ficherosDelete.Add(editRegistro.rutaFicheroThumb)
+        '    If IO.File.Exists(editRegistro.rutaFicheroPDF) Then ficherosDelete.Add(editRegistro.rutaFicheroPDF)
+        '    For Each fileGEO As String In editRegistro.listaFicherosGeo23030
+        '        If IO.File.Exists(fileGEO) Then ficherosDelete.Add(fileGEO)
+        '    Next
+        '    For Each fileGEO As String In editRegistro.listaFicherosGeo25830
+        '        If IO.File.Exists(fileGEO) Then ficherosDelete.Add(fileGEO)
+        '    Next
+        'Catch ex As Exception
+        '    ModalError(ex.Message)
+        '    Exit Sub
+        'End Try
 
-        If ModalQuestWriteDatabase($"¿Desea eliminar el documento con sellado nº {editRegistro.Sellado} y su información digital{Environment.NewLine}({ficherosDelete.Count} ficheros?") = DialogResult.No Then Exit Sub
+        'If ModalQuestWriteDatabase($"¿Desea eliminar el documento con sellado nº {editRegistro.Sellado} y su información digital{Environment.NewLine}({ficherosDelete.Count} ficheros?") = DialogResult.No Then Exit Sub
 
-        Me.Cursor = Cursors.WaitCursor
+        'Me.Cursor = Cursors.WaitCursor
 
-        'Borrado de ficheros
-        For Each pathFileGeo As String In ficherosDelete
-            If IsNothing(pathFileGeo) Then Continue For
-            Try
-                IO.File.Delete(pathFileGeo)
-            Catch ex As Exception
-                ModalError($"Se han producido errores al eliminar la información gráfica del documento.No se eliminó el documento.{Environment.NewLine}{ex.Message}")
-            End Try
-        Next
+        ''Borrado de ficheros
+        'For Each pathFileGeo As String In ficherosDelete
+        '    If IsNothing(pathFileGeo) Then Continue For
+        '    Try
+        '        IO.File.Delete(pathFileGeo)
+        '    Catch ex As Exception
+        '        ModalError($"Se han producido errores al eliminar la información gráfica del documento.No se eliminó el documento.{Environment.NewLine}{ex.Message}")
+        '    End Try
+        'Next
 
-        IIf(ExeTran(ListaSQL), ModalInfo("Proceso de eliminación completado"), ModalExclamation("No se han podido eliminar los documentos. Consultar LOG"))
+        'IIf(ExeTran(ListaSQL), ModalInfo("Proceso de eliminación completado"), ModalExclamation("No se han podido eliminar los documentos. Consultar LOG"))
 
-        Me.Cursor = Cursors.Default
-        Me.Close()
+        'Me.Cursor = Cursors.Default
+        'Me.Close()
 
     End Sub
 
@@ -1589,7 +1434,7 @@
     End Sub
 
 
-    Private Sub TextBox2_TextChanged(sender As Object, e As EventArgs) Handles TextBox2.TextChanged, TextBox3.TextChanged, TextBox23.TextChanged
+    Private Sub TextBox2_TextChanged(sender As Object, e As EventArgs) Handles TextBox2.TextChanged, TextBox23.TextChanged
 
         Dim ctrlSender As Windows.Forms.TextBox
         ctrlSender = sender
@@ -1608,7 +1453,7 @@
 
     End Sub
 
-    Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click, Button11.Click, Button12.Click
+    Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click, Button12.Click
 
         Dim pathResource As String
         Dim ctrlSender As Windows.Forms.Button
@@ -1616,7 +1461,6 @@
         If String.IsNullOrEmpty(ctrlSender.Text) Then ModalExclamation("No hay recurso asignado") : Exit Sub
 
         If ctrlSender.Name = "Button6" Then pathResource = Label34.Tag
-        If ctrlSender.Name = "Button11" Then pathResource = Label35.Tag
         If ctrlSender.Name = "Button12" Then pathResource = Label36.Tag
 
         Try
@@ -1633,27 +1477,24 @@
     Private Sub Button13_Click(sender As Object, e As EventArgs) Handles Button13.Click
 
         Dim archivoIdImport As Integer = 0
-        Dim docuImport As docCartoSEE
+        Dim docuImport As docCuadMTN
         Dim numSelladoImport As String = InputDialog.InputBox("Introduzca el número del documento que quiere importar", "Documento GEODOCAT", "")
 
-        ObtenerEscalar($"SELECT idarchivo from bdsidschema.archivo where numdoc='{numSelladoImport}'", archivoIdImport)
-        docuImport = New docCartoSEE(archivoIdImport)
-        docuImport.getGeoFiles()
+        ObtenerEscalar($"SELECT idarchivodocmtn from bdsidschema.archivodocmtn where sellado={numSelladoImport}", archivoIdImport)
+        docuImport = New docCuadMTN(archivoIdImport)
 
-        If docuImport.docIndex = 0 Then
+        If docuImport.IdarchivodocMTN = 0 Then
             ModalInfo($"No se localiza el documento con sellado nº {numSelladoImport}")
             Me.Close()
             Exit Sub
         End If
 
         CleanFields()
-        PopulateControlsWithDocCartoSEE(docuImport)
+        PopulateControlsWithDocCuadMTN(docuImport)
         'Eliminamos los ficheros de recursos, porque estamos importando para crear un nuevo documento y no tiene sentido mantener estos ficheros
         TextBox2.Text = ""
-        TextBox3.Text = ""
         TextBox23.Text = ""
         TextBox2.Tag = ""
-        TextBox3.Tag = ""
         TextBox23.Tag = ""
 
     End Sub
@@ -1674,50 +1515,48 @@
 
     Private Sub TextBox16_TextChanged(sender As Object, e As EventArgs) Handles TextBox16.TextChanged, TextBox19.TextChanged,
                     TextBox20.TextChanged, TextBox24.TextChanged, CheckedListBox1.SelectedIndexChanged, ComboBox5.SelectedIndexChanged, ComboBox1.SelectedIndexChanged, ComboBox2.SelectedIndexChanged, ComboBox3.SelectedIndexChanged, ComboBox6.SelectedIndexChanged, TextBox17.TextChanged,
-                    TextBox14.TextChanged, TextBox14.TextChanged, TextBox12.TextChanged, TextBox22.TextChanged,
-                    TextBox6.TextChanged, TextBox7.TextChanged, TextBox8.TextChanged, TextBox10.TextChanged, TextBox11.TextChanged, TextBox15.TextChanged
+                    TextBox14.TextChanged, TextBox14.TextChanged, TextBox12.TextChanged, TextBox22.TextChanged, TextBox7.TextChanged, TextBox8.TextChanged, TextBox11.TextChanged, TextBox15.TextChanged, MaskedTextBox1.TextChanged, ComboBox7.SelectedIndexChanged, TextBox4.TextChanged
 
         If Not autoCheckFlag Then Exit Sub
         If sender.name = "TextBox16" Then CheckBox16.Checked = True
-        If sender.name = "TextBox18" Then CheckBox26.Checked = True
+        'If sender.name = "TextBox18" Then CheckBox26.Checked = True
         If sender.name = "TextBox19" Then CheckBox27.Checked = True
         If sender.name = "TextBox20" Then CheckBox28.Checked = True
-        If sender.name = "TextBox21" Then CheckBox29.Checked = True
+        'If sender.name = "TextBox21" Then CheckBox29.Checked = True
         If sender.name = "TextBox24" Then CheckBox30.Checked = True
         If sender.name = "ComboBox5" Then CheckBox19.Checked = True
         If sender.name = "CheckedListBox1" Then CheckBox3.Checked = True
         If sender.name = "TextBox9" Then CheckBox24.Checked = True
         If sender.name = "ComboBox1" Then CheckBox17.Checked = True
-        If sender.name = "ComboBox2" Then CheckBox2.Checked = True
+        If sender.name = "ComboBox2" Then CheckBox24.Checked = True
         If sender.name = "ComboBox3" Then CheckBox31.Checked = True
         If sender.name = "ComboBox6" Then CheckBox20.Checked = True
-        If sender.name = "ComboBox7" Then CheckBox32.Checked = True
+        If sender.name = "ComboBox7" Then CheckBox2.Checked = True
         If sender.name = "TextBox17" Then CheckBox25.Checked = True
         If sender.name = "TextBox14" Then CheckBox14.Checked = True
         If sender.name = "TextBox14" Then CheckBox14.Checked = True
         If sender.name = "TextBox12" Then CheckBox12.Checked = True
-        If sender.name = "TextBox13" Then CheckBox13.Checked = True
+        'If sender.name = "TextBox13" Then CheckBox13.Checked = True
         If sender.name = "TextBox22" Then CheckBox22.Checked = True
         If sender.name = "TextBox4" Then CheckBox4.Checked = True
-        If sender.name = "TextBox5" Then CheckBox5.Checked = True
-        If sender.name = "TextBox6" Then CheckBox6.Checked = True
+        'If sender.name = "TextBox5" Then CheckBox5.Checked = True
         If sender.name = "TextBox7" Then CheckBox7.Checked = True
-        If sender.name = "TextBox8" Then CheckBox8.Checked = True
-        If sender.name = "TextBox10" Then CheckBox10.Checked = True
+        'If sender.name = "TextBox8" Then CheckBox8.Checked = True
         If sender.name = "TextBox11" Then CheckBox11.Checked = True
         If sender.name = "TextBox15" Then CheckBox15.Checked = True
+        If sender.name = "MaskedTextBox1" Then CheckBox9.Checked = True
 
     End Sub
 
 #Region "Gestión Drag & Drop de los ficheros"
 
-    Private Sub textBoxesEntries(sender As Object, e As DragEventArgs) Handles TextBox2.DragEnter, TextBox3.DragEnter, TextBox23.DragEnter
+    Private Sub textBoxesEntries(sender As Object, e As DragEventArgs) Handles TextBox2.DragEnter, TextBox23.DragEnter
 
         e.Effect = DragDropEffects.Link
 
     End Sub
 
-    Private Sub textBoxesDropping(sender As Object, e As DragEventArgs) Handles TextBox2.DragDrop, TextBox3.DragDrop, TextBox23.DragDrop
+    Private Sub textBoxesDropping(sender As Object, e As DragEventArgs) Handles TextBox2.DragDrop, TextBox23.DragDrop
 
         Try
             Dim Rutas As String() = DirectCast(e.Data.GetData(DataFormats.FileDrop), String())
@@ -1736,11 +1575,10 @@
             End If
 
             If sender.name = "TextBox2" Then TextBox2.Text = Rutas(0)
-            If sender.name = "TextBox3" Then TextBox3.Text = Rutas(0)
             If sender.name = "TextBox23" Then TextBox23.Text = Rutas(0)
 
         Catch ex As Exception
-            MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Error)
+            ModalError(ex.Message)
         End Try
 
 
@@ -1759,7 +1597,6 @@
         Me.Cursor = Cursors.Default
 
     End Sub
-
 
 #End Region
 

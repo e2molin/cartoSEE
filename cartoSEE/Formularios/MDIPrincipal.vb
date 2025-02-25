@@ -867,10 +867,9 @@ Public Class MDIPrincipal
 
 
     Sub ArranqueHerramientas(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-                                    Handles ToolStripButton9.Click, ToolStripButton10.Click,
-                                    mnuTool_AltaDoc.Click,
-                                    mnuGenerarRejilla.Click,
-                                    mnuLanzarPlantilla.Click, mnuAddECW.Click, mnuAddContornos.Click, mnuMuniHisto.Click, mnuOpenPreferenceFolder.Click, mnuOpenLoggerFile.Click, mnuQueryLibrosRegistro.Click, ToolStripButton20.Click
+                                    Handles ToolStripButton10.Click, mnuTool_AltaDoc.Click, mnuGenerarRejilla.Click, ToolStripButton9.Click, mnuLanzarPlantilla.Click,
+                                    mnuAddECW.Click, mnuAddContornos.Click, mnuMuniHisto.Click, mnuOpenPreferenceFolder.Click, mnuOpenLoggerFile.Click,
+                                    mnuQueryLibrosRegistro.Click, ToolStripButton20.Click, ToolStripButton21.Click
 
         If sender.name = "ToolStripButton9" Or sender.name = "mnuTool_AltaDoc" Then
             Dim FormularioCreacion As New frmEdicion With {
@@ -878,6 +877,12 @@ Public Class MDIPrincipal
                    .ModeEdition = frmEdicion.ModeEdition.CreateDocument
                 }
             FormularioCreacion.Show()
+        ElseIf sender.name = "ToolStripButton21" Then
+            Dim FormularioCreacionCuadernoMTN As New frmEditCuad With {
+                   .MdiParent = Me,
+                   .ModeEdition = FormularioCreacionCuadernoMTN.ModeEdition.CreateDocument
+                }
+            FormularioCreacionCuadernoMTN.Show()
         ElseIf sender.name = "mnuQueryLibrosRegistro" Or sender.name = "ToolStripButton20" Then
 
             Dim frmVista As New dataViewerForm

@@ -43,6 +43,105 @@ Module ManagePDF
 
 
     End Function
+
+    Function generaThumbPortada(ByVal sourcePDF As String, ByVal thumJPG As String) As Boolean
+
+        Dim listaImages As List(Of Image)
+
+        Dim portada As Image
+        Dim dimenX As Integer
+        Dim dimenY As Integer
+
+        listaImages = extractPagFromPDF(sourcePDF, True)
+        If listaImages.Count = 0 Then
+            GenerarLOG("No se puede generar miniatura del documento: " & sourcePDF)
+            Exit Function
+        End If
+        portada = listaImages.Item(0)
+        Dim origen As New Bitmap(portada)
+
+        If origen.Height > origen.Width Then
+            'Vertical
+            dimenX = CType(origen.Width / origen.Height * 800, Integer)
+            dimenY = 800
+        Else
+            'Horizontal
+            dimenX = 800
+            dimenY = CType(origen.Height / origen.Width * 800, Integer)
+        End If
+        Dim thumb As New Bitmap(dimenX, dimenY)
+
+        Dim g As Graphics = Graphics.FromImage(thumb)
+        g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBilinear
+        g.DrawImage(origen, New Rectangle(0, 0, origen.Width, origen.Height),
+                            New Rectangle(0, 0, dimenX, dimenY), GraphicsUnit.Pixel)
+        g.DrawImage(origen, 0, 0, dimenX, dimenY)
+        g.Dispose()
+
+        Try
+            thumb.Save(thumJPG, System.Drawing.Imaging.ImageFormat.Jpeg)
+        Catch ex As Exception
+            'MessageBox.Show(ex.Message)
+            GenerarLOG(ex.Message)
+            Return False
+        End Try
+        Return True
+
+    End Function
+
+    Function extractPagFromPDF(ByVal sourcePdf As String, Optional ByVal soloPortada As Boolean = False) As List(Of Image)
+
+        Dim imgList As New List(Of Image)
+        Dim raf As iTextSharp.text.pdf.RandomAccessFileOrArray = Nothing
+        Dim reader As iTextSharp.text.pdf.PdfReader = Nothing
+        Dim pdfObj As iTextSharp.text.pdf.PdfObject = Nothing
+        Dim pdfStrem As iTextSharp.text.pdf.PdfStream = Nothing
+        Dim pdfDictio As iTextSharp.text.pdf.PdfDictionary = Nothing
+
+        Try
+            raf = New iTextSharp.text.pdf.RandomAccessFileOrArray(sourcePdf)
+            reader = New iTextSharp.text.pdf.PdfReader(raf, Nothing)
+
+            For i As Integer = 0 To reader.XrefSize - 1
+                pdfObj = reader.GetPdfObject(i)
+                If Not IsNothing(pdfObj) AndAlso pdfObj.IsStream() Then
+                    pdfStrem = DirectCast(pdfObj, iTextSharp.text.pdf.PdfStream)
+                    Dim subtype As iTextSharp.text.pdf.PdfObject = pdfStrem.Get(iTextSharp.text.pdf.PdfName.SUBTYPE)
+                    If Not IsNothing(subtype) AndAlso subtype.ToString = iTextSharp.text.pdf.PdfName.IMAGE.ToString Then
+                        Dim bytes() As Byte = iTextSharp.text.pdf.PdfReader.GetStreamBytesRaw(CType(pdfStrem, iTextSharp.text.pdf.PRStream))
+                        If Not IsNothing(bytes) Then
+                            Try
+                                Using memStream As New System.IO.MemoryStream(bytes)
+                                    memStream.Position = 0
+                                    If soloPortada = True Then
+                                        Dim img As Image = Image.FromStream(memStream)
+                                        imgList.Add(img)
+                                        Exit For
+                                    Else
+                                        Dim img As Image = Image.FromStream(memStream)
+                                        imgList.Add(img)
+                                    End If
+                                End Using
+                            Catch ex As Exception
+                                'Most likely the image is in an unsupported format
+                                'Do nothing
+                                Application.DoEvents()
+                                Exit For
+                                'You can add your own code to handle this exception if you want to
+                            End Try
+                        End If
+                    End If
+                End If
+
+            Next
+            reader.Close()
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
+        Return imgList
+
+    End Function
+
     Function ObtenerInfoPDF(ByVal RutaPDF As String) As Integer
 
         Dim Reader As iTextSharp.text.pdf.PdfReader

@@ -32,6 +32,8 @@
     Property ficheroPDF As String
     Property listaTerritorios As New ArrayList
     Property Anejos As String
+    Property NombreOLD As String
+    Property NombreNEW As String
 
     Property extraProps As New FlagsPropertiesCuaderno
 
@@ -76,14 +78,14 @@
     ReadOnly Property rutaFicheroPDF() As String
 
         Get
-            Return $"{rutaRepoCI}\{String.Format("{0:00}", ProvinciaINE)}\CMTN{String.Format("{0:00000000}", Sellado)}.pdf"
+            Return $"{rutaRepoCI}\_pdf\{String.Format("{0:00}", ProvinciaINE)}\{SelladoIdProductor}.pdf"
         End Get
     End Property
 
     ReadOnly Property rutaFicheroThumb() As String
 
         Get
-            Return $"{rutaRepoCI}\miniaturas\{String.Format("{0:00}", ProvinciaINE)}\CMTN{String.Format("{0:00000000}", Sellado)}.jpg"
+            Return $"{rutaRepoCI}_Miniaturas\{String.Format("{0:00}", ProvinciaINE)}\{SelladoIdProductor}.jpg"
         End Get
     End Property
 
@@ -173,8 +175,8 @@
     Sub New(idCuadernoMTN As Integer)
 
         Dim consultaSQL As String = $"SELECT archivodocmtn.idarchivodocmtn,archivodocmtn.create_at,archivodocmtn.tipo,archivodocmtn.subtipo,archivodocmtn.tomo,archivodocmtn.sellado,
-                archivodocmtn.codprov,archivodocmtn.fecha,archivodocmtn.nota_fecha,archivodocmtn.pag,archivodocmtn.zona_num,archivodocmtn.subdivision_tipo,archivodocmtn.extraprops,
-                archivodocmtn.subdivision_num,archivodocmtn.itin_tipo,archivodocmtn.itin_num,archivodocmtn.cuaderno,archivodocmtn.cuad_tipo, archivodocmtn.anejos, archivodocmtn.nombre_old, archivodocmtn.nombre_new,
+                archivodocmtn.codprov,archivodocmtn.fecha,archivodocmtn.nota_fecha,archivodocmtn.pag,archivodocmtn.zona_num,archivodocmtn.subdivision_tipo,archivodocmtn.extraprops,archivodocmtn.encabezado,archivodocmtn.autor_entidad,
+                archivodocmtn.subdivision_num,archivodocmtn.itin_tipo,archivodocmtn.itin_num,archivodocmtn.cuaderno,archivodocmtn.cuad_tipo, archivodocmtn.anejos, archivodocmtn.nombre_old, archivodocmtn.nombre_new,archivodocmtn.signatura,
                 archivodocmtn.observaciones,archivodocmtn.create_by,archivodocmtn.ambito,archivodocmtn.namefilecdd,archivodocmtn.fechafilecdd,archivodocmtn.observador,provincias.nombreprovincia,
                 string_agg(territorios.idterritorio::text,'|') as idTerris,
                 string_agg(Territorios.Nombre,'|') as nombreTerris,
@@ -188,8 +190,9 @@
                 WHERE archivodocmtn.idarchivodocmtn={idCuadernoMTN} 
                 group by archivodocmtn.idarchivodocmtn,archivodocmtn.create_at,archivodocmtn.tipo,archivodocmtn.subtipo,archivodocmtn.tomo,archivodocmtn.sellado,
                 archivodocmtn.codprov,archivodocmtn.fecha,archivodocmtn.nota_fecha,archivodocmtn.pag,archivodocmtn.zona_num,archivodocmtn.subdivision_tipo,
-                archivodocmtn.subdivision_num,archivodocmtn.cuaderno,archivodocmtn.itin_tipo, archivodocmtn.itin_num, archivodocmtn.cuad_tipo,archivodocmtn.extraprops, 
-                archivodocmtn.anejos, archivodocmtn.nombre_old, archivodocmtn.nombre_new,archivodocmtn.observaciones,archivodocmtn.create_by,
+                archivodocmtn.subdivision_num,archivodocmtn.cuaderno,archivodocmtn.itin_tipo, archivodocmtn.itin_num, archivodocmtn.cuad_tipo,archivodocmtn.extraprops,
+                archivodocmtn.encabezado,archivodocmtn.autor_entidad,
+                archivodocmtn.anejos, archivodocmtn.nombre_old, archivodocmtn.nombre_new,archivodocmtn.signatura,archivodocmtn.observaciones,archivodocmtn.create_by,
                 archivodocmtn.ambito,archivodocmtn.namefilecdd,archivodocmtn.fechafilecdd,provincias.nombreprovincia"
 
         rellenarDataset(consultaSQL)
@@ -261,9 +264,9 @@
 
 
             Observador = dR("observador").ToString
-            AutorEntidad = "Instituto Geográfico y Estadístico"
-            Encabezado = "Trabajos Topográficos"
-            Signatura = "Archivo Compacto"
+            AutorEntidad = dR("autor_entidad").ToString '"Instituto Geográfico y Estadístico"
+            Encabezado = dR("encabezado").ToString '"Trabajos Topográficos"
+            Signatura = dR("signatura").ToString '"Archivo Compacto"
 
             Dim idTerris() As String = dR("idTerris").ToString.Split("|")
             Dim nombreTerris() As String = dR("nombreTerris").ToString.Split("|")
@@ -277,6 +280,8 @@
             Next
 
             Anejos = dR("anejos").ToString
+            NombreOLD = dR("nombre_old").ToString
+            NombreNEW = dR("nombre_new").ToString
             ProvinciaNombre = dR("nombreprovincia").ToString
 
             'For iBucle As Integer = 0 To idTerris.Count - 1

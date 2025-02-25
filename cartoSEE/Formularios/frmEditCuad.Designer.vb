@@ -34,7 +34,6 @@ Partial Class frmEditCuad
         Me.ListBox1 = New System.Windows.Forms.ListBox()
         Me.Label21 = New System.Windows.Forms.Label()
         Me.Label19 = New System.Windows.Forms.Label()
-        Me.Label18 = New System.Windows.Forms.Label()
         Me.Label17 = New System.Windows.Forms.Label()
         Me.TextBox22 = New System.Windows.Forms.TextBox()
         Me.Label15 = New System.Windows.Forms.Label()
@@ -45,7 +44,6 @@ Partial Class frmEditCuad
         Me.Label10 = New System.Windows.Forms.Label()
         Me.Label9 = New System.Windows.Forms.Label()
         Me.Label8 = New System.Windows.Forms.Label()
-        Me.Label7 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.CheckBox22 = New System.Windows.Forms.CheckBox()
@@ -70,21 +68,17 @@ Partial Class frmEditCuad
         Me.TextBox12 = New System.Windows.Forms.TextBox()
         Me.TextBox11 = New System.Windows.Forms.TextBox()
         Me.CheckBox14 = New System.Windows.Forms.CheckBox()
-        Me.TextBox10 = New System.Windows.Forms.TextBox()
         Me.CheckBox12 = New System.Windows.Forms.CheckBox()
         Me.TextBox8 = New System.Windows.Forms.TextBox()
         Me.TextBox7 = New System.Windows.Forms.TextBox()
-        Me.TextBox6 = New System.Windows.Forms.TextBox()
         Me.TextBox16 = New System.Windows.Forms.TextBox()
         Me.TextBox15 = New System.Windows.Forms.TextBox()
         Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.ComboBox2 = New System.Windows.Forms.ComboBox()
         Me.ComboBox1 = New System.Windows.Forms.ComboBox()
         Me.CheckBox11 = New System.Windows.Forms.CheckBox()
-        Me.CheckBox10 = New System.Windows.Forms.CheckBox()
         Me.CheckBox9 = New System.Windows.Forms.CheckBox()
         Me.CheckBox7 = New System.Windows.Forms.CheckBox()
-        Me.CheckBox6 = New System.Windows.Forms.CheckBox()
         Me.CheckBox3 = New System.Windows.Forms.CheckBox()
         Me.CheckBox1 = New System.Windows.Forms.CheckBox()
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
@@ -92,18 +86,13 @@ Partial Class frmEditCuad
         Me.ToolStripStatusLabel2 = New System.Windows.Forms.ToolStripStatusLabel()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
         Me.Label36 = New System.Windows.Forms.Label()
-        Me.Label35 = New System.Windows.Forms.Label()
         Me.Label34 = New System.Windows.Forms.Label()
         Me.Button12 = New System.Windows.Forms.Button()
-        Me.Button11 = New System.Windows.Forms.Button()
         Me.Button6 = New System.Windows.Forms.Button()
         Me.Button5 = New System.Windows.Forms.Button()
         Me.Label31 = New System.Windows.Forms.Label()
         Me.TextBox23 = New System.Windows.Forms.TextBox()
-        Me.Label23 = New System.Windows.Forms.Label()
         Me.Button7 = New System.Windows.Forms.Button()
-        Me.Button8 = New System.Windows.Forms.Button()
-        Me.TextBox3 = New System.Windows.Forms.TextBox()
         Me.Label22 = New System.Windows.Forms.Label()
         Me.TextBox2 = New System.Windows.Forms.TextBox()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
@@ -113,6 +102,9 @@ Partial Class frmEditCuad
         Me.Label26 = New System.Windows.Forms.Label()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.CheckBox4 = New System.Windows.Forms.CheckBox()
+        Me.TextBox4 = New System.Windows.Forms.TextBox()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.CheckBox2 = New System.Windows.Forms.CheckBox()
         Me.ComboBox7 = New System.Windows.Forms.ComboBox()
@@ -134,9 +126,7 @@ Partial Class frmEditCuad
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.ErrorProvider1 = New System.Windows.Forms.ErrorProvider(Me.components)
         Me.Button13 = New System.Windows.Forms.Button()
-        Me.Label5 = New System.Windows.Forms.Label()
-        Me.CheckBox4 = New System.Windows.Forms.CheckBox()
-        Me.TextBox4 = New System.Windows.Forms.TextBox()
+        Me.Label6 = New System.Windows.Forms.Label()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.StatusStrip1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
@@ -244,21 +234,11 @@ Partial Class frmEditCuad
         '
         Me.Label19.AutoSize = True
         Me.Label19.Font = New System.Drawing.Font("Segoe UI Semibold", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label19.Location = New System.Drawing.Point(304, 418)
+        Me.Label19.Location = New System.Drawing.Point(47, 441)
         Me.Label19.Name = "Label19"
         Me.Label19.Size = New System.Drawing.Size(36, 13)
         Me.Label19.TabIndex = 69
         Me.Label19.Text = "Tomo"
-        '
-        'Label18
-        '
-        Me.Label18.AutoSize = True
-        Me.Label18.Font = New System.Drawing.Font("Segoe UI Semibold", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label18.Location = New System.Drawing.Point(45, 441)
-        Me.Label18.Name = "Label18"
-        Me.Label18.Size = New System.Drawing.Size(31, 13)
-        Me.Label18.TabIndex = 68
-        Me.Label18.Text = "Hoja"
         '
         'Label17
         '
@@ -355,16 +335,6 @@ Partial Class frmEditCuad
         Me.Label8.Size = New System.Drawing.Size(55, 13)
         Me.Label8.TabIndex = 58
         Me.Label8.Text = "Signatura"
-        '
-        'Label7
-        '
-        Me.Label7.AutoSize = True
-        Me.Label7.Font = New System.Drawing.Font("Segoe UI Semibold", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label7.Location = New System.Drawing.Point(304, 446)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(47, 13)
-        Me.Label7.TabIndex = 57
-        Me.Label7.Text = "Carpeta"
         '
         'Label4
         '
@@ -582,9 +552,9 @@ Partial Class frmEditCuad
         '
         'TextBox11
         '
-        Me.TextBox11.Location = New System.Drawing.Point(371, 414)
+        Me.TextBox11.Location = New System.Drawing.Point(173, 437)
         Me.TextBox11.Name = "TextBox11"
-        Me.TextBox11.Size = New System.Drawing.Size(87, 20)
+        Me.TextBox11.Size = New System.Drawing.Size(143, 20)
         Me.TextBox11.TabIndex = 13
         '
         'CheckBox14
@@ -597,13 +567,6 @@ Partial Class frmEditCuad
         Me.CheckBox14.TabIndex = 47
         Me.CheckBox14.Text = "Subdivision"
         Me.CheckBox14.UseVisualStyleBackColor = True
-        '
-        'TextBox10
-        '
-        Me.TextBox10.Location = New System.Drawing.Point(175, 442)
-        Me.TextBox10.Name = "TextBox10"
-        Me.TextBox10.Size = New System.Drawing.Size(70, 20)
-        Me.TextBox10.TabIndex = 7
         '
         'CheckBox12
         '
@@ -628,15 +591,8 @@ Partial Class frmEditCuad
         '
         Me.TextBox7.Location = New System.Drawing.Point(175, 411)
         Me.TextBox7.Name = "TextBox7"
-        Me.TextBox7.Size = New System.Drawing.Size(70, 20)
+        Me.TextBox7.Size = New System.Drawing.Size(283, 20)
         Me.TextBox7.TabIndex = 9
-        '
-        'TextBox6
-        '
-        Me.TextBox6.Location = New System.Drawing.Point(371, 442)
-        Me.TextBox6.Name = "TextBox6"
-        Me.TextBox6.Size = New System.Drawing.Size(87, 20)
-        Me.TextBox6.TabIndex = 8
         '
         'TextBox16
         '
@@ -683,23 +639,12 @@ Partial Class frmEditCuad
         '
         Me.CheckBox11.AutoSize = True
         Me.CheckBox11.ForeColor = System.Drawing.SystemColors.ActiveCaption
-        Me.CheckBox11.Location = New System.Drawing.Point(285, 418)
+        Me.CheckBox11.Location = New System.Drawing.Point(28, 441)
         Me.CheckBox11.Name = "CheckBox11"
         Me.CheckBox11.Size = New System.Drawing.Size(53, 17)
         Me.CheckBox11.TabIndex = 54
         Me.CheckBox11.Text = "Tomo"
         Me.CheckBox11.UseVisualStyleBackColor = True
-        '
-        'CheckBox10
-        '
-        Me.CheckBox10.AutoSize = True
-        Me.CheckBox10.ForeColor = System.Drawing.SystemColors.ActiveCaption
-        Me.CheckBox10.Location = New System.Drawing.Point(26, 439)
-        Me.CheckBox10.Name = "CheckBox10"
-        Me.CheckBox10.Size = New System.Drawing.Size(48, 17)
-        Me.CheckBox10.TabIndex = 53
-        Me.CheckBox10.Text = "Hoja"
-        Me.CheckBox10.UseVisualStyleBackColor = True
         '
         'CheckBox9
         '
@@ -722,17 +667,6 @@ Partial Class frmEditCuad
         Me.CheckBox7.TabIndex = 45
         Me.CheckBox7.Text = "Signatura"
         Me.CheckBox7.UseVisualStyleBackColor = True
-        '
-        'CheckBox6
-        '
-        Me.CheckBox6.AutoSize = True
-        Me.CheckBox6.ForeColor = System.Drawing.SystemColors.ActiveCaption
-        Me.CheckBox6.Location = New System.Drawing.Point(285, 445)
-        Me.CheckBox6.Name = "CheckBox6"
-        Me.CheckBox6.Size = New System.Drawing.Size(63, 17)
-        Me.CheckBox6.TabIndex = 44
-        Me.CheckBox6.Text = "Carpeta"
-        Me.CheckBox6.UseVisualStyleBackColor = True
         '
         'CheckBox3
         '
@@ -783,18 +717,13 @@ Partial Class frmEditCuad
         '
         Me.GroupBox2.BackColor = System.Drawing.Color.Gainsboro
         Me.GroupBox2.Controls.Add(Me.Label36)
-        Me.GroupBox2.Controls.Add(Me.Label35)
         Me.GroupBox2.Controls.Add(Me.Label34)
         Me.GroupBox2.Controls.Add(Me.Button12)
-        Me.GroupBox2.Controls.Add(Me.Button11)
         Me.GroupBox2.Controls.Add(Me.Button6)
         Me.GroupBox2.Controls.Add(Me.Button5)
         Me.GroupBox2.Controls.Add(Me.Label31)
         Me.GroupBox2.Controls.Add(Me.TextBox23)
-        Me.GroupBox2.Controls.Add(Me.Label23)
         Me.GroupBox2.Controls.Add(Me.Button7)
-        Me.GroupBox2.Controls.Add(Me.Button8)
-        Me.GroupBox2.Controls.Add(Me.TextBox3)
         Me.GroupBox2.Controls.Add(Me.Label22)
         Me.GroupBox2.Controls.Add(Me.TextBox2)
         Me.GroupBox2.Location = New System.Drawing.Point(18, 21)
@@ -809,29 +738,18 @@ Partial Class frmEditCuad
         Me.Label36.AutoSize = True
         Me.Label36.Font = New System.Drawing.Font("Segoe UI Semibold", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label36.ForeColor = System.Drawing.Color.Crimson
-        Me.Label36.Location = New System.Drawing.Point(423, 191)
+        Me.Label36.Location = New System.Drawing.Point(423, 27)
         Me.Label36.Name = "Label36"
         Me.Label36.Size = New System.Drawing.Size(207, 13)
         Me.Label36.TabIndex = 76
         Me.Label36.Text = "Este recurso NO existe en el repositorio"
-        '
-        'Label35
-        '
-        Me.Label35.AutoSize = True
-        Me.Label35.Font = New System.Drawing.Font("Segoe UI Semibold", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label35.ForeColor = System.Drawing.Color.Green
-        Me.Label35.Location = New System.Drawing.Point(423, 113)
-        Me.Label35.Name = "Label35"
-        Me.Label35.Size = New System.Drawing.Size(188, 13)
-        Me.Label35.TabIndex = 75
-        Me.Label35.Text = "Este recurso existe en el repositorio"
         '
         'Label34
         '
         Me.Label34.AutoSize = True
         Me.Label34.Font = New System.Drawing.Font("Segoe UI Semibold", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label34.ForeColor = System.Drawing.Color.Green
-        Me.Label34.Location = New System.Drawing.Point(423, 27)
+        Me.Label34.Location = New System.Drawing.Point(423, 105)
         Me.Label34.Name = "Label34"
         Me.Label34.Size = New System.Drawing.Size(188, 13)
         Me.Label34.TabIndex = 74
@@ -840,7 +758,7 @@ Partial Class frmEditCuad
         'Button12
         '
         Me.Button12.Image = CType(resources.GetObject("Button12.Image"), System.Drawing.Image)
-        Me.Button12.Location = New System.Drawing.Point(755, 207)
+        Me.Button12.Location = New System.Drawing.Point(755, 43)
         Me.Button12.Name = "Button12"
         Me.Button12.Size = New System.Drawing.Size(99, 45)
         Me.Button12.TabIndex = 11
@@ -848,21 +766,10 @@ Partial Class frmEditCuad
         Me.Button12.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
         Me.Button12.UseVisualStyleBackColor = True
         '
-        'Button11
-        '
-        Me.Button11.Image = CType(resources.GetObject("Button11.Image"), System.Drawing.Image)
-        Me.Button11.Location = New System.Drawing.Point(755, 129)
-        Me.Button11.Name = "Button11"
-        Me.Button11.Size = New System.Drawing.Size(99, 45)
-        Me.Button11.TabIndex = 10
-        Me.Button11.Text = "Consultar Repo"
-        Me.Button11.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
-        Me.Button11.UseVisualStyleBackColor = True
-        '
         'Button6
         '
         Me.Button6.Image = CType(resources.GetObject("Button6.Image"), System.Drawing.Image)
-        Me.Button6.Location = New System.Drawing.Point(755, 43)
+        Me.Button6.Location = New System.Drawing.Point(755, 121)
         Me.Button6.Name = "Button6"
         Me.Button6.Size = New System.Drawing.Size(99, 45)
         Me.Button6.TabIndex = 9
@@ -873,7 +780,7 @@ Partial Class frmEditCuad
         'Button5
         '
         Me.Button5.Image = CType(resources.GetObject("Button5.Image"), System.Drawing.Image)
-        Me.Button5.Location = New System.Drawing.Point(23, 207)
+        Me.Button5.Location = New System.Drawing.Point(23, 43)
         Me.Button5.Name = "Button5"
         Me.Button5.Size = New System.Drawing.Size(75, 45)
         Me.Button5.TabIndex = 8
@@ -884,7 +791,7 @@ Partial Class frmEditCuad
         'Label31
         '
         Me.Label31.AutoSize = True
-        Me.Label31.Location = New System.Drawing.Point(110, 191)
+        Me.Label31.Location = New System.Drawing.Point(110, 27)
         Me.Label31.Name = "Label31"
         Me.Label31.Size = New System.Drawing.Size(86, 13)
         Me.Label31.TabIndex = 7
@@ -893,25 +800,16 @@ Partial Class frmEditCuad
         'TextBox23
         '
         Me.TextBox23.AllowDrop = True
-        Me.TextBox23.Location = New System.Drawing.Point(113, 207)
+        Me.TextBox23.Location = New System.Drawing.Point(113, 43)
         Me.TextBox23.Multiline = True
         Me.TextBox23.Name = "TextBox23"
         Me.TextBox23.Size = New System.Drawing.Size(585, 37)
         Me.TextBox23.TabIndex = 6
         '
-        'Label23
-        '
-        Me.Label23.AutoSize = True
-        Me.Label23.Location = New System.Drawing.Point(110, 113)
-        Me.Label23.Name = "Label23"
-        Me.Label23.Size = New System.Drawing.Size(150, 13)
-        Me.Label23.TabIndex = 3
-        Me.Label23.Text = "Documento resolución normal "
-        '
         'Button7
         '
         Me.Button7.Image = CType(resources.GetObject("Button7.Image"), System.Drawing.Image)
-        Me.Button7.Location = New System.Drawing.Point(23, 39)
+        Me.Button7.Location = New System.Drawing.Point(23, 117)
         Me.Button7.Name = "Button7"
         Me.Button7.Size = New System.Drawing.Size(75, 45)
         Me.Button7.TabIndex = 4
@@ -919,39 +817,19 @@ Partial Class frmEditCuad
         Me.Button7.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
         Me.Button7.UseVisualStyleBackColor = True
         '
-        'Button8
-        '
-        Me.Button8.Image = CType(resources.GetObject("Button8.Image"), System.Drawing.Image)
-        Me.Button8.Location = New System.Drawing.Point(23, 129)
-        Me.Button8.Name = "Button8"
-        Me.Button8.Size = New System.Drawing.Size(75, 45)
-        Me.Button8.TabIndex = 5
-        Me.Button8.Text = "Abrir"
-        Me.Button8.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
-        Me.Button8.UseVisualStyleBackColor = True
-        '
-        'TextBox3
-        '
-        Me.TextBox3.AllowDrop = True
-        Me.TextBox3.Location = New System.Drawing.Point(113, 129)
-        Me.TextBox3.Multiline = True
-        Me.TextBox3.Name = "TextBox3"
-        Me.TextBox3.Size = New System.Drawing.Size(585, 37)
-        Me.TextBox3.TabIndex = 2
-        '
         'Label22
         '
         Me.Label22.AutoSize = True
-        Me.Label22.Location = New System.Drawing.Point(110, 27)
+        Me.Label22.Location = New System.Drawing.Point(110, 105)
         Me.Label22.Name = "Label22"
-        Me.Label22.Size = New System.Drawing.Size(133, 13)
+        Me.Label22.Size = New System.Drawing.Size(107, 13)
         Me.Label22.TabIndex = 1
-        Me.Label22.Text = "Documento resolución alta"
+        Me.Label22.Text = "Documento miniatura"
         '
         'TextBox2
         '
         Me.TextBox2.AllowDrop = True
-        Me.TextBox2.Location = New System.Drawing.Point(113, 43)
+        Me.TextBox2.Location = New System.Drawing.Point(113, 121)
         Me.TextBox2.Multiline = True
         Me.TextBox2.Name = "TextBox2"
         Me.TextBox2.Size = New System.Drawing.Size(585, 37)
@@ -1013,6 +891,7 @@ Partial Class frmEditCuad
         'TabPage1
         '
         Me.TabPage1.BackColor = System.Drawing.Color.Gainsboro
+        Me.TabPage1.Controls.Add(Me.Label6)
         Me.TabPage1.Controls.Add(Me.Label5)
         Me.TabPage1.Controls.Add(Me.CheckBox4)
         Me.TabPage1.Controls.Add(Me.TextBox4)
@@ -1043,22 +922,18 @@ Partial Class frmEditCuad
         Me.TabPage1.Controls.Add(Me.TextBox1)
         Me.TabPage1.Controls.Add(Me.Label19)
         Me.TabPage1.Controls.Add(Me.TextBox15)
-        Me.TabPage1.Controls.Add(Me.Label18)
         Me.TabPage1.Controls.Add(Me.Label17)
         Me.TabPage1.Controls.Add(Me.TextBox22)
-        Me.TabPage1.Controls.Add(Me.TextBox6)
         Me.TabPage1.Controls.Add(Me.TextBox7)
         Me.TabPage1.Controls.Add(Me.Label14)
         Me.TabPage1.Controls.Add(Me.TextBox8)
         Me.TabPage1.Controls.Add(Me.Label11)
-        Me.TabPage1.Controls.Add(Me.TextBox10)
         Me.TabPage1.Controls.Add(Me.Label10)
         Me.TabPage1.Controls.Add(Me.CheckBox14)
         Me.TabPage1.Controls.Add(Me.Label9)
         Me.TabPage1.Controls.Add(Me.TextBox11)
         Me.TabPage1.Controls.Add(Me.Label8)
         Me.TabPage1.Controls.Add(Me.TextBox12)
-        Me.TabPage1.Controls.Add(Me.Label7)
         Me.TabPage1.Controls.Add(Me.CheckBox15)
         Me.TabPage1.Controls.Add(Me.TextBox14)
         Me.TabPage1.Controls.Add(Me.ComboBox4)
@@ -1076,9 +951,7 @@ Partial Class frmEditCuad
         Me.TabPage1.Controls.Add(Me.MaskedTextBox1)
         Me.TabPage1.Controls.Add(Me.CheckBox9)
         Me.TabPage1.Controls.Add(Me.CheckBox12)
-        Me.TabPage1.Controls.Add(Me.CheckBox6)
         Me.TabPage1.Controls.Add(Me.CheckBox7)
-        Me.TabPage1.Controls.Add(Me.CheckBox10)
         Me.TabPage1.Controls.Add(Me.CheckBox11)
         Me.TabPage1.ImageIndex = 13
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
@@ -1086,7 +959,36 @@ Partial Class frmEditCuad
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
         Me.TabPage1.Size = New System.Drawing.Size(885, 514)
         Me.TabPage1.TabIndex = 0
-        Me.TabPage1.Text = "Atributos GEODOCAT"
+        Me.TabPage1.Text = "Atributos del cuaderno interior"
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Font = New System.Drawing.Font("Segoe UI Semibold", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label5.Location = New System.Drawing.Point(45, 267)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(114, 13)
+        Me.Label5.TabIndex = 96
+        Me.Label5.Text = "Número de cuaderno"
+        '
+        'CheckBox4
+        '
+        Me.CheckBox4.AutoSize = True
+        Me.CheckBox4.ForeColor = System.Drawing.SystemColors.ActiveCaption
+        Me.CheckBox4.Location = New System.Drawing.Point(25, 267)
+        Me.CheckBox4.Name = "CheckBox4"
+        Me.CheckBox4.Size = New System.Drawing.Size(126, 17)
+        Me.CheckBox4.TabIndex = 95
+        Me.CheckBox4.Text = "Número de cuaderno"
+        Me.CheckBox4.UseVisualStyleBackColor = True
+        '
+        'TextBox4
+        '
+        Me.TextBox4.Location = New System.Drawing.Point(171, 264)
+        Me.TextBox4.Name = "TextBox4"
+        Me.TextBox4.Size = New System.Drawing.Size(286, 20)
+        Me.TextBox4.TabIndex = 94
+        Me.TextBox4.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'Label3
         '
@@ -1306,34 +1208,15 @@ Partial Class frmEditCuad
         Me.Button13.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
         Me.Button13.UseVisualStyleBackColor = True
         '
-        'Label5
+        'Label6
         '
-        Me.Label5.AutoSize = True
-        Me.Label5.Font = New System.Drawing.Font("Segoe UI Semibold", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label5.Location = New System.Drawing.Point(45, 267)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(114, 13)
-        Me.Label5.TabIndex = 96
-        Me.Label5.Text = "Número de cuaderno"
-        '
-        'CheckBox4
-        '
-        Me.CheckBox4.AutoSize = True
-        Me.CheckBox4.ForeColor = System.Drawing.SystemColors.ActiveCaption
-        Me.CheckBox4.Location = New System.Drawing.Point(25, 267)
-        Me.CheckBox4.Name = "CheckBox4"
-        Me.CheckBox4.Size = New System.Drawing.Size(126, 17)
-        Me.CheckBox4.TabIndex = 95
-        Me.CheckBox4.Text = "Número de cuaderno"
-        Me.CheckBox4.UseVisualStyleBackColor = True
-        '
-        'TextBox4
-        '
-        Me.TextBox4.Location = New System.Drawing.Point(171, 264)
-        Me.TextBox4.Name = "TextBox4"
-        Me.TextBox4.Size = New System.Drawing.Size(286, 20)
-        Me.TextBox4.TabIndex = 94
-        Me.TextBox4.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.Label6.AutoSize = True
+        Me.Label6.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label6.Location = New System.Drawing.Point(322, 440)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(148, 13)
+        Me.Label6.TabIndex = 97
+        Me.Label6.Text = "Número de tomo, P000H00,..."
         '
         'frmEditCuad
         '
@@ -1372,22 +1255,18 @@ Partial Class frmEditCuad
     Friend WithEvents ComboBox2 As System.Windows.Forms.ComboBox
     Friend WithEvents ComboBox1 As System.Windows.Forms.ComboBox
     Friend WithEvents CheckBox11 As System.Windows.Forms.CheckBox
-    Friend WithEvents CheckBox10 As System.Windows.Forms.CheckBox
     Friend WithEvents CheckBox9 As System.Windows.Forms.CheckBox
     Friend WithEvents CheckBox7 As System.Windows.Forms.CheckBox
-    Friend WithEvents CheckBox6 As System.Windows.Forms.CheckBox
     Friend WithEvents CheckBox3 As System.Windows.Forms.CheckBox
     Friend WithEvents CheckBox1 As System.Windows.Forms.CheckBox
     Friend WithEvents TextBox8 As System.Windows.Forms.TextBox
     Friend WithEvents TextBox7 As System.Windows.Forms.TextBox
-    Friend WithEvents TextBox6 As System.Windows.Forms.TextBox
     Friend WithEvents CheckBox12 As System.Windows.Forms.CheckBox
     Friend WithEvents CheckBox16 As System.Windows.Forms.CheckBox
     Friend WithEvents CheckBox15 As System.Windows.Forms.CheckBox
     Friend WithEvents TextBox12 As System.Windows.Forms.TextBox
     Friend WithEvents TextBox11 As System.Windows.Forms.TextBox
     Friend WithEvents CheckBox14 As System.Windows.Forms.CheckBox
-    Friend WithEvents TextBox10 As System.Windows.Forms.TextBox
     Friend WithEvents ListBox1 As System.Windows.Forms.ListBox
     Friend WithEvents TextBox14 As System.Windows.Forms.TextBox
     Friend WithEvents Label1 As System.Windows.Forms.Label
@@ -1419,19 +1298,14 @@ Partial Class frmEditCuad
     Friend WithEvents Label10 As System.Windows.Forms.Label
     Friend WithEvents Label9 As System.Windows.Forms.Label
     Friend WithEvents Label8 As System.Windows.Forms.Label
-    Friend WithEvents Label7 As System.Windows.Forms.Label
     Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents Label15 As System.Windows.Forms.Label
     Friend WithEvents Label19 As System.Windows.Forms.Label
-    Friend WithEvents Label18 As System.Windows.Forms.Label
     Friend WithEvents Label17 As System.Windows.Forms.Label
     Friend WithEvents Label21 As System.Windows.Forms.Label
     Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
     Friend WithEvents TextBox2 As System.Windows.Forms.TextBox
-    Friend WithEvents Button8 As System.Windows.Forms.Button
     Friend WithEvents Button7 As System.Windows.Forms.Button
-    Friend WithEvents Label23 As System.Windows.Forms.Label
-    Friend WithEvents TextBox3 As System.Windows.Forms.TextBox
     Friend WithEvents Label22 As System.Windows.Forms.Label
     Friend WithEvents OpenFileDialog1 As System.Windows.Forms.OpenFileDialog
     Friend WithEvents Button9 As System.Windows.Forms.Button
@@ -1459,7 +1333,6 @@ Partial Class frmEditCuad
     Friend WithEvents TextBox23 As TextBox
     Friend WithEvents ErrorProvider1 As ErrorProvider
     Friend WithEvents Button12 As Button
-    Friend WithEvents Button11 As Button
     Friend WithEvents Button6 As Button
     Friend WithEvents Button13 As Button
     Friend WithEvents ComboBox3 As ComboBox
@@ -1469,7 +1342,6 @@ Partial Class frmEditCuad
     Friend WithEvents Label33 As Label
     Friend WithEvents CheckBox31 As CheckBox
     Friend WithEvents Label36 As Label
-    Friend WithEvents Label35 As Label
     Friend WithEvents Label34 As Label
     Friend WithEvents Button14 As Button
     Friend WithEvents Button15 As Button
@@ -1479,4 +1351,5 @@ Partial Class frmEditCuad
     Friend WithEvents Label5 As Label
     Friend WithEvents CheckBox4 As CheckBox
     Friend WithEvents TextBox4 As TextBox
+    Friend WithEvents Label6 As Label
 End Class

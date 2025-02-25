@@ -1417,6 +1417,11 @@
 
         If DataGridView1.SelectedRows.Count <> 1 Then
             ModalExclamation("Seleccione un único registro para editar")
+            Exit Sub
+        End If
+        If DataGridView1.CurrentCell Is Nothing Then
+            ModalExclamation("Seleccione un único registro para editar")
+            Exit Sub
         End If
         If DataGridView1.Item("idarchivodocmtn", DataGridView1.CurrentCell.RowIndex).Value.ToString = "" Then
             ModalExclamation("")
@@ -1745,13 +1750,15 @@
 
     Private Sub mnuGenerateThumb_Click(sender As Object, e As EventArgs) Handles mnuGenerateThumb.Click
 
-        ModalInfo("En desarrollo")
-        Exit Sub
+
+
+
+
 
         Dim idDoc As Integer
         Dim outputFolder As String
         Dim pathMiniatura As String
-        Dim docu As docCartoSEE
+        Dim docu As docCuadMTN
         Dim hechos As Integer = 0
         Dim noHechos As Integer = 0
 
@@ -1765,18 +1772,24 @@
             Try
                 'DataGridView1.Item(0, DataGridView1.SelectedRows(i).Index).Value.ToString
                 idDoc = DataGridView1.Item(0, DataGridView1.SelectedRows(i).Index).Value
-                docu = New docCartoSEE(idDoc)
+                docu = New docCuadMTN(idDoc)
                 Application.DoEvents()
 
                 If Not docu.rutaFicheroPDF.ToLower.EndsWith(".pdf") Then Continue For
                 If Not IO.File.Exists(docu.rutaFicheroPDF) Then GenerarLOG($"Fichero PDF no localizado {docu.rutaFicheroPDF}") : noHechos += 1 : Continue For
                 pathMiniatura = docu.rutaFicheroThumb
+
+                If Not IO.Directory.Exists(SacarDirDeRuta(pathMiniatura)) Then
+                    IO.Directory.CreateDirectory(SacarDirDeRuta(pathMiniatura))
+                End If
                 If IO.File.Exists(pathMiniatura) Then IO.File.Delete(pathMiniatura)
-                If Ghost_ExtractPagesPDF2JPG(docu.rutaFicheroPDF, pathMiniatura, True) Then hechos += 1
+
+
+                If generaThumbPortada(docu.rutaFicheroPDF, pathMiniatura) Then hechos += 1
                 docu = Nothing
 
             Catch ex As Exception
-                ModalError("Error al generar miniatura")
+                ModalError(ex.Message)
                 GenerarLOG(ex.Message)
                 noHechos += 1
             End Try

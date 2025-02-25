@@ -1818,8 +1818,7 @@
 
     Private Sub mnuGenerateThumb_Click(sender As Object, e As EventArgs) Handles mnuGenerateThumb.Click
 
-        ModalInfo("En desarrollo")
-        Exit Sub
+
 
         Dim idDoc As Integer
         Dim outputFolder As String
@@ -1845,6 +1844,13 @@
                 If Not IO.File.Exists(docu.rutaFicheroPDF) Then GenerarLOG($"Fichero PDF no localizado {docu.rutaFicheroPDF}") : noHechos += 1 : Continue For
                 pathMiniatura = docu.rutaFicheroThumb
                 If IO.File.Exists(pathMiniatura) Then IO.File.Delete(pathMiniatura)
+
+
+
+
+
+
+
                 If Ghost_ExtractPagesPDF2JPG(docu.rutaFicheroPDF, pathMiniatura, True) Then hechos += 1
                 docu = Nothing
 
