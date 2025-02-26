@@ -203,4 +203,8 @@
 
         Process.Start(My.Application.Info.DirectoryPath & "\Lista dialog.txt")
     End Sub
+
+    Private Sub ListDialog_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+    End Sub
 End Class

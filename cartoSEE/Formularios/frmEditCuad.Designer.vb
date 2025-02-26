@@ -102,6 +102,7 @@ Partial Class frmEditCuad
         Me.Label26 = New System.Windows.Forms.Label()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.Label6 = New System.Windows.Forms.Label()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.CheckBox4 = New System.Windows.Forms.CheckBox()
         Me.TextBox4 = New System.Windows.Forms.TextBox()
@@ -126,7 +127,9 @@ Partial Class frmEditCuad
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.ErrorProvider1 = New System.Windows.Forms.ErrorProvider(Me.components)
         Me.Button13 = New System.Windows.Forms.Button()
-        Me.Label6 = New System.Windows.Forms.Label()
+        Me.TextBox3 = New System.Windows.Forms.TextBox()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.CheckBox5 = New System.Windows.Forms.CheckBox()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.StatusStrip1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
@@ -374,7 +377,7 @@ Partial Class frmEditCuad
         Me.ComboBox6.Name = "ComboBox6"
         Me.ComboBox6.Size = New System.Drawing.Size(283, 21)
         Me.ComboBox6.Sorted = True
-        Me.ComboBox6.TabIndex = 19
+        Me.ComboBox6.TabIndex = 13
         '
         'CheckBox20
         '
@@ -391,10 +394,11 @@ Partial Class frmEditCuad
         '
         Me.ComboBox5.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox5.FormattingEnabled = True
+        Me.ComboBox5.ItemHeight = 13
         Me.ComboBox5.Location = New System.Drawing.Point(172, 203)
         Me.ComboBox5.Name = "ComboBox5"
         Me.ComboBox5.Size = New System.Drawing.Size(104, 21)
-        Me.ComboBox5.TabIndex = 18
+        Me.ComboBox5.TabIndex = 9
         '
         'CheckBox19
         '
@@ -412,7 +416,7 @@ Partial Class frmEditCuad
         Me.MaskedTextBox1.Location = New System.Drawing.Point(173, 107)
         Me.MaskedTextBox1.Name = "MaskedTextBox1"
         Me.MaskedTextBox1.Size = New System.Drawing.Size(104, 20)
-        Me.MaskedTextBox1.TabIndex = 11
+        Me.MaskedTextBox1.TabIndex = 4
         '
         'Button4
         '
@@ -519,7 +523,7 @@ Partial Class frmEditCuad
         Me.TextBox14.Location = New System.Drawing.Point(173, 174)
         Me.TextBox14.Name = "TextBox14"
         Me.TextBox14.Size = New System.Drawing.Size(104, 20)
-        Me.TextBox14.TabIndex = 15
+        Me.TextBox14.TabIndex = 7
         '
         'CheckBox16
         '
@@ -548,14 +552,14 @@ Partial Class frmEditCuad
         Me.TextBox12.Location = New System.Drawing.Point(341, 174)
         Me.TextBox12.Name = "TextBox12"
         Me.TextBox12.Size = New System.Drawing.Size(116, 20)
-        Me.TextBox12.TabIndex = 14
+        Me.TextBox12.TabIndex = 8
         '
         'TextBox11
         '
         Me.TextBox11.Location = New System.Drawing.Point(173, 437)
         Me.TextBox11.Name = "TextBox11"
         Me.TextBox11.Size = New System.Drawing.Size(143, 20)
-        Me.TextBox11.TabIndex = 13
+        Me.TextBox11.TabIndex = 15
         '
         'CheckBox14
         '
@@ -592,7 +596,7 @@ Partial Class frmEditCuad
         Me.TextBox7.Location = New System.Drawing.Point(175, 411)
         Me.TextBox7.Name = "TextBox7"
         Me.TextBox7.Size = New System.Drawing.Size(283, 20)
-        Me.TextBox7.TabIndex = 9
+        Me.TextBox7.TabIndex = 14
         '
         'TextBox16
         '
@@ -600,7 +604,7 @@ Partial Class frmEditCuad
         Me.TextBox16.Multiline = True
         Me.TextBox16.Name = "TextBox16"
         Me.TextBox16.Size = New System.Drawing.Size(629, 98)
-        Me.TextBox16.TabIndex = 17
+        Me.TextBox16.TabIndex = 22
         '
         'TextBox15
         '
@@ -608,14 +612,14 @@ Partial Class frmEditCuad
         Me.TextBox15.Multiline = True
         Me.TextBox15.Name = "TextBox15"
         Me.TextBox15.Size = New System.Drawing.Size(314, 46)
-        Me.TextBox15.TabIndex = 16
+        Me.TextBox15.TabIndex = 17
         '
         'TextBox1
         '
         Me.TextBox1.Location = New System.Drawing.Point(500, 73)
         Me.TextBox1.Name = "TextBox1"
         Me.TextBox1.Size = New System.Drawing.Size(309, 20)
-        Me.TextBox1.TabIndex = 21
+        Me.TextBox1.TabIndex = 16
         '
         'ComboBox2
         '
@@ -855,7 +859,7 @@ Partial Class frmEditCuad
         Me.TextBox17.Location = New System.Drawing.Point(173, 144)
         Me.TextBox17.Name = "TextBox17"
         Me.TextBox17.Size = New System.Drawing.Size(285, 20)
-        Me.TextBox17.TabIndex = 81
+        Me.TextBox17.TabIndex = 6
         '
         'Label25
         '
@@ -961,6 +965,16 @@ Partial Class frmEditCuad
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Atributos del cuaderno interior"
         '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label6.Location = New System.Drawing.Point(322, 440)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(154, 13)
+        Me.Label6.TabIndex = 97
+        Me.Label6.Text = "Número de tomo, C0202H08,..."
+        '
         'Label5
         '
         Me.Label5.AutoSize = True
@@ -987,7 +1001,7 @@ Partial Class frmEditCuad
         Me.TextBox4.Location = New System.Drawing.Point(171, 264)
         Me.TextBox4.Name = "TextBox4"
         Me.TextBox4.Size = New System.Drawing.Size(286, 20)
-        Me.TextBox4.TabIndex = 94
+        Me.TextBox4.TabIndex = 12
         Me.TextBox4.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'Label3
@@ -1015,10 +1029,11 @@ Partial Class frmEditCuad
         '
         Me.ComboBox7.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox7.FormattingEnabled = True
+        Me.ComboBox7.ItemHeight = 13
         Me.ComboBox7.Location = New System.Drawing.Point(171, 235)
         Me.ComboBox7.Name = "ComboBox7"
         Me.ComboBox7.Size = New System.Drawing.Size(286, 21)
-        Me.ComboBox7.TabIndex = 91
+        Me.ComboBox7.TabIndex = 11
         '
         'Button15
         '
@@ -1059,11 +1074,14 @@ Partial Class frmEditCuad
         Me.ComboBox3.Location = New System.Drawing.Point(328, 106)
         Me.ComboBox3.Name = "ComboBox3"
         Me.ComboBox3.Size = New System.Drawing.Size(130, 21)
-        Me.ComboBox3.TabIndex = 84
+        Me.ComboBox3.TabIndex = 5
         '
         'TabPage3
         '
         Me.TabPage3.BackColor = System.Drawing.Color.Gainsboro
+        Me.TabPage3.Controls.Add(Me.TextBox3)
+        Me.TabPage3.Controls.Add(Me.Label7)
+        Me.TabPage3.Controls.Add(Me.CheckBox5)
         Me.TabPage3.Controls.Add(Me.Button14)
         Me.TabPage3.Controls.Add(Me.TextBox24)
         Me.TabPage3.Controls.Add(Me.Label32)
@@ -1104,12 +1122,12 @@ Partial Class frmEditCuad
         Me.TextBox24.Location = New System.Drawing.Point(169, 98)
         Me.TextBox24.Name = "TextBox24"
         Me.TextBox24.Size = New System.Drawing.Size(484, 20)
-        Me.TextBox24.TabIndex = 88
+        Me.TextBox24.TabIndex = 20
         '
         'Label32
         '
         Me.Label32.AutoSize = True
-        Me.Label32.Location = New System.Drawing.Point(44, 98)
+        Me.Label32.Location = New System.Drawing.Point(43, 100)
         Me.Label32.Name = "Label32"
         Me.Label32.Size = New System.Drawing.Size(62, 13)
         Me.Label32.TabIndex = 86
@@ -1131,7 +1149,7 @@ Partial Class frmEditCuad
         Me.TextBox20.Location = New System.Drawing.Point(169, 67)
         Me.TextBox20.Name = "TextBox20"
         Me.TextBox20.Size = New System.Drawing.Size(484, 20)
-        Me.TextBox20.TabIndex = 82
+        Me.TextBox20.TabIndex = 19
         '
         'Label29
         '
@@ -1157,8 +1175,8 @@ Partial Class frmEditCuad
         '
         Me.TextBox19.Location = New System.Drawing.Point(169, 32)
         Me.TextBox19.Name = "TextBox19"
-        Me.TextBox19.Size = New System.Drawing.Size(338, 20)
-        Me.TextBox19.TabIndex = 79
+        Me.TextBox19.Size = New System.Drawing.Size(484, 20)
+        Me.TextBox19.TabIndex = 18
         '
         'Label28
         '
@@ -1208,15 +1226,32 @@ Partial Class frmEditCuad
         Me.Button13.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
         Me.Button13.UseVisualStyleBackColor = True
         '
-        'Label6
+        'TextBox3
         '
-        Me.Label6.AutoSize = True
-        Me.Label6.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label6.Location = New System.Drawing.Point(322, 440)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(148, 13)
-        Me.Label6.TabIndex = 97
-        Me.Label6.Text = "Número de tomo, P000H00,..."
+        Me.TextBox3.Location = New System.Drawing.Point(169, 135)
+        Me.TextBox3.Name = "TextBox3"
+        Me.TextBox3.Size = New System.Drawing.Size(484, 20)
+        Me.TextBox3.TabIndex = 21
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Location = New System.Drawing.Point(43, 136)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(67, 13)
+        Me.Label7.TabIndex = 91
+        Me.Label7.Text = "Instrumentos"
+        '
+        'CheckBox5
+        '
+        Me.CheckBox5.AutoSize = True
+        Me.CheckBox5.ForeColor = System.Drawing.SystemColors.ActiveCaption
+        Me.CheckBox5.Location = New System.Drawing.Point(23, 134)
+        Me.CheckBox5.Name = "CheckBox5"
+        Me.CheckBox5.Size = New System.Drawing.Size(86, 17)
+        Me.CheckBox5.TabIndex = 92
+        Me.CheckBox5.Text = "Instrumentos"
+        Me.CheckBox5.UseVisualStyleBackColor = True
         '
         'frmEditCuad
         '
@@ -1352,4 +1387,7 @@ Partial Class frmEditCuad
     Friend WithEvents CheckBox4 As CheckBox
     Friend WithEvents TextBox4 As TextBox
     Friend WithEvents Label6 As Label
+    Friend WithEvents TextBox3 As TextBox
+    Friend WithEvents Label7 As Label
+    Friend WithEvents CheckBox5 As CheckBox
 End Class

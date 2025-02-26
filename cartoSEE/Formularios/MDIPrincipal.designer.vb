@@ -57,7 +57,6 @@ Partial Class MDIPrincipal
         Me.mnuGenMiniatura = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator6 = New System.Windows.Forms.ToolStripSeparator()
         Me.mnuVisorMosaicos = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuTool_AltaDoc = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuTool_EditAtrib = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuModDocuTiposDoc = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuModDocuObservaciones = New System.Windows.Forms.ToolStripMenuItem()
@@ -84,6 +83,7 @@ Partial Class MDIPrincipal
         Me.mnuDeveloper = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuDeveloperTools = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuOpenAppFolderSetting = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuOldSearch = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAdminTools = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuExportCdD = New System.Windows.Forms.ToolStripMenuItem()
         Me.WindowsMenu = New System.Windows.Forms.ToolStripMenuItem()
@@ -94,6 +94,8 @@ Partial Class MDIPrincipal
         Me.ArrangeIconsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.UserMenu = New System.Windows.Forms.ToolStripMenuItem()
         Me.itemUsermenu = New System.Windows.Forms.ToolStripMenuItem()
+        Me.itemChangePass = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuListaPermisos = New System.Windows.Forms.ToolStripMenuItem()
         Me.itemGestionUser = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuOpenLoggerFile = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuOpenPreferenceFolder = New System.Windows.Forms.ToolStripMenuItem()
@@ -108,7 +110,9 @@ Partial Class MDIPrincipal
         Me.ToolStripButton6 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripButton15 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator9 = New System.Windows.Forms.ToolStripSeparator()
-        Me.ToolStripButton12 = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripDropDownButton2 = New System.Windows.Forms.ToolStripDropDownButton()
+        Me.ToolStripButton12 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripButton22 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripButton17 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator()
         Me.ToolStripSplitButton1 = New System.Windows.Forms.ToolStripSplitButton()
@@ -150,48 +154,52 @@ Partial Class MDIPrincipal
         Me.ToolStripStatusLabel3 = New System.Windows.Forms.ToolStripStatusLabel()
         Me.ToolTip = New System.Windows.Forms.ToolTip(Me.components)
         Me.Panel1 = New System.Windows.Forms.Panel()
-        Me.Button2 = New System.Windows.Forms.Button()
-        Me.GroupBox5 = New System.Windows.Forms.GroupBox()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.Label23 = New System.Windows.Forms.Label()
+        Me.ComboBox7 = New System.Windows.Forms.ComboBox()
         Me.btnGetCdD = New System.Windows.Forms.Button()
+        Me.TextBox21 = New System.Windows.Forms.TextBox()
         Me.btnGetWeird = New System.Windows.Forms.Button()
         Me.btnGetImportant = New System.Windows.Forms.Button()
-        Me.btnGetStar = New System.Windows.Forms.Button()
-        Me.Label28 = New System.Windows.Forms.Label()
-        Me.ComboBox8 = New System.Windows.Forms.ComboBox()
-        Me.ComboBox7 = New System.Windows.Forms.ComboBox()
-        Me.Label23 = New System.Windows.Forms.Label()
-        Me.Label26 = New System.Windows.Forms.Label()
-        Me.Label30 = New System.Windows.Forms.Label()
-        Me.Label25 = New System.Windows.Forms.Label()
-        Me.TextBox20 = New System.Windows.Forms.TextBox()
-        Me.CheckedListBox2 = New System.Windows.Forms.CheckedListBox()
-        Me.TextBox21 = New System.Windows.Forms.TextBox()
-        Me.ComboBox6 = New System.Windows.Forms.ComboBox()
-        Me.Label22 = New System.Windows.Forms.Label()
-        Me.ComboBox5 = New System.Windows.Forms.ComboBox()
-        Me.TextBox18 = New System.Windows.Forms.TextBox()
-        Me.Label21 = New System.Windows.Forms.Label()
         Me.ComboBox4 = New System.Windows.Forms.ComboBox()
-        Me.TextBox17 = New System.Windows.Forms.TextBox()
-        Me.Label20 = New System.Windows.Forms.Label()
-        Me.ComboBox2 = New System.Windows.Forms.ComboBox()
-        Me.TextBox16 = New System.Windows.Forms.TextBox()
-        Me.Label19 = New System.Windows.Forms.Label()
-        Me.ComboBox1 = New System.Windows.Forms.ComboBox()
-        Me.TextBox15 = New System.Windows.Forms.TextBox()
+        Me.btnGetStar = New System.Windows.Forms.Button()
         Me.Label18 = New System.Windows.Forms.Label()
+        Me.TextBox15 = New System.Windows.Forms.TextBox()
+        Me.Label28 = New System.Windows.Forms.Label()
+        Me.ComboBox1 = New System.Windows.Forms.ComboBox()
+        Me.ComboBox8 = New System.Windows.Forms.ComboBox()
+        Me.Label19 = New System.Windows.Forms.Label()
+        Me.TextBox16 = New System.Windows.Forms.TextBox()
+        Me.ComboBox2 = New System.Windows.Forms.ComboBox()
+        Me.Label20 = New System.Windows.Forms.Label()
+        Me.Label26 = New System.Windows.Forms.Label()
+        Me.TextBox17 = New System.Windows.Forms.TextBox()
+        Me.ComboBox6 = New System.Windows.Forms.ComboBox()
+        Me.Label21 = New System.Windows.Forms.Label()
+        Me.Label22 = New System.Windows.Forms.Label()
+        Me.TextBox18 = New System.Windows.Forms.TextBox()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.TextBox6 = New System.Windows.Forms.TextBox()
+        Me.ComboBox5 = New System.Windows.Forms.ComboBox()
+        Me.TextBox8 = New System.Windows.Forms.TextBox()
+        Me.TextBox14 = New System.Windows.Forms.TextBox()
+        Me.Label8 = New System.Windows.Forms.Label()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.Button2 = New System.Windows.Forms.Button()
+        Me.GroupBox5 = New System.Windows.Forms.GroupBox()
+        Me.Panel_DocSearch = New System.Windows.Forms.Panel()
         Me.TextBox4 = New System.Windows.Forms.TextBox()
         Me.Label4 = New System.Windows.Forms.Label()
+        Me.TextBox20 = New System.Windows.Forms.TextBox()
         Me.TextBox2 = New System.Windows.Forms.TextBox()
+        Me.Label25 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
-        Me.Panel_DocSearch = New System.Windows.Forms.Panel()
         Me.Button13 = New System.Windows.Forms.Button()
         Me.Button12 = New System.Windows.Forms.Button()
         Me.lvMunicipios = New System.Windows.Forms.ListView()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.TextBox23 = New System.Windows.Forms.TextBox()
         Me.Label31 = New System.Windows.Forms.Label()
-        Me.Button1 = New System.Windows.Forms.Button()
         Me.Label29 = New System.Windows.Forms.Label()
         Me.Label24 = New System.Windows.Forms.Label()
         Me.Label27 = New System.Windows.Forms.Label()
@@ -204,16 +212,8 @@ Partial Class MDIPrincipal
         Me.Label5 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.PictureBox3 = New System.Windows.Forms.PictureBox()
-        Me.Button3 = New System.Windows.Forms.Button()
-        Me.Button4 = New System.Windows.Forms.Button()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.TextBox5 = New System.Windows.Forms.TextBox()
-        Me.TextBox6 = New System.Windows.Forms.TextBox()
-        Me.Label7 = New System.Windows.Forms.Label()
-        Me.TextBox14 = New System.Windows.Forms.TextBox()
-        Me.Label9 = New System.Windows.Forms.Label()
-        Me.TextBox8 = New System.Windows.Forms.TextBox()
-        Me.Label8 = New System.Windows.Forms.Label()
         Me.RadioButton2 = New System.Windows.Forms.RadioButton()
         Me.RadioButton1 = New System.Windows.Forms.RadioButton()
         Me.Panel_GeoSearch = New System.Windows.Forms.Panel()
@@ -249,11 +249,12 @@ Partial Class MDIPrincipal
         Me.Button6 = New System.Windows.Forms.Button()
         Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
         Me.ImageList2 = New System.Windows.Forms.ImageList(Me.components)
+        Me.ToolStripSeparator11 = New System.Windows.Forms.ToolStripSeparator()
         Me.MenuStrip.SuspendLayout()
         Me.ToolStrip.SuspendLayout()
         Me.StatusStrip.SuspendLayout()
         Me.Panel1.SuspendLayout()
-        Me.GroupBox5.SuspendLayout()
+        Me.GroupBox1.SuspendLayout()
         Me.Panel_DocSearch.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -297,7 +298,7 @@ Partial Class MDIPrincipal
         '
         'FileMenu
         '
-        Me.FileMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuBuscador, Me.mnuBuscadorGeo, Me.ToolStripSeparator5, Me.mnuEjecutar, Me.mnuLimpiar, Me.ToolStripSeparator7, Me.ToolStripMenuItem2, Me.ToolStripMenuItem1, Me.ToolStripSeparator6, Me.mnuVisorMosaicos, Me.mnuTool_AltaDoc, Me.mnuTool_EditAtrib, Me.mnuAddECW, Me.mnuAddContornos, Me.mnuMuniHisto, Me.mnuQueryLibrosRegistro})
+        Me.FileMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuBuscador, Me.mnuBuscadorGeo, Me.ToolStripSeparator5, Me.mnuEjecutar, Me.mnuLimpiar, Me.ToolStripSeparator7, Me.ToolStripMenuItem2, Me.ToolStripMenuItem1, Me.ToolStripSeparator6, Me.mnuVisorMosaicos, Me.mnuTool_EditAtrib, Me.mnuAddECW, Me.mnuAddContornos, Me.mnuMuniHisto, Me.mnuQueryLibrosRegistro})
         Me.FileMenu.ImageTransparentColor = System.Drawing.SystemColors.ActiveBorder
         Me.FileMenu.Name = "FileMenu"
         Me.FileMenu.Size = New System.Drawing.Size(107, 20)
@@ -502,13 +503,6 @@ Partial Class MDIPrincipal
         Me.mnuVisorMosaicos.Size = New System.Drawing.Size(280, 22)
         Me.mnuVisorMosaicos.Text = "Mosaicos Digitales"
         '
-        'mnuTool_AltaDoc
-        '
-        Me.mnuTool_AltaDoc.Image = CType(resources.GetObject("mnuTool_AltaDoc.Image"), System.Drawing.Image)
-        Me.mnuTool_AltaDoc.Name = "mnuTool_AltaDoc"
-        Me.mnuTool_AltaDoc.Size = New System.Drawing.Size(280, 22)
-        Me.mnuTool_AltaDoc.Text = "Alta de documentación"
-        '
         'mnuTool_EditAtrib
         '
         Me.mnuTool_EditAtrib.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuModDocuTiposDoc, Me.mnuModDocuObservaciones, Me.mnuModDocuEstados, Me.mnuModDocuMedidas})
@@ -667,7 +661,7 @@ Partial Class MDIPrincipal
         '
         'mnuDeveloper
         '
-        Me.mnuDeveloper.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuDeveloperTools, Me.mnuOpenAppFolderSetting})
+        Me.mnuDeveloper.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuDeveloperTools, Me.mnuOpenAppFolderSetting, Me.mnuOldSearch})
         Me.mnuDeveloper.Image = CType(resources.GetObject("mnuDeveloper.Image"), System.Drawing.Image)
         Me.mnuDeveloper.Name = "mnuDeveloper"
         Me.mnuDeveloper.Size = New System.Drawing.Size(307, 22)
@@ -686,6 +680,12 @@ Partial Class MDIPrincipal
         Me.mnuOpenAppFolderSetting.Name = "mnuOpenAppFolderSetting"
         Me.mnuOpenAppFolderSetting.Size = New System.Drawing.Size(258, 22)
         Me.mnuOpenAppFolderSetting.Text = "Abrir directorio de configuración"
+        '
+        'mnuOldSearch
+        '
+        Me.mnuOldSearch.Name = "mnuOldSearch"
+        Me.mnuOldSearch.Size = New System.Drawing.Size(258, 22)
+        Me.mnuOldSearch.Text = "Antigua búsqueda"
         '
         'mnuAdminTools
         '
@@ -740,7 +740,7 @@ Partial Class MDIPrincipal
         '
         'UserMenu
         '
-        Me.UserMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.itemUsermenu, Me.itemGestionUser, Me.mnuOpenLoggerFile, Me.mnuOpenPreferenceFolder})
+        Me.UserMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.itemUsermenu, Me.ToolStripSeparator11, Me.itemChangePass, Me.mnuListaPermisos, Me.itemGestionUser, Me.mnuOpenLoggerFile, Me.mnuOpenPreferenceFolder})
         Me.UserMenu.Name = "UserMenu"
         Me.UserMenu.Size = New System.Drawing.Size(62, 20)
         Me.UserMenu.Text = "Usuario"
@@ -751,6 +751,18 @@ Partial Class MDIPrincipal
         Me.itemUsermenu.Name = "itemUsermenu"
         Me.itemUsermenu.Size = New System.Drawing.Size(253, 22)
         Me.itemUsermenu.Text = "Notificación de incidencia"
+        '
+        'itemChangePass
+        '
+        Me.itemChangePass.Name = "itemChangePass"
+        Me.itemChangePass.Size = New System.Drawing.Size(253, 22)
+        Me.itemChangePass.Text = "Cambiar contraseña"
+        '
+        'mnuListaPermisos
+        '
+        Me.mnuListaPermisos.Name = "mnuListaPermisos"
+        Me.mnuListaPermisos.Size = New System.Drawing.Size(253, 22)
+        Me.mnuListaPermisos.Text = "Lista de permisos"
         '
         'itemGestionUser
         '
@@ -803,7 +815,7 @@ Partial Class MDIPrincipal
         'ToolStrip
         '
         Me.ToolStrip.ImageScalingSize = New System.Drawing.Size(48, 48)
-        Me.ToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolConfig, Me.ToolStripSeparator1, Me.ToolStripButton5, Me.ToolStripButton6, Me.ToolStripButton15, Me.ToolStripSeparator9, Me.ToolStripButton12, Me.ToolStripButton17, Me.ToolStripSeparator3, Me.ToolStripSplitButton1, Me.ButCarrito, Me.btnVisorMosaicos, Me.ToolStripButton20, Me.ToolStripButton10, Me.btnExportCdD, Me.ToolStripDropDownButton1, Me.ToolStripButton19, Me.ToolStripButton1, Me.ToolStripSeparator4, Me.ToolStripButton3, Me.ToolStripButton4, Me.ToolMiniaturas, Me.ToolStripButton7, Me.ToolStripButton16, Me.ToolStripButton18, Me.ToolStripButton14, Me.ToolStripButton8, Me.ToolStripSeparator2, Me.ToolStripButton11, Me.ToolStripButton2, Me.HelpToolStripButton, Me.ToolStripButton13})
+        Me.ToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolConfig, Me.ToolStripSeparator1, Me.ToolStripButton5, Me.ToolStripButton6, Me.ToolStripButton15, Me.ToolStripSeparator9, Me.ToolStripDropDownButton2, Me.ToolStripButton17, Me.ToolStripSeparator3, Me.ToolStripSplitButton1, Me.ButCarrito, Me.btnVisorMosaicos, Me.ToolStripButton20, Me.ToolStripButton10, Me.btnExportCdD, Me.ToolStripDropDownButton1, Me.ToolStripButton19, Me.ToolStripButton1, Me.ToolStripSeparator4, Me.ToolStripButton3, Me.ToolStripButton4, Me.ToolMiniaturas, Me.ToolStripButton7, Me.ToolStripButton16, Me.ToolStripButton18, Me.ToolStripButton14, Me.ToolStripButton8, Me.ToolStripSeparator2, Me.ToolStripButton11, Me.ToolStripButton2, Me.HelpToolStripButton, Me.ToolStripButton13})
         Me.ToolStrip.Location = New System.Drawing.Point(0, 24)
         Me.ToolStrip.Name = "ToolStrip"
         Me.ToolStrip.Size = New System.Drawing.Size(1539, 55)
@@ -856,15 +868,29 @@ Partial Class MDIPrincipal
         Me.ToolStripSeparator9.Name = "ToolStripSeparator9"
         Me.ToolStripSeparator9.Size = New System.Drawing.Size(6, 55)
         '
+        'ToolStripDropDownButton2
+        '
+        Me.ToolStripDropDownButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.ToolStripDropDownButton2.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripButton12, Me.ToolStripButton22})
+        Me.ToolStripDropDownButton2.Image = CType(resources.GetObject("ToolStripDropDownButton2.Image"), System.Drawing.Image)
+        Me.ToolStripDropDownButton2.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.ToolStripDropDownButton2.Name = "ToolStripDropDownButton2"
+        Me.ToolStripDropDownButton2.Size = New System.Drawing.Size(61, 52)
+        Me.ToolStripDropDownButton2.Text = "ToolStripDropDownButton2"
+        '
         'ToolStripButton12
         '
-        Me.ToolStripButton12.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
         Me.ToolStripButton12.Image = CType(resources.GetObject("ToolStripButton12.Image"), System.Drawing.Image)
-        Me.ToolStripButton12.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.ToolStripButton12.Name = "ToolStripButton12"
-        Me.ToolStripButton12.Size = New System.Drawing.Size(52, 52)
-        Me.ToolStripButton12.Text = "Ejecutar búsqueda"
-        Me.ToolStripButton12.ToolTipText = "Realizar consulta"
+        Me.ToolStripButton12.Size = New System.Drawing.Size(233, 22)
+        Me.ToolStripButton12.Text = "Buscar cartografía GEODOCAT"
+        '
+        'ToolStripButton22
+        '
+        Me.ToolStripButton22.Image = Global.cartoSEE.My.Resources.Resources.Icon_Cuaderno_de_brujula_copy
+        Me.ToolStripButton22.Name = "ToolStripButton22"
+        Me.ToolStripButton22.Size = New System.Drawing.Size(233, 22)
+        Me.ToolStripButton22.Text = "Buscar Cuadernos MTN"
         '
         'ToolStripButton17
         '
@@ -890,19 +916,20 @@ Partial Class MDIPrincipal
         Me.ToolStripSplitButton1.Name = "ToolStripSplitButton1"
         Me.ToolStripSplitButton1.Size = New System.Drawing.Size(64, 52)
         Me.ToolStripSplitButton1.Text = "ToolStripSplitButton1"
+        Me.ToolStripSplitButton1.ToolTipText = "Desplegar para crear nuevos documentos"
         '
         'ToolStripButton9
         '
         Me.ToolStripButton9.Image = CType(resources.GetObject("ToolStripButton9.Image"), System.Drawing.Image)
         Me.ToolStripButton9.Name = "ToolStripButton9"
-        Me.ToolStripButton9.Size = New System.Drawing.Size(286, 54)
+        Me.ToolStripButton9.Size = New System.Drawing.Size(254, 22)
         Me.ToolStripButton9.Text = "Nuevo documento de GEODOCAT"
         '
         'ToolStripButton21
         '
         Me.ToolStripButton21.Image = CType(resources.GetObject("ToolStripButton21.Image"), System.Drawing.Image)
         Me.ToolStripButton21.Name = "ToolStripButton21"
-        Me.ToolStripButton21.Size = New System.Drawing.Size(286, 54)
+        Me.ToolStripButton21.Size = New System.Drawing.Size(254, 22)
         Me.ToolStripButton21.Text = "Nuevo cuaderno interior"
         '
         'ButCarrito
@@ -1213,6 +1240,7 @@ Partial Class MDIPrincipal
         '
         'Panel1
         '
+        Me.Panel1.Controls.Add(Me.GroupBox1)
         Me.Panel1.Controls.Add(Me.Button2)
         Me.Panel1.Controls.Add(Me.GroupBox5)
         Me.Panel1.Controls.Add(Me.Panel_DocSearch)
@@ -1224,6 +1252,335 @@ Partial Class MDIPrincipal
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(839, 924)
         Me.Panel1.TabIndex = 13
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.Label23)
+        Me.GroupBox1.Controls.Add(Me.ComboBox7)
+        Me.GroupBox1.Controls.Add(Me.btnGetCdD)
+        Me.GroupBox1.Controls.Add(Me.TextBox21)
+        Me.GroupBox1.Controls.Add(Me.btnGetWeird)
+        Me.GroupBox1.Controls.Add(Me.btnGetImportant)
+        Me.GroupBox1.Controls.Add(Me.ComboBox4)
+        Me.GroupBox1.Controls.Add(Me.btnGetStar)
+        Me.GroupBox1.Controls.Add(Me.Label18)
+        Me.GroupBox1.Controls.Add(Me.TextBox15)
+        Me.GroupBox1.Controls.Add(Me.Label28)
+        Me.GroupBox1.Controls.Add(Me.ComboBox1)
+        Me.GroupBox1.Controls.Add(Me.ComboBox8)
+        Me.GroupBox1.Controls.Add(Me.Label19)
+        Me.GroupBox1.Controls.Add(Me.TextBox16)
+        Me.GroupBox1.Controls.Add(Me.ComboBox2)
+        Me.GroupBox1.Controls.Add(Me.Label20)
+        Me.GroupBox1.Controls.Add(Me.Label26)
+        Me.GroupBox1.Controls.Add(Me.TextBox17)
+        Me.GroupBox1.Controls.Add(Me.ComboBox6)
+        Me.GroupBox1.Controls.Add(Me.Label21)
+        Me.GroupBox1.Controls.Add(Me.Label22)
+        Me.GroupBox1.Controls.Add(Me.TextBox18)
+        Me.GroupBox1.Controls.Add(Me.Label7)
+        Me.GroupBox1.Controls.Add(Me.TextBox6)
+        Me.GroupBox1.Controls.Add(Me.ComboBox5)
+        Me.GroupBox1.Controls.Add(Me.TextBox8)
+        Me.GroupBox1.Controls.Add(Me.TextBox14)
+        Me.GroupBox1.Controls.Add(Me.Label8)
+        Me.GroupBox1.Controls.Add(Me.Label9)
+        Me.GroupBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBox1.Location = New System.Drawing.Point(256, 176)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(236, 439)
+        Me.GroupBox1.TabIndex = 34
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "Otros filtros de material cartográfico"
+        '
+        'Label23
+        '
+        Me.Label23.AutoSize = True
+        Me.Label23.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label23.Location = New System.Drawing.Point(20, 267)
+        Me.Label23.Name = "Label23"
+        Me.Label23.Size = New System.Drawing.Size(72, 13)
+        Me.Label23.TabIndex = 45
+        Me.Label23.Text = "Conservación"
+        '
+        'ComboBox7
+        '
+        Me.ComboBox7.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ComboBox7.FormattingEnabled = True
+        Me.ComboBox7.Location = New System.Drawing.Point(98, 264)
+        Me.ComboBox7.Name = "ComboBox7"
+        Me.ComboBox7.Size = New System.Drawing.Size(113, 21)
+        Me.ComboBox7.TabIndex = 44
+        '
+        'btnGetCdD
+        '
+        Me.btnGetCdD.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.btnGetCdD.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnGetCdD.Image = CType(resources.GetObject("btnGetCdD.Image"), System.Drawing.Image)
+        Me.btnGetCdD.Location = New System.Drawing.Point(40, 372)
+        Me.btnGetCdD.Name = "btnGetCdD"
+        Me.btnGetCdD.Size = New System.Drawing.Size(75, 50)
+        Me.btnGetCdD.TabIndex = 43
+        Me.btnGetCdD.Text = "Rev CdD"
+        Me.btnGetCdD.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+        Me.btnGetCdD.UseVisualStyleBackColor = True
+        '
+        'TextBox21
+        '
+        Me.TextBox21.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBox21.Location = New System.Drawing.Point(98, 131)
+        Me.TextBox21.Name = "TextBox21"
+        Me.TextBox21.Size = New System.Drawing.Size(113, 20)
+        Me.TextBox21.TabIndex = 32
+        '
+        'btnGetWeird
+        '
+        Me.btnGetWeird.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnGetWeird.Image = CType(resources.GetObject("btnGetWeird.Image"), System.Drawing.Image)
+        Me.btnGetWeird.Location = New System.Drawing.Point(121, 372)
+        Me.btnGetWeird.Name = "btnGetWeird"
+        Me.btnGetWeird.Size = New System.Drawing.Size(75, 50)
+        Me.btnGetWeird.TabIndex = 42
+        Me.btnGetWeird.Text = "Raros"
+        Me.btnGetWeird.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+        Me.btnGetWeird.UseVisualStyleBackColor = True
+        '
+        'btnGetImportant
+        '
+        Me.btnGetImportant.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnGetImportant.Image = CType(resources.GetObject("btnGetImportant.Image"), System.Drawing.Image)
+        Me.btnGetImportant.Location = New System.Drawing.Point(121, 316)
+        Me.btnGetImportant.Name = "btnGetImportant"
+        Me.btnGetImportant.Size = New System.Drawing.Size(75, 50)
+        Me.btnGetImportant.TabIndex = 41
+        Me.btnGetImportant.Text = "Destacados"
+        Me.btnGetImportant.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+        Me.btnGetImportant.UseVisualStyleBackColor = True
+        '
+        'ComboBox4
+        '
+        Me.ComboBox4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ComboBox4.FormattingEnabled = True
+        Me.ComboBox4.Location = New System.Drawing.Point(98, 82)
+        Me.ComboBox4.Name = "ComboBox4"
+        Me.ComboBox4.Size = New System.Drawing.Size(52, 21)
+        Me.ComboBox4.TabIndex = 20
+        '
+        'btnGetStar
+        '
+        Me.btnGetStar.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.btnGetStar.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnGetStar.Image = CType(resources.GetObject("btnGetStar.Image"), System.Drawing.Image)
+        Me.btnGetStar.Location = New System.Drawing.Point(40, 316)
+        Me.btnGetStar.Name = "btnGetStar"
+        Me.btnGetStar.Size = New System.Drawing.Size(75, 50)
+        Me.btnGetStar.TabIndex = 40
+        Me.btnGetStar.Text = "5 estrellas"
+        Me.btnGetStar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+        Me.btnGetStar.UseVisualStyleBackColor = True
+        '
+        'Label18
+        '
+        Me.Label18.AutoSize = True
+        Me.Label18.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label18.Location = New System.Drawing.Point(50, 32)
+        Me.Label18.Name = "Label18"
+        Me.Label18.Size = New System.Drawing.Size(42, 13)
+        Me.Label18.TabIndex = 12
+        Me.Label18.Text = "Vertical"
+        '
+        'TextBox15
+        '
+        Me.TextBox15.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBox15.Location = New System.Drawing.Point(156, 30)
+        Me.TextBox15.Name = "TextBox15"
+        Me.TextBox15.Size = New System.Drawing.Size(55, 20)
+        Me.TextBox15.TabIndex = 13
+        '
+        'Label28
+        '
+        Me.Label28.AutoSize = True
+        Me.Label28.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label28.Location = New System.Drawing.Point(34, 240)
+        Me.Label28.Name = "Label28"
+        Me.Label28.Size = New System.Drawing.Size(58, 13)
+        Me.Label28.TabIndex = 37
+        Me.Label28.Text = "En ABSYS"
+        '
+        'ComboBox1
+        '
+        Me.ComboBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ComboBox1.FormattingEnabled = True
+        Me.ComboBox1.Location = New System.Drawing.Point(98, 29)
+        Me.ComboBox1.Name = "ComboBox1"
+        Me.ComboBox1.Size = New System.Drawing.Size(52, 21)
+        Me.ComboBox1.TabIndex = 14
+        '
+        'ComboBox8
+        '
+        Me.ComboBox8.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBox8.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ComboBox8.FormattingEnabled = True
+        Me.ComboBox8.Location = New System.Drawing.Point(98, 237)
+        Me.ComboBox8.Name = "ComboBox8"
+        Me.ComboBox8.Size = New System.Drawing.Size(113, 21)
+        Me.ComboBox8.TabIndex = 36
+        '
+        'Label19
+        '
+        Me.Label19.AutoSize = True
+        Me.Label19.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label19.Location = New System.Drawing.Point(38, 58)
+        Me.Label19.Name = "Label19"
+        Me.Label19.Size = New System.Drawing.Size(54, 13)
+        Me.Label19.TabIndex = 15
+        Me.Label19.Text = "Horizontal"
+        '
+        'TextBox16
+        '
+        Me.TextBox16.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBox16.Location = New System.Drawing.Point(156, 56)
+        Me.TextBox16.Name = "TextBox16"
+        Me.TextBox16.Size = New System.Drawing.Size(55, 20)
+        Me.TextBox16.TabIndex = 16
+        '
+        'ComboBox2
+        '
+        Me.ComboBox2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ComboBox2.FormattingEnabled = True
+        Me.ComboBox2.Location = New System.Drawing.Point(98, 55)
+        Me.ComboBox2.Name = "ComboBox2"
+        Me.ComboBox2.Size = New System.Drawing.Size(52, 21)
+        Me.ComboBox2.TabIndex = 17
+        '
+        'Label20
+        '
+        Me.Label20.AutoSize = True
+        Me.Label20.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label20.Location = New System.Drawing.Point(53, 84)
+        Me.Label20.Name = "Label20"
+        Me.Label20.Size = New System.Drawing.Size(39, 13)
+        Me.Label20.TabIndex = 18
+        Me.Label20.Text = "Escala"
+        '
+        'Label26
+        '
+        Me.Label26.AutoSize = True
+        Me.Label26.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label26.Location = New System.Drawing.Point(8, 131)
+        Me.Label26.Name = "Label26"
+        Me.Label26.Size = New System.Drawing.Size(89, 13)
+        Me.Label26.TabIndex = 33
+        Me.Label26.Text = "Año Modificación"
+        '
+        'TextBox17
+        '
+        Me.TextBox17.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBox17.Location = New System.Drawing.Point(156, 83)
+        Me.TextBox17.Name = "TextBox17"
+        Me.TextBox17.Size = New System.Drawing.Size(55, 20)
+        Me.TextBox17.TabIndex = 19
+        '
+        'ComboBox6
+        '
+        Me.ComboBox6.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBox6.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ComboBox6.FormattingEnabled = True
+        Me.ComboBox6.Location = New System.Drawing.Point(98, 208)
+        Me.ComboBox6.Name = "ComboBox6"
+        Me.ComboBox6.Size = New System.Drawing.Size(113, 21)
+        Me.ComboBox6.TabIndex = 25
+        '
+        'Label21
+        '
+        Me.Label21.AutoSize = True
+        Me.Label21.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label21.Location = New System.Drawing.Point(55, 110)
+        Me.Label21.Name = "Label21"
+        Me.Label21.Size = New System.Drawing.Size(37, 13)
+        Me.Label21.TabIndex = 21
+        Me.Label21.Text = "Fecha"
+        '
+        'Label22
+        '
+        Me.Label22.AutoSize = True
+        Me.Label22.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label22.Location = New System.Drawing.Point(6, 211)
+        Me.Label22.Name = "Label22"
+        Me.Label22.Size = New System.Drawing.Size(89, 13)
+        Me.Label22.TabIndex = 24
+        Me.Label22.Text = "Junta Estadística"
+        '
+        'TextBox18
+        '
+        Me.TextBox18.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBox18.Location = New System.Drawing.Point(156, 108)
+        Me.TextBox18.Name = "TextBox18"
+        Me.TextBox18.Size = New System.Drawing.Size(55, 20)
+        Me.TextBox18.TabIndex = 22
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label7.Location = New System.Drawing.Point(31, 294)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(52, 13)
+        Me.Label7.TabIndex = 4
+        Me.Label7.Text = "Signatura"
+        '
+        'TextBox6
+        '
+        Me.TextBox6.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBox6.Location = New System.Drawing.Point(98, 291)
+        Me.TextBox6.Name = "TextBox6"
+        Me.TextBox6.Size = New System.Drawing.Size(113, 20)
+        Me.TextBox6.TabIndex = 5
+        '
+        'ComboBox5
+        '
+        Me.ComboBox5.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ComboBox5.FormattingEnabled = True
+        Me.ComboBox5.Location = New System.Drawing.Point(98, 107)
+        Me.ComboBox5.Name = "ComboBox5"
+        Me.ComboBox5.Size = New System.Drawing.Size(52, 21)
+        Me.ComboBox5.TabIndex = 23
+        '
+        'TextBox8
+        '
+        Me.TextBox8.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBox8.Location = New System.Drawing.Point(98, 157)
+        Me.TextBox8.Name = "TextBox8"
+        Me.TextBox8.Size = New System.Drawing.Size(113, 20)
+        Me.TextBox8.TabIndex = 9
+        '
+        'TextBox14
+        '
+        Me.TextBox14.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBox14.Location = New System.Drawing.Point(98, 180)
+        Me.TextBox14.Name = "TextBox14"
+        Me.TextBox14.Size = New System.Drawing.Size(113, 20)
+        Me.TextBox14.TabIndex = 11
+        '
+        'Label8
+        '
+        Me.Label8.AutoSize = True
+        Me.Label8.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label8.Location = New System.Drawing.Point(38, 160)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(54, 13)
+        Me.Label8.TabIndex = 8
+        Me.Label8.Text = "Colección"
+        '
+        'Label9
+        '
+        Me.Label9.AutoSize = True
+        Me.Label9.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label9.Location = New System.Drawing.Point(31, 183)
+        Me.Label9.Name = "Label9"
+        Me.Label9.Size = New System.Drawing.Size(61, 13)
+        Me.Label9.TabIndex = 10
+        Me.Label9.Text = "Subdivisión"
         '
         'Button2
         '
@@ -1238,333 +1595,29 @@ Partial Class MDIPrincipal
         '
         'GroupBox5
         '
-        Me.GroupBox5.Controls.Add(Me.btnGetCdD)
-        Me.GroupBox5.Controls.Add(Me.btnGetWeird)
-        Me.GroupBox5.Controls.Add(Me.btnGetImportant)
-        Me.GroupBox5.Controls.Add(Me.btnGetStar)
-        Me.GroupBox5.Controls.Add(Me.Label28)
-        Me.GroupBox5.Controls.Add(Me.ComboBox8)
-        Me.GroupBox5.Controls.Add(Me.ComboBox7)
-        Me.GroupBox5.Controls.Add(Me.Label23)
-        Me.GroupBox5.Controls.Add(Me.Label26)
-        Me.GroupBox5.Controls.Add(Me.Label30)
-        Me.GroupBox5.Controls.Add(Me.Label25)
-        Me.GroupBox5.Controls.Add(Me.TextBox20)
-        Me.GroupBox5.Controls.Add(Me.CheckedListBox2)
-        Me.GroupBox5.Controls.Add(Me.TextBox21)
-        Me.GroupBox5.Controls.Add(Me.ComboBox6)
-        Me.GroupBox5.Controls.Add(Me.Label22)
-        Me.GroupBox5.Controls.Add(Me.ComboBox5)
-        Me.GroupBox5.Controls.Add(Me.TextBox18)
-        Me.GroupBox5.Controls.Add(Me.Label21)
-        Me.GroupBox5.Controls.Add(Me.ComboBox4)
-        Me.GroupBox5.Controls.Add(Me.TextBox17)
-        Me.GroupBox5.Controls.Add(Me.Label20)
-        Me.GroupBox5.Controls.Add(Me.ComboBox2)
-        Me.GroupBox5.Controls.Add(Me.TextBox16)
-        Me.GroupBox5.Controls.Add(Me.Label19)
-        Me.GroupBox5.Controls.Add(Me.ComboBox1)
-        Me.GroupBox5.Controls.Add(Me.TextBox15)
-        Me.GroupBox5.Controls.Add(Me.Label18)
-        Me.GroupBox5.Controls.Add(Me.TextBox4)
-        Me.GroupBox5.Controls.Add(Me.Label4)
-        Me.GroupBox5.Controls.Add(Me.TextBox2)
-        Me.GroupBox5.Controls.Add(Me.Label2)
+        Me.GroupBox5.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GroupBox5.Location = New System.Drawing.Point(256, 53)
         Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Size = New System.Drawing.Size(251, 786)
+        Me.GroupBox5.Size = New System.Drawing.Size(240, 110)
         Me.GroupBox5.TabIndex = 19
         Me.GroupBox5.TabStop = False
-        Me.GroupBox5.Text = "Más opciones de filtrado"
-        '
-        'btnGetCdD
-        '
-        Me.btnGetCdD.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.btnGetCdD.Image = CType(resources.GetObject("btnGetCdD.Image"), System.Drawing.Image)
-        Me.btnGetCdD.Location = New System.Drawing.Point(15, 554)
-        Me.btnGetCdD.Name = "btnGetCdD"
-        Me.btnGetCdD.Size = New System.Drawing.Size(75, 50)
-        Me.btnGetCdD.TabIndex = 43
-        Me.btnGetCdD.Text = "Rev CdD"
-        Me.btnGetCdD.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
-        Me.btnGetCdD.UseVisualStyleBackColor = True
-        '
-        'btnGetWeird
-        '
-        Me.btnGetWeird.Image = CType(resources.GetObject("btnGetWeird.Image"), System.Drawing.Image)
-        Me.btnGetWeird.Location = New System.Drawing.Point(159, 96)
-        Me.btnGetWeird.Name = "btnGetWeird"
-        Me.btnGetWeird.Size = New System.Drawing.Size(75, 50)
-        Me.btnGetWeird.TabIndex = 42
-        Me.btnGetWeird.Text = "Raros"
-        Me.btnGetWeird.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
-        Me.btnGetWeird.UseVisualStyleBackColor = True
-        '
-        'btnGetImportant
-        '
-        Me.btnGetImportant.Image = CType(resources.GetObject("btnGetImportant.Image"), System.Drawing.Image)
-        Me.btnGetImportant.Location = New System.Drawing.Point(82, 96)
-        Me.btnGetImportant.Name = "btnGetImportant"
-        Me.btnGetImportant.Size = New System.Drawing.Size(75, 50)
-        Me.btnGetImportant.TabIndex = 41
-        Me.btnGetImportant.Text = "Destacados"
-        Me.btnGetImportant.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
-        Me.btnGetImportant.UseVisualStyleBackColor = True
-        '
-        'btnGetStar
-        '
-        Me.btnGetStar.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.btnGetStar.Image = CType(resources.GetObject("btnGetStar.Image"), System.Drawing.Image)
-        Me.btnGetStar.Location = New System.Drawing.Point(5, 96)
-        Me.btnGetStar.Name = "btnGetStar"
-        Me.btnGetStar.Size = New System.Drawing.Size(75, 50)
-        Me.btnGetStar.TabIndex = 40
-        Me.btnGetStar.Text = "5 estrellas"
-        Me.btnGetStar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
-        Me.btnGetStar.UseVisualStyleBackColor = True
-        '
-        'Label28
-        '
-        Me.Label28.AutoSize = True
-        Me.Label28.Location = New System.Drawing.Point(32, 424)
-        Me.Label28.Name = "Label28"
-        Me.Label28.Size = New System.Drawing.Size(58, 13)
-        Me.Label28.TabIndex = 37
-        Me.Label28.Text = "En ABSYS"
-        '
-        'ComboBox8
-        '
-        Me.ComboBox8.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBox8.FormattingEnabled = True
-        Me.ComboBox8.Location = New System.Drawing.Point(96, 421)
-        Me.ComboBox8.Name = "ComboBox8"
-        Me.ComboBox8.Size = New System.Drawing.Size(105, 21)
-        Me.ComboBox8.TabIndex = 36
-        '
-        'ComboBox7
-        '
-        Me.ComboBox7.FormattingEnabled = True
-        Me.ComboBox7.Location = New System.Drawing.Point(50, 522)
-        Me.ComboBox7.Name = "ComboBox7"
-        Me.ComboBox7.Size = New System.Drawing.Size(134, 21)
-        Me.ComboBox7.TabIndex = 27
-        '
-        'Label23
-        '
-        Me.Label23.AutoSize = True
-        Me.Label23.Location = New System.Drawing.Point(7, 525)
-        Me.Label23.Name = "Label23"
-        Me.Label23.Size = New System.Drawing.Size(44, 13)
-        Me.Label23.TabIndex = 26
-        Me.Label23.Text = "Observ."
-        '
-        'Label26
-        '
-        Me.Label26.AutoSize = True
-        Me.Label26.Location = New System.Drawing.Point(1, 364)
-        Me.Label26.Name = "Label26"
-        Me.Label26.Size = New System.Drawing.Size(89, 13)
-        Me.Label26.TabIndex = 33
-        Me.Label26.Text = "Año Modificación"
-        '
-        'Label30
-        '
-        Me.Label30.AutoSize = True
-        Me.Label30.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label30.Location = New System.Drawing.Point(6, 151)
-        Me.Label30.Name = "Label30"
-        Me.Label30.Size = New System.Drawing.Size(122, 13)
-        Me.Label30.TabIndex = 31
-        Me.Label30.Text = "Estado de conservación"
-        '
-        'Label25
-        '
-        Me.Label25.AutoSize = True
-        Me.Label25.Location = New System.Drawing.Point(5, 54)
-        Me.Label25.Name = "Label25"
-        Me.Label25.Size = New System.Drawing.Size(60, 13)
-        Me.Label25.TabIndex = 31
-        Me.Label25.Text = "Comentario"
-        '
-        'TextBox20
-        '
-        Me.TextBox20.Location = New System.Drawing.Point(6, 70)
-        Me.TextBox20.Name = "TextBox20"
-        Me.TextBox20.Size = New System.Drawing.Size(228, 20)
-        Me.TextBox20.TabIndex = 29
-        '
-        'CheckedListBox2
-        '
-        Me.CheckedListBox2.FormattingEnabled = True
-        Me.CheckedListBox2.Location = New System.Drawing.Point(5, 171)
-        Me.CheckedListBox2.Name = "CheckedListBox2"
-        Me.CheckedListBox2.Size = New System.Drawing.Size(229, 79)
-        Me.CheckedListBox2.Sorted = True
-        Me.CheckedListBox2.TabIndex = 28
-        '
-        'TextBox21
-        '
-        Me.TextBox21.Location = New System.Drawing.Point(102, 361)
-        Me.TextBox21.Name = "TextBox21"
-        Me.TextBox21.Size = New System.Drawing.Size(76, 20)
-        Me.TextBox21.TabIndex = 32
-        '
-        'ComboBox6
-        '
-        Me.ComboBox6.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBox6.FormattingEnabled = True
-        Me.ComboBox6.Location = New System.Drawing.Point(96, 392)
-        Me.ComboBox6.Name = "ComboBox6"
-        Me.ComboBox6.Size = New System.Drawing.Size(105, 21)
-        Me.ComboBox6.TabIndex = 25
-        '
-        'Label22
-        '
-        Me.Label22.AutoSize = True
-        Me.Label22.Location = New System.Drawing.Point(1, 395)
-        Me.Label22.Name = "Label22"
-        Me.Label22.Size = New System.Drawing.Size(89, 13)
-        Me.Label22.TabIndex = 24
-        Me.Label22.Text = "Junta Estadística"
-        '
-        'ComboBox5
-        '
-        Me.ComboBox5.FormattingEnabled = True
-        Me.ComboBox5.Location = New System.Drawing.Point(65, 334)
-        Me.ComboBox5.Name = "ComboBox5"
-        Me.ComboBox5.Size = New System.Drawing.Size(52, 21)
-        Me.ComboBox5.TabIndex = 23
-        '
-        'TextBox18
-        '
-        Me.TextBox18.Location = New System.Drawing.Point(123, 335)
-        Me.TextBox18.Name = "TextBox18"
-        Me.TextBox18.Size = New System.Drawing.Size(55, 20)
-        Me.TextBox18.TabIndex = 22
-        '
-        'Label21
-        '
-        Me.Label21.AutoSize = True
-        Me.Label21.Location = New System.Drawing.Point(22, 338)
-        Me.Label21.Name = "Label21"
-        Me.Label21.Size = New System.Drawing.Size(37, 13)
-        Me.Label21.TabIndex = 21
-        Me.Label21.Text = "Fecha"
-        '
-        'ComboBox4
-        '
-        Me.ComboBox4.FormattingEnabled = True
-        Me.ComboBox4.Location = New System.Drawing.Point(65, 307)
-        Me.ComboBox4.Name = "ComboBox4"
-        Me.ComboBox4.Size = New System.Drawing.Size(52, 21)
-        Me.ComboBox4.TabIndex = 20
-        '
-        'TextBox17
-        '
-        Me.TextBox17.Location = New System.Drawing.Point(123, 308)
-        Me.TextBox17.Name = "TextBox17"
-        Me.TextBox17.Size = New System.Drawing.Size(55, 20)
-        Me.TextBox17.TabIndex = 19
-        '
-        'Label20
-        '
-        Me.Label20.AutoSize = True
-        Me.Label20.Location = New System.Drawing.Point(20, 310)
-        Me.Label20.Name = "Label20"
-        Me.Label20.Size = New System.Drawing.Size(39, 13)
-        Me.Label20.TabIndex = 18
-        Me.Label20.Text = "Escala"
-        '
-        'ComboBox2
-        '
-        Me.ComboBox2.FormattingEnabled = True
-        Me.ComboBox2.Location = New System.Drawing.Point(65, 280)
-        Me.ComboBox2.Name = "ComboBox2"
-        Me.ComboBox2.Size = New System.Drawing.Size(52, 21)
-        Me.ComboBox2.TabIndex = 17
-        '
-        'TextBox16
-        '
-        Me.TextBox16.Location = New System.Drawing.Point(123, 281)
-        Me.TextBox16.Name = "TextBox16"
-        Me.TextBox16.Size = New System.Drawing.Size(55, 20)
-        Me.TextBox16.TabIndex = 16
-        '
-        'Label19
-        '
-        Me.Label19.AutoSize = True
-        Me.Label19.Location = New System.Drawing.Point(5, 284)
-        Me.Label19.Name = "Label19"
-        Me.Label19.Size = New System.Drawing.Size(54, 13)
-        Me.Label19.TabIndex = 15
-        Me.Label19.Text = "Horizontal"
-        '
-        'ComboBox1
-        '
-        Me.ComboBox1.FormattingEnabled = True
-        Me.ComboBox1.Location = New System.Drawing.Point(65, 254)
-        Me.ComboBox1.Name = "ComboBox1"
-        Me.ComboBox1.Size = New System.Drawing.Size(52, 21)
-        Me.ComboBox1.TabIndex = 14
-        '
-        'TextBox15
-        '
-        Me.TextBox15.Location = New System.Drawing.Point(123, 255)
-        Me.TextBox15.Name = "TextBox15"
-        Me.TextBox15.Size = New System.Drawing.Size(55, 20)
-        Me.TextBox15.TabIndex = 13
-        '
-        'Label18
-        '
-        Me.Label18.AutoSize = True
-        Me.Label18.Location = New System.Drawing.Point(17, 258)
-        Me.Label18.Name = "Label18"
-        Me.Label18.Size = New System.Drawing.Size(42, 13)
-        Me.Label18.TabIndex = 12
-        Me.Label18.Text = "Vertical"
-        '
-        'TextBox4
-        '
-        Me.TextBox4.Location = New System.Drawing.Point(129, 24)
-        Me.TextBox4.Name = "TextBox4"
-        Me.TextBox4.Size = New System.Drawing.Size(52, 20)
-        Me.TextBox4.TabIndex = 3
-        '
-        'Label4
-        '
-        Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(99, 27)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(29, 13)
-        Me.Label4.TabIndex = 2
-        Me.Label4.Text = "Hoja"
-        '
-        'TextBox2
-        '
-        Me.TextBox2.Location = New System.Drawing.Point(47, 24)
-        Me.TextBox2.Name = "TextBox2"
-        Me.TextBox2.Size = New System.Drawing.Size(52, 20)
-        Me.TextBox2.TabIndex = 1
-        '
-        'Label2
-        '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(3, 27)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(44, 13)
-        Me.Label2.TabIndex = 0
-        Me.Label2.Text = "Carpeta"
+        Me.GroupBox5.Text = "Otros filtros cuadernos MTN"
         '
         'Panel_DocSearch
         '
         Me.Panel_DocSearch.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
+        Me.Panel_DocSearch.Controls.Add(Me.TextBox4)
+        Me.Panel_DocSearch.Controls.Add(Me.Label4)
+        Me.Panel_DocSearch.Controls.Add(Me.TextBox20)
+        Me.Panel_DocSearch.Controls.Add(Me.TextBox2)
+        Me.Panel_DocSearch.Controls.Add(Me.Label25)
+        Me.Panel_DocSearch.Controls.Add(Me.Label2)
         Me.Panel_DocSearch.Controls.Add(Me.Button13)
         Me.Panel_DocSearch.Controls.Add(Me.Button12)
         Me.Panel_DocSearch.Controls.Add(Me.lvMunicipios)
         Me.Panel_DocSearch.Controls.Add(Me.PictureBox1)
         Me.Panel_DocSearch.Controls.Add(Me.TextBox23)
         Me.Panel_DocSearch.Controls.Add(Me.Label31)
-        Me.Panel_DocSearch.Controls.Add(Me.Button1)
         Me.Panel_DocSearch.Controls.Add(Me.Label29)
         Me.Panel_DocSearch.Controls.Add(Me.Label24)
         Me.Panel_DocSearch.Controls.Add(Me.Label27)
@@ -1577,41 +1630,85 @@ Partial Class MDIPrincipal
         Me.Panel_DocSearch.Controls.Add(Me.Label5)
         Me.Panel_DocSearch.Controls.Add(Me.Label1)
         Me.Panel_DocSearch.Controls.Add(Me.PictureBox3)
-        Me.Panel_DocSearch.Controls.Add(Me.Button3)
-        Me.Panel_DocSearch.Controls.Add(Me.Button4)
         Me.Panel_DocSearch.Controls.Add(Me.Label6)
         Me.Panel_DocSearch.Controls.Add(Me.TextBox5)
-        Me.Panel_DocSearch.Controls.Add(Me.TextBox6)
-        Me.Panel_DocSearch.Controls.Add(Me.Label7)
-        Me.Panel_DocSearch.Controls.Add(Me.TextBox14)
-        Me.Panel_DocSearch.Controls.Add(Me.Label9)
-        Me.Panel_DocSearch.Controls.Add(Me.TextBox8)
-        Me.Panel_DocSearch.Controls.Add(Me.Label8)
         Me.Panel_DocSearch.Location = New System.Drawing.Point(0, 0)
         Me.Panel_DocSearch.Name = "Panel_DocSearch"
         Me.Panel_DocSearch.Size = New System.Drawing.Size(250, 839)
         Me.Panel_DocSearch.TabIndex = 14
         '
+        'TextBox4
+        '
+        Me.TextBox4.Location = New System.Drawing.Point(82, 453)
+        Me.TextBox4.Name = "TextBox4"
+        Me.TextBox4.Size = New System.Drawing.Size(47, 20)
+        Me.TextBox4.TabIndex = 3
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label4.Location = New System.Drawing.Point(47, 456)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(29, 13)
+        Me.Label4.TabIndex = 2
+        Me.Label4.Text = "Hoja"
+        '
+        'TextBox20
+        '
+        Me.TextBox20.Location = New System.Drawing.Point(19, 499)
+        Me.TextBox20.Name = "TextBox20"
+        Me.TextBox20.Size = New System.Drawing.Size(225, 20)
+        Me.TextBox20.TabIndex = 29
+        '
+        'TextBox2
+        '
+        Me.TextBox2.Location = New System.Drawing.Point(179, 453)
+        Me.TextBox2.Name = "TextBox2"
+        Me.TextBox2.Size = New System.Drawing.Size(65, 20)
+        Me.TextBox2.TabIndex = 1
+        '
+        'Label25
+        '
+        Me.Label25.AutoSize = True
+        Me.Label25.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label25.Location = New System.Drawing.Point(16, 483)
+        Me.Label25.Name = "Label25"
+        Me.Label25.Size = New System.Drawing.Size(60, 13)
+        Me.Label25.TabIndex = 31
+        Me.Label25.Text = "Comentario"
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.Location = New System.Drawing.Point(135, 456)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(44, 13)
+        Me.Label2.TabIndex = 0
+        Me.Label2.Text = "Carpeta"
+        '
         'Button13
         '
+        Me.Button13.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button13.Image = CType(resources.GetObject("Button13.Image"), System.Drawing.Image)
-        Me.Button13.Location = New System.Drawing.Point(12, 663)
+        Me.Button13.Location = New System.Drawing.Point(9, 539)
         Me.Button13.Name = "Button13"
-        Me.Button13.Size = New System.Drawing.Size(223, 60)
+        Me.Button13.Size = New System.Drawing.Size(114, 76)
         Me.Button13.TabIndex = 38
         Me.Button13.Text = "Cuadernos MTN"
-        Me.Button13.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.Button13.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         Me.Button13.UseVisualStyleBackColor = True
         '
         'Button12
         '
         Me.Button12.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button12.Image = CType(resources.GetObject("Button12.Image"), System.Drawing.Image)
-        Me.Button12.Location = New System.Drawing.Point(161, 539)
+        Me.Button12.Location = New System.Drawing.Point(129, 539)
         Me.Button12.Name = "Button12"
-        Me.Button12.Size = New System.Drawing.Size(83, 76)
+        Me.Button12.Size = New System.Drawing.Size(104, 76)
         Me.Button12.TabIndex = 37
-        Me.Button12.Text = "Buscar"
+        Me.Button12.Text = "Cartografía"
         Me.Button12.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         Me.Button12.UseVisualStyleBackColor = True
         '
@@ -1655,31 +1752,20 @@ Partial Class MDIPrincipal
         Me.Label31.TabIndex = 33
         Me.Label31.Text = "Sellado"
         '
-        'Button1
-        '
-        Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
-        Me.Button1.Location = New System.Drawing.Point(8, 579)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(147, 36)
-        Me.Button1.TabIndex = 32
-        Me.Button1.Text = "Más filtros"
-        Me.Button1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
-        Me.Button1.UseVisualStyleBackColor = True
-        '
         'Label29
         '
         Me.Label29.AutoSize = True
         Me.Label29.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label29.Location = New System.Drawing.Point(9, 176)
         Me.Label29.Name = "Label29"
-        Me.Label29.Size = New System.Drawing.Size(146, 13)
+        Me.Label29.Size = New System.Drawing.Size(218, 13)
         Me.Label29.TabIndex = 30
-        Me.Label29.Text = "Tipos de documentación"
+        Me.Label29.Text = "Tipos de documentación cartográfica"
         '
         'Label24
         '
         Me.Label24.AutoSize = True
-        Me.Label24.Location = New System.Drawing.Point(42, 456)
+        Me.Label24.Location = New System.Drawing.Point(42, 430)
         Me.Label24.Name = "Label24"
         Me.Label24.Size = New System.Drawing.Size(34, 13)
         Me.Label24.TabIndex = 30
@@ -1720,7 +1806,7 @@ Partial Class MDIPrincipal
         '
         'TextBox19
         '
-        Me.TextBox19.Location = New System.Drawing.Point(82, 453)
+        Me.TextBox19.Location = New System.Drawing.Point(82, 427)
         Me.TextBox19.Name = "TextBox19"
         Me.TextBox19.Size = New System.Drawing.Size(162, 20)
         Me.TextBox19.TabIndex = 28
@@ -1774,32 +1860,10 @@ Partial Class MDIPrincipal
         Me.PictureBox3.UseWaitCursor = True
         Me.PictureBox3.Visible = False
         '
-        'Button3
-        '
-        Me.Button3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button3.Location = New System.Drawing.Point(8, 621)
-        Me.Button3.Name = "Button3"
-        Me.Button3.Size = New System.Drawing.Size(147, 36)
-        Me.Button3.TabIndex = 9
-        Me.Button3.Text = "Antigua búsqueda"
-        Me.Button3.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
-        Me.Button3.UseVisualStyleBackColor = True
-        '
-        'Button4
-        '
-        Me.Button4.Image = CType(resources.GetObject("Button4.Image"), System.Drawing.Image)
-        Me.Button4.Location = New System.Drawing.Point(8, 536)
-        Me.Button4.Name = "Button4"
-        Me.Button4.Size = New System.Drawing.Size(147, 34)
-        Me.Button4.TabIndex = 6
-        Me.Button4.Text = "Nueva"
-        Me.Button4.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
-        Me.Button4.UseVisualStyleBackColor = True
-        '
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(42, 430)
+        Me.Label6.Location = New System.Drawing.Point(42, 404)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(34, 13)
         Me.Label6.TabIndex = 6
@@ -1807,58 +1871,10 @@ Partial Class MDIPrincipal
         '
         'TextBox5
         '
-        Me.TextBox5.Location = New System.Drawing.Point(82, 427)
+        Me.TextBox5.Location = New System.Drawing.Point(82, 401)
         Me.TextBox5.Name = "TextBox5"
         Me.TextBox5.Size = New System.Drawing.Size(162, 20)
         Me.TextBox5.TabIndex = 7
-        '
-        'TextBox6
-        '
-        Me.TextBox6.Location = New System.Drawing.Point(82, 479)
-        Me.TextBox6.Name = "TextBox6"
-        Me.TextBox6.Size = New System.Drawing.Size(162, 20)
-        Me.TextBox6.TabIndex = 5
-        '
-        'Label7
-        '
-        Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(24, 482)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(52, 13)
-        Me.Label7.TabIndex = 4
-        Me.Label7.Text = "Signatura"
-        '
-        'TextBox14
-        '
-        Me.TextBox14.Location = New System.Drawing.Point(83, 505)
-        Me.TextBox14.Name = "TextBox14"
-        Me.TextBox14.Size = New System.Drawing.Size(161, 20)
-        Me.TextBox14.TabIndex = 11
-        '
-        'Label9
-        '
-        Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(15, 508)
-        Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(61, 13)
-        Me.Label9.TabIndex = 10
-        Me.Label9.Text = "Subdivisión"
-        '
-        'TextBox8
-        '
-        Me.TextBox8.Location = New System.Drawing.Point(83, 401)
-        Me.TextBox8.Name = "TextBox8"
-        Me.TextBox8.Size = New System.Drawing.Size(161, 20)
-        Me.TextBox8.TabIndex = 9
-        '
-        'Label8
-        '
-        Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(22, 404)
-        Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(54, 13)
-        Me.Label8.TabIndex = 8
-        Me.Label8.Text = "Colección"
         '
         'RadioButton2
         '
@@ -2255,6 +2271,11 @@ Partial Class MDIPrincipal
         Me.ImageList2.Images.SetKeyName(13, "Archivador 32.png")
         Me.ImageList2.Images.SetKeyName(14, "editar_24.png")
         '
+        'ToolStripSeparator11
+        '
+        Me.ToolStripSeparator11.Name = "ToolStripSeparator11"
+        Me.ToolStripSeparator11.Size = New System.Drawing.Size(250, 6)
+        '
         'MDIPrincipal
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -2277,8 +2298,8 @@ Partial Class MDIPrincipal
         Me.StatusStrip.ResumeLayout(False)
         Me.StatusStrip.PerformLayout()
         Me.Panel1.ResumeLayout(False)
-        Me.GroupBox5.ResumeLayout(False)
-        Me.GroupBox5.PerformLayout()
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox1.PerformLayout()
         Me.Panel_DocSearch.ResumeLayout(False)
         Me.Panel_DocSearch.PerformLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
@@ -2322,8 +2343,6 @@ Partial Class MDIPrincipal
     Friend WithEvents ToolStripStatusLabel1 As System.Windows.Forms.ToolStripStatusLabel
     Friend WithEvents TextBox1 As System.Windows.Forms.TextBox
     Friend WithEvents Label1 As System.Windows.Forms.Label
-    Friend WithEvents Button3 As System.Windows.Forms.Button
-    Friend WithEvents Button4 As System.Windows.Forms.Button
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
     Friend WithEvents ImageList1 As System.Windows.Forms.ImageList
     Friend WithEvents ImageList2 As System.Windows.Forms.ImageList
@@ -2375,7 +2394,6 @@ Partial Class MDIPrincipal
     Friend WithEvents Button7 As System.Windows.Forms.Button
     Friend WithEvents ToolStripButton16 As System.Windows.Forms.ToolStripButton
     Friend WithEvents ToolMiniaturas As System.Windows.Forms.ToolStripButton
-    Friend WithEvents mnuTool_AltaDoc As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripMenuItem2 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator6 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents Query_Advance01 As System.Windows.Forms.ToolStripMenuItem
@@ -2422,9 +2440,6 @@ Partial Class MDIPrincipal
     Friend WithEvents Label24 As System.Windows.Forms.Label
     Friend WithEvents TextBox20 As System.Windows.Forms.TextBox
     Friend WithEvents TextBox19 As System.Windows.Forms.TextBox
-    Friend WithEvents ComboBox7 As System.Windows.Forms.ComboBox
-    Friend WithEvents Label23 As System.Windows.Forms.Label
-    Friend WithEvents CheckedListBox2 As System.Windows.Forms.CheckedListBox
     Friend WithEvents CheckedListBox1 As System.Windows.Forms.CheckedListBox
     Friend WithEvents mnuExtraerContornos As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuGenerarRejilla As System.Windows.Forms.ToolStripMenuItem
@@ -2454,7 +2469,6 @@ Partial Class MDIPrincipal
     Friend WithEvents ToolStripSeparator7 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents ToolStripSeparator9 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents ToolStripButton17 As System.Windows.Forms.ToolStripButton
-    Friend WithEvents ToolStripButton12 As System.Windows.Forms.ToolStripButton
     Friend WithEvents Query_Advance07 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripButton18 As System.Windows.Forms.ToolStripButton
     Friend WithEvents mnuResconsulta9 As System.Windows.Forms.ToolStripMenuItem
@@ -2488,8 +2502,6 @@ Partial Class MDIPrincipal
     Friend WithEvents ToolStripButton2 As ToolStripButton
     Friend WithEvents ToolStripButton15 As ToolStripButton
     Friend WithEvents Label29 As Label
-    Friend WithEvents Label30 As Label
-    Friend WithEvents Button1 As Button
     Friend WithEvents TextBox23 As TextBox
     Friend WithEvents Label31 As Label
     Friend WithEvents Button2 As Button
@@ -2519,4 +2531,14 @@ Partial Class MDIPrincipal
     Friend WithEvents ToolStripSplitButton1 As ToolStripSplitButton
     Friend WithEvents ToolStripButton9 As ToolStripMenuItem
     Friend WithEvents ToolStripButton21 As ToolStripMenuItem
+    Friend WithEvents ToolStripDropDownButton2 As ToolStripDropDownButton
+    Friend WithEvents ToolStripButton12 As ToolStripMenuItem
+    Friend WithEvents ToolStripButton22 As ToolStripMenuItem
+    Friend WithEvents GroupBox1 As GroupBox
+    Friend WithEvents Label23 As Label
+    Friend WithEvents ComboBox7 As ComboBox
+    Friend WithEvents mnuOldSearch As ToolStripMenuItem
+    Friend WithEvents itemChangePass As ToolStripMenuItem
+    Friend WithEvents mnuListaPermisos As ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator11 As ToolStripSeparator
 End Class

@@ -1403,7 +1403,7 @@
             Exit Sub
         End If
 
-        Dim frmNotify As New GestionUserNotification
+        Dim frmNotify As New GestionUserNotificacion
         frmNotify.MdiParent = MDIPrincipal
         frmNotify.incidenciaInicial = DataGridView1.Item("numdoc", DataGridView1.CurrentCell.RowIndex).Value.ToString
         frmNotify.Show()

@@ -297,11 +297,12 @@
 
             TextBox7.Text = .Signatura
             TextBox11.Text = .Tomo
-            TextBox7.Text = .Cuaderno
+            TextBox4.Text = .Cuaderno
             TextBox15.Text = .Anejos
             TextBox16.Text = .Observaciones
             TextBox20.Text = .AutorEntidad
             TextBox24.Text = .Observador
+            TextBox3.Text = .Instrumentos
             TextBox19.Text = .Encabezado
 
             CheckBox23.Visible = False
@@ -369,9 +370,9 @@
 
     Sub CreationMode()
 
-        Me.Text = "Crear nuevo documento"
+        Me.Text = "Nuevo cuaderno interior"
         Button3.Text = "Crear"
-        ToolStripStatusLabel1.Text = "Crear nuevo cuaderno interior"
+        ToolStripStatusLabel1.Text = "Nuevo cuaderno interior"
         Button9.Enabled = False
         Button10.Enabled = False
         Button13.Enabled = True
@@ -522,6 +523,7 @@
         If CheckBox27.Checked Then propsChanged.Add($"encabezado={IIf(TextBox19.Text.Trim = "", "Null", $"E'{TextBox19.Text.Trim.Replace("'", "\'")}'")}")
         If CheckBox28.Checked Then propsChanged.Add($"autor_entidad={IIf(TextBox20.Text.Trim = "", "Null", $"E'{TextBox20.Text.Trim.Replace("'", "\'")}'")}")
         If CheckBox30.Checked Then propsChanged.Add($"observador={IIf(TextBox24.Text.Trim = "", "Null", $"E'{TextBox24.Text.Trim.Replace("'", "\'")}'")}")
+        If CheckBox5.Checked Then propsChanged.Add($"instrumentos={IIf(TextBox3.Text.Trim = "", "Null", $"E'{TextBox3.Text.Trim.Replace("'", "\'")}'")}")
         If CheckBox16.Checked Then propsChanged.Add($"observaciones={IIf(TextBox16.Text.Trim = "", "Null", $"E'{TextBox16.Text.Trim.Replace("'", "\'")}'")}")
         If CheckBox3.Checked Then
             Dim flagPropos As New FlagsProperties()
@@ -606,9 +608,6 @@
         ActualizacionAtributos = ExeTran(ListaSQL)
 
     End Function
-
-
-
 
 
     Private Sub ActualizacionLote()
@@ -887,7 +886,7 @@
     End Function
 
 
-    Private Sub UpdateDigitalResources(nuevoDoc As docCuadMTN)
+    Private Sub UpdateDigitalResources(nuevoDoc As docCuadMTN, Optional showResultMessages As Boolean = False)
 
         Dim docPDF As String = TextBox23.Text.Trim
         Dim docThumb As String = TextBox2.Text.Trim
@@ -896,13 +895,17 @@
 
         If docThumb <> "" Then
             If Not IO.File.Exists(docThumb) Then
-                If ModalQuestion($"No se localiza el fichero origen:{Environment.NewLine}{docThumb}{Environment.NewLine}¿Continuar?") = DialogResult.No Then Exit Sub
+                If showResultMessages Then
+                    If ModalQuestion($"No se localiza el fichero origen:{Environment.NewLine}{docThumb}{Environment.NewLine}¿Continuar?") = DialogResult.No Then Exit Sub
+                End If
                 docThumb = ""
             End If
         End If
         If docPDF <> "" Then
             If Not IO.File.Exists(docPDF) Then
-                If ModalQuestion($"No se localiza el fichero origen:{Environment.NewLine}{docPDF}{Environment.NewLine}¿Continuar?") = DialogResult.No Then Exit Sub
+                If showResultMessages Then
+                    If ModalQuestion($"No se localiza el fichero origen:{Environment.NewLine}{docPDF}{Environment.NewLine}¿Continuar?") = DialogResult.No Then Exit Sub
+                End If
                 docPDF = ""
             End If
         End If
@@ -934,7 +937,9 @@
             Me.Cursor = Cursors.Default
             ToolStripStatusLabel2.Text = "Ficheros actualizados"
             If okThumb Or okPDF Then
-                ModalInfo($"{IIf(okThumb = True, "Recurso JPG Miniatura actualizado", "El recurso JPG Miniatura NO se ha actualizado")}{Environment.NewLine}{IIf(okPDF = True, "Recurso PDF actualizado", "El recurso PDF NO se ha actualizado")}")
+                If showResultMessages Then
+                    ModalInfo($"{IIf(okThumb = True, "Recurso JPG Miniatura actualizado", "El recurso JPG Miniatura NO se ha actualizado")}{Environment.NewLine}{IIf(okPDF = True, "Recurso PDF actualizado", "El recurso PDF NO se ha actualizado")}")
+                End If
             End If
             ToolStripStatusLabel2.Text = ""
         End Try
@@ -945,9 +950,21 @@
 
     Private Sub CrearNuevoCuadernoMTN()
 
+
+        Dim finalStatus As String
+        Dim cadInsBase As String
+        Dim NuevoMuni As String = ""
+        Dim NuevoTipo As Integer = -1
+        Dim ListaSQL As New ArrayList
+        Dim ListaRenFich As New ArrayList
+        Dim Renombre As RenFich
+        Dim Ejecucion As Boolean = False
+        Dim contador As Integer = 0
+
+
+
         'Compuebo que tengamos permiso de escritura en disco de datos, ya que modificar estos campos
         'seguramente implica mover documentos.
-
         If CheckBox23.Checked Then
             If ModalQuestion($"El documento se creará sin documentación digitalizada{Environment.NewLine}La documentación digital puede incorporarse más tarde{Environment.NewLine}¿Desea continuar?") = DialogResult.No Then Exit Sub
         End If
@@ -968,9 +985,7 @@
         End If
 
 
-        Dim cadInsBase As String
-        Dim NuevoMuni As String = ""
-        Dim NuevoTipo As Integer = -1
+
         Dim nuevoDoc As New docCuadMTN
         'Generamos la cadena base de la ejecución en lote
         cadInsBase = ValidarNuevoCuadernoMTN(nuevoDoc)
@@ -981,25 +996,23 @@
         If CheckBox17.Checked = True Then NuevoTipo = CType(CType(ComboBox1.SelectedItem, itemData).Valor, Integer)
         If CheckBox18.Checked = True Then
             If ListView1.Items.Count = 0 Then
-                MessageBox.Show("No hay municipios asignados.No se realizará ninguna modificación", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+                ModalExclamation("No hay municipios asignados. Es necsario que asigne el documento a un territorio")
                 Exit Sub
             End If
             NuevoMuni = String.Format("{0:0000000}", ListView1.Items(0).SubItems(2).Text)
         End If
 
-        Application.DoEvents()
-        Dim ListaSQL As New ArrayList
-        Dim ListaRenFich As New ArrayList
-        Dim Renombre As RenFich
-
         ListaSQL.Add(cadInsBase)
-        'Si hay cambios en el municipio, se borran las asociaciones antiguas 
-        'y se introducen las nuevas
 
         For Each itemLV As ListViewItem In ListView1.Items
-            Application.DoEvents()
             ListaSQL.Add($"INSERT INTO bdsidschema.archivodocmtn2terris (territorio_id,archivodocmtn_id) VALUES ({itemLV.SubItems(3).Text},(SELECT idarchivodocmtn FROM bdsidschema.archivodocmtn WHERE sellado={nuevoDoc.Sellado}))")
         Next
+
+        'Hasta aquí los datos. Ahora vamos por la información gráfica.
+        If TextBox2.Text.Trim = "" And TextBox23.Text.Trim = "" Then
+            ModalInfo($"No ha asignado ninguna información gráfica.{Environment.NewLine}Puede agregar los recursos digitales más adelante")
+        End If
+
 
         If CheckBox21.Checked = True Then
             If ModalQuestion("Simulación de carga terminada sin errores. ¿Desea sacar las sentencias SQL en un fichero de texto?") = DialogResult.No Then Exit Sub
@@ -1017,32 +1030,39 @@
             Exit Sub
         End If
 
-        'Hasta aquí los datos. Ahora vamos por la información gráfica.
-        If CheckBox23.Checked Then
-            If ModalQuestion("¿Desea continuar sin agregar información gráfica?") = DialogResult.No Then Exit Sub
-        Else
-            UpdateDigitalResources(nuevoDoc)
-        End If
-
-        Me.Cursor = Cursors.Default
-        Dim Ejecucion As Boolean = False
-        Dim contador As Integer = 0
 
         If ModalQuestWriteDatabase("Se va a cargar información en la base dedatos.¿Desea continuar") = DialogResult.No Then Exit Sub
 
-        Me.Cursor = Cursors.WaitCursor
-
         'Si llegamos aquí los renombres se han efectuado correctamente. Ahora ejecutamos la transacción
         Me.Cursor = Cursors.WaitCursor
+
         If ExeTran(ListaSQL) Then
-            ModalInfo("El documento se ha cargado correctamente en la base de datos.")
+            finalStatus = $"El documento se ha creado correctamente en la base de datos{Environment.NewLine}"
+            If Not CheckBox23.Checked Then
+                Try
+                    UpdateDigitalResources(nuevoDoc)
+                    If Not IO.File.Exists(nuevoDoc.rutaFicheroPDF) And TextBox23.Text.Trim <> "" Then
+                        finalStatus &= $"No se ha podido guardar el documento PDF en el repositorio{Environment.NewLine}"
+                    Else
+                        finalStatus &= $"El fichero PDF se ha guardado en el repositorio{Environment.NewLine}"
+                    End If
+                    If Not IO.File.Exists(nuevoDoc.rutaFicheroThumb) And TextBox2.Text.Trim <> "" Then
+                        finalStatus &= $"No se ha podido guardar la miniatura JPG en el repositorio{Environment.NewLine}"
+                    Else
+                        finalStatus &= $"La miniatura JPG se ha guardado en el repositorio{Environment.NewLine}"
+                    End If
+                Catch ex As Exception
+                    ModalError(ex.Message)
+                End Try
+            End If
+            ModalInfo(finalStatus)
         End If
         Me.Cursor = Cursors.Default
 
-        'Ahora copiamos los documentos digitales al repositorio
-        If CheckBox23.Checked Then
-            ModalInfo($"No se han añadido documentos digitalizados al repositorio.{Environment.NewLine}Pueden añadirse manualmente en cualquier momento o editanto el documento.")
-        End If
+
+
+
+
 
     End Sub
 
@@ -1106,37 +1126,38 @@
         elementoInsert.ItinType = ComboBox5.SelectedItem.ToString
         elementoInsert.ItinNum = TextBox8.Text.Trim.Replace(",", ".")
 
+        elementoInsert.DivZona = TextBox17.Text.Trim.Replace(",", ".")
+        elementoInsert.SubDivType = TextBox14.Text.Trim.Replace(",", ".")
+        elementoInsert.SubDivNum = TextBox12.Text.Trim.Replace(",", ".")
+        elementoInsert.CuadernoType = IIf(ComboBox7.SelectedIndex <> -1, ComboBox7.Text, "")
+        elementoInsert.Cuaderno = TextBox4.Text.Trim.Replace(",", ".")
 
         'Signatura
-        elementoInsert.Signatura = IIf(TextBox7.Text.Trim <> "", TextBox7.Text.Trim.Replace("'", "\'"), "")
+        elementoInsert.Signatura = TextBox7.Text.Trim.Replace("'", "\'")
 
         'Anejos
-        elementoInsert.Anejos = IIf(TextBox15.Text.Trim <> "", TextBox15.Text.Trim.Replace(",", "."), "")
-
-        'Observaciones
-        elementoInsert.Observaciones = IIf(TextBox16.Text.Trim <> "", TextBox16.Text.Trim.Replace("'", "\'"), "")
-
-
+        elementoInsert.Anejos = TextBox15.Text.Trim.Replace(",", ".")
 
         'Provincia repo
         elementoInsert.ProvinciaINE = CType(ComboBox6.SelectedItem, itemData).Valor
 
-
         'Encabezado
-        elementoInsert.Encabezado = IIf(TextBox19.Text.Trim <> "", TextBox19.Text.Trim.Replace(",", "."), "")
+        elementoInsert.Encabezado = TextBox19.Text.Trim.Replace(",", ".")
 
         'Autoría entidad
-        elementoInsert.AutorEntidad = IIf(TextBox20.Text.Trim <> "", TextBox20.Text.Trim.Replace(",", "."), "")
+        elementoInsert.AutorEntidad = TextBox20.Text.Trim.Replace(",", ".")
 
         'Autoría persona
-        elementoInsert.Observador = IIf(TextBox24.Text.Trim <> "", TextBox24.Text.Trim.Replace(",", "."), "")
+        elementoInsert.Observador = TextBox24.Text.Trim.Replace(",", ".")
 
+        'Autoría persona
+        elementoInsert.Instrumentos = TextBox3.Text.Trim.Replace(",", ".")
+
+        'Observaciones
+        elementoInsert.Observaciones = TextBox16.Text.Trim.Replace("'", "\'")
 
 
         'FlagProperties
-        'elementoInsert.extraProps.propertyCode = 0
-
-        Application.DoEvents()
         Dim flagPropos As New FlagsProperties()
         If flagPropos.assignByContainer(CheckedListBox1) Then
             elementoInsert.extraProps.propertyCode = flagPropos.propertyCode
@@ -1148,7 +1169,7 @@
 
         ValidarNuevoCuadernoMTN = $"INSERT INTO bdsidschema.archivodocmtn
                 (sellado,tomo,tipo,subtipo,fecha,nota_fecha,pag,zona_num,subdivision_tipo,subdivision_num,cuaderno,cuad_tipo,anejos,
-                encabezado,nombre_old,nombre_new,itin_tipo,itin_num,observaciones,ambito,autor_entidad,signatura,create_at,create_by,codprov,observador,extraprops) VALUES (
+                encabezado,nombre_old,nombre_new,itin_tipo,itin_num,observaciones,ambito,autor_entidad,signatura,create_at,create_by,codprov,observador,instrumentos,extraprops) VALUES (
                 {elementoInsert.Sellado},
                 {IIf(elementoInsert.Tomo = "", "Null", $"E'{elementoInsert.Tomo}'")},
                 {IIf(elementoInsert.Tipo = "", "Null", $"E'{elementoInsert.Tipo}'")},
@@ -1175,6 +1196,7 @@
                 '{usuarioMyApp.loginUser}',
                 {elementoInsert.ProvinciaINE},
                 {IIf(elementoInsert.Observador = "", "Null", $"E'{elementoInsert.Observador}'")},
+                {IIf(elementoInsert.Instrumentos = "", "Null", $"E'{elementoInsert.Instrumentos}'")},
                 {elementoInsert.extraProps.propertyCode})"
 
         Application.DoEvents()
@@ -1301,14 +1323,11 @@
 
     Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
 
+        If Not usuarioMyApp.permisosLista.editarDocumentacion Then Exit Sub
         If ModeEdition = TypeModeEdition.CreateDocument Then CrearNuevoCuadernoMTN()
         If ModeEdition = TypeModeEdition.EditSingleDocument Then ActualizacionLote()
 
-        'If Me.Tag = 0 Then
-        '    CrearNuevoElemento(sender, e)
-        'Else
-        '    ActualizacionLote()
-        'End If
+
 
     End Sub
 
@@ -1350,86 +1369,76 @@
             Exit Sub
         End Try
 
-        ModalInfo("Borrado de datos)")
+        ListaSQL.Add($"INSERT INTO bdsidschema.archivodocmtnhisto
+                     SELECT now() as fecha_elim,'{usuarioMyApp.loginUser}' as user_delete,archivodocmtn.idarchivodocmtn,archivodocmtn.tipo,archivodocmtn.subtipo,archivodocmtn.tomo,archivodocmtn.sellado,
+                                archivodocmtn.codprov,archivodocmtn.fecha,archivodocmtn.nota_fecha,archivodocmtn.pag,archivodocmtn.zona_num,
+	                        archivodocmtn.subdivision_tipo,archivodocmtn.extraprops,archivodocmtn.encabezado,archivodocmtn.autor_entidad,
+                            archivodocmtn.subdivision_num,archivodocmtn.itin_tipo,archivodocmtn.itin_num,archivodocmtn.cuaderno,archivodocmtn.cuad_tipo, 
+	                        archivodocmtn.anejos, archivodocmtn.nombre_old, archivodocmtn.nombre_new,archivodocmtn.signatura,archivodocmtn.observaciones,
+	                        archivodocmtn.create_at,archivodocmtn.create_by,archivodocmtn.ambito,archivodocmtn.namefilecdd,archivodocmtn.fechafilecdd,
+	                        archivodocmtn.observador,archivodocmtn.instrumentos,provincias.nombreprovincia,
+                            string_agg(territorios.idterritorio::text,'|') as idTerris,
+                            string_agg(Territorios.Nombre,'|') as nombreTerris,
+                            string_agg(Territorios.Tipo,'|') as tipoTerris,
+                            string_agg(Territorios.poligono_carto::text,'|') as poligonocarto,
+                            string_agg(Territorios.Municipio::text,'|') as muniTerris 
+                            FROM bdsidschema.archivodocmtn 
+                            LEFT JOIN bdsidschema.provincias on archivodocmtn.codprov= provincias.idprovincia 
+                            LEFT JOIN bdsidschema.archivodocmtn2terris ON archivodocmtn.idarchivodocmtn=archivodocmtn2terris.archivodocmtn_id 
+                            LEFT JOIN bdsidschema.territorios ON archivodocmtn2terris.territorio_id=territorios.idterritorio  
+                            WHERE archivodocmtn.idarchivodocmtn={editRegistro.IdarchivodocMTN}
+                            group by archivodocmtn.idarchivodocmtn,archivodocmtn.tipo,archivodocmtn.subtipo,archivodocmtn.tomo,
+				            archivodocmtn.sellado,
+                            archivodocmtn.codprov,archivodocmtn.fecha,archivodocmtn.nota_fecha,archivodocmtn.pag,archivodocmtn.zona_num,
+				            archivodocmtn.subdivision_tipo,
+                            archivodocmtn.subdivision_num,archivodocmtn.cuaderno,archivodocmtn.itin_tipo, archivodocmtn.itin_num, archivodocmtn.cuad_tipo,
+				            archivodocmtn.extraprops,
+                            archivodocmtn.encabezado,archivodocmtn.autor_entidad,
+                            archivodocmtn.anejos, archivodocmtn.nombre_old, archivodocmtn.nombre_new,archivodocmtn.signatura,archivodocmtn.observaciones,
+				            archivodocmtn.create_by,archivodocmtn.create_at,
+                            archivodocmtn.ambito,archivodocmtn.namefilecdd,archivodocmtn.fechafilecdd,provincias.nombreprovincia,
+				            archivodocmtn.instrumentos,archivodocmtn.observador")
+        ListaSQL.Add($"DELETE FROM bdsidschema.archivodocmtn2terris WHERE archivodocmtn_id={editRegistro.IdarchivodocMTN}")
+        ListaSQL.Add($"DELETE FROM bdsidschema.archivodocmtn WHERE idarchivodocmtn={editRegistro.IdarchivodocMTN}")
 
-        'ListaSQL.Add($"INSERT INTO bdsidschema.archivohisto
-        '             SELECT now() as fecha_elim, '{usuarioMyApp.loginUser}' as user_delete,
-        '             archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal,archivo.tipo_fechaprincipal,
-        '                  archivo.fechasmodificaciones,archivo.anejo,archivo.vertical,archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja,
-        '                  archivo.subtipo,archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.extraprops,archivo.observaciones,archivo.observ,archivo.proyecto,
-        '                  archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.cdd_geometria,archivo.cdd_fecha,archivo.titn,archivo.autor,archivo.autor_persona,archivo.encabezado,archivo.nombreedificio,
-        '                  tbtipodocumento.tipodoc as Tipo,tbestadodocumento.estadodoc as Estado, tbobservaciones.observestandar,
-        '                        archivo.provincia_id as repoprov, archivo.fechacreacion, archivo.fechamodificacion,
-        '                        string_agg(territorios.idterritorio::character varying,'#') as listaIdTerris,
-        '                  string_agg(territorios.nombre,'#') as listaMuniHisto, string_agg(to_char(territorios.munihisto, 'FM0000009'::text),'#') as listaCodMuniHisto,
-        '                  string_agg(listamunicipios.nombre,'#') as listaMuniActual, string_agg(listamunicipios.inecorto,'#') as listaCodMuniActual, 
-        '                  string_agg(provincias.nombreprovincia,'#') as nombreprovincia 
-        '                FROM bdsidschema.archivo 
-        '                 LEFT JOIN bdsidschema.tbtipodocumento ON tbtipodocumento.idtipodoc=archivo.tipodoc_id 
-        '                 LEFT JOIN bdsidschema.tbestadodocumento ON tbestadodocumento.idestadodoc=archivo.estadodoc_id 
-        '                 LEFT JOIN bdsidschema.archivo2territorios  ON archivo2territorios.archivo_id=archivo.idarchivo 
-        '                 LEFT JOIN bdsidschema.tbobservaciones  ON tbobservaciones.idobservestandar=archivo.observestandar_id 
-        '                 LEFT JOIN bdsidschema.territorios on territorios.idterritorio= archivo2territorios.territorio_id 
-        '                 LEFT JOIN ngmepschema.listamunicipios on territorios.nomen_id= listamunicipios.identidad 
-        '                 LEFT JOIN bdsidschema.provincias on territorios.provincia= provincias.idprovincia 
-        '                WHERE archivo.idarchivo={editRegistro.docIndex}
-        '                  GROUP BY archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal,archivo.tipo_fechaprincipal,
-        '                   archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, archivo.horizontal, archivo.tipodoc_id, archivo.estadodoc_id, archivo.procecarpeta, 
-        '                   archivo.procehoja, archivo.subtipo,archivo.juntaestadistica, archivo.signatura, archivo.observestandar_id,archivo.extraprops, archivo.observaciones,archivo.observ,
-        '                    archivo.proyecto,tbtipodocumento.tipodoc,archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.titn,archivo.autor,archivo.autor_persona,archivo.encabezado,archivo.nombreedificio,
-        '                    tbestadodocumento.estadodoc,tbobservaciones.observestandar")
-        'ListaSQL.Add($"DELETE FROM bdsidschema.contornos WHERE archivo_id={editRegistro.docIndex}")
-        'ListaSQL.Add($"DELETE FROM bdsidschema.archivo2territorios WHERE archivo_id={editRegistro.docIndex}")
-        'ListaSQL.Add($"DELETE FROM bdsidschema.archivo WHERE idarchivo={editRegistro.docIndex}")
 
+        Try
+            If IO.File.Exists(editRegistro.rutaFicheroThumb) Then ficherosDelete.Add(editRegistro.rutaFicheroThumb)
+            If IO.File.Exists(editRegistro.rutaFicheroPDF) Then ficherosDelete.Add(editRegistro.rutaFicheroPDF)
+        Catch ex As Exception
+            ModalError(ex.Message)
+            Exit Sub
+        End Try
 
-        'Try
-        '    If IO.File.Exists(editRegistro.rutaFicheroAltaRes) Then ficherosDelete.Add(editRegistro.rutaFicheroAltaRes)
-        '    If IO.File.Exists(editRegistro.rutaFicheroBajaRes) Then ficherosDelete.Add(editRegistro.rutaFicheroBajaRes)
-        '    If IO.File.Exists(editRegistro.rutaFicheroThumb) Then ficherosDelete.Add(editRegistro.rutaFicheroThumb)
-        '    If IO.File.Exists(editRegistro.rutaFicheroPDF) Then ficherosDelete.Add(editRegistro.rutaFicheroPDF)
-        '    For Each fileGEO As String In editRegistro.listaFicherosGeo23030
-        '        If IO.File.Exists(fileGEO) Then ficherosDelete.Add(fileGEO)
-        '    Next
-        '    For Each fileGEO As String In editRegistro.listaFicherosGeo25830
-        '        If IO.File.Exists(fileGEO) Then ficherosDelete.Add(fileGEO)
-        '    Next
-        'Catch ex As Exception
-        '    ModalError(ex.Message)
-        '    Exit Sub
-        'End Try
+        If ModalQuestWriteDatabase($"¿Desea eliminar el documento con sellado nº {editRegistro.Sellado} y su información digital{Environment.NewLine}({ficherosDelete.Count} ficheros?") = DialogResult.No Then Exit Sub
 
-        'If ModalQuestWriteDatabase($"¿Desea eliminar el documento con sellado nº {editRegistro.Sellado} y su información digital{Environment.NewLine}({ficherosDelete.Count} ficheros?") = DialogResult.No Then Exit Sub
+        Me.Cursor = Cursors.WaitCursor
 
-        'Me.Cursor = Cursors.WaitCursor
+        'Borrado de ficheros
+        For Each pathFileGeo As String In ficherosDelete
+            If IsNothing(pathFileGeo) Then Continue For
+            Try
+                IO.File.Delete(pathFileGeo)
+            Catch ex As Exception
+                ModalError($"Se han producido errores al eliminar la información gráfica del documento.No se eliminó el documento.{Environment.NewLine}{ex.Message}")
+            End Try
+        Next
 
-        ''Borrado de ficheros
-        'For Each pathFileGeo As String In ficherosDelete
-        '    If IsNothing(pathFileGeo) Then Continue For
-        '    Try
-        '        IO.File.Delete(pathFileGeo)
-        '    Catch ex As Exception
-        '        ModalError($"Se han producido errores al eliminar la información gráfica del documento.No se eliminó el documento.{Environment.NewLine}{ex.Message}")
-        '    End Try
-        'Next
+        IIf(ExeTran(ListaSQL), ModalInfo("Proceso de eliminación completado"), ModalExclamation("No se han podido eliminar los documentos. Consultar LOG"))
 
-        'IIf(ExeTran(ListaSQL), ModalInfo("Proceso de eliminación completado"), ModalExclamation("No se han podido eliminar los documentos. Consultar LOG"))
-
-        'Me.Cursor = Cursors.Default
-        'Me.Close()
+        Me.Cursor = Cursors.Default
+        Me.Close()
 
     End Sub
 
     Private Sub Button10_Click(sender As Object, e As EventArgs) Handles Button10.Click
 
+        If Not usuarioMyApp.permisosLista.editarDocumentacion Then Exit Sub
         If ModalQuestion("¿Desea actualizar sólo los recursos del documento?") = DialogResult.No Then
             ModalInfo("No se ha actualizado ningún dato")
             Exit Sub
         End If
-
-        UpdateDigitalResources(editRegistro)
-
-
+        UpdateDigitalResources(editRegistro, True)
 
     End Sub
 

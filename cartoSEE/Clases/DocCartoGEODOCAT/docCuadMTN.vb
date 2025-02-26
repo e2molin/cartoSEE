@@ -12,6 +12,7 @@
     Property Encabezado As String
     Property AutorEntidad As String
     Property Observador As String
+    Property Instrumentos As String
     Property NumPag As Integer
     Property ProvinciaINE As Integer
     Property ProvinciaNombre As String
@@ -174,27 +175,55 @@
 
     Sub New(idCuadernoMTN As Integer)
 
-        Dim consultaSQL As String = $"SELECT archivodocmtn.idarchivodocmtn,archivodocmtn.create_at,archivodocmtn.tipo,archivodocmtn.subtipo,archivodocmtn.tomo,archivodocmtn.sellado,
-                archivodocmtn.codprov,archivodocmtn.fecha,archivodocmtn.nota_fecha,archivodocmtn.pag,archivodocmtn.zona_num,archivodocmtn.subdivision_tipo,archivodocmtn.extraprops,archivodocmtn.encabezado,archivodocmtn.autor_entidad,
-                archivodocmtn.subdivision_num,archivodocmtn.itin_tipo,archivodocmtn.itin_num,archivodocmtn.cuaderno,archivodocmtn.cuad_tipo, archivodocmtn.anejos, archivodocmtn.nombre_old, archivodocmtn.nombre_new,archivodocmtn.signatura,
-                archivodocmtn.observaciones,archivodocmtn.create_by,archivodocmtn.ambito,archivodocmtn.namefilecdd,archivodocmtn.fechafilecdd,archivodocmtn.observador,provincias.nombreprovincia,
-                string_agg(territorios.idterritorio::text,'|') as idTerris,
-                string_agg(Territorios.Nombre,'|') as nombreTerris,
-                string_agg(Territorios.Tipo,'|') as tipoTerris,
-                string_agg(Territorios.poligono_carto::text,'|') as poligonocarto,
-                string_agg(Territorios.Municipio::text,'|') as muniTerris 
-                FROM bdsidschema.archivodocmtn 
-                LEFT JOIN bdsidschema.provincias on archivodocmtn.codprov= provincias.idprovincia 
-                LEFT JOIN bdsidschema.archivodocmtn2terris ON archivodocmtn.idarchivodocmtn=archivodocmtn2terris.archivodocmtn_id 
-                LEFT JOIN bdsidschema.territorios ON archivodocmtn2terris.territorio_id=territorios.idterritorio  
-                WHERE archivodocmtn.idarchivodocmtn={idCuadernoMTN} 
-                group by archivodocmtn.idarchivodocmtn,archivodocmtn.create_at,archivodocmtn.tipo,archivodocmtn.subtipo,archivodocmtn.tomo,archivodocmtn.sellado,
-                archivodocmtn.codprov,archivodocmtn.fecha,archivodocmtn.nota_fecha,archivodocmtn.pag,archivodocmtn.zona_num,archivodocmtn.subdivision_tipo,
-                archivodocmtn.subdivision_num,archivodocmtn.cuaderno,archivodocmtn.itin_tipo, archivodocmtn.itin_num, archivodocmtn.cuad_tipo,archivodocmtn.extraprops,
-                archivodocmtn.encabezado,archivodocmtn.autor_entidad,
-                archivodocmtn.anejos, archivodocmtn.nombre_old, archivodocmtn.nombre_new,archivodocmtn.signatura,archivodocmtn.observaciones,archivodocmtn.create_by,
-                archivodocmtn.ambito,archivodocmtn.namefilecdd,archivodocmtn.fechafilecdd,provincias.nombreprovincia"
+        'Dim consultaSQL As String = $"SELECT archivodocmtn.idarchivodocmtn,archivodocmtn.create_at,archivodocmtn.tipo,archivodocmtn.subtipo,archivodocmtn.tomo,archivodocmtn.sellado,
+        '        archivodocmtn.codprov,archivodocmtn.fecha,archivodocmtn.nota_fecha,archivodocmtn.pag,archivodocmtn.zona_num,archivodocmtn.subdivision_tipo,archivodocmtn.extraprops,archivodocmtn.encabezado,archivodocmtn.autor_entidad,
+        '        archivodocmtn.subdivision_num,archivodocmtn.itin_tipo,archivodocmtn.itin_num,archivodocmtn.cuaderno,archivodocmtn.cuad_tipo, archivodocmtn.anejos, archivodocmtn.nombre_old, archivodocmtn.nombre_new,archivodocmtn.signatura,
+        '        archivodocmtn.observaciones,archivodocmtn.create_by,archivodocmtn.ambito,archivodocmtn.namefilecdd,archivodocmtn.fechafilecdd,archivodocmtn.observador,provincias.nombreprovincia,
+        '        string_agg(territorios.idterritorio::text,'|') as idTerris,
+        '        string_agg(Territorios.Nombre,'|') as nombreTerris,
+        '        string_agg(Territorios.Tipo,'|') as tipoTerris,
+        '        string_agg(Territorios.poligono_carto::text,'|') as poligonocarto,
+        '        string_agg(Territorios.Municipio::text,'|') as muniTerris 
+        '        FROM bdsidschema.archivodocmtn 
+        '        LEFT JOIN bdsidschema.provincias on archivodocmtn.codprov= provincias.idprovincia 
+        '        LEFT JOIN bdsidschema.archivodocmtn2terris ON archivodocmtn.idarchivodocmtn=archivodocmtn2terris.archivodocmtn_id 
+        '        LEFT JOIN bdsidschema.territorios ON archivodocmtn2terris.territorio_id=territorios.idterritorio  
+        '        WHERE archivodocmtn.idarchivodocmtn={idCuadernoMTN} 
+        '        group by archivodocmtn.idarchivodocmtn,archivodocmtn.create_at,archivodocmtn.tipo,archivodocmtn.subtipo,archivodocmtn.tomo,archivodocmtn.sellado,
+        '        archivodocmtn.codprov,archivodocmtn.fecha,archivodocmtn.nota_fecha,archivodocmtn.pag,archivodocmtn.zona_num,archivodocmtn.subdivision_tipo,
+        '        archivodocmtn.subdivision_num,archivodocmtn.cuaderno,archivodocmtn.itin_tipo, archivodocmtn.itin_num, archivodocmtn.cuad_tipo,archivodocmtn.extraprops,
+        '        archivodocmtn.encabezado,archivodocmtn.autor_entidad,
+        '        archivodocmtn.anejos, archivodocmtn.nombre_old, archivodocmtn.nombre_new,archivodocmtn.signatura,archivodocmtn.observaciones,archivodocmtn.create_by,
+        '        archivodocmtn.ambito,archivodocmtn.namefilecdd,archivodocmtn.fechafilecdd,provincias.nombreprovincia"
 
+        Dim consultaSQL As String = $"SELECT archivodocmtn.idarchivodocmtn,archivodocmtn.tipo,archivodocmtn.subtipo,archivodocmtn.tomo,archivodocmtn.sellado,
+                                        archivodocmtn.codprov,archivodocmtn.fecha,archivodocmtn.nota_fecha,archivodocmtn.pag,archivodocmtn.zona_num,
+	                                archivodocmtn.subdivision_tipo,archivodocmtn.extraprops,archivodocmtn.encabezado,archivodocmtn.autor_entidad,
+                                    archivodocmtn.subdivision_num,archivodocmtn.itin_tipo,archivodocmtn.itin_num,archivodocmtn.cuaderno,archivodocmtn.cuad_tipo, 
+	                                archivodocmtn.anejos, archivodocmtn.nombre_old, archivodocmtn.nombre_new,archivodocmtn.signatura,archivodocmtn.observaciones,
+	                                archivodocmtn.create_at,archivodocmtn.create_by,archivodocmtn.ambito,archivodocmtn.namefilecdd,archivodocmtn.fechafilecdd,
+	                                archivodocmtn.observador,archivodocmtn.instrumentos,provincias.nombreprovincia,
+                                                string_agg(territorios.idterritorio::text,'|') as idTerris,
+                                                string_agg(Territorios.Nombre,'|') as nombreTerris,
+                                                string_agg(Territorios.Tipo,'|') as tipoTerris,
+                                                string_agg(Territorios.poligono_carto::text,'|') as poligonocarto,
+                                                string_agg(Territorios.Municipio::text,'|') as muniTerris 
+                                                FROM bdsidschema.archivodocmtn 
+                                                LEFT JOIN bdsidschema.provincias on archivodocmtn.codprov= provincias.idprovincia 
+                                                LEFT JOIN bdsidschema.archivodocmtn2terris ON archivodocmtn.idarchivodocmtn=archivodocmtn2terris.archivodocmtn_id 
+                                                LEFT JOIN bdsidschema.territorios ON archivodocmtn2terris.territorio_id=territorios.idterritorio  
+                                               WHERE archivodocmtn.idarchivodocmtn={idCuadernoMTN} 
+                                                group by archivodocmtn.idarchivodocmtn,archivodocmtn.tipo,archivodocmtn.subtipo,archivodocmtn.tomo,
+				                                archivodocmtn.sellado,
+                                                archivodocmtn.codprov,archivodocmtn.fecha,archivodocmtn.nota_fecha,archivodocmtn.pag,archivodocmtn.zona_num,
+				                                archivodocmtn.subdivision_tipo,
+                                                archivodocmtn.subdivision_num,archivodocmtn.cuaderno,archivodocmtn.itin_tipo, archivodocmtn.itin_num, archivodocmtn.cuad_tipo,
+				                                archivodocmtn.extraprops,
+                                                archivodocmtn.encabezado,archivodocmtn.autor_entidad,
+                                                archivodocmtn.anejos, archivodocmtn.nombre_old, archivodocmtn.nombre_new,archivodocmtn.signatura,archivodocmtn.observaciones,
+				                                archivodocmtn.create_by,archivodocmtn.create_at,
+                                                archivodocmtn.ambito,archivodocmtn.namefilecdd,archivodocmtn.fechafilecdd,provincias.nombreprovincia,
+				                                archivodocmtn.instrumentos,archivodocmtn.observador"
         rellenarDataset(consultaSQL)
 
     End Sub
@@ -264,6 +293,7 @@
 
 
             Observador = dR("observador").ToString
+            Instrumentos = dR("instrumentos").ToString
             AutorEntidad = dR("autor_entidad").ToString '"Instituto Geográfico y Estadístico"
             Encabezado = dR("encabezado").ToString '"Trabajos Topográficos"
             Signatura = dR("signatura").ToString '"Archivo Compacto"

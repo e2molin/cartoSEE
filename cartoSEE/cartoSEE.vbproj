@@ -109,6 +109,9 @@
     <Compile Include="Clases\Autenticacion\GestionUserForm.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Clases\Autenticacion\GestionUserNotificacion.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Clases\Autenticacion\LoginForm.designer.vb">
       <DependentUpon>LoginForm.vb</DependentUpon>
     </Compile>
@@ -117,6 +120,7 @@
     </Compile>
     <Compile Include="Clases\Autenticacion\myAppProfile.vb" />
     <Compile Include="Clases\Autenticacion\myAppUser.vb" />
+    <Compile Include="Clases\Autenticacion\Notificacion.vb" />
     <Compile Include="Clases\Destildator.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\docCartoSEE.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\docCartoSEEquery.vb" />
@@ -139,17 +143,22 @@
     <Compile Include="Clases\Genericas\CustomMsgbox.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Clases\Genericas\GEOCoordenada.vb" />
-    <Compile Include="Clases\Genericas\GestionUserNotification.Designer.vb">
-      <DependentUpon>GestionUserNotification.vb</DependentUpon>
+    <Compile Include="Clases\Genericas\DialogChangePassword.Designer.vb">
+      <DependentUpon>DialogChangePassword.vb</DependentUpon>
     </Compile>
-    <Compile Include="Clases\Genericas\GestionUserNotification.vb">
+    <Compile Include="Clases\Genericas\DialogChangePassword.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Clases\Genericas\QuestCollection.Designer.vb">
+      <DependentUpon>QuestCollection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Clases\Genericas\QuestCollection.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Clases\Genericas\GEOCoordenada.vb" />
     <Compile Include="Clases\Genericas\ListDialog.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Clases\Genericas\Notificacion.vb" />
     <Compile Include="Clases\InputDialog.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -319,6 +328,9 @@
     <EmbeddedResource Include="Clases\Autenticacion\GestionUserForm.resx">
       <DependentUpon>GestionUserForm.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Clases\Autenticacion\GestionUserNotificacion.resx">
+      <DependentUpon>GestionUserNotificacion.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Clases\Autenticacion\LoginForm.resx">
       <DependentUpon>LoginForm.vb</DependentUpon>
     </EmbeddedResource>
@@ -328,8 +340,11 @@
     <EmbeddedResource Include="Clases\Genericas\CustomMsgbox.resx">
       <DependentUpon>CustomMsgbox.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Clases\Genericas\GestionUserNotification.resx">
-      <DependentUpon>GestionUserNotification.vb</DependentUpon>
+    <EmbeddedResource Include="Clases\Genericas\DialogChangePassword.resx">
+      <DependentUpon>DialogChangePassword.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Clases\Genericas\QuestCollection.resx">
+      <DependentUpon>QuestCollection.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Clases\Genericas\ListDialog.resx">
       <DependentUpon>ListDialog.vb</DependentUpon>
@@ -446,6 +461,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\docsidcarto-template.html" />
+    <None Include="resources\Icon Cuaderno de brujula copy.png" />
     <Content Include="resources\index-muni-template.html" />
     <Content Include="resources\index-template.html" />
     <Content Include="resources\nueva-ventana-consulta-cartosee.png">

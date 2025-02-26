@@ -380,14 +380,15 @@
             Exit Sub
         End If
 
-        If ffilter = "procehoja" Then
-            cadFiltro = "CONVERT(" & ffilter & ", 'System.String') LIKE '" & txtFiltro.Text.Trim.Replace("'", "''") & "%'"
+        If ffilter = "sellado" Then
+            cadFiltro = "CONVERT(" & ffilter & ", 'System.String') LIKE '%" & txtFiltro.Text.Trim.Replace("'", "''") & "%'"
         ElseIf ffilter = "All" Then
             For Each cboItem In cboFields.Items
                 cadFiltroParte = ""
                 If CType(cboItem, itemData).Valor = "All" Then Continue For
-                If CType(cboItem, itemData).Valor = "procehoja" Then
-                    cadFiltroParte = "CONVERT(procehoja, 'System.String') LIKE '" & txtFiltro.Text.Trim.Replace("'", "''") & "%'"
+                If CType(cboItem, itemData).Valor = "sellado" Then
+                    cadFiltro = "CONVERT(" & CType(cboItem, itemData).Valor & ", 'System.String') LIKE '%" & txtFiltro.Text.Trim.Replace("'", "''") & "%'"
+                    Continue For
                 End If
                 If cadFiltro = "" Then
                     cadFiltro = CType(cboItem, itemData).Valor & " like '%" & txtFiltro.Text.Trim.Replace("'", "''") & "%' "
@@ -419,11 +420,12 @@
             DataGridView1.Update()
         Catch ex As Exception
             Application.DoEvents()
+            ModalError(ex.Message)
         End Try
 
         cancelDetails = False
         If DataGridView1.Rows.Count > 0 Then
-            FillDetailsReduced(DataGridView1.Item("idarchivo", 0).Value.ToString)
+            FillDetailsReduced(DataGridView1.Item("idarchivodocmtn", 0).Value.ToString)
         End If
         ToolStripStatusLabel2.Text = "Filtrados: " & DataGridView1.RowCount
 
@@ -440,12 +442,12 @@
             FillDocCuadMTNEwithFilter("")
             Me.Text = "Todos los documentos"
         ElseIf typeSearch = TypeDataSearch.AllDocumentsByTerritorio Then
-            FillDocCuadMTNEwithFilter($"archivo.idarchivo in (select archivo_id from bdsidschema.archivo2territorios where territorio_id={paramSQL1})")
+            FillDocCuadMTNEwithFilter($"archivodocmtn.idarchivodocmtn in (select archivodocmtn_id from bdsidschema.archivodocmtn2terris where territorio_id={paramSQL1})")
 
         ElseIf typeSearch = TypeDataSearch.AllDocumentsByTerritorioActual Then
-            FillDocCuadMTNEwithFilter($"archivo.idarchivo in (SELECT DISTINCT archivo_id 
-    	                                FROM bdsidschema.archivo2territorios 
-	                                    INNER JOIN bdsidschema.territorios ON archivo2territorios.territorio_id=territorios.idterritorio
+            FillDocCuadMTNEwithFilter($"archivodocmtn.idarchivodocmtn in (SELECT DISTINCT archivodocmtn_id 
+    	                                FROM bdsidschema.archivodocmtn2terris
+	                                    INNER JOIN bdsidschema.territorios ON archivodocmtn2terris.territorio_id=territorios.idterritorio
 	                                    WHERE territorios.municipio={paramSQL1})")
         ElseIf typeSearch = TypeDataSearch.AllDocumentsByProvincia Then
             If paramSQL1.ToString = "" Then
@@ -464,91 +466,96 @@
                 ModalExclamation("Búsqueda por número de sellado no definida")
                 Exit Sub
             End If
-            FillDocCuadMTNEwithFilter($"archivo.numdoc='{paramSQL1}'")
-            Me.Text = $"Documento SIDDAE sellado nº {paramSQL1}"
+            FillDocCuadMTNEwithFilter($"archivodocmtn.sellado={paramSQL1}")
+            Me.Text = $"Documentos con sellado nº {paramSQL1}"
         ElseIf typeSearch = TypeDataSearch.DocumentosByListaNumSellado Then
             If paramSQL1.ToString = "" Then
                 ModalExclamation("Búsqueda por números de sellado no definida")
                 Exit Sub
             End If
             For Each elem As String In paramSQL1.ToString.Split(",")
-                paramSQL2 &= IIf(paramSQL2 = "", $"'{elem.Replace("'", "")}'", $",'{elem.Replace("'", "")}'")
+                paramSQL2 &= IIf(paramSQL2 = "", $"{elem.Replace("'", "")}", $",{elem.Replace("'", "")}")
             Next
-            FillDocCuadMTNEwithFilter($"archivo.numdoc In ({paramSQL2})")
+            FillDocCuadMTNEwithFilter($"archivodocmtn.sellado In ({paramSQL2})")
             Me.Text = $"Documentos con los nº de sellado: {paramSQL1}"
         ElseIf typeSearch = TypeDataSearch.DocumentosByListaNumSelladoEntreLimites Then
             If paramSQL1.ToString = "" Or paramSQL2.ToString = "" Then
                 ModalExclamation("Búsqueda entre números de sellado no definida")
                 Exit Sub
             End If
-            FillDocCuadMTNEwithFilter($"archivo.numdoc >= '{paramSQL1}' and archivo.numdoc <= '{paramSQL2}'")
+            FillDocCuadMTNEwithFilter($"archivodocmtn.sellado >= {paramSQL1} and archivodocmtn.sellado <= {paramSQL2}")
             Me.Text = $"Documentos con nº de sellado comprendidos entre {paramSQL1} y {paramSQL2}"
         ElseIf typeSearch = TypeDataSearch.DocumentosBySignatura Then
             If paramSQL1.ToString = "" Then
                 ModalExclamation("No se ha definido ninguna signatura")
                 Exit Sub
             End If
-            FillDocCuadMTNEwithFilter($"archivo.signatura = '{paramSQL1}'")
+            FillDocCuadMTNEwithFilter($"archivodocmtn.signatura = '{paramSQL1}'")
             Me.Text = $"Documentos con signatura {paramSQL1}"
         ElseIf typeSearch = TypeDataSearch.DocumentosByAnejo Then
             If paramSQL1.ToString = "" Then
                 ModalExclamation("No se ha definido ningún anejo")
                 Exit Sub
             End If
-            FillDocCuadMTNEwithFilter($"archivo.anejo ilike '%{paramSQL1}%'")
+            FillDocCuadMTNEwithFilter($"archivodocmtn.anejos ilike '%{paramSQL1}%'")
             Me.Text = $"Documentos con el anejo {paramSQL1}"
-        ElseIf typeSearch = TypeDataSearch.DocumentosByColeccion Then
-            If paramSQL1.ToString = "" Then
-                ModalExclamation("No se ha especificado ninguna colección")
-                Exit Sub
-            End If
-            FillDocCuadMTNEwithFilter($"archivo.coleccion ilike '%{paramSQL1}%'")
-            Me.Text = $"Documentos asociados a la colección «{paramSQL1}»"
         ElseIf typeSearch = TypeDataSearch.DocumentosByComentario Then
             If paramSQL1.ToString = "" Then
                 ModalExclamation("No se ha especificado ningún comentario")
                 Exit Sub
             End If
-            FillDocCuadMTNEwithFilter($"(archivo.observ ilike E'%{paramSQL1.Replace("'", "\'")}%' or archivo.observaciones ilike E'%{paramSQL1.Replace("'", "\'")}%')")
+            FillDocCuadMTNEwithFilter($"(archivodocmtn.observaciones ilike E'%{paramSQL1.Replace("'", "\'")}%')")
             Me.Text = $"Documentos con el comentario «{paramSQL1}»"
         ElseIf typeSearch = TypeDataSearch.DocumentosByPatron Then
             If paramSQL1.ToString = "" Then
                 ModalExclamation("Búsqueda por patrón no definida")
                 Exit Sub
             End If
-            complexFilter = $"archivo.idarchivo in (
+            complexFilter = $"archivodocmtn.idarchivodocmtn in (
                                 with dataprops as (
-                                            select idarchivo,
+                                            select idarchivodocmtn,
                                             CASE 
                                                 WHEN bdsidschema.number_to_base(extraprops,2) Is null THEN repeat('0',16) 
                                                 ELSE repeat('0',16 - length(bdsidschema.number_to_base(extraprops,2))) || bdsidschema.number_to_base(extraprops,2) 
                                             END as patron 
-                                            from bdsidschema.archivo 
-                                            INNER JOIN bdsidschema.archivo2territorios ON archivo2territorios.archivo_id=archivo.idarchivo 
-                                            INNER JOIN bdsidschema.territorios on territorios.idterritorio= archivo2territorios.territorio_id 
+                                            from bdsidschema.archivodocmtn 
+                                            INNER JOIN bdsidschema.archivodocmtn2terris ON archivodocmtn2terris.archivodocmtn_id=archivodocmtn.idarchivodocmtn 
+                                            INNER JOIN bdsidschema.territorios on territorios.idterritorio= archivodocmtn2terris.territorio_id 
                                             LEFT JOIN ngmepschema.listamunicipios on territorios.nomen_id= listamunicipios.identidad 
-                                            WHERE idarchivo>0 
-                                ) select idarchivo from dataprops where patron like '{paramSQL1}'
+                                            WHERE idarchivodocmtn>0 
+                                ) select idarchivodocmtn from dataprops where patron like '{paramSQL1}'
                              )"
             FillDocCuadMTNEwithFilter(complexFilter)
 
         ElseIf typeSearch = TypeDataSearch.DocumentosByProcHojaCarpeta Then
             Dim hoja As Integer
-            If paramSQL1.ToString = "" Then
-                ModalExclamation("Búsqueda por hoja no definida")
+            If paramSQL1.ToString = "" And paramSQL2.ToString = "" Then
+                ModalExclamation("Búsqueda por procedimiento hoja/carpeta no definida")
                 Exit Sub
             End If
-            If Not Integer.TryParse(paramSQL1, hoja) Then
-                ModalExclamation("La hoja debe ser un número")
-                Exit Sub
+            If paramSQL1 <> "" Then
+                If Not Integer.TryParse(paramSQL1, hoja) Then
+                    ModalExclamation("La hoja debe ser un número")
+                    Exit Sub
+                End If
             End If
-            If paramSQL2.ToString = "" Then
-                FillDocCuadMTNEwithFilter($"archivo.procehoja={paramSQL1}")
+            If paramSQL2 <> "" Then
+                If Not Integer.TryParse(paramSQL2, hoja) Then
+                    ModalExclamation("La carpeta debe ser un número")
+                    Exit Sub
+                End If
+            End If
+
+            If paramSQL1 <> "" And paramSQL2 = "" Then
+                FillDocCuadMTNEwithFilter($"archivodocmtn.tomo ilike 'H{String.Format("{0:0000}", CType(paramSQL1, Integer))}%'")
                 Me.Text = $"Documentos de la hoja «{paramSQL1}»"
-            Else
-                FillDocCuadMTNEwithFilter($"archivo.procehoja={paramSQL1} and procecarpeta='{paramSQL2}'")
+            End If
+            If paramSQL1 <> "" And paramSQL2 <> "" Then
+                FillDocCuadMTNEwithFilter($"archivodocmtn.tomo ilike 'H{String.Format("{0:0000}", CType(paramSQL1, Integer))}C{String.Format("{0:00}", CType(paramSQL2, Integer))}%'")
                 Me.Text = $"Documentos de la hoja «{paramSQL1}», carpeta «{paramSQL2}»"
             End If
+
+
         ElseIf typeSearch = TypeDataSearch.DocumentosByBBOX Then
             If paramSQL1.ToString = "" Or paramSQL2.ToString = "" Then
                 ModalExclamation("Búsqueda por entorno no definida")
@@ -1115,19 +1122,13 @@
         ToolStripStatusLabel5.Text = ""
 
         cboFields.Items.Add(New itemData("(Múltiple)", "All"))
-        cboFields.Items.Add(New itemData("Sellado", "numdoc"))
+        cboFields.Items.Add(New itemData("Sellado", "sellado"))
         cboFields.Items.Add(New itemData("tipo", "tipo"))
         cboFields.Items.Add(New itemData("subtipo", "subtipo"))
         cboFields.Items.Add(New itemData("tomo", "tomo"))
-        cboFields.Items.Add(New itemData("Fecha", "fechaprincipal"))
-        cboFields.Items.Add(New itemData("Estado", "estado"))
-        cboFields.Items.Add(New itemData("Territorios", "listaMuniHisto"))
-        cboFields.Items.Add(New itemData("Signatura", "signatura"))
-        cboFields.Items.Add(New itemData("Colección", "coleccion"))
-        cboFields.Items.Add(New itemData("Subdivisión", "subdivision"))
-        cboFields.Items.Add(New itemData("Proc./Hoja", "procehoja"))
-        cboFields.Items.Add(New itemData("Proc./Carpeta", "procecarpeta"))
-        cboFields.Items.Add(New itemData("Observaciones", "observaciones"))
+        cboFields.Items.Add(New itemData("Fecha", "fecha"))
+        cboFields.Items.Add(New itemData("Territorios", "nombreTerris"))
+        cboFields.Items.Add(New itemData("contenido", "contenido"))
 
 
         btnAddingCarrito.Enabled = Not EsCarritoCompra
@@ -1330,9 +1331,9 @@
             Exit Sub
         End If
 
-        Dim frmNotify As New GestionUserNotification
+        Dim frmNotify As New GestionUserNotificacion
         frmNotify.MdiParent = MDIPrincipal
-        frmNotify.incidenciaInicial = DataGridView1.Item("numdoc", DataGridView1.CurrentCell.RowIndex).Value.ToString
+        frmNotify.incidenciaInicial = DataGridView1.Item("sellado", DataGridView1.CurrentCell.RowIndex).Value.ToString
         frmNotify.Show()
 
     End Sub

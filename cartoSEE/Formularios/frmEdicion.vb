@@ -376,9 +376,9 @@
 
     Sub CreationMode()
 
-        Me.Text = "Crear nuevo documento"
+        Me.Text = "Nuevo documento GEODOCAT"
         Button3.Text = "Crear"
-        ToolStripStatusLabel1.Text = "Crear nuevo documento."
+        ToolStripStatusLabel1.Text = "Nuevo documento GEODOCAT"
         Button9.Enabled = False
         Button10.Enabled = False
         Button13.Enabled = True

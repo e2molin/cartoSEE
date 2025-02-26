@@ -216,6 +216,20 @@
 
     End Function
 
+    Public Function ModalQuestCollection(message As String, Optional titleModal As String = "") As DialogResult
+
+        Try
+            My.Forms.QuestCollection.messageText = message
+            My.Forms.QuestCollection.textCaption = titleModal
+            Return My.Forms.QuestCollection.ShowDialog()
+        Catch ex As Exception
+            ModalError(ex.Message)
+        End Try
+
+
+    End Function
+
+
 
 #End Region
 
