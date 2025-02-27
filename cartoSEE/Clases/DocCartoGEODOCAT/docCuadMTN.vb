@@ -46,7 +46,12 @@
     Property esDistribuiblePorCDD As Boolean = True
 
     Property TaxonomiaWebSemanticaCode As String = "2.4.1.1.2"
-    Property TaxonomiaWebSemanticaName As String = "Actas, cuadernos, reseñas y gráficos de líneas límite "
+    Property TaxonomiaWebSemanticaName As String = "Actas, cuadernos, reseñas y gráficos de líneas límite"
+
+    Property historialCambios As New ArrayList
+    Dim historialConsultado As Boolean = False
+
+
 
     'Propiedades temporales que uso en Runtime
     ReadOnly Property nameFile4CDD() As String
@@ -156,17 +161,31 @@
 
     End Function
 
-    Function getListaNombresTerritoriosCDDCuadernosInteriores(maxNumberOfTerritories) As String
+    Function getListaNombresTerritoriosCDDCuadernosInteriores(Optional separador As String = ", ", Optional maxNumberOfTerritories As Integer = 10) As String
 
         Dim cadResult As String = ""
         If listaTerritorios.Count > maxNumberOfTerritories Then Return "Varios territorios"
         For Each item As TerritorioBSID In listaTerritorios
-            If cadResult <> "" Then cadResult &= $", {item.getNombreSencillo}" : Continue For
+            If cadResult <> "" Then cadResult &= $"{separador}{item.getNombreSencillo}" : Continue For
             cadResult = item.getNombreSencillo
         Next
         Return cadResult
 
     End Function
+
+    Function getListaNombresTerritorios(Optional separador As String = ", ", Optional maxNumberOfTerritories As Integer = 10) As String
+
+        Dim cadResult As String = ""
+        If listaTerritorios.Count > maxNumberOfTerritories Then Return "Varios territorios"
+        For Each item As TerritorioBSID In listaTerritorios
+            If cadResult <> "" Then cadResult &= $"{separador}{item.nombre}" : Continue For
+            cadResult = item.nombre
+        Next
+        Return cadResult
+
+    End Function
+
+
 
     Sub New()
         'territoriosPrincipal = New ArrayList
@@ -360,6 +379,41 @@
         rcdDoc = Nothing
 
 
+
+    End Sub
+
+    Sub cargarHistorial()
+
+        If historialConsultado = True Then Exit Sub
+
+        Dim rcdHistorial As New DataTable
+        Dim filas As DataRow()
+        Dim edicion As docCartoSEEVariacion
+        Try
+            If Not CargarRecordset($"SELECT * from bdsidschema.archivodocmtnlog WHERE archivodocmtn_id={IdarchivodocMTN}", rcdHistorial) Then
+                Exit Try
+            End If
+            filas = rcdHistorial.Select
+            historialCambios.Clear()
+            For Each fila As DataRow In filas
+                edicion = New docCartoSEEVariacion
+                edicion.usuario = fila("usuario_update").ToString
+                edicion.fechaVariacion = fila("fecha_update")
+                edicion.tipoVariacion = fila("tipo_variacion").ToString
+                edicion.valorOld = fila("valor_old").ToString
+                edicion.ValorNew = fila("valor_new").ToString
+                historialCambios.Add(edicion)
+                edicion = Nothing
+            Next
+        Catch ex As Exception
+            Application.DoEvents()
+        Finally
+            Erase filas
+            filas = Nothing
+            rcdHistorial.Dispose()
+            rcdHistorial = Nothing
+            historialConsultado = True
+        End Try
 
     End Sub
 

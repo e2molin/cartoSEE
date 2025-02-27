@@ -438,6 +438,8 @@
         Dim complexFilter As String
 
         Me.Cursor = Cursors.WaitCursor
+        registrarDatabaseLog($"ConsultaCuadernosMTN:{typeSearch}:{paramSQL1}:{paramSQL2}:{paramSQL3}")
+
         If typeSearch = TypeDataSearch.AllDocuments Then
             FillDocCuadMTNEwithFilter("")
             Me.Text = "Todos los documentos"
@@ -561,9 +563,18 @@
                 ModalExclamation("Búsqueda por entorno no definida")
                 Exit Sub
             End If
-            complexFilter = $"archivo.idarchivo IN (
-                                SELECT archivo_id FROM bdsidschema.contornos 
-                                    WHERE ST_Intersects(contornos.geom,ST_GeomFromText({paramSQL1},{paramSQL2}))
+            complexFilter = $"archivodocmtn.idarchivodocmtn IN (
+                                select archivodocmtn_id from bdsidschema.archivodocmtn2terris where territorio_id IN
+	                                (
+	                                Select idterritorio from bdsidschema.territorios where poligono_carto in
+		                                (
+			                                SELECT centroid_id FROM geoschema.deslin
+			                                WHERE 
+				                                ST_Intersects(deslin.the_geom,
+					                                ST_Transform(ST_GeomFromText({paramSQL1},{paramSQL2}),4258)
+				                                )
+		                                )
+	                                )
                                 )"
             FillDocCuadMTNEwithFilter(complexFilter)
             Me.Text = $"Documentos dentro de BBOX({paramSQL1}) en epsg:{paramSQL2}"
@@ -722,17 +733,17 @@
         elementoLV.SubItems.Add($"{elemEntidadSel.Create_By}") : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
 
 
-        'elemEntidadSel.cargarHistorial()
-        'For Each item As docCartoSEEVariacion In elemEntidadSel.historialCambios
-        '    elementoLV = New ListViewItem
-        '    elementoLV.Text = item.fechaVariacion
-        '    elementoLV.SubItems.Add(item.usuario)
-        '    elementoLV.SubItems.Add(item.tipoVariacion)
-        '    elementoLV.SubItems.Add(item.valorOld)
-        '    elementoLV.SubItems.Add(item.ValorNew)
-        '    lvDocEditions.Items.Add(elementoLV)
-        '    elementoLV = Nothing
-        'Next
+        elemEntidadSel.cargarHistorial()
+        For Each item As docCartoSEEVariacion In elemEntidadSel.historialCambios
+            elementoLV = New ListViewItem
+            elementoLV.Text = item.fechaVariacion
+            elementoLV.SubItems.Add(item.usuario)
+            elementoLV.SubItems.Add(item.tipoVariacion)
+            elementoLV.SubItems.Add(item.valorOld)
+            elementoLV.SubItems.Add(item.ValorNew)
+            lvDocEditions.Items.Add(elementoLV)
+            elementoLV = Nothing
+        Next
 
         elementoLV = New ListViewItem With {.Text = "Producto", .ImageIndex = 4, .Group = docCDD}
         elementoLV.SubItems.Add(elemEntidadSel.ProductoCDD) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
@@ -749,12 +760,8 @@
 
         LoadThumb(PictureBox2)
 
-
         idArchiveTagsLoaded = idArchivo
         FillResources(idArchivo, rowId)
-
-
-
 
     End Sub
 
@@ -888,10 +895,17 @@
         lvFastView.Items.Add(elementoLV) : elementoLV = Nothing
 
         If DataGridView1.Item("nombreTerris", rowIdx).Value.ToString <> "" Then
-            Dim terris() As String = DataGridView1.Item("nombreTerris", rowIdx).Value.ToString.Split(",")
-            For Each terri In terris
-                elementoLV = New ListViewItem With {.Text = "Territorio", .ImageIndex = 4, .Group = gTerri}
-                elementoLV.SubItems.Add(terri.Trim)
+
+
+            'Dim terris() As String = DataGridView1.Item("nombreTerris", rowIdx).Value.ToString.Split(",")
+            'For Each terri In terris
+            '    elementoLV = New ListViewItem With {.Text = "Territorio", .ImageIndex = 4, .Group = gTerri}
+            '    elementoLV.SubItems.Add(terri.Trim)
+            '    lvFastView.Items.Add(elementoLV) : elementoLV = Nothing
+            'Next
+            For Each terri As TerritorioBSID In elemEntidadSel.listaTerritorios
+                elementoLV = New ListViewItem With {.Text = terri.tipo, .ImageIndex = 4, .Group = gTerri}
+                elementoLV.SubItems.Add(terri.getNombreFull)
                 lvFastView.Items.Add(elementoLV) : elementoLV = Nothing
             Next
 
@@ -1130,9 +1144,6 @@
         cboFields.Items.Add(New itemData("Territorios", "nombreTerris"))
         cboFields.Items.Add(New itemData("contenido", "contenido"))
 
-
-        btnAddingCarrito.Enabled = Not EsCarritoCompra
-        btnDeletingCarrito.Enabled = EsCarritoCompra
         btnEditar.Visible = usuarioMyApp.permisosLista.editarDocumentacion
         mnuGenerateThumb.Visible = usuarioMyApp.permisosLista.usuarioISTARI
 
@@ -1255,7 +1266,7 @@
 
     End Sub
 
-    Private Sub ExternalLinks(sender As Object, e As EventArgs) Handles Button1.Click, Button2.Click, btnLinkCdD.Click, btnTVCNIG.Click, btnLinkABSYS.Click
+    Private Sub ExternalLinks(sender As Object, e As EventArgs) Handles Button1.Click, Button2.Click, btnLinkCdD.Click, btnTVCNIG.Click
 
 
         If elemEntidadSel Is Nothing Then Exit Sub
@@ -1383,7 +1394,7 @@
             txtFiltro.Enabled = False
             cboFields.Enabled = False
             If idArchivoLoaded <> idArchiveResourcesLoaded Then
-                FillResources(DataGridView1.Item("idarchivo", DataGridView1.CurrentCell.RowIndex).Value.ToString, DataGridView1.CurrentCell.RowIndex)
+                FillResources(DataGridView1.Item("idarchivodocmtn", DataGridView1.CurrentCell.RowIndex).Value.ToString, DataGridView1.CurrentCell.RowIndex)
             End If
             TabControl1.SelectedIndex = 2
         End If
@@ -1404,7 +1415,7 @@
         ElseIf TabControl1.SelectedIndex = 2 Then
             If DataGridView1.CurrentCell Is Nothing Then Exit Sub
             If idArchivoLoaded <> idArchiveResourcesLoaded Then
-                FillResources(DataGridView1.Item("idarchivo", DataGridView1.CurrentCell.RowIndex).Value.ToString, DataGridView1.CurrentCell.RowIndex)
+                FillResources(DataGridView1.Item("idarchivodocmtn", DataGridView1.CurrentCell.RowIndex).Value.ToString, DataGridView1.CurrentCell.RowIndex)
             End If
         End If
     End Sub
@@ -1659,102 +1670,7 @@
 
     End Sub
 
-    Private Sub AddingItemToCarrito(sender As Object, e As EventArgs) Handles btnAddingCarrito.Click, btnDeletingCarrito.Click
-
-        If DataGridView1.RowCount = 0 Then Exit Sub
-        Dim indexForShop As Integer = 0
-        If sender.name = "btnDeletingCarrito" Then
-            For Each item As DataGridViewRow In DataGridView1.SelectedRows
-                CarritoCompra.Remove(item.Cells(indexForShop).Value)
-            Next
-            If DataGridView1.RowCount <> CarritoCompra.Count Then btnRefresh.PerformClick()
-        Else
-            If DataGridView1.SelectedRows.Count > 50 Then
-                ModalExclamation("No se pueden añadir más de 50 elementos de una tacada al carrito")
-                Exit Sub
-            End If
-            Dim nDocsAdded As Integer = 0
-            For Each item As DataGridViewRow In DataGridView1.SelectedRows
-                If Not CarritoCompra.Contains(item.Cells(indexForShop).Value) Then
-                    CarritoCompra.Add(item.Cells(indexForShop).Value)
-                    nDocsAdded += 1
-                Else
-                    ModalInfo("El documento ya se encuentra en el carrito")
-                End If
-
-            Next
-            If nDocsAdded = 0 Then Exit Sub
-            ModalInfo($"Se han añadido al carrito {nDocsAdded} documentos")
-            For Each ChildForm As resultCMTN In Me.MdiChildren
-                If ChildForm.EsCarritoCompra Then
-                    If ChildForm.DataGridView1.RowCount <> CarritoCompra.Count Then ChildForm.btnRefresh.PerformClick()
-                    Exit For
-                End If
-            Next
-        End If
-
-
-
-    End Sub
-
-    Private Sub GenerarMetadatoNEMToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles GenerarMetadatoNEMToolStripMenuItem.Click
-
-        ModalInfo("Función no disponible")
-
-        'Dim NombreFichOUT As String
-        'Dim contador As Integer
-        'Dim NumSelect As Integer
-        'Dim folderOut As String = ""
-        'Dim itemForMetadata As documentoSIDDAE
-
-        'If DataGridView1.RowCount = 0 Then Exit Sub
-
-        'Using folderDialogSelection As New FolderBrowserDialog With {
-        '            .Description = "Seleccione la carpeta de salida",
-        '            .SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-        '            .ShowNewFolderButton = True
-        '    }
-        '    If folderDialogSelection.ShowDialog = DialogResult.OK Then
-        '        folderOut = folderDialogSelection.SelectedPath
-        '    End If
-        'End Using
-
-
-        'Me.Cursor = Cursors.WaitCursor
-        'LanzarSpinner()
-        'For Each item As DataGridViewRow In DataGridView1.SelectedRows
-
-        '    Try
-        '        itemForMetadata = New documentoSIDDAE(item.Cells(1).Value)
-        '        GenerarMetadatosNEM(itemForMetadata, folderOut)
-        '    Catch ex As Exception
-        '        GenerarLOG(ex.Message)
-        '    End Try
-
-
-        'Next
-        'CerrarSpinner()
-        'Me.Cursor = Cursors.Default
-        'ToolStripStatusLabel1.Text = ""
-
-        'If ModalQuestion($"Metadatos generados en {Environment.NewLine}{folderOut}{Environment.NewLine}¿Desea abrir la carpeta?") = DialogResult.Yes Then
-        '    Try
-        '        Process.Start(folderOut)
-        '    Catch ex As Exception
-        '        ModalError(ex.Message)
-        '    End Try
-        'End If
-
-
-
-    End Sub
-
     Private Sub mnuGenerateThumb_Click(sender As Object, e As EventArgs) Handles mnuGenerateThumb.Click
-
-
-
-
-
 
         Dim idDoc As Integer
         Dim outputFolder As String
@@ -1934,37 +1850,6 @@
 
     End Sub
 
-    Private Sub mnuLaunchECWCrop_Click(sender As Object, e As EventArgs) Handles mnuLaunchECWCrop.Click
-
-
-        Dim RutasECW As New ArrayList
-        Dim archivoId As Integer
-        Dim elemEntidadgeo As docCartoSEE
-
-        ModalInfo("La composición se generará en epsg:23030")
-
-        For i = 0 To DataGridView1.SelectedRows.Count - 1
-            archivoId = DataGridView1.Item(0, DataGridView1.SelectedRows(i).Index).Value
-            elemEntidadgeo = New docCartoSEE(archivoId)
-            elemEntidadgeo.getGeoFiles()
-            For Each rutaDoc As FileGeorref In elemEntidadgeo.listaFicherosGeo
-                Application.DoEvents()
-                If rutaDoc.EPSCode = "epsg23030" Then RutasECW.Add(rutaDoc.PathFile)
-            Next
-        Next
-
-        If RutasECW.Count = 0 Then
-            ModalInfo("No se ha localizado ningún documento georreferenciado")
-        Else
-            If GenerarProyectoGM(RutasECW, True) = True Then
-                LanzarVisorExterno(AppFolderSetting & "\LaunchGM.gmw")
-            End If
-        End If
-        RutasECW.Clear()
-        RutasECW = Nothing
-
-
-    End Sub
 
     Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click
 
@@ -1996,42 +1881,5 @@
 
     End Sub
 
-    Sub ExtraerContornos(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuContornosExtract.Click
-
-        Dim NomFich As String = ""
-        Dim contador As Integer
-        Dim ListaDocs As New ArrayList
-
-        If DataGridView1.Rows.Count = 0 Then Exit Sub
-        If DataGridView1.SelectedRows.Count = 0 Then
-            ModalExclamation("Seleccione los documentos que quiere exportar")
-            Exit Sub
-        End If
-
-        Using sfd As New SaveFileDialog With {
-                            .Title = "Introduzca el nombre del fichero para los contornos",
-                            .Filter = "Archivos GeoJSON *.geojson|*.geojson"
-            }
-            If sfd.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                NomFich = sfd.FileName
-            End If
-        End Using
-        If NomFich = "" Then Exit Sub
-
-        LanzarSpinner("Procesando información...")
-        Me.Cursor = Cursors.WaitCursor
-
-        For i = 0 To DataGridView1.SelectedRows.Count - 1
-            ListaDocs.Add(DataGridView1.Item(0, DataGridView1.SelectedRows(i).Index).Value.ToString)
-        Next
-
-        ExportarContourDocTsoGJSON(ListaDocs, NomFich)
-
-        Me.Cursor = Cursors.Default
-        CerrarSpinner()
-
-        ModalInfo("Fichero de contornos generado")
-
-    End Sub
 
 End Class

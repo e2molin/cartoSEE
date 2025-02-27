@@ -57,6 +57,7 @@ Module Basics
     Public rutaRepoThumbs As String
 
     Public Const visorCartociudad As String = "https://www.cartociudad.es/visor/"
+    Public Const visorIberpix As String = "https://iberpix.cnig.es/iberpix/visor"
     Public urlCDDSearchEngine As String
     Public urlGazetteerNGBESearchEngine As String
 
@@ -239,7 +240,25 @@ Module Basics
             Else
                 imageLoaded = RutaDefault
             End If
-            Lienzo.Load(imageLoaded)
+
+            'Dim bm As New Bitmap(imageLoaded)
+            'Dim m_Bitmap As Bitmap
+            'm_Bitmap = New Bitmap(bm.Width, bm.Height)
+            'Dim gr As Graphics = Graphics.FromImage(m_Bitmap)
+            'gr.DrawImage(bm, 0, 0)
+            'bm.Dispose()
+            'Lienzo.Image = m_Bitmap
+
+            Dim img1 As New Bitmap(imageLoaded)
+            Dim img2 As Bitmap = DirectCast(img1.Clone, Bitmap)
+            img1.Dispose()
+            Lienzo.Image = img2
+
+
+
+            'Lienzo.Load(imageLoaded)
+
+
             Lienzo.SizeMode = IIf(stretchMode = True, PictureBoxSizeMode.StretchImage, PictureBoxSizeMode.Zoom)
             If pathInTag = "" Then
                 Lienzo.Tag = imageLoaded

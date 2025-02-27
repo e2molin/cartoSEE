@@ -434,6 +434,9 @@
         Dim complexFilter As String
 
         Me.Cursor = Cursors.WaitCursor
+
+        registrarDatabaseLog($"ConsultaGEODOCAT:{typeSearch}:{paramSQL1}:{paramSQL2}:{paramSQL3}")
+
         If typeSearch = TypeDataSearch.AllDocuments Then
             FillDocCARTOSEEwithFilter("")
             Me.Text = "Todos los documentos"

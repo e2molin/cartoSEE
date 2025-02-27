@@ -29,6 +29,7 @@ Partial Class MDIPrincipal
         Me.FileMenu = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuBuscador = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuBuscadorGeo = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuOpenFilters = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
         Me.mnuEjecutar = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuLimpiar = New System.Windows.Forms.ToolStripMenuItem()
@@ -84,6 +85,7 @@ Partial Class MDIPrincipal
         Me.mnuDeveloperTools = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuOpenAppFolderSetting = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuOldSearch = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuOldSearchGEO = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAdminTools = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuExportCdD = New System.Windows.Forms.ToolStripMenuItem()
         Me.WindowsMenu = New System.Windows.Forms.ToolStripMenuItem()
@@ -94,6 +96,7 @@ Partial Class MDIPrincipal
         Me.ArrangeIconsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.UserMenu = New System.Windows.Forms.ToolStripMenuItem()
         Me.itemUsermenu = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator11 = New System.Windows.Forms.ToolStripSeparator()
         Me.itemChangePass = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuListaPermisos = New System.Windows.Forms.ToolStripMenuItem()
         Me.itemGestionUser = New System.Windows.Forms.ToolStripMenuItem()
@@ -217,9 +220,7 @@ Partial Class MDIPrincipal
         Me.RadioButton2 = New System.Windows.Forms.RadioButton()
         Me.RadioButton1 = New System.Windows.Forms.RadioButton()
         Me.Panel_GeoSearch = New System.Windows.Forms.Panel()
-        Me.Button11 = New System.Windows.Forms.Button()
         Me.Button10 = New System.Windows.Forms.Button()
-        Me.Button9 = New System.Windows.Forms.Button()
         Me.PictureBox5 = New System.Windows.Forms.PictureBox()
         Me.Label35 = New System.Windows.Forms.Label()
         Me.TextBox24 = New System.Windows.Forms.TextBox()
@@ -244,12 +245,11 @@ Partial Class MDIPrincipal
         Me.TextBox3 = New System.Windows.Forms.TextBox()
         Me.TextBox7 = New System.Windows.Forms.TextBox()
         Me.TextBox9 = New System.Windows.Forms.TextBox()
-        Me.Button5 = New System.Windows.Forms.Button()
         Me.PictureBox4 = New System.Windows.Forms.PictureBox()
         Me.Button6 = New System.Windows.Forms.Button()
         Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
         Me.ImageList2 = New System.Windows.Forms.ImageList(Me.components)
-        Me.ToolStripSeparator11 = New System.Windows.Forms.ToolStripSeparator()
+        Me.PictureBox6 = New System.Windows.Forms.PictureBox()
         Me.MenuStrip.SuspendLayout()
         Me.ToolStrip.SuspendLayout()
         Me.StatusStrip.SuspendLayout()
@@ -262,6 +262,7 @@ Partial Class MDIPrincipal
         CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'MenuStrip
@@ -298,7 +299,7 @@ Partial Class MDIPrincipal
         '
         'FileMenu
         '
-        Me.FileMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuBuscador, Me.mnuBuscadorGeo, Me.ToolStripSeparator5, Me.mnuEjecutar, Me.mnuLimpiar, Me.ToolStripSeparator7, Me.ToolStripMenuItem2, Me.ToolStripMenuItem1, Me.ToolStripSeparator6, Me.mnuVisorMosaicos, Me.mnuTool_EditAtrib, Me.mnuAddECW, Me.mnuAddContornos, Me.mnuMuniHisto, Me.mnuQueryLibrosRegistro})
+        Me.FileMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuBuscador, Me.mnuBuscadorGeo, Me.mnuOpenFilters, Me.ToolStripSeparator5, Me.mnuEjecutar, Me.mnuLimpiar, Me.ToolStripSeparator7, Me.ToolStripMenuItem2, Me.ToolStripMenuItem1, Me.ToolStripSeparator6, Me.mnuVisorMosaicos, Me.mnuTool_EditAtrib, Me.mnuAddECW, Me.mnuAddContornos, Me.mnuMuniHisto, Me.mnuQueryLibrosRegistro})
         Me.FileMenu.ImageTransparentColor = System.Drawing.SystemColors.ActiveBorder
         Me.FileMenu.Name = "FileMenu"
         Me.FileMenu.Size = New System.Drawing.Size(107, 20)
@@ -321,6 +322,13 @@ Partial Class MDIPrincipal
         Me.mnuBuscadorGeo.Name = "mnuBuscadorGeo"
         Me.mnuBuscadorGeo.Size = New System.Drawing.Size(280, 22)
         Me.mnuBuscadorGeo.Text = "Búsqueda Geográfica"
+        '
+        'mnuOpenFilters
+        '
+        Me.mnuOpenFilters.Image = CType(resources.GetObject("mnuOpenFilters.Image"), System.Drawing.Image)
+        Me.mnuOpenFilters.Name = "mnuOpenFilters"
+        Me.mnuOpenFilters.Size = New System.Drawing.Size(280, 22)
+        Me.mnuOpenFilters.Text = "Abrir filtros"
         '
         'ToolStripSeparator5
         '
@@ -661,7 +669,7 @@ Partial Class MDIPrincipal
         '
         'mnuDeveloper
         '
-        Me.mnuDeveloper.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuDeveloperTools, Me.mnuOpenAppFolderSetting, Me.mnuOldSearch})
+        Me.mnuDeveloper.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuDeveloperTools, Me.mnuOpenAppFolderSetting, Me.mnuOldSearch, Me.mnuOldSearchGEO})
         Me.mnuDeveloper.Image = CType(resources.GetObject("mnuDeveloper.Image"), System.Drawing.Image)
         Me.mnuDeveloper.Name = "mnuDeveloper"
         Me.mnuDeveloper.Size = New System.Drawing.Size(307, 22)
@@ -686,6 +694,12 @@ Partial Class MDIPrincipal
         Me.mnuOldSearch.Name = "mnuOldSearch"
         Me.mnuOldSearch.Size = New System.Drawing.Size(258, 22)
         Me.mnuOldSearch.Text = "Antigua búsqueda"
+        '
+        'mnuOldSearchGEO
+        '
+        Me.mnuOldSearchGEO.Name = "mnuOldSearchGEO"
+        Me.mnuOldSearchGEO.Size = New System.Drawing.Size(258, 22)
+        Me.mnuOldSearchGEO.Text = "Antigua búsqueda geométrica"
         '
         'mnuAdminTools
         '
@@ -751,6 +765,11 @@ Partial Class MDIPrincipal
         Me.itemUsermenu.Name = "itemUsermenu"
         Me.itemUsermenu.Size = New System.Drawing.Size(253, 22)
         Me.itemUsermenu.Text = "Notificación de incidencia"
+        '
+        'ToolStripSeparator11
+        '
+        Me.ToolStripSeparator11.Name = "ToolStripSeparator11"
+        Me.ToolStripSeparator11.Size = New System.Drawing.Size(250, 6)
         '
         'itemChangePass
         '
@@ -1911,9 +1930,8 @@ Partial Class MDIPrincipal
         'Panel_GeoSearch
         '
         Me.Panel_GeoSearch.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.Panel_GeoSearch.Controls.Add(Me.Button11)
+        Me.Panel_GeoSearch.Controls.Add(Me.PictureBox6)
         Me.Panel_GeoSearch.Controls.Add(Me.Button10)
-        Me.Panel_GeoSearch.Controls.Add(Me.Button9)
         Me.Panel_GeoSearch.Controls.Add(Me.PictureBox5)
         Me.Panel_GeoSearch.Controls.Add(Me.Label35)
         Me.Panel_GeoSearch.Controls.Add(Me.TextBox24)
@@ -1938,7 +1956,6 @@ Partial Class MDIPrincipal
         Me.Panel_GeoSearch.Controls.Add(Me.TextBox3)
         Me.Panel_GeoSearch.Controls.Add(Me.TextBox7)
         Me.Panel_GeoSearch.Controls.Add(Me.TextBox9)
-        Me.Panel_GeoSearch.Controls.Add(Me.Button5)
         Me.Panel_GeoSearch.Controls.Add(Me.PictureBox4)
         Me.Panel_GeoSearch.Controls.Add(Me.Button6)
         Me.Panel_GeoSearch.Location = New System.Drawing.Point(513, 11)
@@ -1946,41 +1963,21 @@ Partial Class MDIPrincipal
         Me.Panel_GeoSearch.Size = New System.Drawing.Size(250, 828)
         Me.Panel_GeoSearch.TabIndex = 15
         '
-        'Button11
-        '
-        Me.Button11.Location = New System.Drawing.Point(12, 737)
-        Me.Button11.Name = "Button11"
-        Me.Button11.Size = New System.Drawing.Size(197, 30)
-        Me.Button11.TabIndex = 52
-        Me.Button11.Text = "Antigua búsqueda geo"
-        Me.Button11.UseVisualStyleBackColor = True
-        '
         'Button10
         '
         Me.Button10.Image = CType(resources.GetObject("Button10.Image"), System.Drawing.Image)
-        Me.Button10.Location = New System.Drawing.Point(9, 682)
+        Me.Button10.Location = New System.Drawing.Point(8, 542)
         Me.Button10.Name = "Button10"
-        Me.Button10.Size = New System.Drawing.Size(234, 49)
+        Me.Button10.Size = New System.Drawing.Size(146, 76)
         Me.Button10.TabIndex = 51
         Me.Button10.Text = "Búsqueda en el Centro de descargas"
         Me.Button10.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
         Me.Button10.UseVisualStyleBackColor = True
         '
-        'Button9
-        '
-        Me.Button9.Image = CType(resources.GetObject("Button9.Image"), System.Drawing.Image)
-        Me.Button9.Location = New System.Drawing.Point(9, 643)
-        Me.Button9.Name = "Button9"
-        Me.Button9.Size = New System.Drawing.Size(147, 36)
-        Me.Button9.TabIndex = 50
-        Me.Button9.Text = "Más filtros"
-        Me.Button9.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
-        Me.Button9.UseVisualStyleBackColor = True
-        '
         'PictureBox5
         '
         Me.PictureBox5.Image = CType(resources.GetObject("PictureBox5.Image"), System.Drawing.Image)
-        Me.PictureBox5.Location = New System.Drawing.Point(81, 398)
+        Me.PictureBox5.Location = New System.Drawing.Point(81, 337)
         Me.PictureBox5.Name = "PictureBox5"
         Me.PictureBox5.Size = New System.Drawing.Size(82, 60)
         Me.PictureBox5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -1990,7 +1987,7 @@ Partial Class MDIPrincipal
         'Label35
         '
         Me.Label35.AutoSize = True
-        Me.Label35.Location = New System.Drawing.Point(20, 537)
+        Me.Label35.Location = New System.Drawing.Point(20, 476)
         Me.Label35.Name = "Label35"
         Me.Label35.Size = New System.Drawing.Size(36, 13)
         Me.Label35.TabIndex = 48
@@ -1998,7 +1995,7 @@ Partial Class MDIPrincipal
         '
         'TextBox24
         '
-        Me.TextBox24.Location = New System.Drawing.Point(58, 534)
+        Me.TextBox24.Location = New System.Drawing.Point(58, 473)
         Me.TextBox24.Name = "TextBox24"
         Me.TextBox24.Size = New System.Drawing.Size(176, 20)
         Me.TextBox24.TabIndex = 47
@@ -2007,7 +2004,7 @@ Partial Class MDIPrincipal
         'Button8
         '
         Me.Button8.Image = CType(resources.GetObject("Button8.Image"), System.Drawing.Image)
-        Me.Button8.Location = New System.Drawing.Point(55, 320)
+        Me.Button8.Location = New System.Drawing.Point(55, 259)
         Me.Button8.Name = "Button8"
         Me.Button8.Size = New System.Drawing.Size(122, 41)
         Me.Button8.TabIndex = 46
@@ -2019,7 +2016,7 @@ Partial Class MDIPrincipal
         '
         Me.Label13.AutoSize = True
         Me.Label13.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label13.Location = New System.Drawing.Point(6, 292)
+        Me.Label13.Location = New System.Drawing.Point(6, 231)
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(207, 13)
         Me.Label13.TabIndex = 45
@@ -2028,27 +2025,27 @@ Partial Class MDIPrincipal
         'PictureBox2
         '
         Me.PictureBox2.Image = CType(resources.GetObject("PictureBox2.Image"), System.Drawing.Image)
-        Me.PictureBox2.Location = New System.Drawing.Point(92, 218)
+        Me.PictureBox2.Location = New System.Drawing.Point(12, 180)
         Me.PictureBox2.Name = "PictureBox2"
-        Me.PictureBox2.Size = New System.Drawing.Size(50, 52)
+        Me.PictureBox2.Size = New System.Drawing.Size(44, 41)
         Me.PictureBox2.TabIndex = 44
         Me.PictureBox2.TabStop = False
         '
         'Label34
         '
-        Me.Label34.AutoSize = True
         Me.Label34.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label34.Location = New System.Drawing.Point(6, 193)
+        Me.Label34.Location = New System.Drawing.Point(23, 108)
         Me.Label34.Name = "Label34"
-        Me.Label34.Size = New System.Drawing.Size(203, 13)
+        Me.Label34.Size = New System.Drawing.Size(211, 44)
         Me.Label34.TabIndex = 43
-        Me.Label34.Text = "2 - Cargar coordenadas de la zona"
+        Me.Label34.Text = "2 - Copiar coordenadas desde la herramienta de información de coordenadas de la z" &
+    "ona"
         '
         'Label33
         '
         Me.Label33.AutoSize = True
         Me.Label33.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label33.Location = New System.Drawing.Point(6, 73)
+        Me.Label33.Location = New System.Drawing.Point(6, 12)
         Me.Label33.Name = "Label33"
         Me.Label33.Size = New System.Drawing.Size(237, 13)
         Me.Label33.TabIndex = 42
@@ -2057,9 +2054,9 @@ Partial Class MDIPrincipal
         'Button7
         '
         Me.Button7.Image = CType(resources.GetObject("Button7.Image"), System.Drawing.Image)
-        Me.Button7.Location = New System.Drawing.Point(55, 95)
+        Me.Button7.Location = New System.Drawing.Point(69, 34)
         Me.Button7.Name = "Button7"
-        Me.Button7.Size = New System.Drawing.Size(122, 77)
+        Me.Button7.Size = New System.Drawing.Size(108, 71)
         Me.Button7.TabIndex = 40
         Me.Button7.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
         Me.Button7.UseVisualStyleBackColor = True
@@ -2068,7 +2065,7 @@ Partial Class MDIPrincipal
         '
         Me.Label17.AutoSize = True
         Me.Label17.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label17.Location = New System.Drawing.Point(6, 376)
+        Me.Label17.Location = New System.Drawing.Point(6, 315)
         Me.Label17.Name = "Label17"
         Me.Label17.Size = New System.Drawing.Size(148, 13)
         Me.Label17.TabIndex = 39
@@ -2077,7 +2074,7 @@ Partial Class MDIPrincipal
         'Label16
         '
         Me.Label16.AutoSize = True
-        Me.Label16.Location = New System.Drawing.Point(6, 573)
+        Me.Label16.Location = New System.Drawing.Point(6, 512)
         Me.Label16.Name = "Label16"
         Me.Label16.Size = New System.Drawing.Size(52, 13)
         Me.Label16.TabIndex = 38
@@ -2086,7 +2083,7 @@ Partial Class MDIPrincipal
         'Label15
         '
         Me.Label15.AutoSize = True
-        Me.Label15.Location = New System.Drawing.Point(9, 504)
+        Me.Label15.Location = New System.Drawing.Point(9, 443)
         Me.Label15.Name = "Label15"
         Me.Label15.Size = New System.Drawing.Size(47, 13)
         Me.Label15.TabIndex = 37
@@ -2095,7 +2092,7 @@ Partial Class MDIPrincipal
         'Label14
         '
         Me.Label14.AutoSize = True
-        Me.Label14.Location = New System.Drawing.Point(14, 475)
+        Me.Label14.Location = New System.Drawing.Point(14, 414)
         Me.Label14.Name = "Label14"
         Me.Label14.Size = New System.Drawing.Size(42, 13)
         Me.Label14.TabIndex = 36
@@ -2103,7 +2100,7 @@ Partial Class MDIPrincipal
         '
         'TextBox13
         '
-        Me.TextBox13.Location = New System.Drawing.Point(58, 569)
+        Me.TextBox13.Location = New System.Drawing.Point(58, 508)
         Me.TextBox13.Name = "TextBox13"
         Me.TextBox13.Size = New System.Drawing.Size(176, 20)
         Me.TextBox13.TabIndex = 35
@@ -2111,7 +2108,7 @@ Partial Class MDIPrincipal
         '
         'TextBox12
         '
-        Me.TextBox12.Location = New System.Drawing.Point(58, 501)
+        Me.TextBox12.Location = New System.Drawing.Point(58, 440)
         Me.TextBox12.Name = "TextBox12"
         Me.TextBox12.Size = New System.Drawing.Size(176, 20)
         Me.TextBox12.TabIndex = 34
@@ -2119,7 +2116,7 @@ Partial Class MDIPrincipal
         '
         'TextBox11
         '
-        Me.TextBox11.Location = New System.Drawing.Point(58, 472)
+        Me.TextBox11.Location = New System.Drawing.Point(58, 411)
         Me.TextBox11.Name = "TextBox11"
         Me.TextBox11.Size = New System.Drawing.Size(176, 20)
         Me.TextBox11.TabIndex = 33
@@ -2128,7 +2125,7 @@ Partial Class MDIPrincipal
         'Label12
         '
         Me.Label12.AutoSize = True
-        Me.Label12.Location = New System.Drawing.Point(17, 802)
+        Me.Label12.Location = New System.Drawing.Point(17, 653)
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(28, 13)
         Me.Label12.TabIndex = 31
@@ -2138,7 +2135,7 @@ Partial Class MDIPrincipal
         'Label11
         '
         Me.Label11.AutoSize = True
-        Me.Label11.Location = New System.Drawing.Point(101, 776)
+        Me.Label11.Location = New System.Drawing.Point(101, 627)
         Me.Label11.Name = "Label11"
         Me.Label11.Size = New System.Drawing.Size(35, 13)
         Me.Label11.TabIndex = 30
@@ -2148,7 +2145,7 @@ Partial Class MDIPrincipal
         'Label10
         '
         Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(113, 802)
+        Me.Label10.Location = New System.Drawing.Point(113, 653)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(23, 13)
         Me.Label10.TabIndex = 29
@@ -2158,7 +2155,7 @@ Partial Class MDIPrincipal
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(17, 775)
+        Me.Label3.Location = New System.Drawing.Point(17, 626)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(33, 13)
         Me.Label3.TabIndex = 28
@@ -2167,7 +2164,7 @@ Partial Class MDIPrincipal
         '
         'TextBox10
         '
-        Me.TextBox10.Location = New System.Drawing.Point(145, 800)
+        Me.TextBox10.Location = New System.Drawing.Point(145, 651)
         Me.TextBox10.Name = "TextBox10"
         Me.TextBox10.Size = New System.Drawing.Size(32, 20)
         Me.TextBox10.TabIndex = 27
@@ -2176,7 +2173,7 @@ Partial Class MDIPrincipal
         '
         'TextBox3
         '
-        Me.TextBox3.Location = New System.Drawing.Point(56, 773)
+        Me.TextBox3.Location = New System.Drawing.Point(56, 624)
         Me.TextBox3.Name = "TextBox3"
         Me.TextBox3.Size = New System.Drawing.Size(39, 20)
         Me.TextBox3.TabIndex = 26
@@ -2185,7 +2182,7 @@ Partial Class MDIPrincipal
         '
         'TextBox7
         '
-        Me.TextBox7.Location = New System.Drawing.Point(145, 773)
+        Me.TextBox7.Location = New System.Drawing.Point(145, 624)
         Me.TextBox7.Name = "TextBox7"
         Me.TextBox7.Size = New System.Drawing.Size(32, 20)
         Me.TextBox7.TabIndex = 25
@@ -2194,28 +2191,17 @@ Partial Class MDIPrincipal
         '
         'TextBox9
         '
-        Me.TextBox9.Location = New System.Drawing.Point(56, 799)
+        Me.TextBox9.Location = New System.Drawing.Point(56, 650)
         Me.TextBox9.Name = "TextBox9"
         Me.TextBox9.Size = New System.Drawing.Size(39, 20)
         Me.TextBox9.TabIndex = 24
         Me.TextBox9.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.TextBox9.Visible = False
         '
-        'Button5
-        '
-        Me.Button5.Image = CType(resources.GetObject("Button5.Image"), System.Drawing.Image)
-        Me.Button5.Location = New System.Drawing.Point(9, 603)
-        Me.Button5.Name = "Button5"
-        Me.Button5.Size = New System.Drawing.Size(147, 34)
-        Me.Button5.TabIndex = 21
-        Me.Button5.Text = "Nueva"
-        Me.Button5.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
-        Me.Button5.UseVisualStyleBackColor = True
-        '
         'PictureBox4
         '
         Me.PictureBox4.Image = CType(resources.GetObject("PictureBox4.Image"), System.Drawing.Image)
-        Me.PictureBox4.Location = New System.Drawing.Point(224, 731)
+        Me.PictureBox4.Location = New System.Drawing.Point(215, 624)
         Me.PictureBox4.Name = "PictureBox4"
         Me.PictureBox4.Size = New System.Drawing.Size(19, 18)
         Me.PictureBox4.TabIndex = 20
@@ -2225,7 +2211,7 @@ Partial Class MDIPrincipal
         '
         Me.Button6.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button6.Image = CType(resources.GetObject("Button6.Image"), System.Drawing.Image)
-        Me.Button6.Location = New System.Drawing.Point(160, 603)
+        Me.Button6.Location = New System.Drawing.Point(160, 542)
         Me.Button6.Name = "Button6"
         Me.Button6.Size = New System.Drawing.Size(83, 76)
         Me.Button6.TabIndex = 19
@@ -2271,10 +2257,15 @@ Partial Class MDIPrincipal
         Me.ImageList2.Images.SetKeyName(13, "Archivador 32.png")
         Me.ImageList2.Images.SetKeyName(14, "editar_24.png")
         '
-        'ToolStripSeparator11
+        'PictureBox6
         '
-        Me.ToolStripSeparator11.Name = "ToolStripSeparator11"
-        Me.ToolStripSeparator11.Size = New System.Drawing.Size(250, 6)
+        Me.PictureBox6.Image = CType(resources.GetObject("PictureBox6.Image"), System.Drawing.Image)
+        Me.PictureBox6.Location = New System.Drawing.Point(62, 159)
+        Me.PictureBox6.Name = "PictureBox6"
+        Me.PictureBox6.Size = New System.Drawing.Size(181, 62)
+        Me.PictureBox6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.PictureBox6.TabIndex = 52
+        Me.PictureBox6.TabStop = False
         '
         'MDIPrincipal
         '
@@ -2309,6 +2300,7 @@ Partial Class MDIPrincipal
         CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -2358,7 +2350,6 @@ Partial Class MDIPrincipal
     Friend WithEvents PictureBox4 As System.Windows.Forms.PictureBox
     Friend WithEvents ToolConfig As System.Windows.Forms.ToolStripButton
     Friend WithEvents ToolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
-    Friend WithEvents Button5 As System.Windows.Forms.Button
     Friend WithEvents GroupBox5 As System.Windows.Forms.GroupBox
     Friend WithEvents ComboBox3 As System.Windows.Forms.ComboBox
     Friend WithEvents Label5 As System.Windows.Forms.Label
@@ -2513,7 +2504,6 @@ Partial Class MDIPrincipal
     Friend WithEvents Label33 As Label
     Friend WithEvents Label35 As Label
     Friend WithEvents TextBox24 As TextBox
-    Friend WithEvents Button9 As Button
     Friend WithEvents PictureBox5 As PictureBox
     Friend WithEvents Button10 As Button
     Friend WithEvents mnuQueryLibrosRegistro As ToolStripMenuItem
@@ -2525,7 +2515,6 @@ Partial Class MDIPrincipal
     Friend WithEvents btnGetCdD As Button
     Friend WithEvents ToolStripButton10 As ToolStripButton
     Friend WithEvents Button12 As Button
-    Friend WithEvents Button11 As Button
     Friend WithEvents mnuLinkCdDCCINT As ToolStripMenuItem
     Friend WithEvents Button13 As Button
     Friend WithEvents ToolStripSplitButton1 As ToolStripSplitButton
@@ -2541,4 +2530,7 @@ Partial Class MDIPrincipal
     Friend WithEvents itemChangePass As ToolStripMenuItem
     Friend WithEvents mnuListaPermisos As ToolStripMenuItem
     Friend WithEvents ToolStripSeparator11 As ToolStripSeparator
+    Friend WithEvents mnuOpenFilters As ToolStripMenuItem
+    Friend WithEvents mnuOldSearchGEO As ToolStripMenuItem
+    Friend WithEvents PictureBox6 As PictureBox
 End Class

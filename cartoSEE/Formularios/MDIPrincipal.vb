@@ -286,8 +286,6 @@ Public Class MDIPrincipal
         ToolStripButton1.Visible = usuarioMyApp.permisosLista.isUserISTARI
         mnuGenerarRejilla.Visible = usuarioMyApp.permisosLista.isUserISTARI
         mnuLanzarPlantilla.Visible = usuarioMyApp.permisosLista.isUserISTARI
-        Button9.Visible = usuarioMyApp.permisosLista.isUserISTARI
-        Button11.Visible = usuarioMyApp.permisosLista.isUserISTARI
 
         Me.WindowState = FormWindowState.Maximized
 
@@ -323,6 +321,7 @@ Public Class MDIPrincipal
         ComboBox5.Text = "-----"
         ComboBox6.Text = "-----"
 
+        ToolStripMenuItem1.Visible = False
 
 
     End Sub
@@ -736,7 +735,7 @@ Public Class MDIPrincipal
 
 
 
-    Private Sub LimpiarCampos(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button5.Click
+    Private Sub LimpiarCampos(ByVal sender As System.Object, ByVal e As System.EventArgs)
 
         Dim iBucle As Integer
         Application.DoEvents()
@@ -786,7 +785,9 @@ Public Class MDIPrincipal
 
         If sender.name = "mnuEjecutar" Then
             If Panel_DocSearch.Visible = True Then
-                LaunchQuery(sender, e)
+                Dim resp = ModalQuestCollection("¿Qué desea buscar?")
+                If resp = DialogResult.OK Then LaunchQuery(sender, e)
+                If resp = DialogResult.Yes Then LaunchQueryCuadMTN(sender, e)
             End If
             If Panel_GeoSearch.Visible = True Then
                 LanzarConsultaGEO_SIDCARTO(sender, e)
@@ -820,13 +821,14 @@ Public Class MDIPrincipal
 
     End Sub
 
-    Private Sub toogleFilterOptions(sender As Object, e As EventArgs) Handles ToolStripButton15.Click, Button2.Click, Button9.Click
+    Private Sub toogleFilterOptions(sender As Object, e As EventArgs) Handles ToolStripButton15.Click, Button2.Click, mnuOpenFilters.Click
         If RadioButton2.Checked Then Exit Sub
         If Panel1.Width = 250 Then
             Panel1.Width = 500
             RadioButton1.Width = 500
             RadioButton2.Width = 500
         Else
+            If sender.name = "mnuOpenFilters" Then Exit Sub
             Panel1.Width = 250
             RadioButton1.Width = 250
             RadioButton2.Width = 250
@@ -1037,8 +1039,6 @@ Public Class MDIPrincipal
         Dim TituloConsulta As String = ""
 
         If TextBox11.Text <> "" And TextBox12.Text <> "" And TextBox13.Text <> "" And TextBox24.Text <> "" Then
-
-            'Dim searchCenter As New GEOCoordenada(TextBox11.Text, TextBox12.Text, TextBox24.Text)
             Dim centroUTM30 As GEOCoordenada
             Try
                 Dim searchCenter As New GEOCoordenada(TextBox11.Text, TextBox12.Text, TextBox24.Text)
@@ -1063,7 +1063,6 @@ Public Class MDIPrincipal
             TituloConsulta = "Búsqueda por entorno. (" & Xmax.ToString & "," & Ymax.ToString & ") (" & Xmin.ToString & "," & Ymin.ToString & ")"
         End If
 
-        Application.DoEvents()
 
         If Xmax = 0 Or Ymax = 0 Or Xmin = 0 Or Ymin = 0 Then Exit Sub
         If Xmax - Xmin > 200000 Or Ymax - Ymin > 200000 Then
@@ -1073,19 +1072,28 @@ Public Class MDIPrincipal
 
         Dim cadWKTPolygon = $"'POLYGON(({CType(Xmin, Integer)} {CType(Ymax, Integer)},{CType(Xmax, Integer)} {CType(Ymax, Integer)},{CType(Xmax, Integer)} {CType(Ymin, Integer)},{ CType(Xmin, Integer)} {CType(Ymin, Integer)},{ CType(Xmin, Integer)} {CType(Ymax, Integer)}))'"
 
+
         Try
+            Dim resp = ModalQuestCollection("¿Qué desea buscar?")
             PictureBox3.Visible = True
             Me.Cursor = Cursors.WaitCursor
             LanzarSpinner("Cargando datos")
-            Dim frmResultados As New resultGEODOCAT
-            With frmResultados
-                .MdiParent = Me
-                .typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosByBBOX
-                .paramSQL1 = cadWKTPolygon
-                .paramSQL2 = "23030"
-                .Show()
-            End With
-
+            If resp = DialogResult.OK Then
+                Dim frmResultados As New resultGEODOCAT
+                frmResultados.MdiParent = Me
+                frmResultados.typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosByBBOX
+                frmResultados.paramSQL1 = cadWKTPolygon
+                frmResultados.paramSQL2 = "23030"
+                frmResultados.Show()
+            End If
+            If resp = DialogResult.Yes Then
+                Dim frmResultados As New resultCMTN
+                frmResultados.MdiParent = Me
+                frmResultados.typeSearch = resultCMTN.TypeDataSearch.DocumentosByBBOX
+                frmResultados.paramSQL1 = cadWKTPolygon
+                frmResultados.paramSQL2 = "23030"
+                frmResultados.Show()
+            End If
         Catch ex As Exception
             ModalError($"No se pueden identificar los documento: {ex.Message}")
         Finally
@@ -1495,9 +1503,9 @@ Public Class MDIPrincipal
     Private Sub Button7_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button7.Click
 
         Try
-            Process.Start(visorCartociudad)
+            Process.Start(visorIberpix)
         Catch ex As Exception
-            MessageBox.Show(ex.Message, AplicacionTitulo)
+            ModalError(ex.Message)
             Exit Sub
         End Try
 
@@ -1584,8 +1592,21 @@ Public Class MDIPrincipal
         ElseIf linkCoordenadas.StartsWith("http://www.cartociudad.es/visor/?") Then
             cadAnaliz = linkCoordenadas.Replace("http://www.cartociudad.es/visor/?", "")
         Else
-            MessageBox.Show("No se encuentran coordendas en el enlace  del portapapeles." & System.Environment.NewLine & linkCoordenadas, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-            Exit Sub
+            'Probamos a parsearlas
+            partesAnaliz = linkCoordenadas.Split(",")
+            If partesAnaliz.Length = 4 Then
+                Application.DoEvents()
+                If partesAnaliz(3).ToUpper.StartsWith("EPSG:") Then
+                    TextBox11.Text = partesAnaliz(0)
+                    TextBox12.Text = partesAnaliz(1)
+                    TextBox13.Text = "5000"
+                    TextBox24.Text = partesAnaliz(3).ToUpper.Replace("EPSG:", "")
+                End If
+                Exit Sub
+            Else
+                ModalExclamation("No se encuentran coordendas en el enlace  del portapapeles")
+                Exit Sub
+            End If
         End If
         partesAnaliz = cadAnaliz.Split("&")
         If partesAnaliz(0).StartsWith("center=") = False Or partesAnaliz(1).StartsWith("zoom=") = False Or partesAnaliz(2).StartsWith("srs=") = False Then
@@ -1867,7 +1888,7 @@ Public Class MDIPrincipal
 
     End Sub
 
-    Private Sub Button11_Click(sender As Object, e As EventArgs) Handles Button11.Click
+    Private Sub OldSearchGEO(sender As Object, e As EventArgs) Handles mnuOldSearchGEO.Click
 
         Dim Xmax As Double = 0
         Dim Ymax As Double = 0
@@ -1909,7 +1930,6 @@ Public Class MDIPrincipal
             ModalExclamation("Reduzca el entorno de la búsqueda")
             Exit Sub
         End If
-
 
         PictureBox4.Visible = True
         Dim FrmResult As New frmDocumentacion

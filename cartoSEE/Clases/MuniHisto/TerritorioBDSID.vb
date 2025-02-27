@@ -85,6 +85,8 @@
             Return _municipioNombre & " en " & _nombre & " (" & String.Format("{0:00000}", _ineCorto) & ")"
         ElseIf _tipo = "Municipio" Then
             Return _nombre & " (" & String.Format("{0:00000}", _ineCorto) & ")"
+        ElseIf _tipo = "Municipio histórico" Then
+            Return _nombre & " (" & String.Format("{0:00000}", _ineCorto) & ")"
         ElseIf _tipo = "Municipio extinto" Then
             Return _nombre & " (" & String.Format("{0:00000}", _ineCorto) & ")(Extinto)"
         ElseIf _tipo = "País" Then
@@ -116,9 +118,9 @@
         ElseIf _tipo = "Municipio" Then
             Return nombre
         ElseIf _tipo = "Municipio histórico" Then
-            Return $"{nombre} (H), hoy {municipioNombre}"
+            Return $"{nombre} (H), hoy {nombreMunicipioActual}"
         ElseIf _tipo = "Municipio extinto" Then
-            Return $"{nombre} (H), hoy {municipioNombre}"
+            Return $"{nombre} (H), hoy {nombreMunicipioActual}"
         ElseIf _tipo = "País" Then
             Return nombre
         ElseIf _tipo = "Accidente geográfico" Then
@@ -154,7 +156,7 @@
                 ineCorto = IIf(fila.Item("municipio").ToString = "", 0, fila.Item("municipio"))
                 ineLargo = IIf(fila.Item("codigoine").ToString = "", 0, fila.Item("codigoine"))
                 CodMuniHisto = String.Format("{0:0000000}", fila.Item("munihisto"))
-                nombreMunicipioActual = IIf(fila.Item("nombreMuniActual").ToString = "", 0, fila.Item("nombreMuniActual").ToString)
+                nombreMunicipioActual = IIf(fila.Item("nombreMuniActual").ToString = "", "", fila.Item("nombreMuniActual").ToString)
                 provinciaINE = IIf(fila.Item("provincia_id").ToString = "", 0, fila.Item("provincia_id"))
                 autonomiaINE = IIf(fila.Item("comautonoma_id").ToString = "", 0, fila.Item("comautonoma_id"))
                 centroideId = IIf(fila.Item("centroide_id").ToString = "", 0, fila.Item("centroide_id"))

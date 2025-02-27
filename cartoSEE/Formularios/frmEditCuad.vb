@@ -530,7 +530,7 @@
             If flagPropos.assignByContainer(CheckedListBox1) Then propsChanged.Add($"extraprops={flagPropos.propertyCode}")
         End If
 
-        cadUpBase &= $"{String.Join(",", propsChanged.ToArray)} WHERE idarchivo={editRegistro.IdarchivodocMTN}"
+        cadUpBase &= $"{String.Join(",", propsChanged.ToArray)} WHERE idarchivodocmtn={editRegistro.IdarchivodocMTN}"
         ActualizacionAutorAndComentarios = ExeSinTran(cadUpBase)
 
     End Function
@@ -589,16 +589,35 @@
         If CheckBox11.Checked Then propsChanged.Add($"tomo={IIf(TextBox11.Text.Trim = "", "Null", $"E'{TextBox11.Text.Trim.Replace("'", "\'")}'")}")
         If CheckBox15.Checked Then propsChanged.Add($"anejos={IIf(TextBox15.Text.Trim = "", "Null", $"E'{TextBox15.Text.Trim.Replace("'", "\'")}'")}")
 
-
-        ListaSQL.Add($"{cadUpBase}{String.Join(",", propsChanged.ToArray)} WHERE idarchivodocmtn={editRegistro.IdarchivodocMTN}")
-
+        If propsChanged.Count > 0 Then
+            ListaSQL.Add($"{cadUpBase}{String.Join(",", propsChanged.ToArray)} WHERE idarchivodocmtn={editRegistro.IdarchivodocMTN}")
+        End If
         'Territorios
         If CheckBox18.Checked And ListView1.Items.Count > 0 Then
+            Dim nuevosNombres As String = ""
             ListaSQL.Add($"DELETE FROM bdsidschema.archivodocmtn2terris WHERE archivodocmtn_id={editRegistro.IdarchivodocMTN}")
             For Each itemLV As ListViewItem In ListView1.Items
-                Application.DoEvents()
                 ListaSQL.Add($"INSERT INTO bdsidschema.archivodocmtn2terris (territorio_id,archivodocmtn_id) VALUES ({itemLV.SubItems(3).Text},{editRegistro.IdarchivodocMTN})")
+                If nuevosNombres <> "" Then nuevosNombres &= $"/{ itemLV.Text}" : Continue For
+                nuevosNombres = itemLV.Text
             Next
+            'Ahora añadimos un registro para el Log de Cambio de territorios
+            ListaSQL.Add($"INSERT INTO bdsidschema.archivodocmtnlog (archivodocmtn_id, sellado, usuario_update, tabla, tipo_variacion, valor_old, valor_new) 
+						VALUES(
+                            {editRegistro.IdarchivodocMTN},
+                            {editRegistro.Sellado},
+                            '{usuarioMyApp.LoginUser}',
+                            'archivodocmtn2terris',
+                            'Variación territorios',
+                            E'{editRegistro.getListaNombresTerritorios("/").Replace("'", "\'")}',
+                            E'{nuevosNombres.Replace("'", "\'")}')")
+
+
+
+
+
+
+
         ElseIf CheckBox18.Checked And ListView1.Items.Count = 0 Then
             ModalExclamation("Debe asociar el documento al menos a un municipio")
             Exit Function
@@ -1386,7 +1405,7 @@
                             LEFT JOIN bdsidschema.provincias on archivodocmtn.codprov= provincias.idprovincia 
                             LEFT JOIN bdsidschema.archivodocmtn2terris ON archivodocmtn.idarchivodocmtn=archivodocmtn2terris.archivodocmtn_id 
                             LEFT JOIN bdsidschema.territorios ON archivodocmtn2terris.territorio_id=territorios.idterritorio  
-                            WHERE archivodocmtn.idarchivodocmtn={editRegistro.IdarchivodocMTN}
+                            WHERE archivodocmtn.idarchivodocmtn = {editRegistro.IdarchivodocMTN}
                             group by archivodocmtn.idarchivodocmtn,archivodocmtn.tipo,archivodocmtn.subtipo,archivodocmtn.tomo,
 				            archivodocmtn.sellado,
                             archivodocmtn.codprov,archivodocmtn.fecha,archivodocmtn.nota_fecha,archivodocmtn.pag,archivodocmtn.zona_num,
@@ -1401,7 +1420,6 @@
         ListaSQL.Add($"DELETE FROM bdsidschema.archivodocmtn2terris WHERE archivodocmtn_id={editRegistro.IdarchivodocMTN}")
         ListaSQL.Add($"DELETE FROM bdsidschema.archivodocmtn WHERE idarchivodocmtn={editRegistro.IdarchivodocMTN}")
 
-
         Try
             If IO.File.Exists(editRegistro.rutaFicheroThumb) Then ficherosDelete.Add(editRegistro.rutaFicheroThumb)
             If IO.File.Exists(editRegistro.rutaFicheroPDF) Then ficherosDelete.Add(editRegistro.rutaFicheroPDF)
@@ -1415,16 +1433,16 @@
         Me.Cursor = Cursors.WaitCursor
 
         'Borrado de ficheros
-        For Each pathFileGeo As String In ficherosDelete
-            If IsNothing(pathFileGeo) Then Continue For
+        For Each pathFileResource As String In ficherosDelete
+            If IsNothing(pathFileResource) Then Continue For
             Try
-                IO.File.Delete(pathFileGeo)
+                If IO.File.Exists(pathFileResource) Then IO.File.Delete(pathFileResource)
             Catch ex As Exception
                 ModalError($"Se han producido errores al eliminar la información gráfica del documento.No se eliminó el documento.{Environment.NewLine}{ex.Message}")
             End Try
         Next
 
-        IIf(ExeTran(ListaSQL), ModalInfo("Proceso de eliminación completado"), ModalExclamation("No se han podido eliminar los documentos. Consultar LOG"))
+        IIf(ExeTran(ListaSQL) = True, ModalInfo("Proceso de eliminación completado"), ModalExclamation("No se han podido eliminar los documentos. Consultar LOG"))
 
         Me.Cursor = Cursors.Default
         Me.Close()
