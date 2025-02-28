@@ -149,6 +149,9 @@
     <Compile Include="Clases\Genericas\DialogChangePassword.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Clases\Genericas\InputDateDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Clases\Genericas\QuestCollection.Designer.vb">
       <DependentUpon>QuestCollection.vb</DependentUpon>
     </Compile>
@@ -342,6 +345,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Clases\Genericas\DialogChangePassword.resx">
       <DependentUpon>DialogChangePassword.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Clases\Genericas\InputDateDialog.resx">
+      <DependentUpon>InputDateDialog.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Clases\Genericas\QuestCollection.resx">
       <DependentUpon>QuestCollection.vb</DependentUpon>

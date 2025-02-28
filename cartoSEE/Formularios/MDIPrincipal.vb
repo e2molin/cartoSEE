@@ -1197,94 +1197,180 @@ Public Class MDIPrincipal
 
     End Sub
 
-    Sub LanzarConsultaAvanzada(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-                        Handles Query_Advance01.Click, Query_Advance02.Click, Query_Advance03.Click,
-                        Query_Advance04.Click, Query_Advance05.Click, Query_Advance06.Click,
-                        Query_Advance07.Click, Query_Advance08.Click
-
+    Sub LanzarConsultaAvanzada(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Query_Advance01.Click, Query_Advance02.Click, Query_Advance03.Click
 
         Dim FrmResult As New frmDocumentacion
         Dim Filtro As String
         Dim fechaActual As Date = Now
+        Dim Fecha_ini As String
+        Dim Fecha_fin As String
 
-        If sender.name = "Query_Advance01" Then
-            'Documentos modificados en los últimos 30 días
-            Filtro = " And archivo.fechamodificacion between '" & fechaActual.AddDays(-30).Year & "-" &
-                            String.Format("{0:00}", fechaActual.AddDays(-30).Month) & "-" &
-                            String.Format("{0:00}", fechaActual.AddDays(-30).Day) & "' AND '" & fechaActual.AddDays(1).Year & "-" &
-                            String.Format("{0:00}", fechaActual.AddDays(1).Month) & "-" &
-                            String.Format("{0:00}", fechaActual.AddDays(1).Day) & "'"
-            FrmResult.Text = "Documentos modificados en los últimos 30 días"
-            FrmResult.CargarDatosSIDCARTO_By_Filtro(Filtro)
-        ElseIf sender.name = "Query_Advance02" Then
-            'Lanzar consulta documentos creados hoy
-            Filtro = " and archivo.fechacreacion between '" & fechaActual.Year & "-" &
-                            String.Format("{0:00}", fechaActual.Month) & "-" &
-                            String.Format("{0:00}", fechaActual.Day) & " 00:00:00' AND '" &
-                            fechaActual.AddDays(1).Year & "-" &
-                            String.Format("{0:00}", fechaActual.AddDays(1).Month) & "-" &
-                            String.Format("{0:00}", fechaActual.AddDays(1).Day) & " 00:00:00'"
-            FrmResult.Text = "Documentos creados hoy"
-            FrmResult.CargarDatosSIDCARTO_By_Filtro(Filtro)
-        ElseIf sender.name = "Query_Advance03" Then
-            'Documentos modificados entre dos fechas
-            Dim Fecha_ini As String = InputDialog.InputBox("Fecha inicio de la búsqueda AAAA-MM-DD", "Consultas avanzadas", "")
-            Dim Fecha_fin As String = InputDialog.InputBox("Fecha final de la búsqueda AAAA-MM-DD", "Consultas avanzadas", "")
-            If Fecha_fin = "" Or Fecha_ini = "" Then Exit Sub
-            Filtro = "and fechamodificacion between '" & Fecha_ini & "' and '" & Fecha_fin & "'"
-            FrmResult.Text = "Documentos modificados entre " & Fecha_ini & " y " & Fecha_fin
-            FrmResult.CargarDatosSIDCARTO_By_Filtro(Filtro)
-        ElseIf sender.name = "Query_Advance04" Then
-            'Documentos creados entre dos fechas
-            Dim Fecha_ini As String = InputDialog.InputBox("Fecha inicio de la búsqueda AAAA-MM-DD", "Consultas avanzadas", "")
-            Dim Fecha_fin As String = InputDialog.InputBox("Fecha final de la búsqueda AAAA-MM-DD", "Consultas avanzadas", "")
-            If Fecha_fin = "" Or Fecha_ini = "" Then Exit Sub
-            Filtro = "and fechacreacion between '" & Fecha_ini & "' and '" & Fecha_fin & "'"
-            FrmResult.Text = "Documentos dados de alta entre " & Fecha_ini & " y " & Fecha_fin
-            FrmResult.CargarDatosSIDCARTO_By_Filtro(Filtro)
-        ElseIf sender.name = "Query_Advance05" Then
-            'Ultimos n registros creados
-            Dim NumReg As String = InputDialog.InputBox("¿Cuantos registros desea mostrar?", "Consultas avanzadas", "100")
-            If NumReg.Trim = "" Then Exit Sub
-            If Not IsNumeric(NumReg) Then Exit Sub
-            FrmResult.Text = "Últimos documentos introducidos"
-            FrmResult.MdiParent = Me
-            FrmResult.CargarUltimosDatos(CType(NumReg, Integer))
-            FrmResult.Show()
-            Exit Sub
-        ElseIf sender.name = "Query_Advance06" Then
-            'Documentos creados en los últimos 30 días
-            Filtro = " and archivo.fechacreacion between '" & fechaActual.AddDays(-30).Year & "-" &
-                String.Format("{0:00}", fechaActual.AddDays(-30).Month) & "-" &
-                String.Format("{0:00}", fechaActual.AddDays(-30).Day) & "' AND '" & fechaActual.AddDays(1).Year & "-" &
-                String.Format("{0:00}", fechaActual.AddDays(1).Month) & "-" &
-                String.Format("{0:00}", fechaActual.AddDays(1).Day) & "'"
-            FrmResult.Text = "Documentos creados en los últimos 30 días"
-            FrmResult.CargarDatosSIDCARTO_By_Filtro(Filtro)
-        ElseIf sender.name = "Query_Advance07" Then
-            Dim Rango As String = InputDialog.InputBox("Introduzca un rango de números de sellado (#####1-#####2)", "Consultas avanzadas", "100")
-            If Rango = "" Then Exit Sub
-            If Rango.IndexOf("-") = -1 Then Exit Sub
-            Dim Sellados() As String = Rango.Split("-")
-            If Sellados.Length = 2 Then
-                Filtro = " and archivo.numdoc between '" & Sellados(0) & "' AND '" & Sellados(1) & "'"
-                FrmResult.Text = "Documentos con sello entre " & Sellados(0) & " Y " & Sellados(1)
-            Else
-                Exit Sub
-            End If
-            FrmResult.CargarDatosSIDCARTO_By_Filtro(Filtro)
-        ElseIf sender.name = "Query_Advance08" Then
-            Dim fechaQuery As String = InputDialog.InputBox("Fecha de la búsqueda AAAA-MM-DD", "Consultas avanzadas", "")
-            If fechaQuery = "" Then Exit Sub
-            Filtro = " and archivo.fechacreacion between '" & fechaQuery & " 00:00:00' AND '" &
-                            fechaQuery & " 23:59:59'"
-            FrmResult.Text = "Documentos creados el día " & fechaQuery
-            FrmResult.CargarDatosSIDCARTO_By_Filtro(Filtro)
+
+        If sender.name = "Query_Advance03" Then
+            Fecha_ini = InputDialog.InputBox("Fecha inicio de la búsqueda AAAA-MM-DD", "Consultas avanzadas", "")
+            Fecha_fin = InputDialog.InputBox("Fecha final de la búsqueda AAAA-MM-DD", "Consultas avanzadas", "")
         Else
-            Exit Sub
+            Dim fechas() As String = InputDateDialog.InputBox("Establece fechas de búsqueda")
+            Fecha_ini = fechas(0)
+            Fecha_fin = fechas(1)
+            If Fecha_ini.Length = 4 Then Fecha_ini &= "-01-01"
+            If Fecha_fin.Length = 4 Then Fecha_fin &= "-12-31"
         End If
-        FrmResult.MdiParent = Me
-        FrmResult.Show()
+        ModalInfo($"{Fecha_ini}{Environment.NewLine}{Fecha_fin}")
+
+        Dim resp = ModalQuestCollection("¿Qué desea buscar?")
+
+        If resp = DialogResult.Yes Then
+            'Consulto por Cuadernos
+            Try
+                PictureBox3.Visible = True
+                Me.Cursor = Cursors.WaitCursor
+                LanzarSpinner("Cargando datos")
+                Dim frmResultadosCuadMTN As New resultCMTN
+                With frmResultadosCuadMTN
+                    .MdiParent = Me
+                    If sender.name = "Query_Advance01" Then
+                        .paramSQL1 = Fecha_ini & " 00:00:00"
+                        .paramSQL2 = Fecha_fin & " 23:59:59"
+                        .typeSearch = resultCMTN.TypeDataSearch.AllDocsPorFechaAlta
+                    ElseIf sender.name = "Query_Advance02" Then
+                        .paramSQL1 = Fecha_ini & " 00:00:00"
+                        .paramSQL2 = Fecha_fin & " 23:59:59"
+                        .typeSearch = resultCMTN.TypeDataSearch.AllDocsByFechaUpdate
+                    ElseIf sender.name = "Query_Advance03" Then
+                        .paramSQL1 = Fecha_ini
+                        .paramSQL2 = Fecha_fin
+                        .typeSearch = resultCMTN.TypeDataSearch.AllDocsPorFechaDocumento
+                    End If
+                    .Show()
+                End With
+            Catch ex As Exception
+                ModalError($"No se pueden identificar los documento: {ex.Message}")
+            Finally
+                CerrarSpinner()
+                PictureBox3.Visible = False
+                Me.Cursor = Cursors.Default
+            End Try
+
+        End If
+        If resp = DialogResult.OK Then
+            'Consulto por GEODOCAT
+            Try
+                PictureBox3.Visible = True
+                Me.Cursor = Cursors.WaitCursor
+                LanzarSpinner("Cargando datos")
+                Dim frmResultadosCuadMTN As New resultGEODOCAT
+                With frmResultadosCuadMTN
+                    .MdiParent = Me
+                    If sender.name = "Query_Advance01" Then
+                        .paramSQL1 = Fecha_ini & " 00:00:00"
+                        .paramSQL2 = Fecha_fin & " 23:59:59"
+                        .typeSearch = resultCMTN.TypeDataSearch.AllDocsPorFechaAlta
+                    ElseIf sender.name = "Query_Advance02" Then
+                        .paramSQL1 = Fecha_ini & " 00:00:00"
+                        .paramSQL2 = Fecha_fin & " 23:59:59"
+                        .typeSearch = resultCMTN.TypeDataSearch.AllDocsByFechaUpdate
+                    ElseIf sender.name = "Query_Advance03" Then
+                        .paramSQL1 = Fecha_ini
+                        .paramSQL2 = Fecha_fin
+                        .typeSearch = resultCMTN.TypeDataSearch.AllDocsPorFechaDocumento
+                    End If
+                    .Show()
+                End With
+            Catch ex As Exception
+                ModalError($"No se pueden identificar los documento: {ex.Message}")
+            Finally
+                CerrarSpinner()
+                PictureBox3.Visible = False
+                Me.Cursor = Cursors.Default
+            End Try
+
+
+
+        End If
+
+
+        Exit Sub
+
+
+        'If sender.name = "Query_Advance01" Then
+        '    'Documentos modificados en los últimos 30 días
+        '    Filtro = " And archivo.fechamodificacion between '" & fechaActual.AddDays(-30).Year & "-" &
+        '                    String.Format("{0:00}", fechaActual.AddDays(-30).Month) & "-" &
+        '                    String.Format("{0:00}", fechaActual.AddDays(-30).Day) & "' AND '" & fechaActual.AddDays(1).Year & "-" &
+        '                    String.Format("{0:00}", fechaActual.AddDays(1).Month) & "-" &
+        '                    String.Format("{0:00}", fechaActual.AddDays(1).Day) & "'"
+        '    FrmResult.Text = "Documentos modificados en los últimos 30 días"
+        '    FrmResult.CargarDatosSIDCARTO_By_Filtro(Filtro)
+        'ElseIf sender.name = "Query_Advance02" Then
+        '    'Lanzar consulta documentos creados hoy
+        '    Filtro = " and archivo.fechacreacion between '" & fechaActual.Year & "-" &
+        '                    String.Format("{0:00}", fechaActual.Month) & "-" &
+        '                    String.Format("{0:00}", fechaActual.Day) & " 00:00:00' AND '" &
+        '                    fechaActual.AddDays(1).Year & "-" &
+        '                    String.Format("{0:00}", fechaActual.AddDays(1).Month) & "-" &
+        '                    String.Format("{0:00}", fechaActual.AddDays(1).Day) & " 00:00:00'"
+        '    FrmResult.Text = "Documentos creados hoy"
+        '    FrmResult.CargarDatosSIDCARTO_By_Filtro(Filtro)
+        'ElseIf sender.name = "Query_Advance03" Then
+        '    'Documentos modificados entre dos fechas
+        '    Dim Fecha_ini As String = InputDialog.InputBox("Fecha inicio de la búsqueda AAAA-MM-DD", "Consultas avanzadas", "")
+        '    Dim Fecha_fin As String = InputDialog.InputBox("Fecha final de la búsqueda AAAA-MM-DD", "Consultas avanzadas", "")
+        '    If Fecha_fin = "" Or Fecha_ini = "" Then Exit Sub
+        '    Filtro = "and fechamodificacion between '" & Fecha_ini & "' and '" & Fecha_fin & "'"
+        '    FrmResult.Text = "Documentos modificados entre " & Fecha_ini & " y " & Fecha_fin
+        '    FrmResult.CargarDatosSIDCARTO_By_Filtro(Filtro)
+        'ElseIf sender.name = "Query_Advance04" Then
+        '    'Documentos creados entre dos fechas
+        '    Dim Fecha_ini As String = InputDialog.InputBox("Fecha inicio de la búsqueda AAAA-MM-DD", "Consultas avanzadas", "")
+        '    Dim Fecha_fin As String = InputDialog.InputBox("Fecha final de la búsqueda AAAA-MM-DD", "Consultas avanzadas", "")
+        '    If Fecha_fin = "" Or Fecha_ini = "" Then Exit Sub
+        '    Filtro = "and fechacreacion between '" & Fecha_ini & "' and '" & Fecha_fin & "'"
+        '    FrmResult.Text = "Documentos dados de alta entre " & Fecha_ini & " y " & Fecha_fin
+        '    FrmResult.CargarDatosSIDCARTO_By_Filtro(Filtro)
+        'ElseIf sender.name = "Query_Advance05" Then
+        '    'Ultimos n registros creados
+        '    Dim NumReg As String = InputDialog.InputBox("¿Cuantos registros desea mostrar?", "Consultas avanzadas", "100")
+        '    If NumReg.Trim = "" Then Exit Sub
+        '    If Not IsNumeric(NumReg) Then Exit Sub
+        '    FrmResult.Text = "Últimos documentos introducidos"
+        '    FrmResult.MdiParent = Me
+        '    FrmResult.CargarUltimosDatos(CType(NumReg, Integer))
+        '    FrmResult.Show()
+        '    Exit Sub
+        'ElseIf sender.name = "Query_Advance06" Then
+        '    'Documentos creados en los últimos 30 días
+        '    Filtro = " and archivo.fechacreacion between '" & fechaActual.AddDays(-30).Year & "-" &
+        '        String.Format("{0:00}", fechaActual.AddDays(-30).Month) & "-" &
+        '        String.Format("{0:00}", fechaActual.AddDays(-30).Day) & "' AND '" & fechaActual.AddDays(1).Year & "-" &
+        '        String.Format("{0:00}", fechaActual.AddDays(1).Month) & "-" &
+        '        String.Format("{0:00}", fechaActual.AddDays(1).Day) & "'"
+        '    FrmResult.Text = "Documentos creados en los últimos 30 días"
+        '    FrmResult.CargarDatosSIDCARTO_By_Filtro(Filtro)
+        'ElseIf sender.name = "Query_Advance07" Then
+        '    Dim Rango As String = InputDialog.InputBox("Introduzca un rango de números de sellado (#####1-#####2)", "Consultas avanzadas", "100")
+        '    If Rango = "" Then Exit Sub
+        '    If Rango.IndexOf("-") = -1 Then Exit Sub
+        '    Dim Sellados() As String = Rango.Split("-")
+        '    If Sellados.Length = 2 Then
+        '        Filtro = " and archivo.numdoc between '" & Sellados(0) & "' AND '" & Sellados(1) & "'"
+        '        FrmResult.Text = "Documentos con sello entre " & Sellados(0) & " Y " & Sellados(1)
+        '    Else
+        '        Exit Sub
+        '    End If
+        '    FrmResult.CargarDatosSIDCARTO_By_Filtro(Filtro)
+        'ElseIf sender.name = "Query_Advance08" Then
+        '    Dim fechaQuery As String = InputDialog.InputBox("Fecha de la búsqueda AAAA-MM-DD", "Consultas avanzadas", "")
+        '    If fechaQuery = "" Then Exit Sub
+        '    Filtro = " and archivo.fechacreacion between '" & fechaQuery & " 00:00:00' AND '" &
+        '                    fechaQuery & " 23:59:59'"
+        '    FrmResult.Text = "Documentos creados el día " & fechaQuery
+        '    FrmResult.CargarDatosSIDCARTO_By_Filtro(Filtro)
+        'Else
+        '    Exit Sub
+        'End If
+        'FrmResult.MdiParent = Me
+        'FrmResult.Show()
 
     End Sub
 

@@ -5,8 +5,8 @@
         AllDocumentsByProvincia = 2                     'OK
         AllDocumentsByTerritorioActual = 3
         AllDocsByFechaUpdate = 4
-        AllDocsPorFechaUpdateEntreFechas = 5
-        AllDocsPorFechaAltaEntreFechas = 6
+        AllDocsPorFechaDocumento = 5
+        AllDocsPorFechaAlta = 6
         DocumentosFiltroGenerico = 7
         DocumentosBySellado = 8
         DocumentosByListaNumSellado = 9
@@ -435,7 +435,12 @@
 
         Me.Cursor = Cursors.WaitCursor
 
-        registrarDatabaseLog($"ConsultaGEODOCAT:{typeSearch}:{paramSQL1}:{paramSQL2}:{paramSQL3}")
+        'Si no es usuario ISTARI registramos la consulta
+        If Not usuarioMyApp.permisosLista.usuarioISTARI Then
+            registrarDatabaseLog($"ConsultaGEODOCAT:{typeSearch}:{paramSQL1}:{paramSQL2}:{paramSQL3}")
+        End If
+
+
 
         If typeSearch = TypeDataSearch.AllDocuments Then
             FillDocCARTOSEEwithFilter("")
@@ -564,6 +569,34 @@
 
 
 
+        ElseIf typeSearch = TypeDataSearch.AllDocsPorFechaAlta Then
+            If paramSQL1.ToString = "" Or paramSQL2.ToString = "" Then
+                ModalExclamation("Búsqueda por fecha de alta no definida correctamente")
+                Exit Sub
+            End If
+            FillDocCARTOSEEwithFilter($"archivo.fecha_creacion between '{paramSQL1}' AND '{paramSQL2}'")
+            Me.Text = $"Documentos dados de alta en BADASID entre {paramSQL1} y {paramSQL2}"
+
+
+        ElseIf typeSearch = TypeDataSearch.AllDocsByFechaUpdate Then
+            If paramSQL1.ToString = "" Then
+                ModalExclamation("Búsqueda por fecha de actualización no definida correctamente")
+                Exit Sub
+            End If
+            FillDocCARTOSEEwithFilter($"archivo.idarchivo IN ( 
+                                          SELECT archivo_id from bdsidschema.archivolog WHERE fecha_update between '{paramSQL1}' AND '{paramSQL2}'
+                                           )")
+            Me.Text = $"Documentos actualizados entre {paramSQL1} y {paramSQL2}"
+
+        ElseIf typeSearch = TypeDataSearch.AllDocsPorFechaDocumento Then
+            If paramSQL1.ToString = "" Or paramSQL2.ToString = "" Then
+                ModalExclamation("Búsqueda por fecha de actualización no definida correctamente")
+                Exit Sub
+            End If
+            FillDocCARTOSEEwithFilter($"archivo.fechaprincipal between '{paramSQL1}' AND '{paramSQL2}'")
+            Me.Text = $"Documentos con fecha entre {paramSQL1} y {paramSQL2}"
+
+
 
 
 
@@ -572,27 +605,6 @@
             '------------------------------------------------------------------------------------------------------------------------
 
 
-        ElseIf typeSearch = TypeDataSearch.AllDocsPorFechaAltaEntreFechas Then
-            If paramSQL1.ToString = "" Or paramSQL2.ToString = "" Then
-                ModalExclamation("Búsqueda por fecha de alta no definida correctamente")
-                Exit Sub
-            End If
-            FillDocCARTOSEEwithFilter($"WHERE docsiddae.fecha_alta between '{paramSQL1}' AND '{paramSQL2}'")
-            If nameQuery <> "" Then Me.Text = nameQuery
-        ElseIf typeSearch = TypeDataSearch.AllDocsByFechaUpdate Then
-            If paramSQL1.ToString = "" Then
-                ModalExclamation("Búsqueda por fecha de actualización no definida correctamente")
-                Exit Sub
-            End If
-            FillDocCARTOSEEwithFilter($"WHERE docsiddae.fechamodificacion = '{paramSQL1}'")
-            If nameQuery <> "" Then Me.Text = nameQuery
-        ElseIf typeSearch = TypeDataSearch.AllDocsPorFechaUpdateEntreFechas Then
-            If paramSQL1.ToString = "" Or paramSQL2.ToString = "" Then
-                ModalExclamation("Búsqueda por fecha de actualización no definida correctamente")
-                Exit Sub
-            End If
-            FillDocCARTOSEEwithFilter($"WHERE docsiddae.fechamodificacion between '{paramSQL1}' AND '{paramSQL2}'")
-            If nameQuery <> "" Then Me.Text = nameQuery
         ElseIf typeSearch = TypeDataSearch.DocumentosFiltroGenerico Then
             If paramSQL1.ToString = "" Then
                 ModalExclamation("No se ha definido un filtro válido")
@@ -630,11 +642,6 @@
         End If
 
         ResizeDatagridView()
-        'Si no es usuario ISTARI registramos la consulta
-        If Not usuarioMyApp.permisosLista.usuarioISTARI Then
-            registrarDatabaseLog($"Consulta: {typeSearch}", $"{paramSQL1} # {paramSQL2}# {paramSQL3}")
-        End If
-
         Me.Cursor = Cursors.Default
 
     End Sub

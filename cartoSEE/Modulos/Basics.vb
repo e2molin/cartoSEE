@@ -500,4 +500,16 @@ Module Basics
         End Try
     End Function
 
+    Function getFechaFormateada(ByVal fecha As Date, Optional ByVal tipo As String = "SPAIN") As String
+
+        If fecha = Nothing Then Return ""
+        If tipo <> "SPAIN" And tipo <> "GERMAN" And tipo <> "ISO8601" Then Return ""
+        If tipo = "SPAIN" Then
+            Return $"{String.Format("{0:00}", fecha.Day)}-{String.Format("{0:00}", fecha.Month)}-{fecha.Year}"
+        ElseIf tipo = "GERMAN" Or tipo = "ISO8601" Then
+            Return $"{fecha.Year}-{String.Format("{0:00}", fecha.Month)}-{ String.Format("{0:00}", fecha.Day)}"
+        End If
+
+    End Function
+
 End Module
