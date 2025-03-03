@@ -17,7 +17,7 @@ Public NotInheritable Class AboutBox1
         Label1.Text = "cartoSEE"
         Label5.Text = "Servicio de Biblioteca y documentación geográfica"
         Label6.Text = "Registro Central de Cartografía"
-        Label7.Text = "Instituto Geográfico Nacional - MITMA"
+        Label7.Text = "Instituto Geográfico Nacional - Ministerio de Transportes y Movilidad Sostenible"
         PictureBox1.Visible = usuarioMyApp.permisosLista.isUserISTARI
 
     End Sub

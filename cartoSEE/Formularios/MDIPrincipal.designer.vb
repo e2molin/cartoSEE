@@ -186,6 +186,7 @@ Partial Class MDIPrincipal
         Me.Label9 = New System.Windows.Forms.Label()
         Me.Button2 = New System.Windows.Forms.Button()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
+        Me.btnPendingCatalog = New System.Windows.Forms.Button()
         Me.Panel_DocSearch = New System.Windows.Forms.Panel()
         Me.TextBox4 = New System.Windows.Forms.TextBox()
         Me.Label4 = New System.Windows.Forms.Label()
@@ -246,11 +247,13 @@ Partial Class MDIPrincipal
         Me.Button6 = New System.Windows.Forms.Button()
         Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
         Me.ImageList2 = New System.Windows.Forms.ImageList(Me.components)
+        Me.btnInvestigar = New System.Windows.Forms.Button()
         Me.MenuStrip.SuspendLayout()
         Me.ToolStrip.SuspendLayout()
         Me.StatusStrip.SuspendLayout()
         Me.Panel1.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
+        Me.GroupBox5.SuspendLayout()
         Me.Panel_DocSearch.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -1586,6 +1589,8 @@ Partial Class MDIPrincipal
         '
         'GroupBox5
         '
+        Me.GroupBox5.Controls.Add(Me.btnInvestigar)
+        Me.GroupBox5.Controls.Add(Me.btnPendingCatalog)
         Me.GroupBox5.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GroupBox5.Location = New System.Drawing.Point(256, 53)
         Me.GroupBox5.Name = "GroupBox5"
@@ -1593,6 +1598,19 @@ Partial Class MDIPrincipal
         Me.GroupBox5.TabIndex = 19
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Otros filtros cuadernos MTN"
+        '
+        'btnPendingCatalog
+        '
+        Me.btnPendingCatalog.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.btnPendingCatalog.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnPendingCatalog.Image = CType(resources.GetObject("btnPendingCatalog.Image"), System.Drawing.Image)
+        Me.btnPendingCatalog.Location = New System.Drawing.Point(11, 41)
+        Me.btnPendingCatalog.Name = "btnPendingCatalog"
+        Me.btnPendingCatalog.Size = New System.Drawing.Size(86, 50)
+        Me.btnPendingCatalog.TabIndex = 41
+        Me.btnPendingCatalog.Text = "Sin catalogar"
+        Me.btnPendingCatalog.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+        Me.btnPendingCatalog.UseVisualStyleBackColor = True
         '
         'Panel_DocSearch
         '
@@ -2239,6 +2257,18 @@ Partial Class MDIPrincipal
         Me.ImageList2.Images.SetKeyName(13, "Archivador 32.png")
         Me.ImageList2.Images.SetKeyName(14, "editar_24.png")
         '
+        'btnInvestigar
+        '
+        Me.btnInvestigar.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnInvestigar.Image = CType(resources.GetObject("btnInvestigar.Image"), System.Drawing.Image)
+        Me.btnInvestigar.Location = New System.Drawing.Point(103, 41)
+        Me.btnInvestigar.Name = "btnInvestigar"
+        Me.btnInvestigar.Size = New System.Drawing.Size(93, 50)
+        Me.btnInvestigar.TabIndex = 42
+        Me.btnInvestigar.Text = "Investigar"
+        Me.btnInvestigar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+        Me.btnInvestigar.UseVisualStyleBackColor = True
+        '
         'MDIPrincipal
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -2263,6 +2293,7 @@ Partial Class MDIPrincipal
         Me.Panel1.ResumeLayout(False)
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
+        Me.GroupBox5.ResumeLayout(False)
         Me.Panel_DocSearch.ResumeLayout(False)
         Me.Panel_DocSearch.PerformLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
@@ -2501,4 +2532,6 @@ Partial Class MDIPrincipal
     Friend WithEvents mnuOpenFilters As ToolStripMenuItem
     Friend WithEvents mnuOldSearchGEO As ToolStripMenuItem
     Friend WithEvents PictureBox6 As PictureBox
+    Friend WithEvents btnPendingCatalog As Button
+    Friend WithEvents btnInvestigar As Button
 End Class

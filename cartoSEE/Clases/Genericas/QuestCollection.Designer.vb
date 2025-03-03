@@ -96,7 +96,7 @@ Partial Class QuestCollection
         Me.Button3.Location = New System.Drawing.Point(301, 105)
         Me.Button3.Name = "Button3"
         Me.Button3.Size = New System.Drawing.Size(105, 83)
-        Me.Button3.TabIndex = 4
+        Me.Button3.TabIndex = 2
         Me.Button3.Text = "SIDCECA"
         Me.Button3.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         Me.Button3.UseVisualStyleBackColor = True

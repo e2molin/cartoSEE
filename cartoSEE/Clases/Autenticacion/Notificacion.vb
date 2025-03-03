@@ -2,6 +2,7 @@
 
     Property id As Integer
     Property referencia As String
+    Property coleccion As String
     Property fecha As Date
     Property usuario As String
     Property estado As String

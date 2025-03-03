@@ -610,45 +610,40 @@
             End If
             FillDocCuadMTNEwithFilter($"archivodocmtn.fecha::date between '{paramSQL1}' AND '{paramSQL2}'")
             Me.Text = $"Documentos con fecha entre {paramSQL1} y {paramSQL2}"
+            'ElseIf typeSearch = TypeDataSearch.DocumentosFiltroGenerico Then
+            '    If paramSQL1.ToString = "" Then
+            '        ModalExclamation("No se ha definido un filtro válido")
+            '        Exit Sub
+            '    End If
+            '    If Not paramSQL1.ToLower.StartsWith("where ") Then paramSQL1 = $"WHERE {paramSQL1}"
+            '    FillDocCuadMTNEwithFilter(paramSQL1)
+            '    If nameQuery <> "" Then Me.Text = nameQuery
 
+            'ElseIf typeSearch = TypeDataSearch.DocumentoByIndice Then
+            '    If paramSQL1.ToString = "" Then
+            '        ModalExclamation("Búsqueda por número de índice no definida")
+            '        Exit Sub
+            '    End If
+            '    FillDocCuadMTNEwithFilter($"where docsiddae.iddocsiddae={paramSQL1}")
+            '    Me.Text = $"Documento SIDDAE con Iddocsiddae nº {paramSQL1}"
 
+            'ElseIf typeSearch = TypeDataSearch.DocumentosByComentario Then
+            '    If paramSQL1.ToString = "" Then
+            '        ModalExclamation("Búsqueda por comentario no definido")
+            '        Exit Sub
+            '    End If
+            '    FillDocCuadMTNEwithFilter($"where docsiddae.comentario ilike '%{paramSQL1}%'")
+            '    Me.Text = $"Documentos con comentario: {paramSQL1}"
 
-
-
-        ElseIf typeSearch = TypeDataSearch.DocumentosFiltroGenerico Then
-            If paramSQL1.ToString = "" Then
-                ModalExclamation("No se ha definido un filtro válido")
-                Exit Sub
-            End If
-            If Not paramSQL1.ToLower.StartsWith("where ") Then paramSQL1 = $"WHERE {paramSQL1}"
-            FillDocCuadMTNEwithFilter(paramSQL1)
-            If nameQuery <> "" Then Me.Text = nameQuery
-
-        ElseIf typeSearch = TypeDataSearch.DocumentoByIndice Then
-            If paramSQL1.ToString = "" Then
-                ModalExclamation("Búsqueda por número de índice no definida")
-                Exit Sub
-            End If
-            FillDocCuadMTNEwithFilter($"where docsiddae.iddocsiddae={paramSQL1}")
-            Me.Text = $"Documento SIDDAE con Iddocsiddae nº {paramSQL1}"
-
-        ElseIf typeSearch = TypeDataSearch.DocumentosByComentario Then
-            If paramSQL1.ToString = "" Then
-                ModalExclamation("Búsqueda por comentario no definido")
-                Exit Sub
-            End If
-            FillDocCuadMTNEwithFilter($"where docsiddae.comentario ilike '%{paramSQL1}%'")
-            Me.Text = $"Documentos con comentario: {paramSQL1}"
-
-        ElseIf typeSearch = TypeDataSearch.DocumentosEnCarrito Then
-            If CarritoCompra.Count = 0 Then
-                ModalExclamation("El carrito está vacío")
-                Exit Sub
-            End If
-            Dim listaCarritoItems As String = String.Join(",", CarritoCompra.ToArray())
-            FillDocCuadMTNEwithFilter($"archivo.idarchivo in ({listaCarritoItems})")
-            Me.Text = "Carrito de la compra"
-            Me.Tag = "Carrito de la Compra"
+            'ElseIf typeSearch = TypeDataSearch.DocumentosEnCarrito Then
+            '    If CarritoCompra.Count = 0 Then
+            '        ModalExclamation("El carrito está vacío")
+            '        Exit Sub
+            '    End If
+            '    Dim listaCarritoItems As String = String.Join(",", CarritoCompra.ToArray())
+            '    FillDocCuadMTNEwithFilter($"archivo.idarchivo in ({listaCarritoItems})")
+            '    Me.Text = "Carrito de la compra"
+            '    Me.Tag = "Carrito de la Compra"
         End If
 
         ResizeDatagridView()
@@ -1351,6 +1346,7 @@
         Dim frmNotify As New GestionUserNotificacion
         frmNotify.MdiParent = MDIPrincipal
         frmNotify.incidenciaInicial = DataGridView1.Item("sellado", DataGridView1.CurrentCell.RowIndex).Value.ToString
+        frmNotify.tipoIncidencia = "Cuaderno MTN"
         frmNotify.Show()
 
     End Sub

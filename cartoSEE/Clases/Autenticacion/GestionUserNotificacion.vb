@@ -2,8 +2,8 @@
     Inherits System.Windows.Forms.Form
 
     Dim ListaIncidencias As ArrayList
-
     Property incidenciaInicial As String = ""
+    Property tipoIncidencia As String = ""
     Property appOrigenIncidencia As String = "CARTOSEE"
 
 #Region "Windows Controls Definition"
@@ -28,8 +28,12 @@
     Friend WithEvents btnExport As Button
     Friend WithEvents btnLoadDoc As Button
     Friend WithEvents Label7 As Label
+    Friend WithEvents ToolTip1 As ToolTip
+    Private components As System.ComponentModel.IContainer
+    Friend WithEvents ComboBox1 As ComboBox
     Friend WithEvents TabControl1 As System.Windows.Forms.TabControl
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(GestionUserNotificacion))
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
@@ -39,9 +43,12 @@
         Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.btnLoadDoc = New System.Windows.Forms.Button()
+        Me.btnExport = New System.Windows.Forms.Button()
         Me.Button3 = New System.Windows.Forms.Button()
         Me.Button2 = New System.Windows.Forms.Button()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.Label7 = New System.Windows.Forms.Label()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
@@ -50,9 +57,8 @@
         Me.RadioButton2 = New System.Windows.Forms.RadioButton()
         Me.RadioButton1 = New System.Windows.Forms.RadioButton()
         Me.ListView1 = New System.Windows.Forms.ListView()
-        Me.btnExport = New System.Windows.Forms.Button()
-        Me.btnLoadDoc = New System.Windows.Forms.Button()
-        Me.Label7 = New System.Windows.Forms.Label()
+        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.ComboBox1 = New System.Windows.Forms.ComboBox()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.TabPage2.SuspendLayout()
@@ -75,6 +81,7 @@
         '
         'TabPage1
         '
+        Me.TabPage1.Controls.Add(Me.ComboBox1)
         Me.TabPage1.Controls.Add(Me.Button1)
         Me.TabPage1.Controls.Add(Me.TextBox2)
         Me.TabPage1.Controls.Add(Me.Label2)
@@ -155,6 +162,30 @@
         Me.TabPage2.Text = "Incidencias"
         Me.TabPage2.UseVisualStyleBackColor = True
         '
+        'btnLoadDoc
+        '
+        Me.btnLoadDoc.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnLoadDoc.Image = CType(resources.GetObject("btnLoadDoc.Image"), System.Drawing.Image)
+        Me.btnLoadDoc.Location = New System.Drawing.Point(501, 224)
+        Me.btnLoadDoc.Name = "btnLoadDoc"
+        Me.btnLoadDoc.Size = New System.Drawing.Size(91, 36)
+        Me.btnLoadDoc.TabIndex = 10
+        Me.btnLoadDoc.Text = "Ver doc"
+        Me.btnLoadDoc.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.btnLoadDoc.UseVisualStyleBackColor = True
+        '
+        'btnExport
+        '
+        Me.btnExport.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnExport.Image = CType(resources.GetObject("btnExport.Image"), System.Drawing.Image)
+        Me.btnExport.Location = New System.Drawing.Point(501, 266)
+        Me.btnExport.Name = "btnExport"
+        Me.btnExport.Size = New System.Drawing.Size(91, 36)
+        Me.btnExport.TabIndex = 9
+        Me.btnExport.Text = "Exportar"
+        Me.btnExport.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.btnExport.UseVisualStyleBackColor = True
+        '
         'Button3
         '
         Me.Button3.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -163,6 +194,7 @@
         Me.Button3.Name = "Button3"
         Me.Button3.Size = New System.Drawing.Size(45, 36)
         Me.Button3.TabIndex = 6
+        Me.ToolTip1.SetToolTip(Me.Button3, "Marcar la incidencia como solucionada")
         Me.Button3.UseVisualStyleBackColor = True
         '
         'Button2
@@ -173,6 +205,7 @@
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(45, 36)
         Me.Button2.TabIndex = 5
+        Me.ToolTip1.SetToolTip(Me.Button2, "Marcar la incidencia como pendiente")
         Me.Button2.UseVisualStyleBackColor = True
         '
         'GroupBox1
@@ -191,6 +224,18 @@
         Me.GroupBox1.TabIndex = 4
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "GroupBox1"
+        '
+        'Label7
+        '
+        Me.Label7.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label7.BackColor = System.Drawing.Color.Silver
+        Me.Label7.Location = New System.Drawing.Point(23, 214)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(450, 82)
+        Me.Label7.TabIndex = 7
+        Me.Label7.Text = "Label7"
         '
         'PictureBox1
         '
@@ -282,41 +327,14 @@
         Me.ListView1.TabIndex = 0
         Me.ListView1.UseCompatibleStateImageBehavior = False
         '
-        'btnExport
+        'ComboBox1
         '
-        Me.btnExport.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnExport.Image = CType(resources.GetObject("btnExport.Image"), System.Drawing.Image)
-        Me.btnExport.Location = New System.Drawing.Point(501, 266)
-        Me.btnExport.Name = "btnExport"
-        Me.btnExport.Size = New System.Drawing.Size(91, 36)
-        Me.btnExport.TabIndex = 9
-        Me.btnExport.Text = "Exportar"
-        Me.btnExport.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
-        Me.btnExport.UseVisualStyleBackColor = True
-        '
-        'btnLoadDoc
-        '
-        Me.btnLoadDoc.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnLoadDoc.Image = CType(resources.GetObject("btnLoadDoc.Image"), System.Drawing.Image)
-        Me.btnLoadDoc.Location = New System.Drawing.Point(501, 224)
-        Me.btnLoadDoc.Name = "btnLoadDoc"
-        Me.btnLoadDoc.Size = New System.Drawing.Size(91, 36)
-        Me.btnLoadDoc.TabIndex = 10
-        Me.btnLoadDoc.Text = "Ver acta"
-        Me.btnLoadDoc.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
-        Me.btnLoadDoc.UseVisualStyleBackColor = True
-        '
-        'Label7
-        '
-        Me.Label7.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label7.BackColor = System.Drawing.Color.Silver
-        Me.Label7.Location = New System.Drawing.Point(23, 214)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(450, 82)
-        Me.Label7.TabIndex = 7
-        Me.Label7.Text = "Label7"
+        Me.ComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBox1.FormattingEnabled = True
+        Me.ComboBox1.Location = New System.Drawing.Point(256, 47)
+        Me.ComboBox1.Name = "ComboBox1"
+        Me.ComboBox1.Size = New System.Drawing.Size(225, 21)
+        Me.ComboBox1.TabIndex = 5
         '
         'GestionUserNotificacion
         '
@@ -355,18 +373,30 @@
         ListView1.Columns.Add("Fecha", 70, HorizontalAlignment.Left)
         ListView1.Columns.Add("Usuario", 100, HorizontalAlignment.Left)
         ListView1.Columns.Add("Estado", 60, HorizontalAlignment.Left)
-        If usuarioMyApp.permisosLista.usuarioISTARI = False Then
+        If usuarioMyApp.permisosLista.EditarDocumentacion = False Then
             Button2.Enabled = False
             Button3.Enabled = False
         End If
+
+        ComboBox1.Items.Add("Cuaderno MTN")
+        ComboBox1.Items.Add("Cartografía")
+
 
         CargarIncidencias()
 
         If incidenciaInicial <> "" Then
             TextBox1.Text = incidenciaInicial
         End If
+        If tipoIncidencia <> "" Then
+            For Each item As String In ComboBox1.Items
+                If item = tipoIncidencia Then ComboBox1.Text = tipoIncidencia
+            Next
+        End If
 
         Me.Text = $"Incidencias de {appOrigenIncidencia}"
+
+
+
 
 
     End Sub
@@ -374,29 +404,31 @@
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
         Dim cadInsert As String
 
-        If TextBox2.Text.Trim = "" Then Exit Sub
-        If TextBox1.Text.Trim = "" Then
-            If MessageBox.Show("No ha indicado ninguna referencia o documento asociado.¿Continuar?",
-                            AplicacionTitulo, MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.No Then Exit Sub
-        End If
+        If TextBox1.Text.Trim = "" Then ModalExclamation("No ha indicado ninguna referencia") : Exit Sub
+        If TextBox2.Text.Trim = "" Then ModalExclamation("Indique el motivo de la incidencia") : Exit Sub
 
-        cadInsert = "INSERT INTO bdsidschema.incidencias (idincidencia,documento,usuario,estado,incidencia,aplicacion) " &
-                    "VALUES (" &
-                    "nextval('bdsidschema.incidencias_idincidencia_seq')," &
-                    "'" & TextBox1.Text.Trim & "'," &
-                    "'" & usuarioMyApp.loginUser & "'," &
-                    "'Abierta'," &
-                    "E'" & TextBox2.Text.Replace("'", "\'").Trim & "','" & appOrigenIncidencia & "')"
-        Dim okProc As Boolean = ExeSinTran(cadInsert)
-        If okProc = True Then
-            MessageBox.Show("Incidencia notificada", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+        If ComboBox1.SelectedIndex = -1 Then ModalExclamation("Selecciona el tipo de documento") : Exit Sub
+
+        cadInsert = $"INSERT INTO bdsidschema.incidencias (idincidencia,documento,coleccion,usuario,estado,incidencia,aplicacion) VALUES (
+                    nextval('bdsidschema.incidencias_idincidencia_seq'),
+                    '{TextBox1.Text.Trim}',
+                    '{ComboBox1.Text}',
+                    '{usuarioMyApp.LoginUser}',
+                    'Abierta',
+                    E'{TextBox2.Text.Replace("'", "\'").Trim}','{appOrigenIncidencia}')"
+
+
+        If ExeSinTran(cadInsert) Then
+            ModalInfo("Incidencia notificada")
             CargarIncidencias()
         Else
-            MessageBox.Show("No se creo ninguna incidencia", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            ModalExclamation("No se creo ninguna incidencia")
         End If
 
-    End Sub
 
+
+
+    End Sub
 
 
     Private Sub CargarIncidencias()
@@ -408,7 +440,7 @@
 
         ListaIncidencias = New ArrayList
 
-        cadSQL = "SELECT * from bdsidschema.incidencias where aplicacion='" & appOrigenIncidencia & "' ORDER BY idincidencia"
+        cadSQL = $"SELECT * from bdsidschema.incidencias where aplicacion='{appOrigenIncidencia}' ORDER BY idincidencia"
         rcdIncidencia = New DataTable
         If CargarRecordset(cadSQL, rcdIncidencia) = True Then
             filas = rcdIncidencia.Select
@@ -421,6 +453,7 @@
                 notif.fecha = dR("fechacreacion")
                 notif.descripcion = dR("incidencia").ToString
                 notif.solucion = dR("solucion").ToString
+                notif.coleccion = dR("coleccion").ToString
                 ListaIncidencias.Add(notif)
                 notif = Nothing
             Next
@@ -432,12 +465,7 @@
 
     End Sub
 
-
-
-
-
-    Private Sub ToggleMuestra(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles RadioButton1.Click, RadioButton2.Click, RadioButton3.Click
+    Private Sub ToggleMuestra(ByVal sender As Object, ByVal e As System.EventArgs) Handles RadioButton1.Click, RadioButton2.Click, RadioButton3.Click
         RellenarLV()
     End Sub
 
@@ -501,7 +529,8 @@
 
     End Sub
 
-    Private Sub CambiarEstado(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click, Button3.Click
+    Private Sub CambiarEstado(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+                    Handles Button2.Click, Button3.Click
 
 
         Dim okProc As Boolean
@@ -558,25 +587,75 @@
         Dim numDocu As Integer
         Dim actaIncidencia As String
 
-        actaIncidencia = ListView1.SelectedItems(0).Text
-        If Not IsNumeric(actaIncidencia) Then
-            actaIncidencia = ListView1.SelectedItems(0).Text.ToLower.Replace("a", "").Replace("r", "").Replace("c", "")
+
+        Dim resultado As String = ""
+        ObtenerEscalar($"SELECT documento || ';' || coalesce(coleccion,'No definido') as result FROM bdsidschema.incidencias
+                                WHERE idincidencia={ListaIncidencias(ListView1.SelectedItems(0).Tag).id}", resultado)
+
+        If resultado = "" Then
+            ModalExclamation("Documento no localizado")
+            Exit Sub
         End If
 
+
         Try
-            numDocu = CType(actaIncidencia, Integer)
-            Dim frmResultados As New resultGEODOCAT
-            frmResultados.MdiParent = MDIPrincipal
+            Dim partInfo() = resultado.Split(";")
+            If partInfo.Length <> 2 Then ModalExclamation("Documento no localizado") : Exit Sub
             LanzarSpinner("Cargando datos")
-            With frmResultados
-                .paramSQL1 = numDocu
-                .typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosBySellado
-                .Show()
-            End With
+            If partInfo(1) = "Cartografía" Then
+                Dim frmResultados As New resultGEODOCAT
+
+                With frmResultados
+                    .MdiParent = MDIPrincipal
+                    .paramSQL1 = partInfo(0)
+                    .typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosBySellado
+                    .Show()
+                End With
+            ElseIf partInfo(1) = "Cuaderno MTN" Then
+                Dim frmResultados As New resultCMTN
+                With frmResultados
+                    .MdiParent = MDIPrincipal
+                    .paramSQL1 = partInfo(0)
+                    .typeSearch = resultCMTN.TypeDataSearch.DocumentosBySellado
+                    .Show()
+                End With
+            End If
             CerrarSpinner()
+
+
+
         Catch ex As Exception
             ModalError($"No se pude identificar el documento: {ex.Message}")
         End Try
+
+
+
+
+
+
+
+
+
+
+        'actaIncidencia = ListView1.SelectedItems(0).Text
+        'If Not IsNumeric(actaIncidencia) Then
+        '    actaIncidencia = ListView1.SelectedItems(0).Text.ToLower.Replace("a", "").Replace("r", "").Replace("c", "")
+        'End If
+
+        'Try
+        '    numDocu = CType(actaIncidencia, Integer)
+        '    Dim frmResultados As New resultSIDDAE
+        '    frmResultados.MdiParent = MDIPrincipal
+        '    LanzarSpinner("Cargando datos")
+        '    With frmResultados
+        '        .paramSQL1 = numDocu
+        '        .typeSearch = resultSIDDAE.TypeDataSearch.DocumentosBySellado
+        '        .Show()
+        '    End With
+        '    CerrarSpinner()
+        'Catch ex As Exception
+        '    ModalError($"No se pude identificar el documento: {ex.Message}")
+        'End Try
 
 
 

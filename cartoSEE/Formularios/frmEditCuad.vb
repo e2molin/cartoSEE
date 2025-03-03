@@ -631,223 +631,225 @@
 
     Private Sub ActualizacionLote()
 
+        ModalInfo("Edición en lote no disponible")
+
         'Si uno de estos campos está activo, compuebo que tengamos permiso
         'de escritura en disco de datos, ya que modificar estos campos
         'seguramente implica mover documentos.
 
-        If CheckBox17.Checked = True Or CheckBox18.Checked = True Or CheckBox22.Checked = True Then
-            Try
-                Dim file As System.IO.FileStream
-                file = System.IO.File.Create(rutaRepo & "\testdummy1234.txt")
-                file.Close()
-                System.IO.File.Delete(rutaRepoGeorref & "\testdummy1234.txt")
-                file = System.IO.File.Create(rutaRepoGeorref & "\testdummy1234.txt")
-                file.Close()
-                System.IO.File.Delete(rutaRepoGeorref & "\testdummy1234.txt")
-            Catch ex As Exception
-                MessageBox.Show("No dispone de permiso de escritura en el repositorio." & Environment.NewLine() &
-                                "Los cambios requieren traslado de documentos en el disco.",
-                                AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-                Exit Sub
-            End Try
-        End If
+        'If CheckBox17.Checked = True Or CheckBox18.Checked = True Or CheckBox22.Checked = True Then
+        '    Try
+        '        Dim file As System.IO.FileStream
+        '        file = System.IO.File.Create(rutaRepo & "\testdummy1234.txt")
+        '        file.Close()
+        '        System.IO.File.Delete(rutaRepoGeorref & "\testdummy1234.txt")
+        '        file = System.IO.File.Create(rutaRepoGeorref & "\testdummy1234.txt")
+        '        file.Close()
+        '        System.IO.File.Delete(rutaRepoGeorref & "\testdummy1234.txt")
+        '    Catch ex As Exception
+        '        MessageBox.Show("No dispone de permiso de escritura en el repositorio." & Environment.NewLine() &
+        '                        "Los cambios requieren traslado de documentos en el disco.",
+        '                        AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+        '        Exit Sub
+        '    End Try
+        'End If
 
-        Dim cadUpBase As String
-        Dim NuevoMuni As String = ""
-        Dim NuevoTipo As Integer = -1
-        'Generamos la cadena base de la ejecución en lote
-        cadUpBase = GenerarCadUpdateLoteBase()
-        If cadUpBase = "" And CheckBox18.Checked = False Then
-            MessageBox.Show("No se definieron valores.No se realizará ninguna modificación", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
-            Exit Sub
-        End If
+        'Dim cadUpBase As String
+        'Dim NuevoMuni As String = ""
+        'Dim NuevoTipo As Integer = -1
+        ''Generamos la cadena base de la ejecución en lote
+        'cadUpBase = GenerarCadUpdateLoteBase()
+        'If cadUpBase = "" And CheckBox18.Checked = False Then
+        '    MessageBox.Show("No se definieron valores.No se realizará ninguna modificación", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+        '    Exit Sub
+        'End If
 
-        If CheckBox17.Checked = True Then NuevoTipo = CType(CType(ComboBox1.SelectedItem, itemData).Valor, Integer)
-        If CheckBox18.Checked = True Then
-            If ListView1.Items.Count = 0 Then
-                MessageBox.Show("No hay municipios asignados.No se realizará ninguna modificación", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
-                Exit Sub
-            End If
-            NuevoMuni = String.Format("{0:0000000}", ListView1.Items(0).SubItems(2).Text)
-        End If
+        'If CheckBox17.Checked = True Then NuevoTipo = CType(CType(ComboBox1.SelectedItem, itemData).Valor, Integer)
+        'If CheckBox18.Checked = True Then
+        '    If ListView1.Items.Count = 0 Then
+        '        MessageBox.Show("No hay municipios asignados.No se realizará ninguna modificación", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+        '        Exit Sub
+        '    End If
+        '    NuevoMuni = String.Format("{0:0000000}", ListView1.Items(0).SubItems(2).Text)
+        'End If
 
-        Application.DoEvents()
-        Dim ListaSQL As New ArrayList
-        Dim ListaRenFich As New ArrayList
-        Dim Renombre As RenFich
+        'Application.DoEvents()
+        'Dim ListaSQL As New ArrayList
+        'Dim ListaRenFich As New ArrayList
+        'Dim Renombre As RenFich
 
-        For Each item As docCartoSEE In elementsInEdition.resultados
-            If cadUpBase <> "" Then
-                'GenerarLOG(cadUpBase & " WHERE idarchivo=" & item.docIndex)
-                ListaSQL.Add(cadUpBase & " WHERE idarchivo=" & item.docIndex)
-            End If
-            'Si hay cambios en el municipio, se borran las asociaciones antiguas 
-            'y se introducen las nuevas
-            If CheckBox18.Checked = True And ListView1.Items.Count > 0 Then
-                If item.ProvinciaRepo <> CType(ListView1.Items(0).SubItems(4).Text, Integer) Then
-                    If item.ProvinciaRepo = 82 And CType(ListView1.Items(0).SubItems(4).Text, Integer) = 28 Then
-                        Application.DoEvents()
-                    Else
-                        If CheckBox20.Checked = False Then
-                            ModalExclamation("La Provincia del documento debe ser la misma a la que pertenece el primer municipio asignado. No se realizará ninguna modificación")
-                            Exit Sub
-                        End If
-                        If CType(ComboBox6.SelectedItem, itemData).Valor <> ListView1.Items(0).SubItems(4).Text Then
-                            ModalExclamation("La Provincia del documento debe ser la misma a la que pertenece el primer municipio asignado. No se realizará ninguna modificación")
-                            Exit Sub
-                        End If
-                    End If
-                End If
-
-
-
-                ListaSQL.Add($"DELETE FROM bdsidschema.archivo2territorios where archivo_id={item.docIndex}")
-                ListaSQL.Add($"INSERT INTO bdsidschema.archivolog (archivo_id, sellado, usuario_update, tabla, tipo_variacion, valor_old, valor_new) 
-                                 VALUES ({item.docIndex},'{ item.Sellado}','{usuarioMyApp.loginUser}','archivo2territorios','Desasignación municipio histórico',
-                                 E'{item.muniHistoLiteralConINEHistorico.Replace("'", "\'")}',null)")
-
-                For Each itemLV As ListViewItem In ListView1.Items
-                    ListaSQL.Add($"INSERT INTO bdsidschema.archivo2territorios (territorio_id,archivo_id) VALUES ({itemLV.SubItems(3).Text},{item.docIndex})")
-                    ListaSQL.Add($"INSERT INTO bdsidschema.archivolog (archivo_id, sellado, usuario_update, tabla, tipo_variacion, valor_old, valor_new) 
-                                VALUES ({item.docIndex},'{item.Sellado}','{usuarioMyApp.loginUser}','archivo2munihisto','Asignación municipio histórico',null,
-                                E'{itemLV.SubItems(0).Text.Replace("'", "\'")}({itemLV.SubItems(2).Text})')")
-                Next
+        'For Each item As docCuadMTN In elementsInEdition.resultados
+        '    If cadUpBase <> "" Then
+        '        'GenerarLOG(cadUpBase & " WHERE idarchivo=" & item.docIndex)
+        '        ListaSQL.Add(cadUpBase & " WHERE idarchivo=" & item.docIndex)
+        '    End If
+        '    'Si hay cambios en el municipio, se borran las asociaciones antiguas 
+        '    'y se introducen las nuevas
+        '    If CheckBox18.Checked = True And ListView1.Items.Count > 0 Then
+        '        If item.ProvinciaRepo <> CType(ListView1.Items(0).SubItems(4).Text, Integer) Then
+        '            If item.ProvinciaRepo = 82 And CType(ListView1.Items(0).SubItems(4).Text, Integer) = 28 Then
+        '                Application.DoEvents()
+        '            Else
+        '                If CheckBox20.Checked = False Then
+        '                    ModalExclamation("La Provincia del documento debe ser la misma a la que pertenece el primer municipio asignado. No se realizará ninguna modificación")
+        '                    Exit Sub
+        '                End If
+        '                If CType(ComboBox6.SelectedItem, itemData).Valor <> ListView1.Items(0).SubItems(4).Text Then
+        '                    ModalExclamation("La Provincia del documento debe ser la misma a la que pertenece el primer municipio asignado. No se realizará ninguna modificación")
+        '                    Exit Sub
+        '                End If
+        '            End If
+        '        End If
 
 
 
+        '        ListaSQL.Add($"DELETE FROM bdsidschema.archivo2territorios where archivo_id={item.docIndex}")
+        '        ListaSQL.Add($"INSERT INTO bdsidschema.archivolog (archivo_id, sellado, usuario_update, tabla, tipo_variacion, valor_old, valor_new) 
+        '                         VALUES ({item.docIndex},'{ item.Sellado}','{usuarioMyApp.LoginUser}','archivo2territorios','Desasignación municipio histórico',
+        '                         E'{item.muniHistoLiteralConINEHistorico.Replace("'", "\'")}',null)")
+
+        '        For Each itemLV As ListViewItem In ListView1.Items
+        '            ListaSQL.Add($"INSERT INTO bdsidschema.archivo2territorios (territorio_id,archivo_id) VALUES ({itemLV.SubItems(3).Text},{item.docIndex})")
+        '            ListaSQL.Add($"INSERT INTO bdsidschema.archivolog (archivo_id, sellado, usuario_update, tabla, tipo_variacion, valor_old, valor_new) 
+        '                        VALUES ({item.docIndex},'{item.Sellado}','{usuarioMyApp.LoginUser}','archivo2munihisto','Asignación municipio histórico',null,
+        '                        E'{itemLV.SubItems(0).Text.Replace("'", "\'")}({itemLV.SubItems(2).Text})')")
+        '        Next
 
 
-            End If
-            'Si se han producido cambios en el tipo de documento o en los municipios o en el número de sellado
-            'en las ediciones individuales, puede originarse un cambio de 
-            'Realizamos los renombres necesarios
-            If CheckBox17.Checked = True Or CheckBox18.Checked = True Or CheckBox20.Checked = True Or CheckBox22.Checked = True Then
-                Application.DoEvents()
-                Dim RutasDoc() As String
-                Erase RutasDoc
-                'Añadimos a Rutasdoc las rutas con las imágenes JPG si se modifica el númeo de sellado
-                If CheckBox20.Checked = True Or CheckBox22.Checked = True Then
-                    ReDim Preserve RutasDoc(RutasDoc.Length - 1 + 2)
-                    RutasDoc(RutasDoc.Length - 2) = rutaRepo & "\_Scan400\" & item.FicheroJPG
-                    RutasDoc(RutasDoc.Length - 1) = rutaRepo & "\_Scan250\" & item.FicheroJPG.Replace("\", "250\")
-                End If
-                For Each Rutageo As DataRow In item.rcdgeoFiles.Select
-                    If IsNothing(Rutageo) Then Continue For
-                    Application.DoEvents()
-                    'Renombre.NombreAntiguo = Rutageo
-                    'Renombre.NombreNuevo = GenerarScriptRenombreFicheros(item, Rutageo, NuevoTipo, NuevoMuni, TextBox22.Text)
-                    'Si el nombre generado es distinto
-                    If Renombre.NombreAntiguo <> Renombre.NombreNuevo Then
-                        GenerarLOG("Renombrar:" & Renombre.NombreAntiguo & " >> " & Renombre.NombreNuevo)
-                        ListaRenFich.Add(Renombre)
-                    Else
-                        GenerarLOG("Los cambios no afectan al nombre")
-                    End If
-                Next
-            End If
-        Next
-
-        Application.DoEvents()
-        If CheckBox21.Checked = True Then
-            If MessageBox.Show("Comprueba el log.¿Abrir?", AplicacionTitulo, MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
-                Process.Start(ficheroLogger)
-            End If
-            Exit Sub
-        End If
-
-        Dim Ejecucion As Boolean = False
-        Dim contador As Integer = 0
-        Me.Cursor = Cursors.WaitCursor
-        'Primero realizamos proceso de copia de los antiguos a los nuevos ficheros
-        If ListaRenFich.Count > 0 Then
-            contador = 0
-            For Each cambioNombre As RenFich In ListaRenFich
-                contador = contador + 1
-                ToolStripStatusLabel2.Text = "Copiando fichero " & contador & " de " & ListaRenFich.Count
-                Application.DoEvents()
-                Try
-                    If System.IO.Directory.Exists(SacarDirDeRuta(cambioNombre.NombreNuevo)) = False Then
-                        System.IO.Directory.CreateDirectory(SacarDirDeRuta(cambioNombre.NombreNuevo))
-                    End If
-                    System.IO.File.Copy(cambioNombre.NombreAntiguo, cambioNombre.NombreNuevo, True)
-                    Ejecucion = True
-                Catch ex As Exception
-                    MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-                    Ejecucion = False
-                    Exit For
-                End Try
-            Next
-
-            'Si la Ejecucion no ha sido satisfactoria, borramos todo lo copiado
-            If Ejecucion = False Then
-                contador = 0
-                For Each cambioNombre As RenFich In ListaRenFich
-                    contador = contador + 1
-                    ToolStripStatusLabel2.Text = "Analizando fichero " & contador & " de " & ListaRenFich.Count
-                    Try
-                        If System.IO.File.Exists(cambioNombre.NombreNuevo) Then System.IO.File.Delete(cambioNombre.NombreNuevo)
-                        Ejecucion = True
-                    Catch ex As Exception
-                        MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-                        Ejecucion = False
-                        Exit For
-                    End Try
-                Next
-                MessageBox.Show("No se realizaron los cambios correctamente", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-                Me.Cursor = Cursors.Default
-                Exit Sub
-            End If
-        End If
-
-        'Si llegamos aquí los renombres se han efectuado correctamente. Ahora ejecutamos la transación
-        Dim cadListaSQL() As String
-        ReDim cadListaSQL(ListaSQL.Count - 1)
-        ListaSQL.CopyTo(cadListaSQL)
-        Application.DoEvents()
-        Ejecucion = ExeTran(cadListaSQL)
-        Application.DoEvents()
 
 
-        'Ahora, en función de que se haya realizado bien o mal la transacción, borramos los nuevos o los viejos.
-        If ListaRenFich.Count > 0 Then
-            If Ejecucion = False Then
-                contador = 0
-                For Each cambioNombre As RenFich In ListaRenFich
-                    contador = contador + 1
-                    ToolStripStatusLabel2.Text = "Restaurando fichero " & contador & " de " & ListaRenFich.Count
-                    Try
-                        If System.IO.File.Exists(cambioNombre.NombreNuevo) Then System.IO.File.Delete(cambioNombre.NombreNuevo)
-                        Ejecucion = True
-                    Catch ex As Exception
-                        MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-                        Ejecucion = False
-                        Exit For
-                    End Try
-                Next
-                MessageBox.Show("No se realizaron los cambios correctamente", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-                Exit Sub
-            Else
-                contador = 0
-                For Each cambioNombre As RenFich In ListaRenFich
-                    contador = contador + 1
-                    ToolStripStatusLabel2.Text = "Reubicando fichero " & contador & " de " & ListaRenFich.Count
-                    Try
-                        If System.IO.File.Exists(cambioNombre.NombreAntiguo) Then System.IO.File.Delete(cambioNombre.NombreAntiguo)
-                        Ejecucion = True
-                    Catch ex As Exception
-                        MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-                        MessageBox.Show("Algunos documentos no se eliminaron de su ubicación original", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-                        Ejecucion = False
-                        Exit For
-                    End Try
-                Next
-            End If
-        End If
 
-        Me.Cursor = Cursors.Default
-        If Ejecucion = True Then
-            MessageBox.Show("Los cambios se realizaron correctamente en la base de datos y en el disco.", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
-        End If
+        '    End If
+        '    'Si se han producido cambios en el tipo de documento o en los municipios o en el número de sellado
+        '    'en las ediciones individuales, puede originarse un cambio de 
+        '    'Realizamos los renombres necesarios
+        '    If CheckBox17.Checked = True Or CheckBox18.Checked = True Or CheckBox20.Checked = True Or CheckBox22.Checked = True Then
+        '        Application.DoEvents()
+        '        Dim RutasDoc() As String
+        '        Erase RutasDoc
+        '        'Añadimos a Rutasdoc las rutas con las imágenes JPG si se modifica el númeo de sellado
+        '        If CheckBox20.Checked = True Or CheckBox22.Checked = True Then
+        '            ReDim Preserve RutasDoc(RutasDoc.Length - 1 + 2)
+        '            RutasDoc(RutasDoc.Length - 2) = rutaRepo & "\_Scan400\" & item.FicheroJPG
+        '            RutasDoc(RutasDoc.Length - 1) = rutaRepo & "\_Scan250\" & item.FicheroJPG.Replace("\", "250\")
+        '        End If
+        '        For Each Rutageo As DataRow In item.rcdgeoFiles.Select
+        '            If IsNothing(Rutageo) Then Continue For
+        '            Application.DoEvents()
+        '            'Renombre.NombreAntiguo = Rutageo
+        '            'Renombre.NombreNuevo = GenerarScriptRenombreFicheros(item, Rutageo, NuevoTipo, NuevoMuni, TextBox22.Text)
+        '            'Si el nombre generado es distinto
+        '            If Renombre.NombreAntiguo <> Renombre.NombreNuevo Then
+        '                GenerarLOG("Renombrar:" & Renombre.NombreAntiguo & " >> " & Renombre.NombreNuevo)
+        '                ListaRenFich.Add(Renombre)
+        '            Else
+        '                GenerarLOG("Los cambios no afectan al nombre")
+        '            End If
+        '        Next
+        '    End If
+        'Next
+
+        'Application.DoEvents()
+        'If CheckBox21.Checked = True Then
+        '    If MessageBox.Show("Comprueba el log.¿Abrir?", AplicacionTitulo, MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
+        '        Process.Start(ficheroLogger)
+        '    End If
+        '    Exit Sub
+        'End If
+
+        'Dim Ejecucion As Boolean = False
+        'Dim contador As Integer = 0
+        'Me.Cursor = Cursors.WaitCursor
+        ''Primero realizamos proceso de copia de los antiguos a los nuevos ficheros
+        'If ListaRenFich.Count > 0 Then
+        '    contador = 0
+        '    For Each cambioNombre As RenFich In ListaRenFich
+        '        contador = contador + 1
+        '        ToolStripStatusLabel2.Text = "Copiando fichero " & contador & " de " & ListaRenFich.Count
+        '        Application.DoEvents()
+        '        Try
+        '            If System.IO.Directory.Exists(SacarDirDeRuta(cambioNombre.NombreNuevo)) = False Then
+        '                System.IO.Directory.CreateDirectory(SacarDirDeRuta(cambioNombre.NombreNuevo))
+        '            End If
+        '            System.IO.File.Copy(cambioNombre.NombreAntiguo, cambioNombre.NombreNuevo, True)
+        '            Ejecucion = True
+        '        Catch ex As Exception
+        '            MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+        '            Ejecucion = False
+        '            Exit For
+        '        End Try
+        '    Next
+
+        '    'Si la Ejecucion no ha sido satisfactoria, borramos todo lo copiado
+        '    If Ejecucion = False Then
+        '        contador = 0
+        '        For Each cambioNombre As RenFich In ListaRenFich
+        '            contador = contador + 1
+        '            ToolStripStatusLabel2.Text = "Analizando fichero " & contador & " de " & ListaRenFich.Count
+        '            Try
+        '                If System.IO.File.Exists(cambioNombre.NombreNuevo) Then System.IO.File.Delete(cambioNombre.NombreNuevo)
+        '                Ejecucion = True
+        '            Catch ex As Exception
+        '                MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+        '                Ejecucion = False
+        '                Exit For
+        '            End Try
+        '        Next
+        '        MessageBox.Show("No se realizaron los cambios correctamente", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+        '        Me.Cursor = Cursors.Default
+        '        Exit Sub
+        '    End If
+        'End If
+
+        ''Si llegamos aquí los renombres se han efectuado correctamente. Ahora ejecutamos la transación
+        'Dim cadListaSQL() As String
+        'ReDim cadListaSQL(ListaSQL.Count - 1)
+        'ListaSQL.CopyTo(cadListaSQL)
+        'Application.DoEvents()
+        'Ejecucion = ExeTran(cadListaSQL)
+        'Application.DoEvents()
+
+
+        ''Ahora, en función de que se haya realizado bien o mal la transacción, borramos los nuevos o los viejos.
+        'If ListaRenFich.Count > 0 Then
+        '    If Ejecucion = False Then
+        '        contador = 0
+        '        For Each cambioNombre As RenFich In ListaRenFich
+        '            contador = contador + 1
+        '            ToolStripStatusLabel2.Text = "Restaurando fichero " & contador & " de " & ListaRenFich.Count
+        '            Try
+        '                If System.IO.File.Exists(cambioNombre.NombreNuevo) Then System.IO.File.Delete(cambioNombre.NombreNuevo)
+        '                Ejecucion = True
+        '            Catch ex As Exception
+        '                MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+        '                Ejecucion = False
+        '                Exit For
+        '            End Try
+        '        Next
+        '        MessageBox.Show("No se realizaron los cambios correctamente", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+        '        Exit Sub
+        '    Else
+        '        contador = 0
+        '        For Each cambioNombre As RenFich In ListaRenFich
+        '            contador = contador + 1
+        '            ToolStripStatusLabel2.Text = "Reubicando fichero " & contador & " de " & ListaRenFich.Count
+        '            Try
+        '                If System.IO.File.Exists(cambioNombre.NombreAntiguo) Then System.IO.File.Delete(cambioNombre.NombreAntiguo)
+        '                Ejecucion = True
+        '            Catch ex As Exception
+        '                MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+        '                MessageBox.Show("Algunos documentos no se eliminaron de su ubicación original", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+        '                Ejecucion = False
+        '                Exit For
+        '            End Try
+        '        Next
+        '    End If
+        'End If
+
+        'Me.Cursor = Cursors.Default
+        'If Ejecucion = True Then
+        '    MessageBox.Show("Los cambios se realizaron correctamente en la base de datos y en el disco.", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+        'End If
 
 
     End Sub

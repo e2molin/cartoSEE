@@ -140,6 +140,7 @@ Public Class MDIPrincipal
             ResizingElements()
             CargarFiltros()
 
+            ToolStripStatusLabel3.Text = ""
             If usuarioMyApp.permisosLista.editarDocumentacion Then
                 If ObtenerEscalar("SELECT count(*) from bdsidschema.incidencias where aplicacion='CARTOSEE' and estado='Abierta'", pendingNotify) Then
                     If pendingNotify > 0 Then
@@ -449,7 +450,11 @@ Public Class MDIPrincipal
         lvMunicipios.Tag = Indices(1)
         Autocompletar_municipios = True
         lvMunicipios.Visible = False
-        If sender.name = "lvMunicipios" Then LaunchQuery(sender, e)
+        If sender.name = "lvMunicipios" Then
+            Dim resp = ModalQuestCollection("¿Qué desea buscar?")
+            If resp = DialogResult.OK Then LaunchQuery(sender, e)
+            If resp = DialogResult.Yes Then LaunchQueryCuadMTN(sender, e)
+        End If
 
     End Sub
 
@@ -1117,6 +1122,9 @@ Public Class MDIPrincipal
 
 
     Sub LanzarConfiguraciones(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolConfig.Click, mnuConfiguracion.Click
+
+        ModalInfo("La herramienta se encuentra configurada")
+        Exit Sub
         Dim frmSettings As New frmSettings
         frmSettings.Show()
     End Sub
@@ -1528,7 +1536,6 @@ Public Class MDIPrincipal
 
 
         Dim frmUser As New GestionUserNotificacion
-        'frmUser.modoAdmin = usuarioMyApp.permisosLista.EditarDocumentacion
         frmUser.MdiParent = Me
         frmUser.Show()
 
@@ -2045,7 +2052,7 @@ Public Class MDIPrincipal
 
     End Sub
 
-    Private Sub LaunchQueryCuadMTN(sender As Object, e As EventArgs) Handles Button13.Click, ToolStripButton22.Click
+    Private Sub LaunchQueryCuadMTN(sender As Object, e As EventArgs) Handles Button13.Click, ToolStripButton22.Click, btnPendingCatalog.Click, btnInvestigar.Click
 
         Dim FirmaYear As String = ""
         Dim EstadosDocumento As String = ""
@@ -2136,6 +2143,16 @@ Public Class MDIPrincipal
                         .paramSQL2 = nSellado2
                         .typeSearch = resultCMTN.TypeDataSearch.DocumentosByListaNumSelladoEntreLimites
                     End If
+                ElseIf sender.name = "btnPendingCatalog" Then
+                    Application.DoEvents()
+                    .paramSQL1 = "____________1___"
+                    .typeSearch = resultCMTN.TypeDataSearch.DocumentosByPatron
+                    .Text = "Documentos pendientes de ser catalogados"
+                ElseIf sender.name = "btnInvestigar" Then
+                    Application.DoEvents()
+                    .paramSQL1 = "___________1____"
+                    .typeSearch = resultCMTN.TypeDataSearch.DocumentosByPatron
+                    .Text = "Documentos incorporados desde SIDDAE para revisar su catalogación"
                 ElseIf TextBox6.Text.Trim <> "" Then
                     Application.DoEvents()
                     .paramSQL1 = TextBox6.Text.Trim
@@ -2203,5 +2220,6 @@ Public Class MDIPrincipal
 
 
     End Sub
+
 
 End Class

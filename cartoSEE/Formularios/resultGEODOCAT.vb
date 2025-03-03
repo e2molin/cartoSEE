@@ -599,40 +599,6 @@
             FillDocCARTOSEEwithFilter($"archivo.fechaprincipal between '{paramSQL1}' AND '{paramSQL2}'")
             Me.Text = $"Documentos con fecha entre {paramSQL1} y {paramSQL2}"
 
-
-
-
-
-
-
-            '------------------------------------------------------------------------------------------------------------------------
-
-
-        ElseIf typeSearch = TypeDataSearch.DocumentosFiltroGenerico Then
-            If paramSQL1.ToString = "" Then
-                ModalExclamation("No se ha definido un filtro válido")
-                Exit Sub
-            End If
-            If Not paramSQL1.ToLower.StartsWith("where ") Then paramSQL1 = $"WHERE {paramSQL1}"
-            FillDocCARTOSEEwithFilter(paramSQL1)
-            If nameQuery <> "" Then Me.Text = nameQuery
-
-        ElseIf typeSearch = TypeDataSearch.DocumentoByIndice Then
-            If paramSQL1.ToString = "" Then
-                ModalExclamation("Búsqueda por número de índice no definida")
-                Exit Sub
-            End If
-            FillDocCARTOSEEwithFilter($"where docsiddae.iddocsiddae={paramSQL1}")
-            Me.Text = $"Documento SIDDAE con Iddocsiddae nº {paramSQL1}"
-
-        ElseIf typeSearch = TypeDataSearch.DocumentosByComentario Then
-            If paramSQL1.ToString = "" Then
-                ModalExclamation("Búsqueda por comentario no definido")
-                Exit Sub
-            End If
-            FillDocCARTOSEEwithFilter($"where docsiddae.comentario ilike '%{paramSQL1}%'")
-            Me.Text = $"Documentos con comentario: {paramSQL1}"
-
         ElseIf typeSearch = TypeDataSearch.DocumentosEnCarrito Then
             If CarritoCompra.Count = 0 Then
                 ModalExclamation("El carrito está vacío")
@@ -1421,6 +1387,7 @@
         Dim frmNotify As New GestionUserNotificacion
         frmNotify.MdiParent = MDIPrincipal
         frmNotify.incidenciaInicial = DataGridView1.Item("numdoc", DataGridView1.CurrentCell.RowIndex).Value.ToString
+        frmNotify.tipoIncidencia = "Cartografía"
         frmNotify.Show()
 
     End Sub
@@ -1628,6 +1595,17 @@
         Dim cadSeparator As String = ";"
         If ModalQuestion($"Se han seleccionado para exportar {DataGridView1.SelectedRows.Count} documentos. ¿Continuar?") = DialogResult.No Then Exit Sub
 
+
+
+        Dim dlgOpcionExport As New OptionDialog
+        Dim TipoExport As String = ""
+        Dim NombreTipoExport As String = ""
+        If dlgOpcionExport.ShowDialog = Windows.Forms.DialogResult.OK Then
+            dlgOpcionExport.CheckRadioButtonResult(TipoExport, NombreTipoExport)
+        Else
+            Exit Sub
+        End If
+
         Using folderDialogSelection As New FolderBrowserDialog With {
                     .Description = "Seleccione la carpeta de salida",
                     .ShowNewFolderButton = True
@@ -1637,37 +1615,61 @@
                 Using sw As New IO.StreamWriter(folderDialogSelection.SelectedPath & "\listado.txt", False, System.Text.Encoding.UTF8)
                     For i = 0 To DataGridView1.SelectedRows.Count - 1
                         ToolStripStatusLabel2.Text = $"Copiando {i + 1} de {DataGridView1.SelectedRows.Count}"
-                        Application.DoEvents()
+
                         Try
                             Dim docExport As New docCartoSEE(DataGridView1.Item("idarchivo", DataGridView1.SelectedRows(i).Index).Value)
                             docExport.getGeoFiles()
                             Application.DoEvents()
+                            If TipoExport = "JPG424" Then
+                                If IO.File.Exists(docExport.rutaFicheroAltaRes) Then
+                                    IO.File.Copy(docExport.rutaFicheroAltaRes, $"{folderDialogSelection.SelectedPath}\{SacarFileDeRuta(docExport.rutaFicheroAltaRes)}")
+                                End If
+                            ElseIf TipoExport = "JPG250" Then
+                                If IO.File.Exists(docExport.rutaFicheroBajaRes) Then
+                                    IO.File.Copy(docExport.rutaFicheroBajaRes, $"{folderDialogSelection.SelectedPath}\{SacarFileDeRuta(docExport.rutaFicheroBajaRes)}")
+                                End If
+                            ElseIf TipoExport = "PDF" Then
+                                If IO.File.Exists(docExport.rutaFicheroPDF) Then
+                                    IO.Directory.CreateDirectory($"{folderDialogSelection.SelectedPath}\{docExport.Sellado}\PDF")
+                                    IO.File.Copy(docExport.rutaFicheroPDF, $"{folderDialogSelection.SelectedPath}\{SacarFileDeRuta(docExport.rutaFicheroPDF)}")
+                                End If
+                            ElseIf TipoExport = "ECW" Then
+                                For Each resource As FileGeorref In docExport.listaFicherosGeo
+                                    If Not IO.Directory.Exists($"{folderDialogSelection.SelectedPath}\{docExport.Sellado}\{resource.EPSCode}") Then
+                                        IO.Directory.CreateDirectory($"{folderDialogSelection.SelectedPath}\{docExport.Sellado}\{resource.EPSCode}")
+                                    End If
+                                    If IO.File.Exists(resource.PathFile) Then
+                                        IO.File.Copy(resource.PathFile, $"{folderDialogSelection.SelectedPath}\{docExport.Sellado}\{resource.EPSCode}\{SacarFileDeRuta(resource.PathFile)}")
+                                    End If
+                                Next
+                            Else
+                                If IO.Directory.Exists($"{folderDialogSelection.SelectedPath}\{docExport.Sellado}") Then
+                                    sw.WriteLine($"Los datos del documento {docExport.Sellado} no se han exportado porque ya existe una carpeta con ese nombre")
+                                    Continue For
+                                End If
+                                IO.Directory.CreateDirectory($"{folderDialogSelection.SelectedPath}\{docExport.Sellado}")
+                                IO.Directory.CreateDirectory($"{folderDialogSelection.SelectedPath}\{docExport.Sellado}\JPG")
+                                IO.Directory.CreateDirectory($"{folderDialogSelection.SelectedPath}\{docExport.Sellado}\Georef")
+                                If IO.File.Exists(docExport.rutaFicheroAltaRes) Then
+                                    IO.File.Copy(docExport.rutaFicheroAltaRes, $"{folderDialogSelection.SelectedPath}\{docExport.Sellado}\JPG\Alta_{SacarFileDeRuta(docExport.rutaFicheroAltaRes)}")
+                                End If
+                                If IO.File.Exists(docExport.rutaFicheroBajaRes) Then
+                                    IO.File.Copy(docExport.rutaFicheroBajaRes, $"{folderDialogSelection.SelectedPath}\{docExport.Sellado}\JPG\Baja_{SacarFileDeRuta(docExport.rutaFicheroBajaRes)}")
+                                End If
+                                If IO.File.Exists(docExport.rutaFicheroPDF) Then
+                                    IO.Directory.CreateDirectory($"{folderDialogSelection.SelectedPath}\{docExport.Sellado}\PDF")
+                                    IO.File.Copy(docExport.rutaFicheroPDF, $"{folderDialogSelection.SelectedPath}\{docExport.Sellado}\PDF\{SacarFileDeRuta(docExport.rutaFicheroPDF)}")
+                                End If
+                                For Each resource As FileGeorref In docExport.listaFicherosGeo
+                                    If Not IO.Directory.Exists($"{folderDialogSelection.SelectedPath}\{docExport.Sellado}\Georef\{resource.EPSCode}") Then
+                                        IO.Directory.CreateDirectory($"{folderDialogSelection.SelectedPath}\{docExport.Sellado}\Georef\{resource.EPSCode}")
+                                    End If
+                                    If IO.File.Exists(resource.PathFile) Then
+                                        IO.File.Copy(resource.PathFile, $"{folderDialogSelection.SelectedPath}\{docExport.Sellado}\Georef\{resource.EPSCode}\{SacarFileDeRuta(resource.PathFile)}")
+                                    End If
+                                Next
+                            End If
 
-                            If IO.Directory.Exists($"{folderDialogSelection.SelectedPath}\{docExport.Sellado}") Then
-                                sw.WriteLine($"Los datos del documento {docExport.Sellado} no se han exportado porque ya existe una carpeta con ese nombre")
-                                Continue For
-                            End If
-                            IO.Directory.CreateDirectory($"{folderDialogSelection.SelectedPath}\{docExport.Sellado}")
-                            IO.Directory.CreateDirectory($"{folderDialogSelection.SelectedPath}\{docExport.Sellado}\JPG")
-                            IO.Directory.CreateDirectory($"{folderDialogSelection.SelectedPath}\{docExport.Sellado}\Georef")
-                            If IO.File.Exists(docExport.rutaFicheroAltaRes) Then
-                                IO.File.Copy(docExport.rutaFicheroAltaRes, $"{folderDialogSelection.SelectedPath}\{docExport.Sellado}\JPG\Alta_{SacarFileDeRuta(docExport.rutaFicheroAltaRes)}")
-                            End If
-                            If IO.File.Exists(docExport.rutaFicheroBajaRes) Then
-                                IO.File.Copy(docExport.rutaFicheroBajaRes, $"{folderDialogSelection.SelectedPath}\{docExport.Sellado}\JPG\Baja_{SacarFileDeRuta(docExport.rutaFicheroBajaRes)}")
-                            End If
-                            If IO.File.Exists(docExport.rutaFicheroPDF) Then
-                                IO.Directory.CreateDirectory($"{folderDialogSelection.SelectedPath}\{docExport.Sellado}\PDF")
-                                IO.File.Copy(docExport.rutaFicheroPDF, $"{folderDialogSelection.SelectedPath}\{docExport.Sellado}\PDF\{SacarFileDeRuta(docExport.rutaFicheroPDF)}")
-                            End If
-                            For Each resource As FileGeorref In docExport.listaFicherosGeo
-                                If Not IO.Directory.Exists($"{folderDialogSelection.SelectedPath}\{docExport.Sellado}\Georef\{resource.EPSCode}") Then
-                                    IO.Directory.CreateDirectory($"{folderDialogSelection.SelectedPath}\{docExport.Sellado}\Georef\{resource.EPSCode}")
-                                End If
-                                If IO.File.Exists(resource.PathFile) Then
-                                    IO.File.Copy(resource.PathFile, $"{folderDialogSelection.SelectedPath}\{docExport.Sellado}\Georef\{resource.EPSCode}\{SacarFileDeRuta(resource.PathFile)}")
-                                End If
-                            Next
                             sw.WriteLine($"Copiados los recursos asociados al documento {docExport.Sellado}")
                         Catch ex As Exception
                             ModalError(ex.Message)
