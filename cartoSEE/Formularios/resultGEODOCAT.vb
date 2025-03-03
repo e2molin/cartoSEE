@@ -49,6 +49,9 @@
     Property filterObservaciones As String = ""
     Property filterEnABSYS As String = ""
     Property filterJGE As String = ""
+    Property limitResults As String = ""
+    Property OrderField As String = "archivo.idarchivo"
+    Property OrderDirection As String = "ASC"
 
 
     Dim rcdDataPrin As DataView
@@ -1013,8 +1016,10 @@
                       group by archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal,
   	                    archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, archivo.horizontal, archivo.procecarpeta, archivo.procehoja, 
                         archivo.subtipo,archivo.juntaestadistica, archivo.signatura,archivo.extraprops, archivo.observaciones,archivo.proyecto,
-	                    tbtipodocumento.tipodoc,archivo.cdd_url,archivo.titn,archivo.autor,archivo.encabezado,tbestadodocumento.estadodoc
-                    order by archivo.idarchivo"
+	                    tbtipodocumento.tipodoc,archivo.cdd_url,archivo.titn,archivo.autor,archivo.encabezado,tbestadodocumento.estadodoc"
+        sqlBase &= IIf(OrderField = "", "", $" ORDER BY {OrderField}" & IIf(OrderDirection = "", "", $" {OrderDirection}"))
+        sqlBase &= IIf(limitResults = "", "", $" LIMIT {limitResults}")
+
 
         rcdDataPrin = New DataView
         If CargarDataView(sqlBase, rcdDataPrin) = False Then

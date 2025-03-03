@@ -39,16 +39,20 @@
     Property paramSQL1 As String
     Property paramSQL2 As String
     Property paramSQL3 As String
-
-    'Filtros sobre los resultados
-    Property filterTipoDoc As String = ""
-    Property filterEstadoDoc As String = ""
-    Property filterSubTipoDoc As String = ""
     Property filterTomo As String = ""
     Property filterFecha As String = ""
-    Property filterObservaciones As String = ""
-    Property filterEnABSYS As String = ""
-    Property filterJGE As String = ""
+
+    'Filtros sobre los resultados
+    'Property filterTipoDoc As String = ""
+    'Property filterEstadoDoc As String = ""
+    'Property filterSubTipoDoc As String = ""
+    'Property filterObservaciones As String = ""
+    'Property filterEnABSYS As String = ""
+    'Property filterJGE As String = ""
+
+    Property limitResults As String = ""
+    Property OrderField As String = "archivodocmtn.idarchivodocmtn"
+    Property OrderDirection As String = "ASC"
 
 
     Dim rcdDataPrin As DataView
@@ -961,6 +965,12 @@
                 WHERE {mainFilter} 
                 group by archivodocmtn.idarchivodocmtn,archivodocmtn.create_at,archivodocmtn.tipo,archivodocmtn.subtipo,archivodocmtn.tomo,
 				archivodocmtn.sellado,archivodocmtn.fecha,provincias.nombreprovincia,archivodocmtn.zona_num"
+
+        sqlBase &= IIf(OrderField = "", "", $" ORDER BY {OrderField}" & IIf(OrderDirection = "", "", $" {OrderDirection}"))
+        sqlBase &= IIf(limitResults = "", "", $" LIMIT {limitResults}")
+
+
+
 
         rcdDataPrin = New DataView
         If CargarDataView(sqlBase, rcdDataPrin) = False Then

@@ -59,18 +59,22 @@ Public Class MDIPrincipal
                             mnuDeveloperTools.Click, mnuOpenAppFolderSetting.Click, mnuAdminTools.Click
 
         If sender.name = "ToolStripButton1" Or sender.name = "mnuDeveloperTools" Then
-            Dim Desarrollo As New frmDevel
-            Desarrollo.MdiParent = Me
-            Desarrollo.Show()
+            If usuarioMyApp.permisosLista.isUserISTARI Then
+                Dim Desarrollo As New frmDevel
+                Desarrollo.MdiParent = Me
+                Desarrollo.Show()
+            End If
         ElseIf sender.name = "ToolStripButton19" Or sender.name = "mnuAdminTools" Then
-            Dim Desarrollo As New frmDevelIGN
-            Desarrollo.MdiParent = Me
-            Desarrollo.Show()
+            If usuarioMyApp.permisosLista.isUserISTARI Then
+                Dim Desarrollo As New frmDevelIGN
+                Desarrollo.MdiParent = Me
+                Desarrollo.Show()
+            End If
         ElseIf sender.name = "mnuOpenAppFolderSetting" Then
             Try
                 Process.Start(AppFolderSetting)
             Catch ex As Exception
-                MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                ModalError(ex.Message)
             End Try
         End If
 
@@ -279,8 +283,14 @@ Public Class MDIPrincipal
         mnuAddContornos.Enabled = usuarioMyApp.permisosLista.editarDocumentacion
         btnExportCdD.Enabled = usuarioMyApp.permisosLista.generarVersionCdD
         mnuExportCdD.Enabled = usuarioMyApp.permisosLista.generarVersionCdD
-        ToolStripButton19.Enabled = usuarioMyApp.permisosLista.editarDocumentacion
-        mnuAdminTools.Enabled = usuarioMyApp.permisosLista.editarDocumentacion
+        ToolStripButton19.Enabled = usuarioMyApp.permisosLista.EditarDocumentacion
+        mnuAdminTools.Enabled = usuarioMyApp.permisosLista.EditarDocumentacion
+
+        ToolStripButton1.Enabled = usuarioMyApp.permisosLista.isUserISTARI
+        ToolStripButton19.Enabled = usuarioMyApp.permisosLista.isUserISTARI
+        mnuDeveloperTools.Enabled = usuarioMyApp.permisosLista.isUserISTARI
+        mnuAdminTools.Enabled = usuarioMyApp.permisosLista.isUserISTARI
+
 
         mnuDeveloper.Visible = usuarioMyApp.permisosLista.isUserISTARI
         ToolStripButton1.Visible = usuarioMyApp.permisosLista.isUserISTARI
@@ -1197,7 +1207,7 @@ Public Class MDIPrincipal
 
     End Sub
 
-    Sub LanzarConsultaAvanzada(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Query_Advance01.Click, Query_Advance02.Click, Query_Advance03.Click
+    Sub LanzarConsultaAvanzada(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Query_Advance01.Click, Query_Advance02.Click, Query_Advance03.Click, Query_Advance05.Click
 
         Dim FrmResult As New frmDocumentacion
         Dim Filtro As String
@@ -1209,14 +1219,13 @@ Public Class MDIPrincipal
         If sender.name = "Query_Advance03" Then
             Fecha_ini = InputDialog.InputBox("Fecha inicio de la búsqueda AAAA-MM-DD", "Consultas avanzadas", "")
             Fecha_fin = InputDialog.InputBox("Fecha final de la búsqueda AAAA-MM-DD", "Consultas avanzadas", "")
-        Else
+        ElseIf sender.name = "Query_Advance02" Or sender.name = "Query_Advance03" Then
             Dim fechas() As String = InputDateDialog.InputBox("Establece fechas de búsqueda")
             Fecha_ini = fechas(0)
             Fecha_fin = fechas(1)
             If Fecha_ini.Length = 4 Then Fecha_ini &= "-01-01"
             If Fecha_fin.Length = 4 Then Fecha_fin &= "-12-31"
         End If
-        ModalInfo($"{Fecha_ini}{Environment.NewLine}{Fecha_fin}")
 
         Dim resp = ModalQuestCollection("¿Qué desea buscar?")
 
@@ -1241,6 +1250,11 @@ Public Class MDIPrincipal
                         .paramSQL1 = Fecha_ini
                         .paramSQL2 = Fecha_fin
                         .typeSearch = resultCMTN.TypeDataSearch.AllDocsPorFechaDocumento
+                    ElseIf sender.name = "Query_Advance05" Then
+                        .typeSearch = resultCMTN.TypeDataSearch.AllDocuments
+                        .limitResults = "100"
+                        .OrderDirection = "DESC"
+
                     End If
                     .Show()
                 End With
@@ -1265,15 +1279,20 @@ Public Class MDIPrincipal
                     If sender.name = "Query_Advance01" Then
                         .paramSQL1 = Fecha_ini & " 00:00:00"
                         .paramSQL2 = Fecha_fin & " 23:59:59"
-                        .typeSearch = resultCMTN.TypeDataSearch.AllDocsPorFechaAlta
+                        .typeSearch = resultGEODOCAT.TypeDataSearch.AllDocsPorFechaAlta
                     ElseIf sender.name = "Query_Advance02" Then
                         .paramSQL1 = Fecha_ini & " 00:00:00"
                         .paramSQL2 = Fecha_fin & " 23:59:59"
-                        .typeSearch = resultCMTN.TypeDataSearch.AllDocsByFechaUpdate
+                        .typeSearch = resultGEODOCAT.TypeDataSearch.AllDocsByFechaUpdate
                     ElseIf sender.name = "Query_Advance03" Then
                         .paramSQL1 = Fecha_ini
                         .paramSQL2 = Fecha_fin
-                        .typeSearch = resultCMTN.TypeDataSearch.AllDocsPorFechaDocumento
+                        .typeSearch = resultGEODOCAT.TypeDataSearch.AllDocsPorFechaDocumento
+                    ElseIf sender.name = "Query_Advance05" Then
+                        .typeSearch = resultGEODOCAT.TypeDataSearch.AllDocuments
+                        .limitResults = "100"
+                        .OrderDirection = "DESC"
+
                     End If
                     .Show()
                 End With
@@ -1507,12 +1526,11 @@ Public Class MDIPrincipal
 
     Private Sub itemUsermenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles itemUsermenu.Click, ToolStripButton2.Click, ToolStripStatusLabel3.Click
 
-        ModalInfo("REvisar")
 
-        'Dim frmUser As New GestionUserNotificacion
-        'frmUser.modoAdmin = usuarioMyApp.permisosLista.editarDocumentacion
-        'frmUser.MdiParent = Me
-        'frmUser.Show()
+        Dim frmUser As New GestionUserNotificacion
+        'frmUser.modoAdmin = usuarioMyApp.permisosLista.EditarDocumentacion
+        frmUser.MdiParent = Me
+        frmUser.Show()
 
     End Sub
 
@@ -2184,10 +2202,6 @@ Public Class MDIPrincipal
         End Try
 
 
-
-
-
     End Sub
-
 
 End Class

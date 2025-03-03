@@ -501,8 +501,7 @@
 
     End Sub
 
-    Private Sub CambiarEstado(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-                    Handles Button2.Click, Button3.Click
+    Private Sub CambiarEstado(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click, Button3.Click
 
 
         Dim okProc As Boolean
