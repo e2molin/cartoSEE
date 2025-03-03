@@ -28,7 +28,14 @@ Public Class OptionDialog
         ElseIf RadioButton3.Checked = True Then
             Tipo = RadioButton3.Tag
             Nombre = RadioButton3.Text
+        ElseIf RadioButton4.Checked = True Then
+            Tipo = RadioButton4.Tag
+            Nombre = RadioButton4.Text
+        ElseIf RadioButton5.Checked = True Then
+            Tipo = RadioButton5.Tag
+            Nombre = RadioButton5.Text
         Else
+
             Tipo = ""
             Nombre = ""
         End If
@@ -52,6 +59,8 @@ Public Class OptionDialog
         RadioButton1.Tag = "JPG424"
         RadioButton2.Tag = "JPG250"
         RadioButton3.Tag = "ECW"
+        RadioButton4.Tag = "PDF"
+        RadioButton5.Tag = "Todos"
         Me.Text = titulo
 
     End Sub

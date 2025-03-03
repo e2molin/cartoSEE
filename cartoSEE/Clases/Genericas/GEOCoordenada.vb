@@ -90,7 +90,7 @@ Public Class GEOCoordenada
                 End If
             Next
         Catch ex As Exception
-            MessageBox.Show(ex.Message)
+            ModalError(ex.Message)
         End Try
 
     End Sub

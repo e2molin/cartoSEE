@@ -15,6 +15,7 @@
     <MyType>WindowsForms</MyType>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <TargetFrameworkProfile />
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -27,7 +28,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -126,7 +126,10 @@
     <Compile Include="Clases\DocCartoGEODOCAT\docCartoSEEquery.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\docCartoSEETipoDocu.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\docCartoSEEVariacion.vb" />
+    <Compile Include="Clases\DocCartoGEODOCAT\docCuadMTN.vb" />
+    <Compile Include="Clases\DocCartoGEODOCAT\FileGeorref.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\FlagsProperties.vb" />
+    <Compile Include="Clases\DocCartoGEODOCAT\FlagsPropertiesCuaderno.vb" />
     <Compile Include="Clases\forms\dataViewerForm.Designer.vb">
       <DependentUpon>dataViewerForm.vb</DependentUpon>
     </Compile>
@@ -134,7 +137,31 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Clases\Genericas\BaseConversor.vb" />
+    <Compile Include="Clases\Genericas\CustomMsgbox.Designer.vb">
+      <DependentUpon>CustomMsgbox.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Clases\Genericas\CustomMsgbox.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Clases\Genericas\DialogChangePassword.Designer.vb">
+      <DependentUpon>DialogChangePassword.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Clases\Genericas\DialogChangePassword.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Clases\Genericas\InputDateDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Clases\Genericas\QuestCollection.Designer.vb">
+      <DependentUpon>QuestCollection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Clases\Genericas\QuestCollection.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Clases\Genericas\GEOCoordenada.vb" />
+    <Compile Include="Clases\Genericas\ListDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Clases\InputDialog.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -212,6 +239,12 @@
     <Compile Include="Formularios\frmEdicionesTablas.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Formularios\frmEditCuad.Designer.vb">
+      <DependentUpon>frmEditCuad.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\frmEditCuad.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formularios\frmExportCdD.Designer.vb">
       <DependentUpon>frmExportCdD.vb</DependentUpon>
     </Compile>
@@ -248,6 +281,18 @@
     <Compile Include="Formularios\MDIPrincipal.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Formularios\resultCMTN.Designer.vb">
+      <DependentUpon>resultCMTN.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\resultCMTN.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formularios\resultGEODOCAT.Designer.vb">
+      <DependentUpon>resultGEODOCAT.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\resultGEODOCAT.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formularios\SplashScreen.designer.vb">
       <DependentUpon>SplashScreen.vb</DependentUpon>
     </Compile>
@@ -264,6 +309,7 @@
     <Compile Include="Modulos\GestionDocumentacion.vb" />
     <Compile Include="Modulos\ManagePDF.vb" />
     <Compile Include="Modulos\Procedimientos.vb" />
+    <Compile Include="Modulos\RichTextManager.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -293,6 +339,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Clases\forms\dataViewerForm.resx">
       <DependentUpon>dataViewerForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Clases\Genericas\CustomMsgbox.resx">
+      <DependentUpon>CustomMsgbox.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Clases\Genericas\DialogChangePassword.resx">
+      <DependentUpon>DialogChangePassword.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Clases\Genericas\InputDateDialog.resx">
+      <DependentUpon>InputDateDialog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Clases\Genericas\QuestCollection.resx">
+      <DependentUpon>QuestCollection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Clases\Genericas\ListDialog.resx">
+      <DependentUpon>ListDialog.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Clases\InputDialog.resx">
       <DependentUpon>InputDialog.vb</DependentUpon>
@@ -333,6 +394,9 @@
     <EmbeddedResource Include="Formularios\frmEdicionesTablas.resx">
       <DependentUpon>frmEdicionesTablas.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\frmEditCuad.resx">
+      <DependentUpon>frmEditCuad.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Formularios\frmExportCdD.resx">
       <DependentUpon>frmExportCdD.vb</DependentUpon>
     </EmbeddedResource>
@@ -350,6 +414,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formularios\MDIPrincipal.resx">
       <DependentUpon>MDIPrincipal.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\resultCMTN.resx">
+      <DependentUpon>resultCMTN.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\resultGEODOCAT.resx">
+      <DependentUpon>resultGEODOCAT.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formularios\SplashScreen.resx">
       <DependentUpon>SplashScreen.vb</DependentUpon>
@@ -397,8 +467,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\docsidcarto-template.html" />
+    <None Include="resources\Icon Cuaderno de brujula copy.png" />
     <Content Include="resources\index-muni-template.html" />
     <Content Include="resources\index-template.html" />
+    <Content Include="resources\nueva-ventana-consulta-cartosee.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="resources\Plantilla_Altimetria.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -419,6 +493,12 @@
     </Content>
     <Content Include="resources\Plantilla_PlanoPoblacionJuntaSI.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\thumb-cuad-alti.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\thumb-cuad-plani.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="vendor\iTextsharp 5\itextsharp.dll" />
     <Content Include="vendor\Npgsql\Mono.Security.dll" />

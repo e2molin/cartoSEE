@@ -162,7 +162,7 @@
                                     "<td>" & documento.tipoDocumento.NombreTipo & "</td>" &
                                     "<td>" & documento.Sellado & "</td>" &
                                     "<td>" & documento.municipiosHistoLiteralHTML & "</td>" &
-                                    "<td>" & documento.fechaPrincipal & "</td>" &
+                                    "<td>" & documento.FechaPrincipal & "</td>" &
                                     "<td>" &
                                     "<a href=""" & documento.nameFileHTML & """ title=""Información del documento""><span class=""glyphicon glyphicon glyphicon-info-sign""></span></a> " &
                                     "<a href=""../zip/" & documento.nameFileHTML.Replace(".html", ".zip") & """ title=""Descarga del documento""><span class=""glyphicon glyphicon glyphicon-link""></span></a> " &
@@ -173,7 +173,7 @@
                                     "<td>" & documento.tipoDocumento.NombreTipo & "</td>" &
                                     "<td>" & documento.Sellado & "</td>" &
                                     "<td>" & documento.municipiosHistoLiteralHTML & "</td>" &
-                                    "<td>" & documento.fechaPrincipal & "</td>" &
+                                    "<td>" & documento.FechaPrincipal & "</td>" &
                                     "<td>" &
                                     "<a href=""" & documento.nameFileHTML & """ title=""Información del documento""><span class=""glyphicon glyphicon glyphicon-info-sign""></span></a> " &
                                     "<a href=""../zip/" & documento.nameFileHTML.Replace(".html", ".zip") & """ title=""Descarga del documento""><span class=""glyphicon glyphicon glyphicon-link""></span></a> " &
@@ -268,7 +268,7 @@
                                    "<td>" & documento.tipoDocumento.NombreTipo & "</td>" &
                                    "<td>" & documento.Sellado & "</td>" &
                                    "<td>" & documento.municipiosHistoLiteral & "</td>" &
-                                   "<td>" & documento.fechaPrincipal & "</td>" &
+                                   "<td>" & documento.FechaPrincipal & "</td>" &
                                     "<td>" &
                                     "<a href=""" & documento.nameFileHTML & """ title=""Información del documento""><span class=""glyphicon glyphicon glyphicon-info-sign""></span></a> " &
                                     "<a href=""../zip/" & documento.nameFileECWJPG & """ title=""Descarga del documento""><span class=""glyphicon glyphicon glyphicon-link""></span></a> " &
@@ -279,7 +279,7 @@
                                      "<td>" & documento.tipoDocumento.NombreTipo & "</td>" &
                                      "<td>" & documento.Sellado & "</td>" &
                                      "<td>" & documento.municipiosHistoLiteral & "</td>" &
-                                     "<td>" & documento.fechaPrincipal & "</td>" &
+                                     "<td>" & documento.FechaPrincipal & "</td>" &
                                      "<td>" &
                                      "<a href=""" & documento.nameFileHTML & """ title=""Información del documento""><span class=""glyphicon glyphicon glyphicon-info-sign""></span></a> " &
                                      "<a href=""../zip/" & documento.nameFileECWJPG & """ title=""Descarga del documento""><span class=""glyphicon glyphicon glyphicon-link""></span></a> " &
@@ -379,7 +379,7 @@
                                    "<td>" & documento.tipoDocumento.NombreTipo & "</td>" &
                                    "<td>" & documento.Sellado & "</td>" &
                                    "<td>" & documento.municipiosHistoLiteral & "</td>" &
-                                   "<td>" & documento.fechaPrincipal & "</td>" &
+                                   "<td>" & documento.FechaPrincipal & "</td>" &
                                     "<td>" &
                                     "<a href=""" & documento.nameFileHTML & """ title=""Información del documento""><span class=""glyphicon glyphicon glyphicon-info-sign""></span></a> " &
                                      "<a href=""../zip/" & documento.nameFileECWJPG & """ title=""Descarga del documento""><span class=""glyphicon glyphicon glyphicon-link""></span></a> " &
@@ -390,7 +390,7 @@
                                      "<td>" & documento.tipoDocumento.NombreTipo & "</td>" &
                                      "<td>" & documento.Sellado & "</td>" &
                                      "<td>" & documento.municipiosHistoLiteral & "</td>" &
-                                     "<td>" & documento.fechaPrincipal & "</td>" &
+                                     "<td>" & documento.FechaPrincipal & "</td>" &
                                     "<td>" &
                                     "<a href=""" & documento.nameFileHTML & """ title=""Información del documento""><span class=""glyphicon glyphicon glyphicon-info-sign""></span></a> " &
                                      "<a href=""../zip/" & documento.nameFileECWJPG & """ title=""Descarga del documento""><span class=""glyphicon glyphicon glyphicon-link""></span></a> " &
@@ -557,7 +557,7 @@
                                                    documento.tipoDocumento.tematicaCdD & ";" &
                                                    documento.getCdDAlias & ";" &
                                                    IIf(documento.Escala = 0, "Sin escala", documento.Escala.ToString) & ";" &
-                                                   IIf(documento.autorDocumento = "", "Desconocido", documento.autorDocumento.ToString) & ";" &
+                                                   IIf(documento.autorEntidad = "", "Desconocido", documento.autorEntidad.ToString) & ";" &
                                                    documento.yearFechaPrincipal & ";" & "JPG")
 
 
@@ -689,8 +689,8 @@
                                     extensionFile = "JPG"
                                     nombreFileOut = documento.nameFilePropuestoParaCDD("jpg")
                                     If procesarGeorref Then
-                                        extensionFile = IIf(documento.listaFicherosGeo.Count = 0, "JPG", "ZIP")
-                                        nombreFileOut = IIf(documento.listaFicherosGeo.Count = 0, documento.nameFilePropuestoParaCDD("jpg"), documento.nameFilePropuestoParaCDD("zip"))
+                                        extensionFile = IIf(documento.listaFicherosGeo23030.Count = 0, "JPG", "ZIP")
+                                        nombreFileOut = IIf(documento.listaFicherosGeo23030.Count = 0, documento.nameFilePropuestoParaCDD("jpg"), documento.nameFilePropuestoParaCDD("zip"))
                                     End If
 
                                     archivoAlias.WriteLine(documento.getIdProductor4CdD & ";" &
@@ -698,7 +698,7 @@
                                                    documento.tipoDocumento.tematicaCdD & ";" &
                                                    documento.getCdDAlias & ";" &
                                                    IIf(documento.Escala = 0, "Sin escala", documento.Escala.ToString) & ";" &
-                                                   IIf(documento.autorDocumento = "", "Desconocido", documento.autorDocumento.ToString) & ";" &
+                                                   IIf(documento.autorEntidad = "", "Desconocido", documento.autorEntidad.ToString) & ";" &
                                                    documento.yearFechaPrincipal & ";" & extensionFile)
 
                                     sentenciaSQL.WriteLine("UPDATE bdsidschema.archivo SET " &
@@ -709,7 +709,7 @@
                                     'Preparamos la carpeta que contendrá los ficheros de cada documento
                                     folderFileOut = folderOUT & "archivos\"
                                     If procesarGeorref Then
-                                        If documento.listaFicherosGeo.Count > 0 Then
+                                        If documento.listaFicherosGeo23030.Count > 0 Then
                                             folderFileOut = folderOUT & "archivos\" & documento.nameFilePropuestoParaCDD() & "\"
                                         End If
                                     End If
@@ -725,7 +725,7 @@
                                         For Each muni As String In documento.listaCodMuniActual
                                             Application.DoEvents()
                                             If procesarGeorref Then
-                                                If documento.listaFicherosGeo.Count = 0 Then
+                                                If documento.listaFicherosGeo23030.Count = 0 Then
                                                     archivoFileToMuni.WriteLine(documento.nameFilePropuestoParaCDD("jpg") & ";" & muni)
                                                 Else
                                                     archivoFileToMuni.WriteLine(documento.nameFilePropuestoParaCDD("zip") & ";" & muni)
@@ -740,8 +740,8 @@
 
                                     If procesarGeorref Then
                                         'Después copiamos el ECW si los hay
-                                        If documento.listaFicherosGeo.Count = 1 Then
-                                            pathOrigen = documento.listaFicherosGeo.Item(0)
+                                        If documento.listaFicherosGeo23030.Count = 1 Then
+                                            pathOrigen = documento.listaFicherosGeo23030.Item(0)
                                             pathDestino = folderFileOut & documento.nameFilePropuestoParaCDD("ecw")
                                             'Y también el fichero PRJ
                                             pathDestinoPRJ = folderFileOut & documento.nameFilePropuestoParaCDD("prj")
@@ -753,7 +753,7 @@
                                                 archivoLog.WriteLine("#COPIA ERRONEA#" & pathOrigen & "#" & pathDestino & "#" & ex.Message)
                                             End Try
                                         Else
-                                            For Each docuECW As String In documento.listaFicherosGeo
+                                            For Each docuECW As String In documento.listaFicherosGeo23030
                                                 pathOrigen = docuECW
                                                 pathDestino = folderFileOut & documento.nameFilePropuestoParaCDD("ecw")
                                                 'Y también el fichero PRJ
@@ -767,7 +767,7 @@
                                                 End Try
                                             Next
                                         End If
-                                        If documento.listaFicherosGeo.Count > 0 Then
+                                        If documento.listaFicherosGeo23030.Count > 0 Then
                                             archivoZIP.WriteLine("""" & path7zUtility & """ a " & folderOUT & "archivos\" & documento.nameFilePropuestoParaCDD("zip") & " """ & folderFileOut & """")
                                             archivoZIP.WriteLine("del /S /Q """ & folderFileOut & """")
                                             archivoZIP.WriteLine("rd """ & folderFileOut & """")

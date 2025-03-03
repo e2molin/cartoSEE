@@ -8,7 +8,9 @@ Module Basics
     Public PlantillaGIS As String
     Public rutaRepo As String
     Public rutaRepoGeorref As String
+    Public rutaRepoGeorrefBase As String
     Public rutaRepoInventarioInfo As String
+    Public rutaRepoCI As String = "\\sfiignmad162.ign.fomento.es\docgeo$\DocGeo\Archivo\cuadernosinteriores\"
     Public CalidadFavorita As String
     Public rutaRepoWeb As String
     Public MapaBase As String
@@ -45,7 +47,8 @@ Module Basics
     Public modoDelegaciones As Boolean = False
 
     'Carrito de la compra
-    Public CarritoCompra() As docSIDCARTO
+    Public CarritoCompra As New ArrayList
+    Public CarritoCompraOld() As docSIDCARTO
 
     'Plantillas metadatos
     Public RutasPlantillasMetadatos() As TiposDocumento
@@ -54,6 +57,7 @@ Module Basics
     Public rutaRepoThumbs As String
 
     Public Const visorCartociudad As String = "https://www.cartociudad.es/visor/"
+    Public Const visorIberpix As String = "https://iberpix.cnig.es/iberpix/visor"
     Public urlCDDSearchEngine As String
     Public urlGazetteerNGBESearchEngine As String
 
@@ -81,6 +85,7 @@ Module Basics
         rutaRepo = LeeIni("Repositorio", "rutaRepo")
         rutaRepoWeb = LeeIni("Repositorio", "rutaRepoWeb")
         rutaRepoGeorref = LeeIni("Repositorio", "rutaRepoGeorref")
+        rutaRepoGeorrefBase = LeeIni("Repositorio", "rutaRepoGeorrefBase")
         rutaRepoInventarioInfo = LeeIni("Repositorio", "rutaRepoInventarioInfo").Trim
         rutaCentroDescargas = LeeIni("Metadatos", "rutaCentroDescargas").Trim
         rutaRepoThumbs = LeeIni("Metadatos", "rutaRepoThumbs").Trim
@@ -157,18 +162,9 @@ Module Basics
 
     End Sub
 
-
-    Public Function SacarFileDeRuta(ByVal PathCompleto As String) As String
+    Public Function SacarFileDeRuta(ByVal PathCompleto As String, Optional ConExtension As Boolean = True) As String
 
         Dim i_path As Integer
-        SacarFileDeRuta = ""
-        If String.IsNullOrEmpty(PathCompleto) Then
-            Exit Function
-        End If
-        If PathCompleto.Trim = "" Then
-            Exit Function
-        End If
-
 
         For i_path = PathCompleto.Length To 1 Step -1
             If PathCompleto.Substring(i_path - 1, 1) = "\" Then Exit For
@@ -179,6 +175,11 @@ Module Basics
         End If
         SacarFileDeRuta = Right(PathCompleto, Len(PathCompleto) - i_path)
         SacarFileDeRuta = PathCompleto.Substring(i_path, PathCompleto.Length - i_path)
+        If Not ConExtension Then
+            If SacarFileDeRuta.IndexOf(".") > 0 Then
+                SacarFileDeRuta = SacarFileDeRuta.Substring(0, SacarFileDeRuta.IndexOf("."))
+            End If
+        End If
 
     End Function
 
@@ -229,6 +230,48 @@ Module Basics
         End If
 
     End Function
+
+    Sub cargarImagenFromWeb(ByVal Lienzo As PictureBox, ByVal RutaImagen As String, ByVal RutaDefault As String, Optional stretchMode As Boolean = True, Optional pathInTag As String = "")
+
+        Dim imageLoaded As String
+        Try
+            If IO.File.Exists(RutaImagen) Then
+                imageLoaded = RutaImagen
+            Else
+                imageLoaded = RutaDefault
+            End If
+
+            'Dim bm As New Bitmap(imageLoaded)
+            'Dim m_Bitmap As Bitmap
+            'm_Bitmap = New Bitmap(bm.Width, bm.Height)
+            'Dim gr As Graphics = Graphics.FromImage(m_Bitmap)
+            'gr.DrawImage(bm, 0, 0)
+            'bm.Dispose()
+            'Lienzo.Image = m_Bitmap
+
+            Dim img1 As New Bitmap(imageLoaded)
+            Dim img2 As Bitmap = DirectCast(img1.Clone, Bitmap)
+            img1.Dispose()
+            Lienzo.Image = img2
+
+
+
+            'Lienzo.Load(imageLoaded)
+
+
+            Lienzo.SizeMode = IIf(stretchMode = True, PictureBoxSizeMode.StretchImage, PictureBoxSizeMode.Zoom)
+            If pathInTag = "" Then
+                Lienzo.Tag = imageLoaded
+            Else
+                Lienzo.Tag = pathInTag
+            End If
+
+        Catch ex As Exception
+            GenerarLOG(ex.Message)
+            ModalError(ex.Message)
+        End Try
+
+    End Sub
 
 
     Public Function ImprimirPDF(ByVal RutaPDF As String, ByVal Impresora As String) As Boolean
@@ -455,6 +498,18 @@ Module Basics
                             AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
             Return False
         End Try
+    End Function
+
+    Function getFechaFormateada(ByVal fecha As Date, Optional ByVal tipo As String = "SPAIN") As String
+
+        If fecha = Nothing Then Return ""
+        If tipo <> "SPAIN" And tipo <> "GERMAN" And tipo <> "ISO8601" Then Return ""
+        If tipo = "SPAIN" Then
+            Return $"{String.Format("{0:00}", fecha.Day)}-{String.Format("{0:00}", fecha.Month)}-{fecha.Year}"
+        ElseIf tipo = "GERMAN" Or tipo = "ISO8601" Then
+            Return $"{fecha.Year}-{String.Format("{0:00}", fecha.Month)}-{ String.Format("{0:00}", fecha.Day)}"
+        End If
+
     End Function
 
 End Module

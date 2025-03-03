@@ -17,15 +17,15 @@
         "SELECT archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal," &
                 "archivo.fechasmodificaciones,archivo.anejo,archivo.vertical,archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja," &
                 "archivo.subtipo,archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.extraprops,archivo.observaciones," &
-                "archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.titn,archivo.autor,archivo.encabezado," &
+                "archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.titn,archivo.autor,archivo.autor_persona,archivo.encabezado," &
                 "tbtipodocumento.tipodoc as Tipo,tbestadodocumento.estadodoc as Estado, tbobservaciones.observestandar," &
                 "string_agg(territorios.nombre,'#') as listaMuniHisto,string_agg(to_char(territorios.munihisto, 'FM0000009'::text),'#') as listaCodMuniHisto," &
                 "string_agg(listamunicipios.nombre,'#') as listaMuniActual, string_agg(listamunicipios.inecorto,'#') as listaCodMuniActual, string_agg(provincias.nombreprovincia,'#') as nombreprovincia " &
         "FROM bdsidschema.archivo " &
             "LEFT JOIN bdsidschema.tbtipodocumento ON tbtipodocumento.idtipodoc=archivo.tipodoc_id " &
             "LEFT JOIN bdsidschema.tbestadodocumento ON tbestadodocumento.idestadodoc=archivo.estadodoc_id " &
-            "LEFT JOIN  bdsidschema.archivo2territorios ON archivo2territorios.archivo_id=archivo.idarchivo " &
-            "LEFT JOIN  bdsidschema.tbobservaciones  ON tbobservaciones.idobservestandar=archivo.observestandar_id " &
+            "LEFT JOIN bdsidschema.archivo2territorios ON archivo2territorios.archivo_id=archivo.idarchivo " &
+            "LEFT JOIN bdsidschema.tbobservaciones  ON tbobservaciones.idobservestandar=archivo.observestandar_id " &
             "LEFT JOIN bdsidschema.territorios on territorios.idterritorio= archivo2munihisto.territorio_id " &
             "LEFT JOIN ngmepschema.listamunicipios on territorios.nomen_id= listamunicipios.identidad " &
             "LEFT JOIN bdsidschema.provincias on territorios.provincia= provincias.idprovincia " &
@@ -35,7 +35,7 @@
         "SELECT archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal," &
                 "archivo.fechasmodificaciones,archivo.anejo,archivo.vertical,archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja," &
                 "archivo.subtipo,archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.extraprops,archivo.observaciones," &
-                "archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.titn,archivo.autor,archivo.encabezado," &
+                "archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.titn,archivo.autor,archivo.autor_persona,archivo.encabezado," &
                 "tbtipodocumento.tipodoc as Tipo,tbestadodocumento.estadodoc as Estado, tbobservaciones.observestandar," &
                 "string_agg(territorios.nombre,'#') as listaMuniHisto,string_agg(to_char(territorios.munihisto, 'FM0000009'::text),'#') as listaCodMuniHisto," &
                 "string_agg(listamunicipios.nombre,'#') as listaMuniActual, string_agg(listamunicipios.inecorto,'#') as listaCodMuniActual, string_agg(provincias.nombreprovincia,'#') as nombreprovincia " &
@@ -222,7 +222,7 @@
             End If
             If dR("fechaprincipal").ToString.Length >= 10 Then
                 'ListaDoc(contador).fechaPrincipal = dR("fechaprincipal").ToString.Substring(0, 10)
-                item.fechaPrincipal = FormatearFecha(dR("fechaprincipal"), "GERMAN")
+                item.FechaPrincipal = FormatearFecha(dR("fechaprincipal"), "GERMAN")
             End If
 
             item.fechasModificaciones = dR("fechasmodificaciones").ToString
@@ -258,7 +258,7 @@
                 item.cargaABSYS = False
                 item.urlABSYSdoc = ""
             End If
-            item.autorDocumento = dR("autor").ToString
+            item.autorEntidad = dR("autor").ToString
             item.encabezadoABSYSdoc = dR("encabezado").ToString
 
             Application.DoEvents()

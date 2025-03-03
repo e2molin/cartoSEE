@@ -59,18 +59,22 @@ Public Class MDIPrincipal
                             mnuDeveloperTools.Click, mnuOpenAppFolderSetting.Click, mnuAdminTools.Click
 
         If sender.name = "ToolStripButton1" Or sender.name = "mnuDeveloperTools" Then
-            Dim Desarrollo As New frmDevel
-            Desarrollo.MdiParent = Me
-            Desarrollo.Show()
+            If usuarioMyApp.permisosLista.isUserISTARI Then
+                Dim Desarrollo As New frmDevel
+                Desarrollo.MdiParent = Me
+                Desarrollo.Show()
+            End If
         ElseIf sender.name = "ToolStripButton19" Or sender.name = "mnuAdminTools" Then
-            Dim Desarrollo As New frmDevelIGN
-            Desarrollo.MdiParent = Me
-            Desarrollo.Show()
+            If usuarioMyApp.permisosLista.isUserISTARI Then
+                Dim Desarrollo As New frmDevelIGN
+                Desarrollo.MdiParent = Me
+                Desarrollo.Show()
+            End If
         ElseIf sender.name = "mnuOpenAppFolderSetting" Then
             Try
                 Process.Start(AppFolderSetting)
             Catch ex As Exception
-                MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                ModalError(ex.Message)
             End Try
         End If
 
@@ -114,10 +118,8 @@ Public Class MDIPrincipal
         If ConectarBD(TiposBase.PostgreSQL, DB_Servidor, DB_Port, DB_User, DB_Pass, DB_Instancia, "") = True Then
             'Validamos el usuario para conocer sus permisos
             usuarioMyApp = New myAppUser
-            If usuarioMyApp.permisosLista.AutenticarUsuario(accessUser, accessPass) = 0 Then
-                MessageBox.Show("No dispone de acceso al programa" &
-                                System.Environment.NewLine &
-                                "Consulte con el administrador del sistema", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            If usuarioMyApp.Permisos.AutenticarUsuario(accessUser, accessPass) > 0 Then
+                ModalExclamation($"No dispone de acceso al programa.{Environment.NewLine}Consulte con el administrador del sistema")
                 End
             End If
 
@@ -138,6 +140,7 @@ Public Class MDIPrincipal
             ResizingElements()
             CargarFiltros()
 
+            ToolStripStatusLabel3.Text = ""
             If usuarioMyApp.permisosLista.editarDocumentacion Then
                 If ObtenerEscalar("SELECT count(*) from bdsidschema.incidencias where aplicacion='CARTOSEE' and estado='Abierta'", pendingNotify) Then
                     If pendingNotify > 0 Then
@@ -161,7 +164,6 @@ Public Class MDIPrincipal
             ResizingElements()
             Button6.Enabled = False
             Button7.Enabled = False
-            Button3.Enabled = False
             TextBox1.Enabled = False
             ToolStripButton19.Enabled = False
             ToolStripMenuItem2.Enabled = False
@@ -195,9 +197,9 @@ Public Class MDIPrincipal
             MessageBox.Show("No se puede acceder a la tabla de Estados de la documentación",
                             AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Error)
         Else
-            CheckedListBox2.Items.Clear()
+            ComboBox7.Items.Clear()
             For Each Filtro As DataRow In Filtros.Select
-                CheckedListBox2.Items.Add(New itemData(Filtro.ItemArray(1).ToString, Filtro.ItemArray(0)))
+                ComboBox7.Items.Add(New itemData(Filtro.ItemArray(1).ToString, Filtro.ItemArray(0)))
             Next
         End If
         Filtros.Dispose()
@@ -215,26 +217,6 @@ Public Class MDIPrincipal
         End If
         Filtros.Dispose()
         Filtros = Nothing
-
-        Filtros = New DataTable
-        If CargarDatatable("Select idobservestandar,observestandar from bdsidschema.tbobservaciones", Filtros) = False Then
-            MessageBox.Show("No se puede acceder a la tabla de Tipos de documentación",
-                            AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Error)
-        Else
-            ComboBox7.Items.Clear()
-            For Each Filtro As DataRow In Filtros.Select
-                ComboBox7.Items.Add(New itemData(Filtro.ItemArray(1).ToString, Filtro.ItemArray(0)))
-            Next
-        End If
-        Filtros.Dispose()
-        Filtros = Nothing
-
-        ComboBox8.Items.Clear()
-        ComboBox8.Items.Add("Indistinto")
-        ComboBox8.Items.Add("Cargados")
-        ComboBox8.Items.Add("Faltan")
-
-
 
         'Plantilla de metadatos
         For iBucle As Integer = 0 To RutasPlantillasMetadatos.Length - 1
@@ -276,6 +258,7 @@ Public Class MDIPrincipal
         Panel_GeoSearch.Visible = False
         RadioButton1.Checked = True
 
+        TextBox1.Tag = ""
         TextBox3.Text = "" '"4545100"
         TextBox7.Text = "" '"594250"
         TextBox9.Text = "" '"597250"
@@ -290,7 +273,7 @@ Public Class MDIPrincipal
 
         'Si el usuario no es administrador
         ToolStripButton9.Enabled = usuarioMyApp.permisosLista.editarDocumentacion
-        mnuTool_AltaDoc.Enabled = usuarioMyApp.permisosLista.editarDocumentacion
+        ToolStripButton21.Enabled = usuarioMyApp.permisosLista.editarDocumentacion
         mnuTool_EditAtrib.Enabled = usuarioMyApp.permisosLista.editarDocumentacion
         mnuModDocuTiposDoc.Enabled = usuarioMyApp.permisosLista.editarDocumentacion
         mnuModDocuEstados.Enabled = usuarioMyApp.permisosLista.editarDocumentacion
@@ -301,14 +284,19 @@ Public Class MDIPrincipal
         mnuAddContornos.Enabled = usuarioMyApp.permisosLista.editarDocumentacion
         btnExportCdD.Enabled = usuarioMyApp.permisosLista.generarVersionCdD
         mnuExportCdD.Enabled = usuarioMyApp.permisosLista.generarVersionCdD
-        ToolStripButton19.Enabled = usuarioMyApp.permisosLista.editarDocumentacion
-        mnuAdminTools.Enabled = usuarioMyApp.permisosLista.editarDocumentacion
+        ToolStripButton19.Enabled = usuarioMyApp.permisosLista.EditarDocumentacion
+        mnuAdminTools.Enabled = usuarioMyApp.permisosLista.EditarDocumentacion
+
+        ToolStripButton1.Enabled = usuarioMyApp.permisosLista.isUserISTARI
+        ToolStripButton19.Enabled = usuarioMyApp.permisosLista.isUserISTARI
+        mnuDeveloperTools.Enabled = usuarioMyApp.permisosLista.isUserISTARI
+        mnuAdminTools.Enabled = usuarioMyApp.permisosLista.isUserISTARI
+
 
         mnuDeveloper.Visible = usuarioMyApp.permisosLista.isUserISTARI
         ToolStripButton1.Visible = usuarioMyApp.permisosLista.isUserISTARI
         mnuGenerarRejilla.Visible = usuarioMyApp.permisosLista.isUserISTARI
         mnuLanzarPlantilla.Visible = usuarioMyApp.permisosLista.isUserISTARI
-        Button9.Visible = usuarioMyApp.permisosLista.isUserISTARI
 
         Me.WindowState = FormWindowState.Maximized
 
@@ -328,15 +316,23 @@ Public Class MDIPrincipal
         ComboBox5.Items.Add("igual")
         ComboBox5.Items.Add("mayor")
         ComboBox5.Items.Add("menor")
-        ComboBox6.Items.Add("-----")
+
+
+        ComboBox6.Items.Add("Indistinto")
         ComboBox6.Items.Add("Sí")
         ComboBox6.Items.Add("No")
+
+        ComboBox8.Items.Add("Indistinto")
+        ComboBox8.Items.Add("Cargados")
+        ComboBox8.Items.Add("Faltan")
+
         ComboBox1.Text = "-----"
         ComboBox2.Text = "-----"
         ComboBox4.Text = "-----"
         ComboBox5.Text = "-----"
         ComboBox6.Text = "-----"
 
+        ToolStripMenuItem1.Visible = False
 
 
     End Sub
@@ -358,7 +354,9 @@ Public Class MDIPrincipal
             lvMunicipios.Items(0).Selected = True
         End If
         If e.KeyData = Keys.Enter Then
-            LanzarConsulta(sender, e)
+            Dim resp = ModalQuestCollection("¿Qué desea buscar?")
+            If resp = DialogResult.OK Then LaunchQuery(sender, e)
+            If resp = DialogResult.Yes Then LaunchQueryCuadMTN(sender, e)
         End If
 
     End Sub
@@ -366,7 +364,9 @@ Public Class MDIPrincipal
     Private Sub TextBox23_KeyUp(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TextBox23.KeyUp
 
         If e.KeyData = Keys.Enter Then
-            LanzarConsulta(sender, e)
+            Dim resp = ModalQuestCollection("¿Qué desea buscar?")
+            If resp = DialogResult.OK Then LaunchQuery(sender, e)
+            If resp = DialogResult.Yes Then LaunchQueryCuadMTN(sender, e)
         End If
 
     End Sub
@@ -450,7 +450,11 @@ Public Class MDIPrincipal
         lvMunicipios.Tag = Indices(1)
         Autocompletar_municipios = True
         lvMunicipios.Visible = False
-        If sender.name = "lvMunicipios" Then LanzarConsulta(sender, e)
+        If sender.name = "lvMunicipios" Then
+            Dim resp = ModalQuestCollection("¿Qué desea buscar?")
+            If resp = DialogResult.OK Then LaunchQuery(sender, e)
+            If resp = DialogResult.Yes Then LaunchQueryCuadMTN(sender, e)
+        End If
 
     End Sub
 
@@ -462,14 +466,16 @@ Public Class MDIPrincipal
             TextBox1.Focus()
         ElseIf e.KeyData = Keys.Return And lvMunicipios.SelectedItems(0).Index >= 0 Then
             SeleccionarElementoLV(sender, e)
-            LanzarConsulta(sender, e)
+            Dim resp = ModalQuestCollection("¿Qué desea buscar?")
+            If resp = DialogResult.OK Then LaunchQuery(sender, e)
+            If resp = DialogResult.Yes Then LaunchQueryCuadMTN(sender, e)
         End If
 
     End Sub
 
 
-    Sub LanzarConsulta(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click, btnGetImportant.Click, btnGetStar.Click,
-        btnGetWeird.Click, btnGetCdD.Click
+    Sub LanzarConsulta(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuOldSearch.Click
+
 
         Dim FirmaYear As String = ""
         Dim EstadosDocumento As String = ""
@@ -583,16 +589,9 @@ Public Class MDIPrincipal
             End If
         Next
         If TiposDocumento = "-" Then TiposDocumento = ""
-        ibucle = -1
-        EstadosDocumento = "-"
-        For Each Linea As itemData In CheckedListBox2.Items
-            ibucle = ibucle + 1
-            If CheckedListBox2.GetItemChecked(ibucle) = True Then
-                EstadosDocumento = EstadosDocumento & Linea.Valor & "-"
-            End If
-        Next
-        If EstadosDocumento = "-" Then EstadosDocumento = ""
-        Application.DoEvents()
+
+        EstadosDocumento = ""
+        If ComboBox7.SelectedIndex <> -1 Then EstadosDocumento = CType(ComboBox7.SelectedItem, itemData).Valor
 
         If MunicipioID > 0 Then
             CadFiltro = SumarFiltros("")
@@ -728,12 +727,6 @@ Public Class MDIPrincipal
             cadenaSQLini = cadenaSQLini & " AND juntaestadistica=0"
         End If
 
-        'Filtro por Observacion
-        If ComboBox7.Text <> "-----" Then
-            If ComboBox7.SelectedIndex <> -1 Then
-                cadenaSQLini = cadenaSQLini & " AND idobservestandar=" & CType(ComboBox7.SelectedItem, itemData).Valor
-            End If
-        End If
 
         If ComboBox8.SelectedIndex = 1 Then
             cadenaSQLini = cadenaSQLini & " AND subidoabsys=true"
@@ -757,15 +750,12 @@ Public Class MDIPrincipal
 
 
 
-    Private Sub LimpiarCampos(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button4.Click, Button5.Click
+    Private Sub LimpiarCampos(ByVal sender As System.Object, ByVal e As System.EventArgs)
 
         Dim iBucle As Integer
         Application.DoEvents()
         For iBucle = 0 To CheckedListBox1.Items.Count - 1
             CheckedListBox1.SetItemChecked(iBucle, False)
-        Next
-        For iBucle = 0 To CheckedListBox2.Items.Count - 1
-            CheckedListBox2.SetItemChecked(iBucle, False)
         Next
         TextBox1.Text = ""
         TextBox1.Tag = ""
@@ -790,8 +780,8 @@ Public Class MDIPrincipal
         ComboBox3.SelectedIndex = -1
         ComboBox4.Text = "-----"
         ComboBox5.Text = "-----"
-        ComboBox6.Text = "-----"
-        ComboBox7.Text = "-----"
+        ComboBox6.SelectedIndex = -1
+        ComboBox7.SelectedIndex = -1
         ComboBox8.SelectedIndex = -1
         'ListBox1.Visible = False
         lvMunicipios.Visible = False
@@ -806,11 +796,13 @@ Public Class MDIPrincipal
 
     End Sub
 
-    Sub FuncionesMenuBusqueda(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuEjecutar.Click, mnuLimpiar.Click, ToolStripButton12.Click, ToolStripButton17.Click
+    Sub FuncionesMenuBusqueda(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuEjecutar.Click, mnuLimpiar.Click, ToolStripButton17.Click
 
-        If sender.name = "mnuEjecutar" Or sender.name = "ToolStripButton12" Then
+        If sender.name = "mnuEjecutar" Then
             If Panel_DocSearch.Visible = True Then
-                LanzarConsulta(sender, e)
+                Dim resp = ModalQuestCollection("¿Qué desea buscar?")
+                If resp = DialogResult.OK Then LaunchQuery(sender, e)
+                If resp = DialogResult.Yes Then LaunchQueryCuadMTN(sender, e)
             End If
             If Panel_GeoSearch.Visible = True Then
                 LanzarConsultaGEO_SIDCARTO(sender, e)
@@ -844,13 +836,14 @@ Public Class MDIPrincipal
 
     End Sub
 
-    Private Sub toogleFilterOptions(sender As Object, e As EventArgs) Handles ToolStripButton15.Click, Button1.Click, Button2.Click, Button9.Click
+    Private Sub toogleFilterOptions(sender As Object, e As EventArgs) Handles ToolStripButton15.Click, Button2.Click, mnuOpenFilters.Click
         If RadioButton2.Checked Then Exit Sub
         If Panel1.Width = 250 Then
             Panel1.Width = 500
             RadioButton1.Width = 500
             RadioButton2.Width = 500
         Else
+            If sender.name = "mnuOpenFilters" Then Exit Sub
             Panel1.Width = 250
             RadioButton1.Width = 250
             RadioButton2.Width = 250
@@ -860,17 +853,26 @@ Public Class MDIPrincipal
 
 
     Sub ArranqueHerramientas(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-                                    Handles ToolStripButton9.Click, ToolStripButton10.Click,
-                                    mnuTool_AltaDoc.Click,
-                                    mnuGenerarRejilla.Click,
-                                    mnuLanzarPlantilla.Click, mnuAddECW.Click, mnuAddContornos.Click, mnuMuniHisto.Click, mnuOpenPreferenceFolder.Click, mnuOpenLoggerFile.Click, mnuQueryLibrosRegistro.Click, ToolStripButton20.Click
+                                    Handles ToolStripButton10.Click, mnuGenerarRejilla.Click, ToolStripButton9.Click, mnuLanzarPlantilla.Click,
+                                    mnuAddECW.Click, mnuAddContornos.Click, mnuMuniHisto.Click,
+                                    mnuQueryLibrosRegistro.Click, ToolStripButton20.Click, ToolStripButton21.Click
 
-        If sender.name = "ToolStripButton9" Or sender.name = "mnuTool_AltaDoc" Then
-            Dim FormularioCreacion As New frmEdicion
-            FormularioCreacion.MdiParent = Me
-            FormularioCreacion.ModoTrabajo("NUEVO", 0)
-            FormularioCreacion.Show()
-            FormularioCreacion.Visible = True
+        If sender.name = "ToolStripButton9" Then
+            If usuarioMyApp.permisosLista.EditarDocumentacion Then
+                Dim FormularioCreacion As New frmEdicion With {
+                   .MdiParent = Me,
+                   .ModeEdition = frmEdicion.ModeEdition.CreateDocument
+                }
+                FormularioCreacion.Show()
+            End If
+        ElseIf sender.name = "ToolStripButton21" Then
+            If usuarioMyApp.permisosLista.EditarDocumentacion Then
+                Dim FormularioCreacionCuadernoMTN As New frmEditCuad With {
+                       .MdiParent = Me,
+                       .ModeEdition = FormularioCreacionCuadernoMTN.ModeEdition.CreateDocument
+                    }
+                FormularioCreacionCuadernoMTN.Show()
+            End If
         ElseIf sender.name = "mnuQueryLibrosRegistro" Or sender.name = "ToolStripButton20" Then
 
             Dim frmVista As New dataViewerForm
@@ -878,38 +880,21 @@ Public Class MDIPrincipal
             frmVista.MdiParent = Me
             frmVista.Text = "Libros de registro del Archivo Técnico"
             frmVista.cadSQL = "SELECT idregistro, contenido, tomo, nombreprovincia,fichpdf," &
-                "'" & rutaRepoInventarioInfo & "' || '\' || " & "to_char(codprov,'FM00')" & " || '\' || fichpdf as pathresopurce," &
-                "paginas FROM bdsidschema.librosderegistro inner join bdsidschema.provincias on idprovincia=librosderegistro.codprov"
+                    "'" & rutaRepoInventarioInfo & "' || '\' || " & "to_char(codprov,'FM00')" & " || '\' || fichpdf as pathresopurce," &
+                    "paginas FROM bdsidschema.librosderegistro inner join bdsidschema.provincias on idprovincia=librosderegistro.codprov"
             frmVista.fieldExternalDocument = "pathresopurce"
             frmVista.camposVisibles = New List(Of String) From {"contenido", "tomo", "nombreprovincia", "ruta", "paginas"}
             frmVista.headerFields = New Dictionary(Of String, String) From {
-                                                                                {"contenido", "Contenido"},
-                                                                                {"tomo", "Tomo"},
-                                                                                {"nombreprovincia", "Provincia"},
-                                                                                {"paginas", "Páginas"}
-                                                                            }
+                                                                                    {"contenido", "Contenido"},
+                                                                                    {"tomo", "Tomo"},
+                                                                                    {"nombreprovincia", "Provincia"},
+                                                                                    {"paginas", "Páginas"}
+                                                                                }
             frmVista.filterFields = New Dictionary(Of String, String) From {
-                                                                                {"nombreprovincia", "Provincia"},
-                                                                                {"tomo", "Tomo"}
-                                                                            }
+                                                                                    {"nombreprovincia", "Provincia"},
+                                                                                    {"tomo", "Tomo"}
+                                                                                }
             frmVista.Show()
-
-        ElseIf sender.name = "mnuOpenPreferenceFolder" Then
-            Try
-                Process.Start(AppFolderSetting)
-            Catch ex As Exception
-                MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Error)
-            End Try
-        ElseIf sender.name = "mnuOpenLoggerFile" Then
-            Try
-                If System.IO.File.Exists("C: \Program Files (x86)\Notepad++\notepad++.exe") Then
-                    Process.Start("C:\Program Files (x86)\Notepad++\notepad++.exe", ficheroLogger)
-                Else
-                    Process.Start(ficheroLogger)
-                End If
-            Catch ex As Exception
-                MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Error)
-            End Try
         ElseIf sender.name = "mnuMuniHisto" Or sender.name = "ToolStripButton10" Then
             Me.Cursor = Cursors.WaitCursor
             LanzarSpinner()
@@ -1062,8 +1047,6 @@ Public Class MDIPrincipal
 
     Sub LanzarConsultaGEO_SIDCARTO(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button6.Click
 
-
-
         Dim Xmax As Double = 0
         Dim Ymax As Double = 0
         Dim Xmin As Double = 0
@@ -1071,8 +1054,6 @@ Public Class MDIPrincipal
         Dim TituloConsulta As String = ""
 
         If TextBox11.Text <> "" And TextBox12.Text <> "" And TextBox13.Text <> "" And TextBox24.Text <> "" Then
-
-            'Dim searchCenter As New GEOCoordenada(TextBox11.Text, TextBox12.Text, TextBox24.Text)
             Dim centroUTM30 As GEOCoordenada
             Try
                 Dim searchCenter As New GEOCoordenada(TextBox11.Text, TextBox12.Text, TextBox24.Text)
@@ -1083,7 +1064,8 @@ Public Class MDIPrincipal
                 Xmin = centroUTM30.EastingCoord - radioSearch
                 Ymin = centroUTM30.NorthingCoord - radioSearch
             Catch ex As Exception
-
+                ModalError(ex.Message)
+                Exit Sub
             End Try
 
             'Compruebo si las coordenadas estan en geograficas, y si es así las paso a UTMED50 para procesar
@@ -1093,42 +1075,56 @@ Public Class MDIPrincipal
             Ymax = CType(TextBox3.Text.Replace(".", ","), Double)
             Xmin = CType(TextBox9.Text.Replace(".", ","), Double)
             Ymin = CType(TextBox10.Text.Replace(".", ","), Double)
-            'If DentroEspaña(Xmax, Ymax) = True And DentroEspaña(Xmin, Ymin) = True Then
-            '    If ConversionLLWGS84_to_UTMED50_GSB(Xmax, Ymax) = True And ConversionLLWGS84_to_UTMED50_GSB(Xmin, Ymin) = True Then
-            '        Application.DoEvents()
-            '    Else
-            '        MessageBox.Show("Las coordenadas no pueden convertirse a UTM", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-            '        Exit Sub
-            '    End If
-            'Else
-            '    Xmax = CType(TextBox7.Text.Replace(".", ","), Double)
-            '    Ymax = CType(TextBox3.Text.Replace(".", ","), Double)
-            '    Xmin = CType(TextBox9.Text.Replace(".", ","), Double)
-            '    Ymin = CType(TextBox10.Text.Replace(".", ","), Double)
-            'End If
             TituloConsulta = "Búsqueda por entorno. (" & Xmax.ToString & "," & Ymax.ToString & ") (" & Xmin.ToString & "," & Ymin.ToString & ")"
         End If
 
-        Application.DoEvents()
 
         If Xmax = 0 Or Ymax = 0 Or Xmin = 0 Or Ymin = 0 Then Exit Sub
         If Xmax - Xmin > 200000 Or Ymax - Ymin > 200000 Then
-            MessageBox.Show("Reduzca el entorno de la búsqueda", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+            ModalExclamation("Reduzca el entorno de la búsqueda")
             Exit Sub
         End If
 
-        PictureBox4.Visible = True
-        Dim FrmResult As New frmDocumentacion
-        FrmResult.MdiParent = Me
-        FrmResult.Text = TituloConsulta
-        FrmResult.CargarDatosSIDCARTO_By_Entorno(CType(Xmax, Integer), CType(Ymax, Integer), CType(Xmin, Integer), CType(Ymin, Integer))
-        FrmResult.Show()
-        PictureBox4.Visible = False
+        Dim cadWKTPolygon = $"'POLYGON(({CType(Xmin, Integer)} {CType(Ymax, Integer)},{CType(Xmax, Integer)} {CType(Ymax, Integer)},{CType(Xmax, Integer)} {CType(Ymin, Integer)},{ CType(Xmin, Integer)} {CType(Ymin, Integer)},{ CType(Xmin, Integer)} {CType(Ymax, Integer)}))'"
+
+
+        Try
+            Dim resp = ModalQuestCollection("¿Qué desea buscar?")
+            PictureBox3.Visible = True
+            Me.Cursor = Cursors.WaitCursor
+            LanzarSpinner("Cargando datos")
+            If resp = DialogResult.OK Then
+                Dim frmResultados As New resultGEODOCAT
+                frmResultados.MdiParent = Me
+                frmResultados.typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosByBBOX
+                frmResultados.paramSQL1 = cadWKTPolygon
+                frmResultados.paramSQL2 = "23030"
+                frmResultados.Show()
+            End If
+            If resp = DialogResult.Yes Then
+                Dim frmResultados As New resultCMTN
+                frmResultados.MdiParent = Me
+                frmResultados.typeSearch = resultCMTN.TypeDataSearch.DocumentosByBBOX
+                frmResultados.paramSQL1 = cadWKTPolygon
+                frmResultados.paramSQL2 = "23030"
+                frmResultados.Show()
+            End If
+        Catch ex As Exception
+            ModalError($"No se pueden identificar los documento: {ex.Message}")
+        Finally
+            CerrarSpinner()
+            PictureBox3.Visible = False
+            Me.Cursor = Cursors.Default
+
+        End Try
 
     End Sub
 
 
     Sub LanzarConfiguraciones(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolConfig.Click, mnuConfiguracion.Click
+
+        ModalInfo("La herramienta se encuentra configurada")
+        Exit Sub
         Dim frmSettings As New frmSettings
         frmSettings.Show()
     End Sub
@@ -1137,14 +1133,29 @@ Public Class MDIPrincipal
     Private Sub IndexToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
                                     Handles IndexToolStripMenuItem.Click, HelpToolStripButton.Click
 
-        If System.IO.File.Exists(My.Application.Info.DirectoryPath & "\Ayuda.pdf") = False Then
-            MessageBox.Show("Ayuda no disponible", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-            Exit Sub
-        End If
+        Try
+            If System.IO.File.Exists(My.Application.Info.DirectoryPath & "\Ayuda.pdf") = False Then
+                ModalInfo("Fichero de ayuda no disponible")
+            Else
+                Process.Start(My.Application.Info.DirectoryPath & "\Ayuda.pdf")
+            End If
+        Catch ex As Exception
+            ModalError(ex.Message)
+        End Try
 
-        Process.Start(My.Application.Info.DirectoryPath & "\Ayuda.pdf")
 
+    End Sub
 
+    Private Sub ToolStripButton11_Click(sender As Object, e As EventArgs) Handles ToolStripButton11.Click
+        Try
+            If Not IO.File.Exists($"{My.Application.Info.DirectoryPath}\resources\nueva-ventana-consulta-cartosee.png") Then
+                ModalInfo("Fichero de ayuda no disponible")
+            Else
+                Process.Start($"{My.Application.Info.DirectoryPath}\resources\nueva-ventana-consulta-cartosee.png")
+            End If
+        Catch ex As Exception
+            ModalError(ex.Message)
+        End Try
     End Sub
 
     Sub LanzarTareasfrmDocumentacion(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -1155,7 +1166,7 @@ Public Class MDIPrincipal
                             ToolStripButton7.Click, mnuResconsulta4.Click,
                             ToolStripButton16.Click, mnuResconsulta5.Click,
                             ToolStripButton14.Click, mnuGenerarMetadatos.Click,
-                            ToolStripButton11.Click, mnuResconsulta7.Click,
+                            mnuResconsulta7.Click,
                             ToolStripButton8.Click, mnuResconsulta8.Click,
                             ToolStripButton18.Click, mnuResconsulta9.Click, mnuGenMiniatura.Click
 
@@ -1176,11 +1187,11 @@ Public Class MDIPrincipal
         ElseIf sender.name = "ToolMiniaturas" Or sender.name = "mnuResconsulta3" Then
             frmAccion.TabulacionVentanas(sender, e)
         ElseIf sender.name = "ToolStripButton4" Or sender.name = "mnuResconsulta2" Then
-            If frmAccion.ListView1.SelectedItems.Count > 0 Then
-                frmAccion.MostrarDetalle(frmAccion.ListView1.SelectedItems(0).Tag)
-            Else
-                frmAccion.MostrarDetalle(0)
-            End If
+            'If frmAccion.ListView1.SelectedItems.Count > 0 Then
+            '    frmAccion.TabulacionVentanas(frmAccion.ListView1.SelectedItems(0).Tag)
+            'Else
+            '    frmAccion.MostrarDetalle(0)
+            'End If
         ElseIf sender.name = "ToolStripButton7" Or sender.name = "mnuResconsulta4" Then
             frmAccion.LanzarVisordeJPG(sender, e)
         ElseIf sender.name = "ToolStripButton16" Or sender.name = "mnuResconsulta5" Then
@@ -1189,8 +1200,9 @@ Public Class MDIPrincipal
             frmAccion.LanzarImpresionJPG(sender, e)
         ElseIf sender.name = "ToolStripButton14" Or sender.name = "mnuGenerarMetadatos" Then
             frmAccion.ProcGenerarMetadatos(sender, e)
-        ElseIf sender.name = "ToolStripButton11" Or sender.name = "mnuResconsulta7" Then
-            frmAccion.LanzarTareaGuardarEnCarpeta(sender, e)
+        ElseIf sender.name = "ToolStripButton11" Then
+
+
         ElseIf sender.name = "ToolStripButton8" Or sender.name = "mnuResconsulta8" Then
             frmAccion.ExportarListaResultados2CSV(sender, e)
         ElseIf sender.name = "mnuExtraerContornos" Then
@@ -1203,94 +1215,189 @@ Public Class MDIPrincipal
 
     End Sub
 
-    Sub LanzarConsultaAvanzada(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-                        Handles Query_Advance01.Click, Query_Advance02.Click, Query_Advance03.Click,
-                        Query_Advance04.Click, Query_Advance05.Click, Query_Advance06.Click,
-                        Query_Advance07.Click, Query_Advance08.Click
-
+    Sub LanzarConsultaAvanzada(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Query_Advance01.Click, Query_Advance02.Click, Query_Advance03.Click, Query_Advance05.Click
 
         Dim FrmResult As New frmDocumentacion
         Dim Filtro As String
         Dim fechaActual As Date = Now
+        Dim Fecha_ini As String
+        Dim Fecha_fin As String
 
-        If sender.name = "Query_Advance01" Then
-            'Documentos modificados en los últimos 30 días
-            Filtro = " And archivo.fechamodificacion between '" & fechaActual.AddDays(-30).Year & "-" &
-                            String.Format("{0:00}", fechaActual.AddDays(-30).Month) & "-" &
-                            String.Format("{0:00}", fechaActual.AddDays(-30).Day) & "' AND '" & fechaActual.AddDays(1).Year & "-" &
-                            String.Format("{0:00}", fechaActual.AddDays(1).Month) & "-" &
-                            String.Format("{0:00}", fechaActual.AddDays(1).Day) & "'"
-            FrmResult.Text = "Documentos modificados en los últimos 30 días"
-            FrmResult.CargarDatosSIDCARTO_By_Filtro(Filtro)
-        ElseIf sender.name = "Query_Advance02" Then
-            'Lanzar consulta documentos creados hoy
-            Filtro = " and archivo.fechacreacion between '" & fechaActual.Year & "-" &
-                            String.Format("{0:00}", fechaActual.Month) & "-" &
-                            String.Format("{0:00}", fechaActual.Day) & " 00:00:00' AND '" &
-                            fechaActual.AddDays(1).Year & "-" &
-                            String.Format("{0:00}", fechaActual.AddDays(1).Month) & "-" &
-                            String.Format("{0:00}", fechaActual.AddDays(1).Day) & " 00:00:00'"
-            FrmResult.Text = "Documentos creados hoy"
-            FrmResult.CargarDatosSIDCARTO_By_Filtro(Filtro)
-        ElseIf sender.name = "Query_Advance03" Then
-            'Documentos modificados entre dos fechas
-            Dim Fecha_ini As String = InputDialog.InputBox("Fecha inicio de la búsqueda AAAA-MM-DD", "Consultas avanzadas", "")
-            Dim Fecha_fin As String = InputDialog.InputBox("Fecha final de la búsqueda AAAA-MM-DD", "Consultas avanzadas", "")
-            If Fecha_fin = "" Or Fecha_ini = "" Then Exit Sub
-            Filtro = "and fechamodificacion between '" & Fecha_ini & "' and '" & Fecha_fin & "'"
-            FrmResult.Text = "Documentos modificados entre " & Fecha_ini & " y " & Fecha_fin
-            FrmResult.CargarDatosSIDCARTO_By_Filtro(Filtro)
-        ElseIf sender.name = "Query_Advance04" Then
-            'Documentos creados entre dos fechas
-            Dim Fecha_ini As String = InputDialog.InputBox("Fecha inicio de la búsqueda AAAA-MM-DD", "Consultas avanzadas", "")
-            Dim Fecha_fin As String = InputDialog.InputBox("Fecha final de la búsqueda AAAA-MM-DD", "Consultas avanzadas", "")
-            If Fecha_fin = "" Or Fecha_ini = "" Then Exit Sub
-            Filtro = "and fechacreacion between '" & Fecha_ini & "' and '" & Fecha_fin & "'"
-            FrmResult.Text = "Documentos dados de alta entre " & Fecha_ini & " y " & Fecha_fin
-            FrmResult.CargarDatosSIDCARTO_By_Filtro(Filtro)
-        ElseIf sender.name = "Query_Advance05" Then
-            'Ultimos n registros creados
-            Dim NumReg As String = InputDialog.InputBox("¿Cuantos registros desea mostrar?", "Consultas avanzadas", "100")
-            If NumReg.Trim = "" Then Exit Sub
-            If Not IsNumeric(NumReg) Then Exit Sub
-            FrmResult.Text = "Últimos documentos introducidos"
-            FrmResult.MdiParent = Me
-            FrmResult.CargarUltimosDatos(CType(NumReg, Integer))
-            FrmResult.Show()
-            Exit Sub
-        ElseIf sender.name = "Query_Advance06" Then
-            'Documentos creados en los últimos 30 días
-            Filtro = " and archivo.fechacreacion between '" & fechaActual.AddDays(-30).Year & "-" &
-                String.Format("{0:00}", fechaActual.AddDays(-30).Month) & "-" &
-                String.Format("{0:00}", fechaActual.AddDays(-30).Day) & "' AND '" & fechaActual.AddDays(1).Year & "-" &
-                String.Format("{0:00}", fechaActual.AddDays(1).Month) & "-" &
-                String.Format("{0:00}", fechaActual.AddDays(1).Day) & "'"
-            FrmResult.Text = "Documentos creados en los últimos 30 días"
-            FrmResult.CargarDatosSIDCARTO_By_Filtro(Filtro)
-        ElseIf sender.name = "Query_Advance07" Then
-            Dim Rango As String = InputDialog.InputBox("Introduzca un rango de números de sellado (#####1-#####2)", "Consultas avanzadas", "100")
-            If Rango = "" Then Exit Sub
-            If Rango.IndexOf("-") = -1 Then Exit Sub
-            Dim Sellados() As String = Rango.Split("-")
-            If Sellados.Length = 2 Then
-                Filtro = " and archivo.numdoc between '" & Sellados(0) & "' AND '" & Sellados(1) & "'"
-                FrmResult.Text = "Documentos con sello entre " & Sellados(0) & " Y " & Sellados(1)
-            Else
-                Exit Sub
-            End If
-            FrmResult.CargarDatosSIDCARTO_By_Filtro(Filtro)
-        ElseIf sender.name = "Query_Advance08" Then
-            Dim fechaQuery As String = InputDialog.InputBox("Fecha de la búsqueda AAAA-MM-DD", "Consultas avanzadas", "")
-            If fechaQuery = "" Then Exit Sub
-            Filtro = " and archivo.fechacreacion between '" & fechaQuery & " 00:00:00' AND '" &
-                            fechaQuery & " 23:59:59'"
-            FrmResult.Text = "Documentos creados el día " & fechaQuery
-            FrmResult.CargarDatosSIDCARTO_By_Filtro(Filtro)
-        Else
-            Exit Sub
+
+        If sender.name = "Query_Advance03" Then
+            Fecha_ini = InputDialog.InputBox("Fecha inicio de la búsqueda AAAA-MM-DD", "Consultas avanzadas", "")
+            Fecha_fin = InputDialog.InputBox("Fecha final de la búsqueda AAAA-MM-DD", "Consultas avanzadas", "")
+        ElseIf sender.name = "Query_Advance02" Or sender.name = "Query_Advance03" Then
+            Dim fechas() As String = InputDateDialog.InputBox("Establece fechas de búsqueda")
+            Fecha_ini = fechas(0)
+            Fecha_fin = fechas(1)
+            If Fecha_ini.Length = 4 Then Fecha_ini &= "-01-01"
+            If Fecha_fin.Length = 4 Then Fecha_fin &= "-12-31"
         End If
-        FrmResult.MdiParent = Me
-        FrmResult.Show()
+
+        Dim resp = ModalQuestCollection("¿Qué desea buscar?")
+
+        If resp = DialogResult.Yes Then
+            'Consulto por Cuadernos
+            Try
+                PictureBox3.Visible = True
+                Me.Cursor = Cursors.WaitCursor
+                LanzarSpinner("Cargando datos")
+                Dim frmResultadosCuadMTN As New resultCMTN
+                With frmResultadosCuadMTN
+                    .MdiParent = Me
+                    If sender.name = "Query_Advance01" Then
+                        .paramSQL1 = Fecha_ini & " 00:00:00"
+                        .paramSQL2 = Fecha_fin & " 23:59:59"
+                        .typeSearch = resultCMTN.TypeDataSearch.AllDocsPorFechaAlta
+                    ElseIf sender.name = "Query_Advance02" Then
+                        .paramSQL1 = Fecha_ini & " 00:00:00"
+                        .paramSQL2 = Fecha_fin & " 23:59:59"
+                        .typeSearch = resultCMTN.TypeDataSearch.AllDocsByFechaUpdate
+                    ElseIf sender.name = "Query_Advance03" Then
+                        .paramSQL1 = Fecha_ini
+                        .paramSQL2 = Fecha_fin
+                        .typeSearch = resultCMTN.TypeDataSearch.AllDocsPorFechaDocumento
+                    ElseIf sender.name = "Query_Advance05" Then
+                        .typeSearch = resultCMTN.TypeDataSearch.AllDocuments
+                        .limitResults = "100"
+                        .OrderDirection = "DESC"
+
+                    End If
+                    .Show()
+                End With
+            Catch ex As Exception
+                ModalError($"No se pueden identificar los documento: {ex.Message}")
+            Finally
+                CerrarSpinner()
+                PictureBox3.Visible = False
+                Me.Cursor = Cursors.Default
+            End Try
+
+        End If
+        If resp = DialogResult.OK Then
+            'Consulto por GEODOCAT
+            Try
+                PictureBox3.Visible = True
+                Me.Cursor = Cursors.WaitCursor
+                LanzarSpinner("Cargando datos")
+                Dim frmResultadosCuadMTN As New resultGEODOCAT
+                With frmResultadosCuadMTN
+                    .MdiParent = Me
+                    If sender.name = "Query_Advance01" Then
+                        .paramSQL1 = Fecha_ini & " 00:00:00"
+                        .paramSQL2 = Fecha_fin & " 23:59:59"
+                        .typeSearch = resultGEODOCAT.TypeDataSearch.AllDocsPorFechaAlta
+                    ElseIf sender.name = "Query_Advance02" Then
+                        .paramSQL1 = Fecha_ini & " 00:00:00"
+                        .paramSQL2 = Fecha_fin & " 23:59:59"
+                        .typeSearch = resultGEODOCAT.TypeDataSearch.AllDocsByFechaUpdate
+                    ElseIf sender.name = "Query_Advance03" Then
+                        .paramSQL1 = Fecha_ini
+                        .paramSQL2 = Fecha_fin
+                        .typeSearch = resultGEODOCAT.TypeDataSearch.AllDocsPorFechaDocumento
+                    ElseIf sender.name = "Query_Advance05" Then
+                        .typeSearch = resultGEODOCAT.TypeDataSearch.AllDocuments
+                        .limitResults = "100"
+                        .OrderDirection = "DESC"
+
+                    End If
+                    .Show()
+                End With
+            Catch ex As Exception
+                ModalError($"No se pueden identificar los documento: {ex.Message}")
+            Finally
+                CerrarSpinner()
+                PictureBox3.Visible = False
+                Me.Cursor = Cursors.Default
+            End Try
+
+
+
+        End If
+
+
+        Exit Sub
+
+
+        'If sender.name = "Query_Advance01" Then
+        '    'Documentos modificados en los últimos 30 días
+        '    Filtro = " And archivo.fechamodificacion between '" & fechaActual.AddDays(-30).Year & "-" &
+        '                    String.Format("{0:00}", fechaActual.AddDays(-30).Month) & "-" &
+        '                    String.Format("{0:00}", fechaActual.AddDays(-30).Day) & "' AND '" & fechaActual.AddDays(1).Year & "-" &
+        '                    String.Format("{0:00}", fechaActual.AddDays(1).Month) & "-" &
+        '                    String.Format("{0:00}", fechaActual.AddDays(1).Day) & "'"
+        '    FrmResult.Text = "Documentos modificados en los últimos 30 días"
+        '    FrmResult.CargarDatosSIDCARTO_By_Filtro(Filtro)
+        'ElseIf sender.name = "Query_Advance02" Then
+        '    'Lanzar consulta documentos creados hoy
+        '    Filtro = " and archivo.fechacreacion between '" & fechaActual.Year & "-" &
+        '                    String.Format("{0:00}", fechaActual.Month) & "-" &
+        '                    String.Format("{0:00}", fechaActual.Day) & " 00:00:00' AND '" &
+        '                    fechaActual.AddDays(1).Year & "-" &
+        '                    String.Format("{0:00}", fechaActual.AddDays(1).Month) & "-" &
+        '                    String.Format("{0:00}", fechaActual.AddDays(1).Day) & " 00:00:00'"
+        '    FrmResult.Text = "Documentos creados hoy"
+        '    FrmResult.CargarDatosSIDCARTO_By_Filtro(Filtro)
+        'ElseIf sender.name = "Query_Advance03" Then
+        '    'Documentos modificados entre dos fechas
+        '    Dim Fecha_ini As String = InputDialog.InputBox("Fecha inicio de la búsqueda AAAA-MM-DD", "Consultas avanzadas", "")
+        '    Dim Fecha_fin As String = InputDialog.InputBox("Fecha final de la búsqueda AAAA-MM-DD", "Consultas avanzadas", "")
+        '    If Fecha_fin = "" Or Fecha_ini = "" Then Exit Sub
+        '    Filtro = "and fechamodificacion between '" & Fecha_ini & "' and '" & Fecha_fin & "'"
+        '    FrmResult.Text = "Documentos modificados entre " & Fecha_ini & " y " & Fecha_fin
+        '    FrmResult.CargarDatosSIDCARTO_By_Filtro(Filtro)
+        'ElseIf sender.name = "Query_Advance04" Then
+        '    'Documentos creados entre dos fechas
+        '    Dim Fecha_ini As String = InputDialog.InputBox("Fecha inicio de la búsqueda AAAA-MM-DD", "Consultas avanzadas", "")
+        '    Dim Fecha_fin As String = InputDialog.InputBox("Fecha final de la búsqueda AAAA-MM-DD", "Consultas avanzadas", "")
+        '    If Fecha_fin = "" Or Fecha_ini = "" Then Exit Sub
+        '    Filtro = "and fechacreacion between '" & Fecha_ini & "' and '" & Fecha_fin & "'"
+        '    FrmResult.Text = "Documentos dados de alta entre " & Fecha_ini & " y " & Fecha_fin
+        '    FrmResult.CargarDatosSIDCARTO_By_Filtro(Filtro)
+        'ElseIf sender.name = "Query_Advance05" Then
+        '    'Ultimos n registros creados
+        '    Dim NumReg As String = InputDialog.InputBox("¿Cuantos registros desea mostrar?", "Consultas avanzadas", "100")
+        '    If NumReg.Trim = "" Then Exit Sub
+        '    If Not IsNumeric(NumReg) Then Exit Sub
+        '    FrmResult.Text = "Últimos documentos introducidos"
+        '    FrmResult.MdiParent = Me
+        '    FrmResult.CargarUltimosDatos(CType(NumReg, Integer))
+        '    FrmResult.Show()
+        '    Exit Sub
+        'ElseIf sender.name = "Query_Advance06" Then
+        '    'Documentos creados en los últimos 30 días
+        '    Filtro = " and archivo.fechacreacion between '" & fechaActual.AddDays(-30).Year & "-" &
+        '        String.Format("{0:00}", fechaActual.AddDays(-30).Month) & "-" &
+        '        String.Format("{0:00}", fechaActual.AddDays(-30).Day) & "' AND '" & fechaActual.AddDays(1).Year & "-" &
+        '        String.Format("{0:00}", fechaActual.AddDays(1).Month) & "-" &
+        '        String.Format("{0:00}", fechaActual.AddDays(1).Day) & "'"
+        '    FrmResult.Text = "Documentos creados en los últimos 30 días"
+        '    FrmResult.CargarDatosSIDCARTO_By_Filtro(Filtro)
+        'ElseIf sender.name = "Query_Advance07" Then
+        '    Dim Rango As String = InputDialog.InputBox("Introduzca un rango de números de sellado (#####1-#####2)", "Consultas avanzadas", "100")
+        '    If Rango = "" Then Exit Sub
+        '    If Rango.IndexOf("-") = -1 Then Exit Sub
+        '    Dim Sellados() As String = Rango.Split("-")
+        '    If Sellados.Length = 2 Then
+        '        Filtro = " and archivo.numdoc between '" & Sellados(0) & "' AND '" & Sellados(1) & "'"
+        '        FrmResult.Text = "Documentos con sello entre " & Sellados(0) & " Y " & Sellados(1)
+        '    Else
+        '        Exit Sub
+        '    End If
+        '    FrmResult.CargarDatosSIDCARTO_By_Filtro(Filtro)
+        'ElseIf sender.name = "Query_Advance08" Then
+        '    Dim fechaQuery As String = InputDialog.InputBox("Fecha de la búsqueda AAAA-MM-DD", "Consultas avanzadas", "")
+        '    If fechaQuery = "" Then Exit Sub
+        '    Filtro = " and archivo.fechacreacion between '" & fechaQuery & " 00:00:00' AND '" &
+        '                    fechaQuery & " 23:59:59'"
+        '    FrmResult.Text = "Documentos creados el día " & fechaQuery
+        '    FrmResult.CargarDatosSIDCARTO_By_Filtro(Filtro)
+        'Else
+        '    Exit Sub
+        'End If
+        'FrmResult.MdiParent = Me
+        'FrmResult.Show()
 
     End Sub
 
@@ -1303,41 +1410,75 @@ Public Class MDIPrincipal
 
     Private Sub GestionCarrito(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButCarrito.Click, mnuCarrito.Click
 
-        If CarritoCompra Is Nothing Then
-            MessageBox.Show("El carrito esta vacío", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-            Exit Sub
-        End If
-        If CarritoCompra.Length = 0 Then
-            MessageBox.Show("El carrito esta vacío", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-            Exit Sub
-        End If
+        If CarritoCompra Is Nothing Then ModalExclamation("El carrito esta vacío") : Exit Sub
+        If CarritoCompra.Count = 0 Then ModalExclamation("El carrito esta vacío") : Exit Sub
+
+        'Comprobamos si el carrito está ya activo
         Dim ExisteCarrito As Boolean
-        For Each ChildForm As Form In Me.MdiChildren
-            If ChildForm.Tag = "Carrito de la Compra" Then
+        For Each ChildForm As resultGEODOCAT In Me.MdiChildren
+            If ChildForm.EsCarritoCompra Then
+                If ChildForm.DataGridView1.RowCount <> CarritoCompra.Count Then ChildForm.btnRefresh.PerformClick()
                 ChildForm.Focus()
                 ExisteCarrito = True
                 Exit For
             End If
         Next
-        Dim FrmCestaCompra As New frmDocumentacion
+
+
         If ExisteCarrito = True Then
-            Try
-                FrmCestaCompra = Me.ActiveMdiChild
-                If FrmCestaCompra Is Nothing Then Exit Sub
-            Catch ex As Exception
 
-            End Try
-            FrmCestaCompra.MostrarElementosCarrito()
-            FrmCestaCompra.Show()
-        Else
-            FrmCestaCompra.MdiParent = Me
-            FrmCestaCompra.Text = " Carrito de la Compra"
-            FrmCestaCompra.Tag = "Carrito de la Compra"
-            FrmCestaCompra.Button7.Image = Me.ImageList1.Images(6)
-            FrmCestaCompra.MostrarElementosCarrito()
-            FrmCestaCompra.Show()
-
+            Exit Sub
         End If
+
+        Dim frmResultados As New resultGEODOCAT
+        With frmResultados
+            .MdiParent = Me
+            .EsCarritoCompra = True
+            .typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosEnCarrito
+            .Show()
+        End With
+
+
+        'If CarritoCompraOld Is Nothing Then
+        '    MessageBox.Show("El carrito esta vacío", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+        '    Exit Sub
+        'End If
+        'If CarritoCompraOld.Length = 0 Then
+        '    MessageBox.Show("El carrito esta vacío", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+        '    Exit Sub
+        'End If
+
+
+
+
+
+        'Dim ExisteCarrito As Boolean
+        'For Each ChildForm As Form In Me.MdiChildren
+        '    If ChildForm.Tag = "Carrito de la Compra" Then
+        '        ChildForm.Focus()
+        '        ExisteCarrito = True
+        '        Exit For
+        '    End If
+        'Next
+        'Dim FrmCestaCompra As New frmDocumentacion
+        'If ExisteCarrito = True Then
+        '    Try
+        '        FrmCestaCompra = Me.ActiveMdiChild
+        '        If FrmCestaCompra Is Nothing Then Exit Sub
+        '    Catch ex As Exception
+
+        '    End Try
+        '    FrmCestaCompra.MostrarElementosCarrito()
+        '    FrmCestaCompra.Show()
+        'Else
+        '    FrmCestaCompra.MdiParent = Me
+        '    FrmCestaCompra.Text = " Carrito de la Compra"
+        '    FrmCestaCompra.Tag = "Carrito de la Compra"
+        '    FrmCestaCompra.Button7.Image = Me.ImageList1.Images(6)
+        '    FrmCestaCompra.MostrarElementosCarrito()
+        '    FrmCestaCompra.Show()
+
+        'End If
     End Sub
 
     Private Sub ComboBox3_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ComboBox3.Click
@@ -1393,57 +1534,95 @@ Public Class MDIPrincipal
 
     Private Sub itemUsermenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles itemUsermenu.Click, ToolStripButton2.Click, ToolStripStatusLabel3.Click
 
-        Dim frmUser As GestionUserNotificacion
-        frmUser = New GestionUserNotificacion
-        frmUser.modoAdmin = usuarioMyApp.permisosLista.editarDocumentacion
+
+        Dim frmUser As New GestionUserNotificacion
         frmUser.MdiParent = Me
         frmUser.Show()
 
     End Sub
 
-    Private Sub itemGestionUser_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles itemGestionUser.Click
 
-        If usuarioMyApp.permisosLista.asignarPermisosUsuarios = False Then Exit Sub
-        Dim frmUser As GestionUserForm
-        frmUser = New GestionUserForm
-        frmUser.MdiParent = Me
-        frmUser.Show()
+    Private Sub ManagerUserActions(sender As Object, e As EventArgs) Handles itemChangePass.Click, itemGestionUser.Click, mnuListaPermisos.Click, mnuOpenPreferenceFolder.Click, mnuOpenLoggerFile.Click
+
+        If sender.name = "itemChangePass" Then
+            Dim procChangePass As ChangeCredentials
+            procChangePass = DialogChangePassword.InputBox()
+            usuarioMyApp.cambiarPassword(procChangePass.OldPassword, procChangePass.NewPassword)
+        End If
+        If sender.name = "itemGestionUser" Then
+            If usuarioMyApp.permisosLista.AsignarPermisosUsuarios = False Then Exit Sub
+            Dim frmUser As GestionUserForm
+            frmUser = New GestionUserForm
+            frmUser.MdiParent = Me
+            frmUser.Show()
+        End If
+        If sender.name = "mnuListaPermisos" Then
+            Try
+                ListDialog.ListaBox(usuarioMyApp.permisosLista.DameResumenProps(), $"Usuario {usuarioMyApp.LoginUser}", "Lista de permisos")
+            Catch ex As Exception
+                ModalExclamation(ex.Message)
+            End Try
+        End If
+
+        If sender.name = "mnuOpenPreferenceFolder" Then
+            Try
+                Process.Start(AppFolderSetting)
+            Catch ex As Exception
+                MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Error)
+            End Try
+        End If
+        If sender.name = "mnuOpenLoggerFile" Then
+            Try
+                If System.IO.File.Exists("C: \Program Files (x86)\Notepad++\notepad++.exe") Then
+                    Process.Start("C:\Program Files (x86)\Notepad++\notepad++.exe", ficheroLogger)
+                Else
+                    Process.Start(ficheroLogger)
+                End If
+            Catch ex As Exception
+                MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Error)
+            End Try
+        End If
+
+
+
 
     End Sub
+
+
 
     Private Sub MDIPrincipal_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Resize
 
-        If Me.Size.Height < 820 Then
-            RadioButton1.Visible = False
-            RadioButton2.Visible = False
-            If Me.Size.Height < 780 Then
-                Button3.Visible = False
-                Button4.Visible = False
-            Else
-                Button3.Visible = True
-                Button4.Visible = True
-            End If
-        Else
-            RadioButton1.Visible = True
-            RadioButton2.Visible = True
-            Button3.Visible = True
-            Button4.Visible = True
-        End If
+        'If Me.Size.Height < 820 Then
+        '    RadioButton1.Visible = False
+        '    RadioButton2.Visible = False
+        '    If Me.Size.Height < 780 Then
+        '        Button3.Visible = False
+        '        Button4.Visible = False
+        '    Else
+        '        Button3.Visible = True
+        '        Button4.Visible = True
+        '    End If
+        'Else
+        '    RadioButton1.Visible = True
+        '    RadioButton2.Visible = True
+        '    Button3.Visible = True
+        '    Button4.Visible = True
+        'End If
 
     End Sub
 
     Private Sub Button7_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button7.Click
 
         Try
-            Process.Start(visorCartociudad)
+            Process.Start(visorIberpix)
         Catch ex As Exception
-            MessageBox.Show(ex.Message, AplicacionTitulo)
+            ModalError(ex.Message)
             Exit Sub
         End Try
 
     End Sub
 
-    Private Sub mnuLinkCdDMinutas_Click(sender As Object, e As EventArgs) Handles mnuLinkCdDMIPAC.Click, mnuLinkCdDPLPOB.Click, mnuLinkCdDPLEDI.Click, mnuLinkCdDHKPUP.Click, mnuLinkCdDAT.Click
+    Private Sub mnuLinkCdDMinutas_Click(sender As Object, e As EventArgs) Handles mnuLinkCdDMIPAC.Click, mnuLinkCdDPLPOB.Click, mnuLinkCdDPLEDI.Click, mnuLinkCdDHKPUP.Click, mnuLinkCdDAT.Click, mnuLinkCdDCCINT.Click
 
 
         If sender.name = "mnuLinkCdDAT" Then
@@ -1460,37 +1639,44 @@ Public Class MDIPrincipal
             Exit Sub
         End If
 
-        Dim CodigosMuni() As String = TextBox1.Tag.ToString.Split("|")
+
         Dim terriLink As TerritorioBSID
         Dim CodMunicipioINEHistorico As String
+        Dim CodMunicipioINEActual As String
         Dim MunicipioID As String
-        Dim linkCdD As String = ""
+        Dim linkCdD As String = "https://centrodedescargas.cnig.es/CentroDescargas/buscar.do?"
 
-        CodMunicipioINEHistorico = CodigosMuni(0)
-        MunicipioID = CodigosMuni(1)
-        Dim CodMunicipioINEActual As String = CodigosMuni(2)
-        terriLink = New TerritorioBSID(CodMunicipioINEActual)
-        Application.DoEvents()
-        If sender.name = "mnuLinkCdDMIPAC" Then
-            linkCdD = "https://centrodedescargas.cnig.es/CentroDescargas/buscar.do?filtro.codFamilia=MIPAC&filtro.codIne=" & terriLink.getCodigoINEFull
-        ElseIf sender.name = "mnuLinkCdDPLPOB" Then
-            linkCdD = "https://centrodedescargas.cnig.es/CentroDescargas/buscar.do?filtro.codFamilia=PLPOB&filtro.codIne=" & terriLink.getCodigoINEFull
-        ElseIf sender.name = "mnuLinkCdDPLEDI" Then
-            linkCdD = "https://centrodedescargas.cnig.es/CentroDescargas/buscar.do?filtro.codFamilia=PLEDI&filtro.codIne=" & terriLink.getCodigoINEFull
-        ElseIf sender.name = "mnuLinkCdDHKPUP" Then
-            linkCdD = "https://centrodedescargas.cnig.es/CentroDescargas/buscar.do?filtro.codFamilia=HKPUP&filtro.codIne=" & terriLink.getCodigoINEFull
-        End If
-
-        If linkCdD = "" Then
-            MessageBox.Show("Enlace no disponible", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Warning)
-            Exit Sub
-        End If
         Try
+            Dim CodigosMuni() As String = TextBox1.Tag.ToString.Split("|")
+            If CodigosMuni.Length = 3 Then
+                CodMunicipioINEHistorico = CodigosMuni(0)
+                MunicipioID = CodigosMuni(1)
+                CodMunicipioINEActual = CodigosMuni(2)
+            End If
+            Application.DoEvents()
+
+            terriLink = New TerritorioBSID(CodMunicipioINEActual)
+            Application.DoEvents()
+
+            If sender.name = "mnuLinkCdDMIPAC" Then
+                linkCdD &= $"filtro.codFamilia=MIPAC&filtro.codIne={terriLink.getCodigoINEFull}"
+            ElseIf sender.name = "mnuLinkCdDPLPOB" Then
+                linkCdD &= $"filtro.codFamilia=PLPOB&filtro.codIne={terriLink.getCodigoINEFull}"
+            ElseIf sender.name = "mnuLinkCdDPLEDI" Then
+                linkCdD &= $"filtro.codFamilia=PLEDI&filtro.codIne={terriLink.getCodigoINEFull}"
+            ElseIf sender.name = "mnuLinkCdDHKPUP" Then
+                linkCdD &= $"filtro.codFamilia=HKPUP&filtro.codIne={terriLink.getCodigoINEFull}"
+            ElseIf sender.name = "mnuLinkCdDCCINT" Then
+                linkCdD &= $"filtro.codFamilia=CCINT&filtro.codIne={terriLink.getCodigoINEFull}"
+            End If
             Process.Start(linkCdD)
         Catch ex As Exception
-            MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Error)
-            Exit Sub
+            ModalError(ex.Message)
         End Try
+
+
+
+
 
     End Sub
 
@@ -1512,9 +1698,26 @@ Public Class MDIPrincipal
             cadAnaliz = linkCoordenadas.Replace("https://www.cartociudad.es/visor?", "")
         ElseIf linkCoordenadas.StartsWith("http://www.cartociudad.es/visor?") Then
             cadAnaliz = linkCoordenadas.Replace("http://www.cartociudad.es/visor?", "")
+        ElseIf linkCoordenadas.StartsWith("https://www.cartociudad.es/visor/?") Then
+            cadAnaliz = linkCoordenadas.Replace("https://www.cartociudad.es/visor/?", "")
+        ElseIf linkCoordenadas.StartsWith("http://www.cartociudad.es/visor/?") Then
+            cadAnaliz = linkCoordenadas.Replace("http://www.cartociudad.es/visor/?", "")
         Else
-            MessageBox.Show("No se encuentran coordendas en el enlace  del portapapeles." & System.Environment.NewLine & linkCoordenadas, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-            Exit Sub
+            'Probamos a parsearlas
+            partesAnaliz = linkCoordenadas.Split(",")
+            If partesAnaliz.Length = 4 Then
+                Application.DoEvents()
+                If partesAnaliz(3).ToUpper.StartsWith("EPSG:") Then
+                    TextBox11.Text = partesAnaliz(0)
+                    TextBox12.Text = partesAnaliz(1)
+                    TextBox13.Text = "5000"
+                    TextBox24.Text = partesAnaliz(3).ToUpper.Replace("EPSG:", "")
+                End If
+                Exit Sub
+            Else
+                ModalExclamation("No se encuentran coordendas en el enlace  del portapapeles")
+                Exit Sub
+            End If
         End If
         partesAnaliz = cadAnaliz.Split("&")
         If partesAnaliz(0).StartsWith("center=") = False Or partesAnaliz(1).StartsWith("zoom=") = False Or partesAnaliz(2).StartsWith("srs=") = False Then
@@ -1570,5 +1773,453 @@ Public Class MDIPrincipal
         End If
 
     End Sub
+
+    Private Sub LaunchQuery(sender As Object, e As EventArgs) Handles Button12.Click, btnGetStar.Click, btnGetImportant.Click, btnGetWeird.Click, btnGetCdD.Click, ToolStripButton12.Click
+
+        Dim FirmaYear As String = ""
+        Dim EstadosDocumento As String = ""
+        Dim TiposDocumento As String = ""
+        Dim numTomo As String = ""
+        Dim DescripFiltro As String = ". "
+        Dim territorioId As Integer = 0
+        Dim CodMunicipioINEHistorico As Integer = 0
+        Dim CodMunicipioINEActual As Integer = 0
+        Dim nSellado As String = ""
+        Dim nSellado1 As String = ""
+        Dim nSellado2 As String = ""
+        Dim listaSellos As New ArrayList
+        Dim CadFiltro As String = ""
+        Dim ibucle As Integer
+        Dim cProv As Integer = 0
+        Dim proceHoja As String
+        Dim proceCarpeta As String
+
+        If Not String.IsNullOrEmpty(TextBox1.Tag) Then
+            Dim CodigosMuni() As String = TextBox1.Tag.ToString.Split("|")
+            CodMunicipioINEHistorico = CodigosMuni(0)
+            territorioId = CodigosMuni(1)
+            CodMunicipioINEActual = CodigosMuni(2)
+        ElseIf Not String.IsNullOrEmpty(TextBox23.Text) Then
+            If IsNumeric(TextBox23.Text.Trim) Then
+                nSellado = TextBox23.Text.Trim
+            ElseIf obtenerIntervalo(TextBox23.Text.Trim, "-", nSellado1, nSellado2) = True Then
+                Application.DoEvents()
+            ElseIf obtenerIntervalo(TextBox23.Text.Trim, "#", nSellado1, nSellado2) = True Then
+                Application.DoEvents()
+            ElseIf obtenerIntervalo(TextBox23.Text.Trim, ";", listaSellos) = True Then
+                Application.DoEvents()
+            Else
+                Exit Sub
+            End If
+
+        Else
+
+            If ComboBox3.SelectedIndex <> -1 Then
+                cProv = CType(ComboBox3.SelectedItem, itemData).Valor
+            ElseIf IsNumeric(TextBox1.Text.Trim) Then
+                nSellado = TextBox1.Text.Trim
+            ElseIf obtenerIntervalo(TextBox1.Text.Trim, "-", nSellado1, nSellado2) = True Then
+                Application.DoEvents()
+            ElseIf obtenerIntervalo(TextBox1.Text.Trim, "#", nSellado1, nSellado2) = True Then
+                Application.DoEvents()
+            ElseIf obtenerIntervalo(TextBox1.Text.Trim, ";", listaSellos) = True Then
+                Application.DoEvents()
+            Else
+                Exit Sub
+            End If
+        End If
+
+        '-----------------------------------------------------------------------------------
+        'Evalúo si se filtran los documentos por estado o por tipo
+        '-----------------------------------------------------------------------------------
+        TiposDocumento = ""
+        For Each Linea As itemData In CheckedListBox1.Items
+            If CheckedListBox1.GetItemChecked(CheckedListBox1.Items.IndexOf(Linea)) Then
+                TiposDocumento &= $"{IIf(TiposDocumento = "", Linea.Valor, $",{Linea.Valor}")}"
+            End If
+        Next
+        If CheckedListBox1.Items.Count = CheckedListBox1.CheckedItems.Count Then TiposDocumento = ""
+
+        EstadosDocumento = ""
+        If ComboBox7.SelectedIndex <> -1 Then EstadosDocumento = CType(ComboBox7.SelectedItem, itemData).Valor
+
+
+
+
+
+
+        'Extraemos otros filtros
+        numTomo = TextBox5.Text.Trim
+        proceHoja = TextBox4.Text.Trim
+        proceCarpeta = TextBox2.Text.Trim
+
+
+        Try
+            PictureBox3.Visible = True
+            Me.Cursor = Cursors.WaitCursor
+            LanzarSpinner("Cargando datos")
+            Dim frmResultados As New resultGEODOCAT
+            With frmResultados
+                .MdiParent = Me
+                .filterTipoDoc = TiposDocumento
+                .filterSubTipoDoc = TextBox22.Text.Trim
+                .filterEstadoDoc = EstadosDocumento
+                .filterFecha = FirmaYear
+                .filterJGE = IIf(ComboBox6.SelectedIndex > 0, ComboBox6.Text, "")
+                .filterEnABSYS = IIf(ComboBox8.SelectedIndex > 0, ComboBox8.Text, "")
+
+
+
+
+                If TextBox23.Text.Trim <> "" Then
+                    If IsNumeric(TextBox23.Text) Then
+                        .paramSQL1 = TextBox23.Text.Trim
+                        .typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosBySellado
+                    ElseIf obtenerIntervalo(TextBox23.Text.Trim, "-", nSellado1, nSellado2) = True Then
+                        Application.DoEvents()
+                        .paramSQL1 = nSellado1
+                        .paramSQL2 = nSellado2
+                        .typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosByListaNumSelladoEntreLimites
+                    ElseIf obtenerIntervalo(TextBox23.Text.Trim, "#", nSellado1, nSellado2) = True Then
+                        Application.DoEvents()
+                        .paramSQL1 = nSellado1
+                        .paramSQL2 = nSellado2
+                        .typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosByListaNumSelladoEntreLimites
+                    ElseIf obtenerIntervalo(TextBox23.Text.Trim, ";", nSellado1, nSellado2) = True Then
+                        Application.DoEvents()
+                        .paramSQL1 = nSellado1
+                        .paramSQL2 = nSellado2
+                        .typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosByListaNumSelladoEntreLimites
+                    End If
+                ElseIf TextBox6.Text.Trim <> "" Then
+                    Application.DoEvents()
+                    .paramSQL1 = TextBox6.Text.Trim
+                    .typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosBySignatura
+                ElseIf TextBox8.Text.Trim <> "" Then
+                    Application.DoEvents()
+                    .paramSQL1 = TextBox8.Text.Trim
+                    .typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosByColeccion
+                ElseIf TextBox19.Text.Trim <> "" Then
+                    Application.DoEvents()
+                    .paramSQL1 = TextBox19.Text.Trim
+                    .typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosByAnejo
+                ElseIf TextBox20.Text.Trim <> "" Then
+                    Application.DoEvents()
+                    .paramSQL1 = TextBox20.Text.Trim
+                    .typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosByComentario
+                ElseIf sender.name = "btnGetStar" Then
+                    Application.DoEvents()
+                    .paramSQL1 = "____1___________"
+                    .typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosByPatron
+                    .Text = "Documentos importantes"
+                ElseIf sender.name = "btnGetImportant" Then
+                    Application.DoEvents()
+                    .paramSQL1 = "__1_____________"
+                    .typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosByPatron
+                    .Text = "Documentos destacados"
+                ElseIf sender.name = "btnGetWeird" Then
+                    Application.DoEvents()
+                    .paramSQL1 = "_1______________"
+                    .typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosByPatron
+                    .Text = "Documentos raros"
+                ElseIf sender.name = "btnGetCdD" Then
+                    Application.DoEvents()
+                    .paramSQL1 = "1_______________"
+                    .typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosByPatron
+                    .Text = "Documentos  pendientes CdD"
+
+                ElseIf numTomo <> "" Then
+                    Application.DoEvents()
+                    If cProv = 0 Then
+                        ModalExclamation("Para buscar por Tomo, seleccione primero una provincia")
+                        frmResultados.Close()
+                        frmResultados.Dispose()
+                        frmResultados = Nothing
+                        Exit Sub
+                    End If
+                    .paramSQL1 = cProv
+                    .filterTomo = numTomo
+                    .typeSearch = resultGEODOCAT.TypeDataSearch.AllDocumentsByProvincia
+                ElseIf proceCarpeta <> "" Or proceHoja <> "" Then
+                    If proceHoja = "" And proceCarpeta <> "" Then
+                        ModalExclamation("Si busca una carpeta, debe especificar la Hoja")
+                        frmResultados.Close()
+                        frmResultados.Dispose()
+                        frmResultados = Nothing
+                        Exit Sub
+                    End If
+                    .paramSQL1 = proceHoja
+                    .paramSQL2 = proceCarpeta
+                    .typeSearch = resultGEODOCAT.TypeDataSearch.DocumentosByProcHojaCarpeta
+                ElseIf TextBox1.Tag.Trim <> "" Then
+                    If CheckBox1.Checked Then
+                        'Búsqueda por territorio/municipio actual. Usamos en la búsqueda el códigoINE actual
+                        .paramSQL1 = CodMunicipioINEActual
+                        .typeSearch = resultGEODOCAT.TypeDataSearch.AllDocumentsByTerritorioActual
+                        .Text = $"Documentos asociados al municipio actual {TextBox1.Text.Trim}"
+                    Else
+                        'Búsqueda por territorio/municipio histórico. Usamos en la búsqueda el idTerritorio
+                        .paramSQL1 = territorioId
+                        .typeSearch = resultGEODOCAT.TypeDataSearch.AllDocumentsByTerritorio
+                        .Text = $"Documentos asociados al municipio {TextBox1.Text.Trim}"
+                    End If
+                Else
+                    If cProv > 0 Then
+                        .paramSQL1 = cProv
+                        .typeSearch = resultGEODOCAT.TypeDataSearch.AllDocumentsByProvincia
+                    Else
+                        .typeSearch = resultGEODOCAT.TypeDataSearch.AllDocuments
+                    End If
+                End If
+
+
+                .Show()
+            End With
+
+
+
+
+
+
+        Catch ex As Exception
+            ModalError($"No se pueden identificar los documento: {ex.Message}")
+        Finally
+            CerrarSpinner()
+            PictureBox3.Visible = False
+            Me.Cursor = Cursors.Default
+
+        End Try
+
+
+
+
+
+
+
+
+    End Sub
+
+    Private Sub OldSearchGEO(sender As Object, e As EventArgs) Handles mnuOldSearchGEO.Click
+
+        Dim Xmax As Double = 0
+        Dim Ymax As Double = 0
+        Dim Xmin As Double = 0
+        Dim Ymin As Double = 0
+        Dim TituloConsulta As String = ""
+
+        If TextBox11.Text <> "" And TextBox12.Text <> "" And TextBox13.Text <> "" And TextBox24.Text <> "" Then
+
+            'Dim searchCenter As New GEOCoordenada(TextBox11.Text, TextBox12.Text, TextBox24.Text)
+            Dim centroUTM30 As GEOCoordenada
+            Try
+                Dim searchCenter As New GEOCoordenada(TextBox11.Text, TextBox12.Text, TextBox24.Text)
+                centroUTM30 = searchCenter.convertTo(GEOCoordenada.srs.UTM30_SobreED50)
+                Dim radioSearch = CType(TextBox13.Text, Integer)
+                Xmax = centroUTM30.EastingCoord + radioSearch
+                Ymax = centroUTM30.NorthingCoord + radioSearch
+                Xmin = centroUTM30.EastingCoord - radioSearch
+                Ymin = centroUTM30.NorthingCoord - radioSearch
+            Catch ex As Exception
+                ModalError(ex.Message)
+                Exit Sub
+            End Try
+
+            'Compruebo si las coordenadas estan en geograficas, y si es así las paso a UTMED50 para procesar
+            TituloConsulta = "Búsqueda por entorno. (" & TextBox11.Text & "," & TextBox12.Text & ") y  radio " & TextBox13.Text & " m"
+        ElseIf TextBox7.Text <> "" And TextBox3.Text <> "" And TextBox9.Text <> "" And TextBox10.Text <> "" Then
+            Xmax = CType(TextBox7.Text.Replace(".", ","), Double)
+            Ymax = CType(TextBox3.Text.Replace(".", ","), Double)
+            Xmin = CType(TextBox9.Text.Replace(".", ","), Double)
+            Ymin = CType(TextBox10.Text.Replace(".", ","), Double)
+            TituloConsulta = "Búsqueda por entorno. (" & Xmax.ToString & "," & Ymax.ToString & ") (" & Xmin.ToString & "," & Ymin.ToString & ")"
+        End If
+
+        Application.DoEvents()
+
+        If Xmax = 0 Or Ymax = 0 Or Xmin = 0 Or Ymin = 0 Then Exit Sub
+        If Xmax - Xmin > 200000 Or Ymax - Ymin > 200000 Then
+            ModalExclamation("Reduzca el entorno de la búsqueda")
+            Exit Sub
+        End If
+
+        PictureBox4.Visible = True
+        Dim FrmResult As New frmDocumentacion
+        FrmResult.MdiParent = Me
+        FrmResult.Text = TituloConsulta
+        FrmResult.CargarDatosSIDCARTO_By_Entorno(CType(Xmax, Integer), CType(Ymax, Integer), CType(Xmin, Integer), CType(Ymin, Integer))
+        FrmResult.Show()
+        PictureBox4.Visible = False
+
+    End Sub
+
+    Private Sub LaunchQueryCuadMTN(sender As Object, e As EventArgs) Handles Button13.Click, ToolStripButton22.Click, btnPendingCatalog.Click, btnInvestigar.Click
+
+        Dim FirmaYear As String = ""
+        Dim EstadosDocumento As String = ""
+        Dim TiposDocumento As String = ""
+        Dim numTomo As String = ""
+        Dim DescripFiltro As String = ". "
+        Dim territorioId As Integer = 0
+        Dim CodMunicipioINEHistorico As Integer = 0
+        Dim CodMunicipioINEActual As Integer = 0
+        Dim nSellado As String = ""
+        Dim nSellado1 As String = ""
+        Dim nSellado2 As String = ""
+        Dim listaSellos As New ArrayList
+        Dim CadFiltro As String = ""
+        Dim ibucle As Integer
+        Dim cProv As Integer = 0
+        Dim proceHoja As String
+        Dim proceCarpeta As String
+
+
+        If Not String.IsNullOrEmpty(TextBox1.Tag) Then
+            Dim CodigosMuni() As String = TextBox1.Tag.ToString.Split("|")
+            CodMunicipioINEHistorico = CodigosMuni(0)
+            territorioId = CodigosMuni(1)
+            CodMunicipioINEActual = CodigosMuni(2)
+        ElseIf Not String.IsNullOrEmpty(TextBox23.Text) Then
+            If IsNumeric(TextBox23.Text.Trim) Then
+                nSellado = TextBox23.Text.Trim
+            ElseIf obtenerIntervalo(TextBox23.Text.Trim, "-", nSellado1, nSellado2) = True Then
+                Application.DoEvents()
+            ElseIf obtenerIntervalo(TextBox23.Text.Trim, "#", nSellado1, nSellado2) = True Then
+                Application.DoEvents()
+            ElseIf obtenerIntervalo(TextBox23.Text.Trim, ";", listaSellos) = True Then
+                Application.DoEvents()
+            Else
+                Exit Sub
+            End If
+
+        Else
+
+            If ComboBox3.SelectedIndex <> -1 Then
+                cProv = CType(ComboBox3.SelectedItem, itemData).Valor
+            ElseIf IsNumeric(TextBox1.Text.Trim) Then
+                nSellado = TextBox1.Text.Trim
+            ElseIf obtenerIntervalo(TextBox1.Text.Trim, "-", nSellado1, nSellado2) = True Then
+                Application.DoEvents()
+            ElseIf obtenerIntervalo(TextBox1.Text.Trim, "#", nSellado1, nSellado2) = True Then
+                Application.DoEvents()
+            ElseIf obtenerIntervalo(TextBox1.Text.Trim, ";", listaSellos) = True Then
+                Application.DoEvents()
+            Else
+                Exit Sub
+            End If
+        End If
+
+
+        'Extraemos otros filtros
+        numTomo = TextBox5.Text.Trim
+        proceHoja = TextBox4.Text.Trim
+        proceCarpeta = TextBox2.Text.Trim
+
+        Try
+            PictureBox3.Visible = True
+            Me.Cursor = Cursors.WaitCursor
+            LanzarSpinner("Cargando datos")
+            Dim frmResultadosCuadMTN As New resultCMTN
+            With frmResultadosCuadMTN
+                .MdiParent = Me
+                .filterFecha = FirmaYear
+                If TextBox23.Text.Trim <> "" Then
+                    If IsNumeric(TextBox23.Text.Replace(",", "_").Replace(".", "_")) Then
+                        .paramSQL1 = TextBox23.Text.Trim
+                        .typeSearch = resultCMTN.TypeDataSearch.DocumentosBySellado
+                    ElseIf obtenerIntervalo(TextBox23.Text.Trim, ",", nSellado1, nSellado2) = True Then
+                        .paramSQL1 = nSellado1
+                        .paramSQL2 = nSellado2
+                        .typeSearch = resultCMTN.TypeDataSearch.DocumentosByListaNumSelladoEntreLimites
+                    ElseIf obtenerIntervalo(TextBox23.Text.Trim, "-", nSellado1, nSellado2) = True Then
+                        .paramSQL1 = nSellado1
+                        .paramSQL2 = nSellado2
+                        .typeSearch = resultCMTN.TypeDataSearch.DocumentosByListaNumSelladoEntreLimites
+                    ElseIf obtenerIntervalo(TextBox23.Text.Trim, "#", nSellado1, nSellado2) = True Then
+                        .paramSQL1 = nSellado1
+                        .paramSQL2 = nSellado2
+                        .typeSearch = resultCMTN.TypeDataSearch.DocumentosByListaNumSelladoEntreLimites
+                    ElseIf obtenerIntervalo(TextBox23.Text.Trim, ";", nSellado1, nSellado2) = True Then
+                        .paramSQL1 = nSellado1
+                        .paramSQL2 = nSellado2
+                        .typeSearch = resultCMTN.TypeDataSearch.DocumentosByListaNumSelladoEntreLimites
+                    End If
+                ElseIf sender.name = "btnPendingCatalog" Then
+                    Application.DoEvents()
+                    .paramSQL1 = "____________1___"
+                    .typeSearch = resultCMTN.TypeDataSearch.DocumentosByPatron
+                    .Text = "Documentos pendientes de ser catalogados"
+                ElseIf sender.name = "btnInvestigar" Then
+                    Application.DoEvents()
+                    .paramSQL1 = "___________1____"
+                    .typeSearch = resultCMTN.TypeDataSearch.DocumentosByPatron
+                    .Text = "Documentos incorporados desde SIDDAE para revisar su catalogación"
+                ElseIf TextBox6.Text.Trim <> "" Then
+                    Application.DoEvents()
+                    .paramSQL1 = TextBox6.Text.Trim
+                    .typeSearch = resultCMTN.TypeDataSearch.DocumentosBySignatura
+                ElseIf TextBox19.Text.Trim <> "" Then
+                    Application.DoEvents()
+                    .paramSQL1 = TextBox19.Text.Trim
+                    .typeSearch = resultCMTN.TypeDataSearch.DocumentosByAnejo
+                ElseIf TextBox20.Text.Trim <> "" Then
+                    Application.DoEvents()
+                    .paramSQL1 = TextBox20.Text.Trim
+                    .typeSearch = resultCMTN.TypeDataSearch.DocumentosByComentario
+                ElseIf numTomo <> "" Then
+                    If cProv = 0 Then
+                        ModalExclamation("Para buscar por Tomo, seleccione primero una provincia")
+                        frmResultadosCuadMTN.Close()
+                        frmResultadosCuadMTN.Dispose()
+                        frmResultadosCuadMTN = Nothing
+                        Exit Sub
+                    End If
+                    .paramSQL1 = cProv
+                    .filterTomo = numTomo
+                    .typeSearch = resultCMTN.TypeDataSearch.AllDocumentsByProvincia
+                ElseIf proceCarpeta <> "" Or proceHoja <> "" Then
+                    If proceHoja = "" And proceCarpeta <> "" Then
+                        ModalExclamation("Si busca una carpeta, debe especificar la Hoja")
+                        frmResultadosCuadMTN.Close()
+                        frmResultadosCuadMTN.Dispose()
+                        frmResultadosCuadMTN = Nothing
+                        Exit Sub
+                    End If
+                    .paramSQL1 = proceHoja
+                    .paramSQL2 = proceCarpeta
+                    .typeSearch = resultCMTN.TypeDataSearch.DocumentosByProcHojaCarpeta
+                ElseIf TextBox1.Tag.Trim <> "" Then
+                    If CheckBox1.Checked Then
+                        'Búsqueda por territorio/municipio actual. Usamos en la búsqueda el códigoINE actual
+                        .paramSQL1 = CodMunicipioINEActual
+                        .typeSearch = resultCMTN.TypeDataSearch.AllDocumentsByTerritorioActual
+                        .Text = $"Documentos asociados al municipio actual {TextBox1.Text.Trim}"
+                    Else
+                        'Búsqueda por territorio/municipio histórico. Usamos en la búsqueda el idTerritorio
+                        .paramSQL1 = territorioId
+                        .typeSearch = resultCMTN.TypeDataSearch.AllDocumentsByTerritorio
+                        .Text = $"Documentos asociados al municipio {TextBox1.Text.Trim}"
+                    End If
+                Else
+                    If cProv > 0 Then
+                        .paramSQL1 = cProv
+                        .typeSearch = resultCMTN.TypeDataSearch.AllDocumentsByProvincia
+                    Else
+                        .typeSearch = resultCMTN.TypeDataSearch.AllDocuments
+                    End If
+                End If
+
+                .Show()
+            End With
+        Catch ex As Exception
+            ModalError($"No se pueden identificar los documento: {ex.Message}")
+        Finally
+            CerrarSpinner()
+            PictureBox3.Visible = False
+            Me.Cursor = Cursors.Default
+        End Try
+
+
+    End Sub
+
 
 End Class

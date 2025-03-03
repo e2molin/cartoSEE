@@ -763,7 +763,7 @@ Public Class frmDocumentacion
             If Encabezados(2).Visible = True Then elementoLV.SubItems.Add(docu.Tomo)
             If Encabezados(3).Visible = True Then elementoLV.SubItems.Add(docu.Estado)
             If Encabezados(4).Visible = True Then elementoLV.SubItems.Add(docu.Escala)
-            If Encabezados(5).Visible = True Then elementoLV.SubItems.Add(docu.fechaPrincipal)
+            If Encabezados(5).Visible = True Then elementoLV.SubItems.Add(docu.FechaPrincipal)
             If Encabezados(6).Visible = True Then elementoLV.SubItems.Add(docu.municipiosHistoLiteral)
             If Encabezados(7).Visible = True Then elementoLV.SubItems.Add(docu.Signatura)
             If Encabezados(8).Visible = True Then elementoLV.SubItems.Add(docu.Coleccion)
@@ -1049,7 +1049,7 @@ Public Class frmDocumentacion
 
         Next
 
-        'resultsetGeodocat.resultados(NumElemento).getGeoFiles()
+        resultsetGeodocat.resultados(NumElemento).getGeoFiles()
         iECW = 0
         For Each Rutageo As String In resultsetGeodocat.resultados(NumElemento).listaFicherosGeo
             Application.DoEvents()
@@ -1683,7 +1683,7 @@ Public Class frmDocumentacion
             contador = contador + 1
             ToolStripStatusLabel1.Text = "Exportando contorno " & contador.ToString & " de " & ListView1.SelectedItems.Count.ToString
             Application.DoEvents()
-            ExportarContornosDocumento2XYZ(ListaDocumentos(Linea.Tag), NomFich, True, listaCampos)
+            'ExportarContornosDocumento2XYZ(ListaDocumentos(Linea.Tag), NomFich, True, listaCampos)
         Next
         'End If
         Me.Cursor = Cursors.Default
@@ -2034,11 +2034,11 @@ Public Class frmDocumentacion
         Dim contador As Integer
 
         If ListView1.SelectedItems.Count = 0 Then Exit Sub
-        If CarritoCompra Is Nothing Then
+        If CarritoCompraOld Is Nothing Then
             MessageBox.Show("El carrito esta vacío", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
             Exit Sub
         End If
-        If CarritoCompra.Length = 0 Then
+        If CarritoCompraOld.Length = 0 Then
             MessageBox.Show("El carrito esta vacío", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
             Exit Sub
         End If
@@ -2054,15 +2054,15 @@ Public Class frmDocumentacion
         For Each docu As docSIDCARTO In ListaDocumentos
             If Array.IndexOf(ElementosBorrar, docu.Indice) = -1 Then
                 contador = contador + 1
-                CarritoCompra(contador) = docu
+                CarritoCompraOld(contador) = docu
             End If
         Next
         Application.DoEvents()
         If contador = -1 Then
-            Erase CarritoCompra
+            Erase CarritoCompraOld
             Me.Close()
         Else
-            ReDim Preserve CarritoCompra(0 To contador)
+            ReDim Preserve CarritoCompraOld(0 To contador)
             Application.DoEvents()
             MostrarElementosCarrito()
         End If
@@ -2087,7 +2087,7 @@ Public Class frmDocumentacion
             ElementosCompra(contador) = resultsetGeodocat.resultados(item.Tag)
             indexShopping.Add(resultsetGeodocat.resultados(item.Tag).docIndex)
         Next
-        If CarritoCompra Is Nothing Then
+        If CarritoCompraOld Is Nothing Then
             'Array.Resize(CarritoCompra, ElementosCompra.Length)
             dimInicial = 0
         Else
@@ -2148,18 +2148,18 @@ Public Class frmDocumentacion
         If PictureBox5.BorderStyle = BorderStyle.Fixed3D And Not Label9.Tag Is Nothing Then contador = contador + 1 : ElementosCompra(contador) = ListaDocumentos(Label9.Tag)
         If PictureBox6.BorderStyle = BorderStyle.Fixed3D And Not Label39.Tag Is Nothing Then contador = contador + 1 : ElementosCompra(contador) = ListaDocumentos(Label39.Tag)
         If PictureBox7.BorderStyle = BorderStyle.Fixed3D And Not Label40.Tag Is Nothing Then contador = contador + 1 : ElementosCompra(contador) = ListaDocumentos(Label40.Tag)
-        If CarritoCompra Is Nothing Then
-            Array.Resize(CarritoCompra, ElementosCompra.Length)
+        If CarritoCompraOld Is Nothing Then
+            Array.Resize(CarritoCompraOld, ElementosCompra.Length)
             dimInicial = 0
         Else
-            dimInicial = CarritoCompra.Length
+            dimInicial = CarritoCompraOld.Length
         End If
 
-        ReDim Preserve CarritoCompra(dimInicial + ElementosCompra.Length - 1)
-        Array.ConstrainedCopy(ElementosCompra, 0, CarritoCompra, dimInicial, ElementosCompra.Length)
+        ReDim Preserve CarritoCompraOld(dimInicial + ElementosCompra.Length - 1)
+        Array.ConstrainedCopy(ElementosCompra, 0, CarritoCompraOld, dimInicial, ElementosCompra.Length)
 
         'Limpiamos nuestro carrito de la compra de duplicados
-        CarritoCompra = ArrayEliminarDuplicados(CarritoCompra)
+        CarritoCompraOld = ArrayEliminarDuplicados(CarritoCompraOld)
 
         For Each ChildForm As Form In MDIPrincipal.MdiChildren
             If ChildForm.Tag = "Carrito de la Compra" Then
@@ -2192,15 +2192,15 @@ Public Class frmDocumentacion
         Dim iBucleTMP As Integer
         Dim TmpDoc() As docSIDCARTO
         Dim SumaSuperficie As Integer
-        ReDim TmpDoc(CarritoCompra.GetUpperBound(0))
+        ReDim TmpDoc(CarritoCompraOld.GetUpperBound(0))
         ListView1.Columns.Clear()
         ListView1.Items.Clear()
         resizingElements()
         iBucle = -1
         iBucleTMP = -1
         SumaSuperficie = 0
-        Array.Resize(ListaDocumentos, CarritoCompra.GetUpperBound(0))
-        ListaDocumentos = CarritoCompra
+        Array.Resize(ListaDocumentos, CarritoCompraOld.GetUpperBound(0))
+        ListaDocumentos = CarritoCompraOld
         RellenarLisview(ListaDocumentos)
 
     End Sub
@@ -2722,5 +2722,7 @@ Public Class frmDocumentacion
 
     End Sub
 
+    Private Sub ListView2_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListView2.SelectedIndexChanged
 
+    End Sub
 End Class

@@ -11,22 +11,30 @@
     Property proceHoja As String
     Property proceCarpeta As String
     Property NumDisco As String
-    Property fechaPrincipal As String
+    Property FechaPrincipal As String
+    Property TipoFechaPrincipal As String
     Property fechasModificaciones As String
     Property Anejo As String
     Property Signatura As String
+    Property Proyecto As String
     Property Coleccion As String
     Property Subdivision As String
     Property Vertical As String
     Property Horizontal As String
     Property Observaciones As String
+    Property Comentarios As String
+    Property EdificiosCitados As String
     Property ObservacionesStandard As String
     Property extraProps As New FlagsProperties
     Property listaMuniHistorico As New ArrayList
     Property listaMuniActual As New ArrayList
     Property listaCodMuniHistorico As New ArrayList
     Property listaCodMuniActual As New ArrayList
+    Property listaTerritorios As New ArrayList
     Property listaFicherosGeo As New ArrayList
+    Property listaFicherosGeo23030 As New ArrayList
+    Property listaFicherosGeo25830 As New ArrayList
+
     Property rcdgeoFiles As New DataTable
     '    Property MunicipiosINE As String
     '    Property MunicipiosLiteral As String
@@ -40,17 +48,35 @@
     Property cddProducto As String
     Property cddURL As String
     Property cddNombreFichero As String
+    Property cddFechaSubida As String
+    Property cddGeometria As String
 
     'Namespace ABSYS
-    Property autorDocumento As String
+    Property autorEntidad As String
+    Property autorPersona As String
     Property cargaABSYS As Boolean
     Property titnABSYSdoc As Integer
     Property encabezadoABSYSdoc As String
     Property urlABSYSdoc As String
 
+    ''' <summary>
+    ''' NO_APARECE_HR = 0
+    ''' SI_APARECE_HR_EN_TITULO_JURIDICO = 1
+    ''' SI_APARECE_HR_EN_DOCS_TECNICOS = 2
+    ''' SI_APARECE_HR_EN_OTROS_DOCUMENTOS = 3
+    ''' </summary>
+    ''' <returns></returns>
+    Property docTypeHR As Integer
+
+
     ' Historial de cambios
+    Property createAt As String
+    Property updateAt As String
+    Property userCreator As String
     Property historialCambios As New ArrayList
     Dim historialConsultado As Boolean = False
+    Dim getGeoFilesFromDatabaseConsultado As Boolean = False
+    Dim getGeoFilesConsultado As Boolean = False
 
     Property BBOX4OL3 As String = "POLYGON((-3 42,3 42,0 39,-3 42))"
     Property BBOXCenter4OL3_ByExtent As String = "[-3, 39, 3, 42]"
@@ -79,9 +105,9 @@
         Get
             Dim cadOut As String = ""
             Try
-                If Not fechaPrincipal Is Nothing Then
-                    If fechaPrincipal.Length >= 3 And (fechaPrincipal.Substring(4, 1) = "-" Or fechaPrincipal.Substring(4, 1) = "/") Then
-                        cadOut = fechaPrincipal.Substring(0, 4)
+                If Not FechaPrincipal Is Nothing Then
+                    If FechaPrincipal.Length >= 3 And (FechaPrincipal.Substring(4, 1) = "-" Or FechaPrincipal.Substring(4, 1) = "/") Then
+                        cadOut = FechaPrincipal.Substring(0, 4)
                     Else
                         cadOut = "Sin fecha"
                     End If
@@ -106,13 +132,13 @@
                 If cadOUT = "" Then cadOUT = fila.Item("tipowms").ToString & " (" & IIf(fila.Item("mostrarwms") = 1, "Sí", "No") & ")" : Continue For
                 cadOUT = cadOUT & ", " & fila.Item("tipowms").ToString & " (" & IIf(fila.Item("mostrarwms") = 1, "Sí", "No") & ")"
             Next
-            If filas.Length = 0 And listaFicherosGeo.Count = 0 Then
+            If filas.Length = 0 And listaFicherosGeo23030.Count = 0 Then
                 cadOUT = "Georreferenciación no disponible"
-            ElseIf filas.Length = 0 And listaFicherosGeo.Count > 0 Then
+            ElseIf filas.Length = 0 And listaFicherosGeo23030.Count > 0 Then
                 cadOUT = "Existe fichero ECW sin contorno"
-            ElseIf filas.Length > 0 And listaFicherosGeo.Count = 0 Then
+            ElseIf filas.Length > 0 And listaFicherosGeo23030.Count = 0 Then
                 Application.DoEvents()
-            ElseIf filas.Length > 0 And listaFicherosGeo.Count > 0 Then
+            ElseIf filas.Length > 0 And listaFicherosGeo23030.Count > 0 Then
                 Application.DoEvents()
             Else
                 Application.DoEvents()
@@ -130,13 +156,13 @@
                 If cadOUT = "" Then cadOUT = fila.Item("zindex").ToString : Continue For
                 cadOUT = cadOUT & "#" & fila.Item("zindex").ToString
             Next
-            If filas.Length = 0 And listaFicherosGeo.Count = 0 Then
+            If filas.Length = 0 And listaFicherosGeo23030.Count = 0 Then
                 cadOUT = "Georreferenciación no disponible"
-            ElseIf filas.Length = 0 And listaFicherosGeo.Count > 0 Then
+            ElseIf filas.Length = 0 And listaFicherosGeo23030.Count > 0 Then
                 cadOUT = "Existe fichero ECW sin contorno"
-            ElseIf filas.Length > 0 And listaFicherosGeo.Count = 0 Then
+            ElseIf filas.Length > 0 And listaFicherosGeo23030.Count = 0 Then
                 Application.DoEvents()
-            ElseIf filas.Length > 0 And listaFicherosGeo.Count > 0 Then
+            ElseIf filas.Length > 0 And listaFicherosGeo23030.Count > 0 Then
                 Application.DoEvents()
             Else
                 Application.DoEvents()
@@ -145,9 +171,6 @@
             Return cadOUT
         End Get
     End Property
-
-
-
 
     ReadOnly Property municipiosHistoLiteral() As String
         Get
@@ -207,6 +230,16 @@
         End Get
     End Property
 
+    ReadOnly Property getListaProvincias() As String
+        Get
+            Dim cadProv As String = ""
+            For Each provElem In Provincias.Split("#")
+                If cadProv.IndexOf(provElem) = -1 Then cadProv &= $"{IIf(cadProv = "", "", ", ")}{provElem}"
+            Next
+            Return cadProv
+        End Get
+    End Property
+
 
     ReadOnly Property municipiosActualLiteral() As String
         Get
@@ -239,16 +272,24 @@
         End Get
     End Property
 
+    ReadOnly Property rutaFicheroPDF() As String
+        Get 'Opcional. No todos los documentos tienen recurso en PDF
+            Dim selladoFormat As String = String.Format("{0:00000000}", CType(Sellado, Integer))
+            Return $"{rutaRepo}\_pdf\{String.Format("{0:00}", ProvinciaRepo)}\{tipoDocumento.prefijoNombreCDD}{selladoFormat}.pdf"
+        End Get
+    End Property
+
     ReadOnly Property nameFilePropuestoParaCDD(Optional extension As String = "") As String
 
         Get
             Dim procTilde As New Destildator
             Return _tipoDocumento.prefijoNombreCDD &
                 String.Format("{0:000000}", Sellado) & "_" &
-                _fechaPrincipal.Substring(0, 4) & "_" &
+                _FechaPrincipal.Substring(0, 4) & "_" &
                 procTilde.destildar(municipiosHistoLiteral()).Replace(",", "-").ToUpper.Replace(" ", "_") &
                 IIf(extension <> "", "." & extension.ToLower, "")
         End Get
+
     End Property
 
     ReadOnly Property nameFile4CDD() As String
@@ -261,7 +302,7 @@
     'Nambre de la carpeta para guardar los documentos y después zippearlos para el centro de descargas
     ReadOnly Property nameFolder4CDD() As String
         Get
-            Return _tipoDocumento.NombreTipo.Substring(0, 5).Replace("ñ", "n").ToUpper & "_" & String.Format("{0:000000}", Sellado) & "_" & _fechaPrincipal.Substring(0, 4)
+            Return _tipoDocumento.NombreTipo.Substring(0, 5).Replace("ñ", "n").ToUpper & "_" & String.Format("{0:000000}", Sellado) & "_" & _FechaPrincipal.Substring(0, 4)
         End Get
     End Property
 
@@ -271,7 +312,7 @@
         Get
             For Each tipo As docCartoSEETipoDocu In tiposDocSIDCARTO
                 If tipoDocumento.idTipodoc = tipo.idTipodoc Then
-                    Return tipo.prefijoMetadatos & "_" & String.Format("{0:000000}", Sellado) & "_" & _fechaPrincipal.Substring(0, 4) & ".xml"
+                    Return tipo.prefijoMetadatos & "_" & String.Format("{0:000000}", Sellado) & "_" & _FechaPrincipal.Substring(0, 4) & ".xml"
                 End If
             Next
             Return ""
@@ -297,13 +338,13 @@
     ReadOnly Property nameFileECWJPG() As String
 
         Get
-            Return _tipoDocumento.NombreTipo.Substring(0, 5).Replace("ñ", "n").ToUpper & "_" & String.Format("{0:000000}", Sellado) & "_" & _fechaPrincipal.Substring(0, 4) & ".zip"
+            Return _tipoDocumento.NombreTipo.Substring(0, 5).Replace("ñ", "n").ToUpper & "_" & String.Format("{0:000000}", Sellado) & "_" & _FechaPrincipal.Substring(0, 4) & ".zip"
         End Get
     End Property
     ReadOnly Property nameFileHTML() As String
 
         Get
-            Return _tipoDocumento.NombreTipo.Substring(0, 5).Replace("ñ", "n").ToUpper & "_" & String.Format("{0:000000}", Sellado) & "_" & _fechaPrincipal.Substring(0, 4) & "-info.html"
+            Return _tipoDocumento.NombreTipo.Substring(0, 5).Replace("ñ", "n").ToUpper & "_" & String.Format("{0:000000}", Sellado) & "_" & _FechaPrincipal.Substring(0, 4) & "-info.html"
         End Get
     End Property
 
@@ -383,64 +424,257 @@
         End Get
     End Property
 
-    Sub getGeoFilesFromDatabase()
+    Sub New()
 
-        rcdgeoFiles.Clear()
-        rcdgeoFiles.Dispose()
-        CargarDatatable("Select * from bdsidschema.contornos where archivo_id=" & docIndex, rcdgeoFiles)
+    End Sub
+
+    Sub New(idArchivo As Integer)
+
+        Dim consultaSQL As String
+        If idArchivo > 0 Then
+            'Si recibimos un iddocsiddae>0, cargamos datos de la database
+
+            consultaSQL = $"SELECT archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal,archivo.tipo_fechaprincipal,
+		                        archivo.fechasmodificaciones,archivo.anejo,archivo.vertical,archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja,
+		                        archivo.subtipo,archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.extraprops,archivo.observaciones,archivo.observ,archivo.proyecto,
+		                        archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.cdd_geometria,archivo.cdd_fecha,archivo.titn,archivo.autor,archivo.autor_persona,archivo.encabezado,archivo.nombreedificio,
+		                        tbtipodocumento.tipodoc as Tipo,tbestadodocumento.estadodoc as Estado, tbobservaciones.observestandar,
+                                archivo.provincia_id as repoprov,archivo.fechacreacion,archivo.fechamodificacion,archivo.user_create,archivo.doctypehr,
+                                string_agg(territorios.idterritorio::character varying,'#') as listaIdTerris,
+		                        string_agg(territorios.nombre,'#') as listaMuniHisto,string_agg(to_char(territorios.munihisto, 'FM0000009'::text),'#') as listaCodMuniHisto,
+		                        string_agg(listamunicipios.nombre,'#') as listaMuniActual, string_agg(listamunicipios.inecorto,'#') as listaCodMuniActual, 
+		                        string_agg(provincias.nombreprovincia,'#') as nombreprovincia 
+                        FROM bdsidschema.archivo 
+	                        LEFT JOIN bdsidschema.tbtipodocumento ON tbtipodocumento.idtipodoc=archivo.tipodoc_id 
+	                        LEFT JOIN bdsidschema.tbestadodocumento ON tbestadodocumento.idestadodoc=archivo.estadodoc_id 
+	                        LEFT JOIN bdsidschema.archivo2territorios  ON archivo2territorios.archivo_id=archivo.idarchivo 
+	                        LEFT JOIN bdsidschema.tbobservaciones  ON tbobservaciones.idobservestandar=archivo.observestandar_id 
+	                        LEFT JOIN bdsidschema.territorios on territorios.idterritorio= archivo2territorios.territorio_id 
+	                        LEFT JOIN ngmepschema.listamunicipios on territorios.nomen_id= listamunicipios.identidad 
+	                        LEFT JOIN bdsidschema.provincias on territorios.provincia= provincias.idprovincia 
+                        WHERE archivo.idarchivo={idArchivo}
+                          group by archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal,archivo.tipo_fechaprincipal,
+  	                        archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, archivo.horizontal, archivo.tipodoc_id, archivo.estadodoc_id, archivo.procecarpeta, 
+  	                        archivo.procehoja, archivo.subtipo,archivo.juntaestadistica, archivo.signatura, archivo.observestandar_id,archivo.extraprops, archivo.observaciones,archivo.observ,
+                            archivo.proyecto,tbtipodocumento.tipodoc,archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.titn,archivo.autor,archivo.autor_persona,archivo.encabezado,archivo.nombreedificio,
+                            tbestadodocumento.estadodoc,tbobservaciones.observestandar,archivo.fechacreacion,archivo.fechamodificacion,archivo.user_create,archivo.doctypehr"
+            loadDocAttributesFromDatabase(consultaSQL)
+        End If
+
+    End Sub
+
+    Private Sub loadDocAttributesFromDatabase(consultaSQL)
+
+        Dim rcdDoc As DataTable
+        Dim filas() As DataRow
+        Dim contador As Long
+        Dim Anterior As Integer
+        Dim item As docCartoSEE
+
+        rcdDoc = New DataTable
+        If CargarRecordset(consultaSQL, rcdDoc) = False Then
+            rcdDoc = Nothing
+            Exit Sub
+        End If
+        filas = rcdDoc.Select
+        contador = -1
+        Anterior = 0
+        For Each dR As DataRow In filas
+            item = New docCartoSEE
+            docIndex = dR("idarchivo").ToString
+            Sellado = dR("numdoc").ToString
+            'If flag_ActualizarInfoGeom = True Then item.getFootprint()
+            'Maquillamos el tomo
+            If dR("tomo").ToString = "" Then
+                Tomo = dR("tomo").ToString
+            Else
+                If IsNumeric(dR("tomo")) Then
+                    Tomo = String.Format("{0:000}", CType(dR("tomo").ToString, Integer))
+                Else
+                    If IsNumeric(dR("tomo").ToString.Replace("BIS", "")) Then
+                        Tomo = String.Format("{0:000}", CType(dR("tomo").ToString.Replace("BIS", ""), Integer)) & "BIS"
+                    Else
+                        Tomo = dR("tomo").ToString
+                    End If
+                End If
+            End If
+            If dR("fechaprincipal").ToString.Length >= 10 Then
+                'ListaDoc(contador).fechaPrincipal = dR("fechaprincipal").ToString.Substring(0, 10)
+                FechaPrincipal = FormatearFecha(dR("fechaprincipal"), "GERMAN")
+            End If
+            TipoFechaPrincipal = dR("tipo_fechaprincipal").ToString
+            fechasModificaciones = dR("fechasmodificaciones").ToString
+            For Each subItem As docCartoSEETipoDocu In tiposDocSIDCARTO
+                If subItem.idTipodoc = dR("tipodoc_id").ToString Then
+                    tipoDocumento = subItem
+                    Exit For
+                End If
+            Next
+            Tipo = dR("Tipo").ToString
+            CodTipo = dR("tipodoc_id").ToString
+            For Each subItem As docCartoSEETipoDocu In tiposDocSIDCARTO
+                If subItem.idTipodoc = dR("tipodoc_id").ToString Then
+                    tipoDocumento = subItem
+                    Exit For
+                End If
+            Next
+            CodEstado = dR("estadodoc_id").ToString
+            Estado = dR("Estado").ToString
+            Escala = dR("Escala").ToString
+            Vertical = dR("Vertical").ToString
+            Horizontal = dR("Horizontal").ToString
+            proceHoja = dR("Procehoja").ToString
+            proceCarpeta = dR("Procecarpeta").ToString
+            subTipoDoc = dR("subtipo").ToString
+            NumDisco = "" 'dR("NumDisco").ToString
+            Anejo = dR("Anejo").ToString
+            Signatura = dR("Signatura").ToString
+            Proyecto = dR("proyecto").ToString
+            Coleccion = dR("Coleccion").ToString
+            Subdivision = dR("Subdivision").ToString
+
+            cddProducto = dR("cdd_producto").ToString
+            cddNombreFichero = dR("cdd_nomfich").ToString
+            cddURL = dR("cdd_url").ToString
+            cddFechaSubida = dR("cdd_fecha").ToString
+            cddGeometria = IIf(dR("cdd_geometria") = 1, "Sí", "No")
+            titnABSYSdoc = dR("titn")
+            If titnABSYSdoc > 0 Then
+                cargaABSYS = True
+                urlABSYSdoc = $"{urlAbsysLink}{titnABSYSdoc}"
+            Else
+                cargaABSYS = False
+                urlABSYSdoc = ""
+            End If
+            autorEntidad = dR("autor").ToString
+            autorPersona= dR("autor_persona").ToString
+            encabezadoABSYSdoc = dR("encabezado").ToString
+
+            For Each elem As String In dR("listaIdTerris").ToString.Split("#")
+                listaTerritorios.Add(New TerritorioBSID(CType(elem, Integer)))
+            Next
+
+            For Each elem As String In dR("listaMuniHisto").ToString.Split("#")
+                If elem = "" Then Continue For
+                listaMuniHistorico.Add(elem)
+            Next
+            For Each elem As String In dR("listaCodMuniHisto").ToString.Split("#")
+                If elem = "" Then Continue For
+                listaCodMuniHistorico.Add(elem)
+            Next
+            For Each elem As String In dR("listaMuniActual").ToString.Split("#")
+                If elem = "" Then Continue For
+                listaMuniActual.Add(elem)
+            Next
+            For Each elem As String In dR("listaCodMuniActual").ToString.Split("#")
+                If elem = "" Then Continue For
+                listaCodMuniActual.Add(elem)
+            Next
+
+            Provincias = dR("nombreprovincia").ToString
+            ProvinciaRepo = dR("repoprov")
+            docTypeHR = dR("doctypehr")
+            FicheroJPG = DirRepoProvinciaByINE(ProvinciaRepo) & "\" & dR("numdoc").ToString & ".jpg"
+            JuntaEstadistica = IIf(dR("JuntaEstadistica").ToString = "1", "Sí", "No")
+            ObservacionesStandard = dR("observestandar").ToString
+            Observaciones = dR("observaciones").ToString
+            Comentarios = dR("observ").ToString
+            EdificiosCitados = dR("nombreedificio").ToString
+            extraProps.propertyCode = dR("extraprops")
+
+            createAt = IIf(dR("fechacreacion").ToString = "", "No registrada", dR("fechacreacion").ToString)
+            updateAt = IIf(dR("fechamodificacion").ToString = "", "No hay ediciones", dR("fechamodificacion").ToString)
+            userCreator = dR("user_create").ToString
+
+            'If flag_CargarFicherosGEO Then
+            '    getGeoFiles()
+            '    getGeoFilesFromDatabase()
+            'End If
+
+
+        Next
+        rcdDoc.Dispose()
+        rcdDoc = Nothing
+
 
 
     End Sub
+
+
+
+
+
+    Sub getGeoFilesFromDatabase()
+
+        If getGeoFilesFromDatabaseConsultado = True Then Exit Sub
+
+        rcdgeoFiles.Clear()
+        rcdgeoFiles.Dispose()
+        CargarDatatable($"SELECT * FROM bdsidschema.contornos WHERE archivo_id={docIndex}", rcdgeoFiles)
+
+        getGeoFilesFromDatabaseConsultado = True
+
+    End Sub
+
+
+    'Busca los ficheros georreferenciados escaneando el directorio
     Sub getGeoFiles()
 
-        Dim RutaDOC As String
+        Dim RutaDoc As String
         Dim contador As Integer
-
+        If getGeoFilesConsultado = True Then Exit Sub
         listaFicherosGeo.Clear()
+
         'Si no hay acceso al repositorio Base, directamente salgo
-        If System.IO.Directory.Exists(rutaRepoGeorref) = False Then Exit Sub
+        If Not IO.Directory.Exists(rutaRepoGeorrefBase) Then Exit Sub
 
-        'Comprobamos el más simple de todos
-
-        For Each Muni As String In listaCodMuniHistorico
-            RutaDOC = rutaRepoGeorref &
-                             "\" & DirRepoProvinciaByTipodoc(tipoDocumento.idTipodoc) &
-                             "\" & Muni.Substring(0, 2) &
-                             "\" & Muni &
-                            "\" & Sellado & ".ecw"
-            If System.IO.File.Exists(RutaDOC) = True Then
-                listaFicherosGeo.Add(RutaDOC)
-                Exit Sub
-            End If
-        Next
-        'Si llegamos aquí, es porque el nombre del documento es compuesto
+        'Vamos a analizar los siguientes EPSGs
+        Dim lstEPSG As New ArrayList
+        lstEPSG.Add("epsg23030")
+        lstEPSG.Add("epsg25830")
 
         For Each Muni As String In listaCodMuniHistorico
-            RutaDOC = rutaRepoGeorref &
-                             "\" & DirRepoProvinciaByTipodoc(tipoDocumento.idTipodoc) &
-                             "\" & Muni.Substring(0, 2) &
-                             "\" & Muni &
-                            "\" & Sellado & "_01.ecw"
-            If System.IO.File.Exists(RutaDOC) = True Then
-                listaFicherosGeo.Add(RutaDOC)
-                contador = 0
-                Do Until contador = 20
-                    contador = contador + 1
-                    RutaDOC = rutaRepoGeorref & _
-                                     "\" & DirRepoProvinciaByTipodoc(tipoDocumento.idTipodoc) & _
-                                     "\" & Muni.Substring(0, 2) & _
-                                     "\" & Muni & _
-                                    "\" & Sellado & "_" & String.Format("{0:00}", contador + 1) & ".ecw"
+            For Each epsgCode As String In lstEPSG
+                RutaDoc = $"{rutaRepoGeorrefBase}\{epsgCode}\{DirRepoProvinciaByTipodoc(tipoDocumento.idTipodoc)}\{Muni.Substring(0, 2)}\{Muni}\{Sellado}.ecw"
+                If IO.File.Exists(RutaDoc) Then listaFicherosGeo.Add(New FileGeorref With {
+                    .NameFile = $"{Sellado}.ecw",
+                    .PathFile = RutaDoc,
+                    .EPSCode = epsgCode
+                })
 
-                    If System.IO.File.Exists(RutaDOC) = True Then
-                        listaFicherosGeo.Add(RutaDOC)
-                    Else
-                        Exit Do
-                    End If
-                Loop
-                Exit For
-            End If
+            Next
+            If listaFicherosGeo.Count > 0 Then Exit Sub
         Next
+
+        For Each epsgCode As String In lstEPSG
+            For Each Muni As String In listaCodMuniHistorico
+                RutaDoc = $"{rutaRepoGeorrefBase}\{epsgCode}\{DirRepoProvinciaByTipodoc(tipoDocumento.idTipodoc)}\{Muni.Substring(0, 2)}\{Muni}\{Sellado}_01.ecw"
+                If IO.File.Exists(RutaDoc) Then
+                    listaFicherosGeo.Add(New FileGeorref With {
+                        .NameFile = $"{Sellado}_01.ecw",
+                        .PathFile = RutaDoc,
+                        .EPSCode = epsgCode
+                    })
+                    contador = 1
+                    Do Until contador = 20
+                        contador += 1
+                        RutaDoc = $"{rutaRepoGeorrefBase}\{epsgCode}\{DirRepoProvinciaByTipodoc(tipoDocumento.idTipodoc)}\{Muni.Substring(0, 2)}\{Muni}\{Sellado}_{String.Format("{0:00}", contador)}.ecw"
+                        If IO.File.Exists(RutaDoc) Then
+                            listaFicherosGeo.Add(New FileGeorref With {
+                                .NameFile = $"{Sellado}_{String.Format("{0:00}", contador)}.ecw",
+                                .PathFile = RutaDoc,
+                                .EPSCode = epsgCode
+                            })
+                        Else
+                            Exit Do
+                        End If
+                    Loop
+                    Exit For
+                End If
+            Next
+        Next
+
+        getGeoFilesConsultado = True
 
     End Sub
 
@@ -480,10 +714,10 @@
         BBOX_Xmax = CType(x2_tmp, String).Replace(",", ".")
         BBOX_Ymin = CType(y1_tmp, String).Replace(",", ".")
         BBOX_Ymax = CType(y2_tmp, String).Replace(",", ".")
-        BBOX4OL3 = "POLYGON((" & BBOX_Xmin & " " & BBOX_Ymin & "," & _
-                           "" & BBOX_Xmin & " " & BBOX_Ymax & "," & _
-                           "" & BBOX_Xmax & " " & BBOX_Ymax & "," & _
-                           "" & BBOX_Xmax & " " & BBOX_Ymin & "," & _
+        BBOX4OL3 = "POLYGON((" & BBOX_Xmin & " " & BBOX_Ymin & "," &
+                           "" & BBOX_Xmin & " " & BBOX_Ymax & "," &
+                           "" & BBOX_Xmax & " " & BBOX_Ymax & "," &
+                           "" & BBOX_Xmax & " " & BBOX_Ymin & "," &
                            "" & BBOX_Xmin & " " & BBOX_Ymin & "))"
         BBOXCenter4OL3_ByExtent = "[" & BBOX_Xmin & "," & BBOX_Ymin & "," & BBOX_Xmax & "," & BBOX_Ymax & "]"
 

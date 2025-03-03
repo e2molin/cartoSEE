@@ -38,7 +38,7 @@ Partial Class AboutBox1
         'PictureBox2
         '
         Me.PictureBox2.Image = CType(resources.GetObject("PictureBox2.Image"), System.Drawing.Image)
-        Me.PictureBox2.Location = New System.Drawing.Point(514, 0)
+        Me.PictureBox2.Location = New System.Drawing.Point(218, 17)
         Me.PictureBox2.Name = "PictureBox2"
         Me.PictureBox2.Size = New System.Drawing.Size(267, 274)
         Me.PictureBox2.TabIndex = 9
@@ -46,7 +46,7 @@ Partial Class AboutBox1
         '
         'Button1
         '
-        Me.Button1.Location = New System.Drawing.Point(638, 352)
+        Me.Button1.Location = New System.Drawing.Point(563, 349)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(134, 47)
         Me.Button1.TabIndex = 15
@@ -100,14 +100,14 @@ Partial Class AboutBox1
         Me.GroupBox1.Controls.Add(Me.Label5)
         Me.GroupBox1.Location = New System.Drawing.Point(12, 297)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(337, 102)
+        Me.GroupBox1.Size = New System.Drawing.Size(545, 102)
         Me.GroupBox1.TabIndex = 13
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Producto para"
         '
         'Button2
         '
-        Me.Button2.Location = New System.Drawing.Point(638, 289)
+        Me.Button2.Location = New System.Drawing.Point(563, 290)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(134, 50)
         Me.Button2.TabIndex = 16
@@ -117,7 +117,7 @@ Partial Class AboutBox1
         'PictureBox1
         '
         Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-        Me.PictureBox1.Location = New System.Drawing.Point(433, 206)
+        Me.PictureBox1.Location = New System.Drawing.Point(491, 223)
         Me.PictureBox1.Name = "PictureBox1"
         Me.PictureBox1.Size = New System.Drawing.Size(66, 68)
         Me.PictureBox1.TabIndex = 17
@@ -127,7 +127,7 @@ Partial Class AboutBox1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(784, 411)
+        Me.ClientSize = New System.Drawing.Size(709, 411)
         Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.Button1)
