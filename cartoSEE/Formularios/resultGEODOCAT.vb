@@ -577,7 +577,7 @@
                 ModalExclamation("Búsqueda por fecha de alta no definida correctamente")
                 Exit Sub
             End If
-            FillDocCARTOSEEwithFilter($"archivo.fecha_creacion between '{paramSQL1}' AND '{paramSQL2}'")
+            FillDocCARTOSEEwithFilter($"archivo.fechacreacion between '{paramSQL1}' AND '{paramSQL2}'")
             Me.Text = $"Documentos dados de alta en BADASID entre {paramSQL1} y {paramSQL2}"
 
 

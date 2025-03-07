@@ -962,8 +962,8 @@
             End If
             If docPDF <> "" Then
                 ToolStripStatusLabel2.Text = "Copiando documento PDF"
-                If Not IO.Directory.Exists($"{rutaRepo}\_pdf\{DirRepoProvinciaByINE(nuevoDoc.ProvinciaRepo)}") Then
-                    IO.Directory.CreateDirectory($"{rutaRepo}\_pdf\{DirRepoProvinciaByINE(nuevoDoc.ProvinciaRepo)}")
+                If Not IO.Directory.Exists($"{rutaRepo}\_pdf\{String.Format("{0:00}", nuevoDoc.ProvinciaRepo)}") Then
+                    IO.Directory.CreateDirectory($"{rutaRepo}\_pdf\{String.Format("{0:00}", nuevoDoc.ProvinciaRepo)}")
                     okPDF = True
                 End If
                 Dim selladoFormat As String = String.Format("{0:00000000}", CType(nuevoDoc.Sellado, Integer))

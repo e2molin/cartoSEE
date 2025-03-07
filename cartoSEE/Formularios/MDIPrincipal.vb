@@ -1224,7 +1224,7 @@ Public Class MDIPrincipal
         Dim Fecha_fin As String
 
 
-        If sender.name = "Query_Advance03" Then
+        If sender.name = "Query_Advance01" Then
             Fecha_ini = InputDialog.InputBox("Fecha inicio de la búsqueda AAAA-MM-DD", "Consultas avanzadas", "")
             Fecha_fin = InputDialog.InputBox("Fecha final de la búsqueda AAAA-MM-DD", "Consultas avanzadas", "")
         ElseIf sender.name = "Query_Advance02" Or sender.name = "Query_Advance03" Then
