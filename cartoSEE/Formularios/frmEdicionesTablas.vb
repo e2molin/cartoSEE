@@ -2,12 +2,12 @@ Public Class frmEdicionesTablas
 
     Private Sub frmEdicionesTablas_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
-        ListView1.Size = New Point(516, 256)
+        ListView1.Size = New Point(760, 345)
         ListView1.Location = New Point(12, 60)
         ListView1.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Bottom Or AnchorStyles.Right
         ListView1.Visible = True
 
-        GroupBox1.Size = New Point(516, 256)
+        GroupBox1.Size = New Point(760, 345)
         GroupBox1.Location = New Point(12, 60)
         GroupBox1.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Bottom Or AnchorStyles.Right
         GroupBox1.Visible = False
@@ -32,6 +32,7 @@ Public Class frmEdicionesTablas
             ListView1.Columns.Add("ID", "ID", 70, HorizontalAlignment.Left, 0)
             ListView1.Columns.Add("Tipo de Documento", "Tipo de Documento", 280, HorizontalAlignment.Left, 0)
             ListView1.Columns.Add("Carpeta en Repositorio", "Carpeta en Repositorio", 200, HorizontalAlignment.Left, 0)
+            ListView1.Columns.Add("Prefijo", "Prefijo", 200, HorizontalAlignment.Left, 0)
         ElseIf TipoElemento = 2 Then
             ListView1.Columns.Add("ID", "ID", 70, HorizontalAlignment.Left, 0)
             ListView1.Columns.Add("Observación standard", "Observación standard", 480, HorizontalAlignment.Left, 0)
@@ -60,7 +61,7 @@ Public Class frmEdicionesTablas
         ListView1.Items.Clear()
         If TipoElemento = 1 Then
             'Carga de los tipos de documento
-            cadSQL = "SELECT idtipodoc,tipodoc,dirrepo FROM bdsidschema.tbtipodocumento ORDER BY idtipodoc"
+            cadSQL = "SELECT idtipodoc,tipodoc,dirrepo,nombrecdd FROM bdsidschema.tbtipodocumento ORDER BY idtipodoc"
             reportData = New DataTable
             If CargarRecordset(cadSQL, reportData) = True Then
                 filas = reportData.Select
@@ -72,6 +73,7 @@ Public Class frmEdicionesTablas
                         elementoLV.Text = registro.Item("idtipodoc").ToString
                         elementoLV.SubItems.Add(registro("tipodoc").ToString)
                         elementoLV.SubItems.Add(registro("dirrepo").ToString)
+                        elementoLV.SubItems.Add(registro("nombrecdd").ToString)
                         If iRegistro Mod 2 = 0 Then
                             elementoLV.BackColor = Color.White
                         Else
@@ -167,8 +169,7 @@ Public Class frmEdicionesTablas
         If TipoElemento = 1 Then
             Label1.Text = "Tipo de documento"
             Label2.Text = "Carpeta Repositorio"
-            Label3.Visible = False
-            TextBox3.Visible = False
+            Label3.Text = "Prefijo"
         ElseIf TipoElemento = 2 Then
             Label1.Text = "Nombre de la Observación"
             Label2.Visible = False
@@ -194,8 +195,8 @@ Public Class frmEdicionesTablas
     Private Sub Button4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button4.Click
 
         If GroupBox1.Tag = "" Then
-            If CrearElemento() = True Then
-                MessageBox.Show("Elemento creado", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+            If CrearElemento() Then
+                ModalInfo("Elemento creado")
                 RellenarLV(Me.Tag)
                 ListView1.Visible = True
                 GroupBox1.Visible = False
@@ -204,11 +205,11 @@ Public Class frmEdicionesTablas
                     MDIPrincipal.CargarFiltros()
                 End If
             Else
-                MessageBox.Show("Elemento no creado", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                ModalExclamation("Elemento no creado")
             End If
         Else
-            If ActualizarElemento() = True Then
-                MessageBox.Show("Elemento actualizado", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+            If ActualizarElemento() Then
+                ModalInfo("Elemento actualizado")
                 RellenarLV(Me.Tag)
                 ListView1.Visible = True
                 GroupBox1.Visible = False
@@ -217,7 +218,7 @@ Public Class frmEdicionesTablas
                     MDIPrincipal.CargarFiltros()
                 End If
             Else
-                MessageBox.Show("Elemento no actualizado", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                ModalExclamation("Elemento no actualizado")
             End If
         End If
 
@@ -272,6 +273,9 @@ Public Class frmEdicionesTablas
         If TipoElemento = 1 Then
             TextBox1.Text = ListView1.SelectedItems(0).SubItems(1).Text
             TextBox2.Text = ListView1.SelectedItems(0).SubItems(2).Text
+            TextBox2.Tag = ListView1.SelectedItems(0).SubItems(2).Text
+            TextBox3.Text = ListView1.SelectedItems(0).SubItems(3).Text
+            TextBox3.Tag = ListView1.SelectedItems(0).SubItems(3).Text
         ElseIf TipoElemento = 2 Then
             TextBox1.Text = ListView1.SelectedItems(0).SubItems(1).Text
         ElseIf TipoElemento = 3 Then
@@ -297,10 +301,10 @@ Public Class frmEdicionesTablas
             ObtenerEscalar("SELECT count(*) FROM bdsidschema.archivo where tipodoc_id=" & ElemBorrar, Result)
             NumElementos = IIf(IsNumeric(Result), CType(Result, Integer), 0)
             If NumElementos > 0 Then
-                MessageBox.Show("Hay elementos asociados a este tipo de documento. No se puede eliminar.", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+                ModalExclamation("Hay elementos asociados a este tipo de documento. No se puede eliminar.")
                 Exit Function
             End If
-            If MessageBox.Show("¿Desea eliminar este tipo de documento:" & ListView1.SelectedItems(0).Text & "?", AplicacionTitulo, MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.No Then Exit Function
+            If ModalQuestWriteDatabase($"¿Desea eliminar este tipo de documento: {ListView1.SelectedItems(0).Text}?") = DialogResult.No Then Exit Function
             ReDim CadSQL(0)
             CadSQL(0) = "DELETE FROM bdsidschema.tbtipodocumento where idtipodoc=" & ElemBorrar.ToString
             BorrarElemento = ExeTran(CadSQL)
@@ -309,10 +313,10 @@ Public Class frmEdicionesTablas
             ObtenerEscalar("SELECT count(*) FROM bdsidschema.archivo where idobservestandar=" & ElemBorrar, Result)
             NumElementos = IIf(IsNumeric(Result), CType(Result, Integer), 0)
             If NumElementos > 0 Then
-                MessageBox.Show("Hay elementos asociados con esta observación. No se puede eliminar.", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+                ModalExclamation("Hay elementos asociados a este tipo de documento. No se puede eliminar.")
                 Exit Function
             End If
-            If MessageBox.Show("¿Desea eliminar esta observación:" & ListView1.SelectedItems(0).Text & "?", AplicacionTitulo, MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.No Then Exit Function
+            If ModalQuestWriteDatabase($"¿Desea eliminar esta observación de documento: {ListView1.SelectedItems(0).Text}?") = DialogResult.No Then Exit Function
             ReDim CadSQL(0)
             CadSQL(0) = "DELETE FROM bdsidschema.tbobservaciones where idobservestandar=" & ElemBorrar.ToString
             BorrarElemento = ExeTran(CadSQL)
@@ -321,16 +325,16 @@ Public Class frmEdicionesTablas
             ObtenerEscalar("SELECT count(*) FROM bdsidschema.archivo where idestadodoc=" & ElemBorrar, Result)
             NumElementos = IIf(IsNumeric(Result), CType(Result, Integer), 0)
             If NumElementos > 0 Then
-                MessageBox.Show("Hay elementos asociados con este estado de conservación. No se puede eliminar.", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+                ModalExclamation("Hay elementos asociados a este tipo de documento. No se puede eliminar.")
                 Exit Function
             End If
-            If MessageBox.Show("¿Desea eliminar este estado de conservación:" & ListView1.SelectedItems(0).Text & "?", AplicacionTitulo, MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.No Then Exit Function
+            If ModalQuestWriteDatabase($"¿Desea eliminar este estado de conservación: {ListView1.SelectedItems(0).Text}?") = DialogResult.No Then Exit Function
             ReDim CadSQL(0)
             CadSQL(0) = "DELETE FROM bdsidschema.tbestadodocumento where idestadodoc=" & ElemBorrar.ToString
             BorrarElemento = ExeTran(CadSQL)
         ElseIf Me.Tag = 4 Then
             ElemBorrar = ListView1.SelectedItems(0).Tag
-            If MessageBox.Show("¿Desea eliminar esta conversión de unidades:" & ListView1.SelectedItems(0).Text & "?", AplicacionTitulo, MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.No Then Exit Function
+            If ModalQuestWriteDatabase($"¿Desea eliminar esta convsersión de unidades: {ListView1.SelectedItems(0).Text}?") = DialogResult.No Then Exit Function
             ReDim CadSQL(0)
             CadSQL(0) = "DELETE FROM bdsidschema.tbequivalencias where id_equivalencia=" & ElemBorrar.ToString
             BorrarElemento = ExeTran(CadSQL)
@@ -340,61 +344,59 @@ Public Class frmEdicionesTablas
 
     Function ActualizarElemento() As Boolean
 
-        Dim ListaSQL() As String
+        Dim ListaSQL As New ArrayList
         Dim idElem As Integer
         Dim Result As String
 
         If Me.Tag = 1 Then
             If TextBox1.Text.Trim = "" Then
-                MessageBox.Show("Escriba un nombre para el tipo de documento", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+                ModalExclamation("Escriba un nombre para el tipo de documento")
                 Exit Function
             End If
+            If TextBox2.Text.Trim <> TextBox2.Tag.trim Then
+                If ModalQuestion("Este cambio implica la modificación manual por parte del usuario del directorio del repositorio. ¿Continuar?") = DialogResult.No Then Exit Function
+            End If
+
             idElem = ListView1.SelectedItems(0).Tag
-            ReDim ListaSQL(0)
-            ListaSQL(0) = "UPDATE bdsidschema.tbtipodocumento SET " &
-                            "tipodoc=" & "'" & TextBox1.Text.Replace("'", "`") & "'," &
-                            "dirrepo=" & "'" & TextBox2.Text.Replace("'", "`") & "' " &
-                            "WHERE idtipodoc=" & idElem
+
+            If TextBox3.Text.Trim <> TextBox3.Tag.trim Then
+                ObtenerEscalar($"SELECT count(*) FROM bdsidschema.archivo where tipodoc_id={idElem}", Result)
+                If ModalQuestion($"Este cambio implica la modificación manual por parte del usuario de los nombres de fichero asociados a este tipo. Ficheros encontrados: {Result} ¿Continuar?") = DialogResult.No Then Exit Function
+            End If
+
+            ListaSQL.Add($"UPDATE bdsidschema.tbtipodocumento SET 
+                            tipodoc=E'{TextBox1.Text.Replace("'", "\'")}',
+                            dirrepo=E'{TextBox2.Text.Replace("'", "\'")}',
+                            nombrecdd=E'{TextBox3.Text.Replace("'", "\'")}' 
+                            WHERE idtipodoc={idElem}")
         ElseIf Me.Tag = 2 Then
             If TextBox1.Text.Trim = "" Then
-                MessageBox.Show("Escriba un nombre para la observación", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+                ModalExclamation("Escriba un nombre para la observación")
                 Exit Function
             End If
             idElem = ListView1.SelectedItems(0).Tag
-            ReDim ListaSQL(0)
-            ListaSQL(0) = "UPDATE bdsidschema.tbobservaciones SET " &
-                            "observestandar=" & "'" & TextBox1.Text.Replace("'", "`") & "' " &
-                            "WHERE idobservestandar=" & idElem
+            ListaSQL.Add($"UPDATE bdsidschema.tbobservaciones SET observestandar=E'{TextBox1.Text.Replace("'", "\'")}' WHERE idobservestandar={idElem}")
         ElseIf Me.Tag = 3 Then
             If TextBox1.Text.Trim = "" Then
-                MessageBox.Show("Escriba un nombre para el estado de conservación", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+                ModalExclamation("Escriba un nombre para el estado de conservación")
                 Exit Function
             End If
             idElem = ListView1.SelectedItems(0).Tag
-            ReDim ListaSQL(0)
-            ListaSQL(0) = "UPDATE bdsidschema.tbestadodocumento SET " &
-                            "estadodoc=" & "'" & TextBox1.Text.Replace("'", "`") & "' " &
-                            "WHERE idestadodoc=" & idElem
+            ListaSQL.Add($"UPDATE bdsidschema.tbestadodocumento SET estadodoc=E'{TextBox1.Text.Replace("'", "\'")}' WHERE idestadodoc={idElem}")
         ElseIf Me.Tag = 4 Then
             If TextBox1.Text.Trim = "" Or TextBox2.Text.Trim = "" Then
-                MessageBox.Show("Escriba un nombre y equivalencia para la unidad", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+                ModalExclamation("Escriba un nombre y equivalencia para la unidad")
                 Exit Function
             End If
             idElem = ListView1.SelectedItems(0).Tag
-            ReDim ListaSQL(0)
-            ListaSQL(0) = "UPDATE bdsidschema.tbequivalencias SET " &
-                            "nombre=" & "'" & TextBox1.Text.Replace("'", "`") & "'," &
-                            "sup_m2=" & "" & TextBox2.Text.Replace(",", ".") & "," &
-                            "comentario=" & "'" & TextBox3.Text.Replace("'", "`") & "' " &
-                            "WHERE idequivalencia=" & idElem
+            ListaSQL.Add($"UPDATE bdsidschema.tbequivalencias SET 
+                            nombre=E'{TextBox1.Text.Replace("'", "\'")}',
+                            sup_m2={TextBox2.Text.Replace(",", ".")},
+                            comentario='{TextBox3.Text.Replace("'", "\'")}' 
+                            WHERE idequivalencia = {idElem}")
         End If
-        Application.DoEvents()
+
         ActualizarElemento = ExeTran(ListaSQL)
-        Application.DoEvents()
-
-
-
-
 
     End Function
 
@@ -470,5 +472,6 @@ Public Class frmEdicionesTablas
         RellenarCampos(Me.Tag)
 
     End Sub
+
 
 End Class

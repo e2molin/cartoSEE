@@ -141,7 +141,7 @@ Public Class MDIPrincipal
             CargarFiltros()
 
             ToolStripStatusLabel3.Text = ""
-            If usuarioMyApp.permisosLista.editarDocumentacion Then
+            If usuarioMyApp.permisosLista.EditarDocumentacion Then
                 If ObtenerEscalar("SELECT count(*) from bdsidschema.incidencias where aplicacion='CARTOSEE' and estado='Abierta'", pendingNotify) Then
                     If pendingNotify > 0 Then
                         ToolStripStatusLabel3.Text = "Hay " & pendingNotify & " incidencias abiertas"
@@ -172,7 +172,7 @@ Public Class MDIPrincipal
         End If
 
         'Dim endTicks As Long = DateTime.Now.Ticks
-        ToolStripStatusLabel1.Text = $"{usuarioMyApp.loginUser} / {usuarioMyApp.permisosLista.getNombrePermiso}"
+        ToolStripStatusLabel1.Text = $"{usuarioMyApp.LoginUser} / {usuarioMyApp.permisosLista.getNombrePermiso}"
         ToolStripStatusLabel.Text = $"{DB_Instancia} en {DB_Servidor} {IIf(usuarioMyApp.permisosLista.isUserISTARI, $" .EXE:{My.Application.Info.DirectoryPath}", "")}"
         ToolStripStatusLabel2.Text = Now.ToLongDateString.ToString
         'My.Application.Info.AssemblyName.
@@ -272,18 +272,18 @@ Public Class MDIPrincipal
         Panel_GeoSearch.BackColor = Panel1.BackColor
 
         'Si el usuario no es administrador
-        ToolStripButton9.Enabled = usuarioMyApp.permisosLista.editarDocumentacion
-        ToolStripButton21.Enabled = usuarioMyApp.permisosLista.editarDocumentacion
-        mnuTool_EditAtrib.Enabled = usuarioMyApp.permisosLista.editarDocumentacion
-        mnuModDocuTiposDoc.Enabled = usuarioMyApp.permisosLista.editarDocumentacion
-        mnuModDocuEstados.Enabled = usuarioMyApp.permisosLista.editarDocumentacion
-        mnuModDocuObservaciones.Enabled = usuarioMyApp.permisosLista.editarDocumentacion
-        mnuModDocuMedidas.Enabled = usuarioMyApp.permisosLista.editarDocumentacion
-        itemGestionUser.Enabled = usuarioMyApp.permisosLista.asignarPermisosUsuarios
-        mnuAddECW.Enabled = usuarioMyApp.permisosLista.editarDocumentacion
-        mnuAddContornos.Enabled = usuarioMyApp.permisosLista.editarDocumentacion
-        btnExportCdD.Enabled = usuarioMyApp.permisosLista.generarVersionCdD
-        mnuExportCdD.Enabled = usuarioMyApp.permisosLista.generarVersionCdD
+        ToolStripButton9.Enabled = usuarioMyApp.permisosLista.EditarDocumentacion
+        ToolStripButton21.Enabled = usuarioMyApp.permisosLista.EditarDocumentacion
+        mnuTool_EditAtrib.Enabled = usuarioMyApp.permisosLista.EditarDocumentacion
+        mnuModDocuTiposDoc.Enabled = usuarioMyApp.permisosLista.EditarDocumentacion
+        mnuModDocuEstados.Enabled = usuarioMyApp.permisosLista.EditarDocumentacion
+        mnuModDocuObservaciones.Enabled = usuarioMyApp.permisosLista.EditarDocumentacion
+        mnuModDocuMedidas.Enabled = usuarioMyApp.permisosLista.EditarDocumentacion
+        itemGestionUser.Enabled = usuarioMyApp.permisosLista.AsignarPermisosUsuarios
+        mnuAddECW.Enabled = usuarioMyApp.permisosLista.EditarDocumentacion
+        mnuAddContornos.Enabled = usuarioMyApp.permisosLista.EditarDocumentacion
+        btnExportCdD.Enabled = usuarioMyApp.permisosLista.GenerarVersionCdD
+        mnuExportCdD.Enabled = usuarioMyApp.permisosLista.GenerarVersionCdD
         ToolStripButton19.Enabled = usuarioMyApp.permisosLista.EditarDocumentacion
         mnuAdminTools.Enabled = usuarioMyApp.permisosLista.EditarDocumentacion
 
@@ -297,6 +297,7 @@ Public Class MDIPrincipal
         ToolStripButton1.Visible = usuarioMyApp.permisosLista.isUserISTARI
         mnuGenerarRejilla.Visible = usuarioMyApp.permisosLista.isUserISTARI
         mnuLanzarPlantilla.Visible = usuarioMyApp.permisosLista.isUserISTARI
+        mnuActivity.Visible = usuarioMyApp.permisosLista.isUserISTARI
 
         Me.WindowState = FormWindowState.Maximized
 
@@ -855,7 +856,7 @@ Public Class MDIPrincipal
     Sub ArranqueHerramientas(ByVal sender As System.Object, ByVal e As System.EventArgs) _
                                     Handles ToolStripButton10.Click, mnuGenerarRejilla.Click, ToolStripButton9.Click, mnuLanzarPlantilla.Click,
                                     mnuAddECW.Click, mnuAddContornos.Click, mnuMuniHisto.Click,
-                                    mnuQueryLibrosRegistro.Click, ToolStripButton20.Click, ToolStripButton21.Click
+                                    mnuQueryLibrosRegistro.Click, ToolStripButton20.Click, ToolStripButton21.Click, mnuActivity.Click
 
         If sender.name = "ToolStripButton9" Then
             If usuarioMyApp.permisosLista.EditarDocumentacion Then
@@ -873,6 +874,90 @@ Public Class MDIPrincipal
                     }
                 FormularioCreacionCuadernoMTN.Show()
             End If
+        ElseIf sender.name = "mnuActivity" Then
+            Dim frmVista As New frmActivity
+
+            frmVista.MdiParent = Me
+            frmVista.Text = "Actividad en BADASID"
+            frmVista.SQLBase = "SELECT idlogactivity, usuario, maquina, aplicacion,fecha, descrip,consulta FROM bdsidschema.logactivity"
+            frmVista.PKField = "idlogactivity"
+            frmVista.OrderByField = "idlogactivity"
+            frmVista.OrderByDirection = "DESC"
+            frmVista.LimitResults = 3000
+
+
+            frmVista.DefinitionColumns.Add(New frmActivity.DVMDataGridElement With {
+                                                                                .NameField = "idlogactivity",
+                                                                                .HeaderText = "idlogactivity",
+                                                                                .Visible = False,
+                                                                                .Hide_And_show = False,
+                                                                                .Searchable = False,
+                                                                                .AligmentText = DataGridViewContentAlignment.BottomRight,
+                                                                                .Width = 0,
+                                                                                .FixedWidth = False
+                                                        })
+            frmVista.DefinitionColumns.Add(New frmActivity.DVMDataGridElement With {
+                                                                                .NameField = "usuario",
+                                                                                .HeaderText = "Usuario",
+                                                                                .Visible = True,
+                                                                                .Hide_And_show = True,
+                                                                                .Searchable = True,
+                                                                                .AligmentText = DataGridViewContentAlignment.BottomLeft,
+                                                                                .Width = 120,
+                                                                                .FixedWidth = True
+                                                        })
+            frmVista.DefinitionColumns.Add(New frmActivity.DVMDataGridElement With {
+                                                                                .NameField = "maquina",
+                                                                                .HeaderText = "Máquina",
+                                                                                .Visible = True,
+                                                                                .Hide_And_show = True,
+                                                                                .Searchable = True,
+                                                                                .AligmentText = DataGridViewContentAlignment.BottomLeft,
+                                                                                .Width = 120,
+                                                                                .FixedWidth = True
+                                                        })
+            frmVista.DefinitionColumns.Add(New frmActivity.DVMDataGridElement With {
+                                                                                .NameField = "aplicacion",
+                                                                                .HeaderText = "Aplicación",
+                                                                                .Visible = True,
+                                                                                .Hide_And_show = True,
+                                                                                .Searchable = False,
+                                                                                .AligmentText = DataGridViewContentAlignment.BottomLeft,
+                                                                                .Width = 120,
+                                                                                .FixedWidth = True
+                                                        })
+            frmVista.DefinitionColumns.Add(New frmActivity.DVMDataGridElement With {
+                                                                                .NameField = "fecha",
+                                                                                .HeaderText = "Fecha",
+                                                                                .Visible = True,
+                                                                                .Hide_And_show = True,
+                                                                                .Searchable = False,
+                                                                                .AligmentText = DataGridViewContentAlignment.BottomLeft,
+                                                                                .Width = 120,
+                                                                                .FixedWidth = True
+                                                        })
+            frmVista.DefinitionColumns.Add(New frmActivity.DVMDataGridElement With {
+                                                                                .NameField = "descrip",
+                                                                                .HeaderText = "Descripción",
+                                                                                .Visible = True,
+                                                                                .Hide_And_show = True,
+                                                                                .Searchable = False,
+                                                                                .AligmentText = DataGridViewContentAlignment.BottomLeft,
+                                                                                .Width = 150,
+                                                                                .FixedWidth = False
+                                                        })
+            frmVista.DefinitionColumns.Add(New frmActivity.DVMDataGridElement With {
+                                                                                .NameField = "consulta",
+                                                                                .HeaderText = "Consulta",
+                                                                                .Visible = True,
+                                                                                .Hide_And_show = True,
+                                                                                .Searchable = False,
+                                                                                .AligmentText = DataGridViewContentAlignment.BottomLeft,
+                                                                                .Width = 150,
+                                                                                .FixedWidth = False
+                                                        })
+            frmVista.Show()
+
         ElseIf sender.name = "mnuQueryLibrosRegistro" Or sender.name = "ToolStripButton20" Then
 
             Dim frmVista As New dataViewerForm
@@ -936,8 +1021,6 @@ Public Class MDIPrincipal
             Dim iBucleY As Double
             Dim AnchuraX As Double = AnchuraXparam.Replace(".", ",")
             Dim AnchuraY As Double = AnchuraYparam.Replace(".", ",")
-
-
             Dim sw As New System.IO.StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) & "\rejilla.xyz", False, System.Text.Encoding.Unicode)
 
             For iBucleX = CType(CooX.Replace(".", ","), Double) To CType(CooX.Replace(".", ","), Double) + AnchuraX * (CeldasX - 1) Step AnchuraX
@@ -959,7 +1042,7 @@ Public Class MDIPrincipal
             sw.Close()
             sw.Dispose()
             sw = Nothing
-            MessageBox.Show("Rejilla terminada", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+            ModalInfo("Rejilla terminada")
 
         End If
 
@@ -990,7 +1073,7 @@ Public Class MDIPrincipal
                 If MessageBox.Show("Un informe de todas las provincias puede resultar lento. Aún así, ¿desea continuar?", AplicacionTitulo, MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.No Then
                     Exit Sub
                 End If
-                textoInforme = "Documentos de todas las provincias sin georreerenciar"
+                textoInforme = "Documentos de todas las provincias sin georeferenciar"
             Else
                 textoInforme = "Documentos de " & DameProvinciaByINE(codProv) & " sin georreerenciar"
             End If
@@ -1127,6 +1210,7 @@ Public Class MDIPrincipal
         Exit Sub
         Dim frmSettings As New frmSettings
         frmSettings.Show()
+
     End Sub
 
 
@@ -1320,85 +1404,6 @@ Public Class MDIPrincipal
         Exit Sub
 
 
-        'If sender.name = "Query_Advance01" Then
-        '    'Documentos modificados en los últimos 30 días
-        '    Filtro = " And archivo.fechamodificacion between '" & fechaActual.AddDays(-30).Year & "-" &
-        '                    String.Format("{0:00}", fechaActual.AddDays(-30).Month) & "-" &
-        '                    String.Format("{0:00}", fechaActual.AddDays(-30).Day) & "' AND '" & fechaActual.AddDays(1).Year & "-" &
-        '                    String.Format("{0:00}", fechaActual.AddDays(1).Month) & "-" &
-        '                    String.Format("{0:00}", fechaActual.AddDays(1).Day) & "'"
-        '    FrmResult.Text = "Documentos modificados en los últimos 30 días"
-        '    FrmResult.CargarDatosSIDCARTO_By_Filtro(Filtro)
-        'ElseIf sender.name = "Query_Advance02" Then
-        '    'Lanzar consulta documentos creados hoy
-        '    Filtro = " and archivo.fechacreacion between '" & fechaActual.Year & "-" &
-        '                    String.Format("{0:00}", fechaActual.Month) & "-" &
-        '                    String.Format("{0:00}", fechaActual.Day) & " 00:00:00' AND '" &
-        '                    fechaActual.AddDays(1).Year & "-" &
-        '                    String.Format("{0:00}", fechaActual.AddDays(1).Month) & "-" &
-        '                    String.Format("{0:00}", fechaActual.AddDays(1).Day) & " 00:00:00'"
-        '    FrmResult.Text = "Documentos creados hoy"
-        '    FrmResult.CargarDatosSIDCARTO_By_Filtro(Filtro)
-        'ElseIf sender.name = "Query_Advance03" Then
-        '    'Documentos modificados entre dos fechas
-        '    Dim Fecha_ini As String = InputDialog.InputBox("Fecha inicio de la búsqueda AAAA-MM-DD", "Consultas avanzadas", "")
-        '    Dim Fecha_fin As String = InputDialog.InputBox("Fecha final de la búsqueda AAAA-MM-DD", "Consultas avanzadas", "")
-        '    If Fecha_fin = "" Or Fecha_ini = "" Then Exit Sub
-        '    Filtro = "and fechamodificacion between '" & Fecha_ini & "' and '" & Fecha_fin & "'"
-        '    FrmResult.Text = "Documentos modificados entre " & Fecha_ini & " y " & Fecha_fin
-        '    FrmResult.CargarDatosSIDCARTO_By_Filtro(Filtro)
-        'ElseIf sender.name = "Query_Advance04" Then
-        '    'Documentos creados entre dos fechas
-        '    Dim Fecha_ini As String = InputDialog.InputBox("Fecha inicio de la búsqueda AAAA-MM-DD", "Consultas avanzadas", "")
-        '    Dim Fecha_fin As String = InputDialog.InputBox("Fecha final de la búsqueda AAAA-MM-DD", "Consultas avanzadas", "")
-        '    If Fecha_fin = "" Or Fecha_ini = "" Then Exit Sub
-        '    Filtro = "and fechacreacion between '" & Fecha_ini & "' and '" & Fecha_fin & "'"
-        '    FrmResult.Text = "Documentos dados de alta entre " & Fecha_ini & " y " & Fecha_fin
-        '    FrmResult.CargarDatosSIDCARTO_By_Filtro(Filtro)
-        'ElseIf sender.name = "Query_Advance05" Then
-        '    'Ultimos n registros creados
-        '    Dim NumReg As String = InputDialog.InputBox("¿Cuantos registros desea mostrar?", "Consultas avanzadas", "100")
-        '    If NumReg.Trim = "" Then Exit Sub
-        '    If Not IsNumeric(NumReg) Then Exit Sub
-        '    FrmResult.Text = "Últimos documentos introducidos"
-        '    FrmResult.MdiParent = Me
-        '    FrmResult.CargarUltimosDatos(CType(NumReg, Integer))
-        '    FrmResult.Show()
-        '    Exit Sub
-        'ElseIf sender.name = "Query_Advance06" Then
-        '    'Documentos creados en los últimos 30 días
-        '    Filtro = " and archivo.fechacreacion between '" & fechaActual.AddDays(-30).Year & "-" &
-        '        String.Format("{0:00}", fechaActual.AddDays(-30).Month) & "-" &
-        '        String.Format("{0:00}", fechaActual.AddDays(-30).Day) & "' AND '" & fechaActual.AddDays(1).Year & "-" &
-        '        String.Format("{0:00}", fechaActual.AddDays(1).Month) & "-" &
-        '        String.Format("{0:00}", fechaActual.AddDays(1).Day) & "'"
-        '    FrmResult.Text = "Documentos creados en los últimos 30 días"
-        '    FrmResult.CargarDatosSIDCARTO_By_Filtro(Filtro)
-        'ElseIf sender.name = "Query_Advance07" Then
-        '    Dim Rango As String = InputDialog.InputBox("Introduzca un rango de números de sellado (#####1-#####2)", "Consultas avanzadas", "100")
-        '    If Rango = "" Then Exit Sub
-        '    If Rango.IndexOf("-") = -1 Then Exit Sub
-        '    Dim Sellados() As String = Rango.Split("-")
-        '    If Sellados.Length = 2 Then
-        '        Filtro = " and archivo.numdoc between '" & Sellados(0) & "' AND '" & Sellados(1) & "'"
-        '        FrmResult.Text = "Documentos con sello entre " & Sellados(0) & " Y " & Sellados(1)
-        '    Else
-        '        Exit Sub
-        '    End If
-        '    FrmResult.CargarDatosSIDCARTO_By_Filtro(Filtro)
-        'ElseIf sender.name = "Query_Advance08" Then
-        '    Dim fechaQuery As String = InputDialog.InputBox("Fecha de la búsqueda AAAA-MM-DD", "Consultas avanzadas", "")
-        '    If fechaQuery = "" Then Exit Sub
-        '    Filtro = " and archivo.fechacreacion between '" & fechaQuery & " 00:00:00' AND '" &
-        '                    fechaQuery & " 23:59:59'"
-        '    FrmResult.Text = "Documentos creados el día " & fechaQuery
-        '    FrmResult.CargarDatosSIDCARTO_By_Filtro(Filtro)
-        'Else
-        '    Exit Sub
-        'End If
-        'FrmResult.MdiParent = Me
-        'FrmResult.Show()
-
     End Sub
 
 
@@ -1438,47 +1443,6 @@ Public Class MDIPrincipal
             .Show()
         End With
 
-
-        'If CarritoCompraOld Is Nothing Then
-        '    MessageBox.Show("El carrito esta vacío", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-        '    Exit Sub
-        'End If
-        'If CarritoCompraOld.Length = 0 Then
-        '    MessageBox.Show("El carrito esta vacío", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-        '    Exit Sub
-        'End If
-
-
-
-
-
-        'Dim ExisteCarrito As Boolean
-        'For Each ChildForm As Form In Me.MdiChildren
-        '    If ChildForm.Tag = "Carrito de la Compra" Then
-        '        ChildForm.Focus()
-        '        ExisteCarrito = True
-        '        Exit For
-        '    End If
-        'Next
-        'Dim FrmCestaCompra As New frmDocumentacion
-        'If ExisteCarrito = True Then
-        '    Try
-        '        FrmCestaCompra = Me.ActiveMdiChild
-        '        If FrmCestaCompra Is Nothing Then Exit Sub
-        '    Catch ex As Exception
-
-        '    End Try
-        '    FrmCestaCompra.MostrarElementosCarrito()
-        '    FrmCestaCompra.Show()
-        'Else
-        '    FrmCestaCompra.MdiParent = Me
-        '    FrmCestaCompra.Text = " Carrito de la Compra"
-        '    FrmCestaCompra.Tag = "Carrito de la Compra"
-        '    FrmCestaCompra.Button7.Image = Me.ImageList1.Images(6)
-        '    FrmCestaCompra.MostrarElementosCarrito()
-        '    FrmCestaCompra.Show()
-
-        'End If
     End Sub
 
     Private Sub ComboBox3_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ComboBox3.Click
@@ -1532,7 +1496,7 @@ Public Class MDIPrincipal
     End Sub
 
 
-    Private Sub itemUsermenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles itemUsermenu.Click, ToolStripButton2.Click, ToolStripStatusLabel3.Click
+    Private Sub itemUsermenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolStripButton2.Click, ToolStripStatusLabel3.Click
 
 
         Dim frmUser As New GestionUserNotificacion
@@ -1588,28 +1552,6 @@ Public Class MDIPrincipal
 
     End Sub
 
-
-
-    Private Sub MDIPrincipal_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Resize
-
-        'If Me.Size.Height < 820 Then
-        '    RadioButton1.Visible = False
-        '    RadioButton2.Visible = False
-        '    If Me.Size.Height < 780 Then
-        '        Button3.Visible = False
-        '        Button4.Visible = False
-        '    Else
-        '        Button3.Visible = True
-        '        Button4.Visible = True
-        '    End If
-        'Else
-        '    RadioButton1.Visible = True
-        '    RadioButton2.Visible = True
-        '    Button3.Visible = True
-        '    Button4.Visible = True
-        'End If
-
-    End Sub
 
     Private Sub Button7_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button7.Click
 

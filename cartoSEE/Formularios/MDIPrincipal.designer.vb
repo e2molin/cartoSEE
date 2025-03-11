@@ -91,13 +91,13 @@ Partial Class MDIPrincipal
         Me.CloseAllToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ArrangeIconsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.UserMenu = New System.Windows.Forms.ToolStripMenuItem()
-        Me.itemUsermenu = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator11 = New System.Windows.Forms.ToolStripSeparator()
         Me.itemChangePass = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuListaPermisos = New System.Windows.Forms.ToolStripMenuItem()
         Me.itemGestionUser = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuOpenLoggerFile = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuOpenPreferenceFolder = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuActivity = New System.Windows.Forms.ToolStripMenuItem()
         Me.HelpMenu = New System.Windows.Forms.ToolStripMenuItem()
         Me.IndexToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator8 = New System.Windows.Forms.ToolStripSeparator()
@@ -186,6 +186,7 @@ Partial Class MDIPrincipal
         Me.Label9 = New System.Windows.Forms.Label()
         Me.Button2 = New System.Windows.Forms.Button()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
+        Me.btnInvestigar = New System.Windows.Forms.Button()
         Me.btnPendingCatalog = New System.Windows.Forms.Button()
         Me.Panel_DocSearch = New System.Windows.Forms.Panel()
         Me.TextBox4 = New System.Windows.Forms.TextBox()
@@ -247,7 +248,6 @@ Partial Class MDIPrincipal
         Me.Button6 = New System.Windows.Forms.Button()
         Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
         Me.ImageList2 = New System.Windows.Forms.ImageList(Me.components)
-        Me.btnInvestigar = New System.Windows.Forms.Button()
         Me.MenuStrip.SuspendLayout()
         Me.ToolStrip.SuspendLayout()
         Me.StatusStrip.SuspendLayout()
@@ -729,17 +729,10 @@ Partial Class MDIPrincipal
         '
         'UserMenu
         '
-        Me.UserMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.itemUsermenu, Me.ToolStripSeparator11, Me.itemChangePass, Me.mnuListaPermisos, Me.itemGestionUser, Me.mnuOpenLoggerFile, Me.mnuOpenPreferenceFolder})
+        Me.UserMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripSeparator11, Me.itemChangePass, Me.mnuListaPermisos, Me.itemGestionUser, Me.mnuOpenLoggerFile, Me.mnuOpenPreferenceFolder, Me.mnuActivity})
         Me.UserMenu.Name = "UserMenu"
         Me.UserMenu.Size = New System.Drawing.Size(62, 20)
         Me.UserMenu.Text = "Usuario"
-        '
-        'itemUsermenu
-        '
-        Me.itemUsermenu.Image = CType(resources.GetObject("itemUsermenu.Image"), System.Drawing.Image)
-        Me.itemUsermenu.Name = "itemUsermenu"
-        Me.itemUsermenu.Size = New System.Drawing.Size(253, 22)
-        Me.itemUsermenu.Text = "Notificación de incidencia"
         '
         'ToolStripSeparator11
         '
@@ -778,6 +771,13 @@ Partial Class MDIPrincipal
         Me.mnuOpenPreferenceFolder.Name = "mnuOpenPreferenceFolder"
         Me.mnuOpenPreferenceFolder.Size = New System.Drawing.Size(253, 22)
         Me.mnuOpenPreferenceFolder.Text = "Abrir directorio de preferencias"
+        '
+        'mnuActivity
+        '
+        Me.mnuActivity.Image = CType(resources.GetObject("mnuActivity.Image"), System.Drawing.Image)
+        Me.mnuActivity.Name = "mnuActivity"
+        Me.mnuActivity.Size = New System.Drawing.Size(253, 22)
+        Me.mnuActivity.Text = "Actividad en BADASID"
         '
         'HelpMenu
         '
@@ -1599,6 +1599,18 @@ Partial Class MDIPrincipal
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Otros filtros cuadernos MTN"
         '
+        'btnInvestigar
+        '
+        Me.btnInvestigar.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnInvestigar.Image = CType(resources.GetObject("btnInvestigar.Image"), System.Drawing.Image)
+        Me.btnInvestigar.Location = New System.Drawing.Point(103, 41)
+        Me.btnInvestigar.Name = "btnInvestigar"
+        Me.btnInvestigar.Size = New System.Drawing.Size(93, 50)
+        Me.btnInvestigar.TabIndex = 42
+        Me.btnInvestigar.Text = "Investigar"
+        Me.btnInvestigar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+        Me.btnInvestigar.UseVisualStyleBackColor = True
+        '
         'btnPendingCatalog
         '
         Me.btnPendingCatalog.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
@@ -2224,8 +2236,8 @@ Partial Class MDIPrincipal
         Me.ImageList1.ImageStream = CType(resources.GetObject("ImageList1.ImageStream"), System.Windows.Forms.ImageListStreamer)
         Me.ImageList1.TransparentColor = System.Drawing.Color.Transparent
         Me.ImageList1.Images.SetKeyName(0, "Citaciones.ico")
-        Me.ImageList1.Images.SetKeyName(1, "Correspondencia.ico")
-        Me.ImageList1.Images.SetKeyName(2, "cuaderno_32.png")
+        Me.ImageList1.Images.SetKeyName(1, "SignoOK_24.png")
+        Me.ImageList1.Images.SetKeyName(2, "SignoNAK_24.png")
         Me.ImageList1.Images.SetKeyName(3, "item24.png")
         Me.ImageList1.Images.SetKeyName(4, "jpeg file.png")
         Me.ImageList1.Images.SetKeyName(5, "Earth_007.png")
@@ -2256,18 +2268,6 @@ Partial Class MDIPrincipal
         Me.ImageList2.Images.SetKeyName(12, "favicon NGBE - 32.png")
         Me.ImageList2.Images.SetKeyName(13, "Archivador 32.png")
         Me.ImageList2.Images.SetKeyName(14, "editar_24.png")
-        '
-        'btnInvestigar
-        '
-        Me.btnInvestigar.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnInvestigar.Image = CType(resources.GetObject("btnInvestigar.Image"), System.Drawing.Image)
-        Me.btnInvestigar.Location = New System.Drawing.Point(103, 41)
-        Me.btnInvestigar.Name = "btnInvestigar"
-        Me.btnInvestigar.Size = New System.Drawing.Size(93, 50)
-        Me.btnInvestigar.TabIndex = 42
-        Me.btnInvestigar.Text = "Investigar"
-        Me.btnInvestigar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
-        Me.btnInvestigar.UseVisualStyleBackColor = True
         '
         'MDIPrincipal
         '
@@ -2452,7 +2452,6 @@ Partial Class MDIPrincipal
     Friend WithEvents Query_Advance05 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents UserMenu As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripStatusLabel2 As System.Windows.Forms.ToolStripStatusLabel
-    Friend WithEvents itemUsermenu As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents itemGestionUser As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents btnVisorMosaicos As System.Windows.Forms.ToolStripButton
     Friend WithEvents mnuLanzarPlantilla As System.Windows.Forms.ToolStripMenuItem
@@ -2534,4 +2533,5 @@ Partial Class MDIPrincipal
     Friend WithEvents PictureBox6 As PictureBox
     Friend WithEvents btnPendingCatalog As Button
     Friend WithEvents btnInvestigar As Button
+    Friend WithEvents mnuActivity As ToolStripMenuItem
 End Class

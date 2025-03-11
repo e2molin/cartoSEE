@@ -253,6 +253,9 @@ Public Class frmInformes
 
     Sub Informe_UltimoDocumentoSellado()
 
+        Dim rcdJumpSellos As DataTable
+        Dim sqlJumpSellos As String
+
         'Preparo el LV para mostrar los resultados
         ListView1.FullRowSelect = True
         ListView1.GridLines = False
@@ -260,8 +263,10 @@ Public Class frmInformes
         ListView1.SmallImageList = MDIPrincipal.ImageList2
         ListView1.Columns.Clear()
         ListView1.Items.Clear()
-        ListView1.Columns.Add("Provincia", "Provincia", 150, HorizontalAlignment.Left, 0)
-        ListView1.Columns.Add("Sellado", "Último nº asignado", 250, HorizontalAlignment.Right, 0)
+        ListView1.Columns.Add("Provincia", "Provincia", 200, HorizontalAlignment.Left, 4)
+        ListView1.Columns.Add("Sellado", "Último nº asignado", 150, HorizontalAlignment.Right, 4)
+        ListView1.Columns.Add("Saltos", "Saltos", 100, HorizontalAlignment.Right, 4)
+        ListView1.Columns.Add("Sellados intermedios disponibles", "Disponibles", 200, HorizontalAlignment.Left, 4)
 
         ListView1.Tag = 3
         cadSQL = "SELECT provincia_id,max(numdoc) as ultimosello FROM bdsidschema.archivo GROUP BY provincia_id order by provincia_id"
@@ -272,16 +277,153 @@ Public Class frmInformes
             If filas.Length > 0 Then
                 Cancelar = False
                 For Each registro As DataRow In filas
-                    elementoLV = New ListViewItem
-                    elementoLV.Text = DameProvinciaByINE(registro("provincia_id").ToString)
-                    elementoLV.SubItems.Add(registro("ultimosello").ToString)
-                    If ListView1.Items.Count Mod 2 = 0 Then
-                        elementoLV.BackColor = Color.White
+                    If registro("provincia_id") = 28 Then
+                        'Calculamos para la secuencia de sellados 280001-289999
+                        sqlJumpSellos = $"WITH sellos as (SELECT generate_series(280001,289999) as estampado)
+                                            SELECT COALESCE(string_agg(to_char(estampado, 'FM000009'::text),','),'No hay saltos') as saltos,count(*) as numsaltos 
+	                                            FROM sellos WHERE estampado NOT IN  
+                                            (SELECT numdoc::integer FROM bdsidschema.archivo WHERE provincia_id=28 and numdoc::integer BETWEEN 280000 AND 289999) "
+                        elementoLV = New ListViewItem
+                        elementoLV.Text = "Madrid. Secuencia entre 280000 y 289999"
+                        elementoLV.SubItems.Add(registro("ultimosello").ToString)
+
+                        rcdJumpSellos = New DataTable
+
+                        If CargarRecordset(sqlJumpSellos, rcdJumpSellos) Then
+                            Application.DoEvents()
+                            If rcdJumpSellos.Select().Count = 1 Then
+                                elementoLV.SubItems.Add(rcdJumpSellos.Select()(0)("numsaltos"))
+                                elementoLV.SubItems.Add(rcdJumpSellos.Select()(0)("saltos"))
+                            End If
+
+                        Else
+                            elementoLV.SubItems.Add("")
+                            elementoLV.SubItems.Add("Secuencia de saltos no calculada")
+                        End If
+
+                        If ListView1.Items.Count Mod 2 = 0 Then
+                            elementoLV.BackColor = Color.White
+                        Else
+                            elementoLV.BackColor = Color.WhiteSmoke
+                        End If
+                        ListView1.Items.Add(elementoLV)
+
+                        rcdJumpSellos.Dispose()
+                        rcdJumpSellos = Nothing
+                        elementoLV = Nothing
+
+                        'Calculamos para la secuencia de sellados 820001-829999
+                        sqlJumpSellos = $"WITH sellos as (SELECT generate_series(820001,829999) as estampado)
+                                            SELECT COALESCE(string_agg(to_char(estampado, 'FM000009'::text),','),'No hay saltos') as saltos,count(*) as numsaltos 
+	                                            FROM sellos WHERE estampado NOT IN  
+                                            (SELECT numdoc::integer FROM bdsidschema.archivo WHERE provincia_id=28 and numdoc::integer BETWEEN 820001 AND 829999) "
+                        elementoLV = New ListViewItem
+                        elementoLV.Text = "Madrid. Secuencia entre 820001 y 829999"
+                        elementoLV.SubItems.Add(registro("ultimosello").ToString)
+
+                        rcdJumpSellos = New DataTable
+
+                        If CargarRecordset(sqlJumpSellos, rcdJumpSellos) Then
+                            Application.DoEvents()
+                            If rcdJumpSellos.Select().Count = 1 Then
+                                elementoLV.SubItems.Add(rcdJumpSellos.Select()(0)("numsaltos"))
+                                elementoLV.SubItems.Add(rcdJumpSellos.Select()(0)("saltos"))
+                            End If
+
+                        Else
+                            elementoLV.SubItems.Add("")
+                            elementoLV.SubItems.Add("Secuencia de saltos no calculada")
+                        End If
+
+                        If ListView1.Items.Count Mod 2 = 0 Then
+                            elementoLV.BackColor = Color.White
+                        Else
+                            elementoLV.BackColor = Color.WhiteSmoke
+                        End If
+                        ListView1.Items.Add(elementoLV)
+
+                        rcdJumpSellos.Dispose()
+                        rcdJumpSellos = Nothing
+                        elementoLV = Nothing
+
+                        'Calculamos para la secuencia de sellados 880001-889999
+                        sqlJumpSellos = $"WITH sellos as (SELECT generate_series(880001,889999) as estampado)
+                                            SELECT COALESCE(string_agg(to_char(estampado, 'FM000009'::text),','),'No hay saltos') as saltos,count(*) as numsaltos 
+	                                            FROM sellos WHERE estampado NOT IN  
+                                            (SELECT numdoc::integer FROM bdsidschema.archivo WHERE provincia_id=28 and numdoc::integer BETWEEN 880001 AND 889999) "
+                        elementoLV = New ListViewItem
+                        elementoLV.Text = "Madrid. Secuencia entre 880001 y 889999"
+                        elementoLV.SubItems.Add(registro("ultimosello").ToString)
+
+                        rcdJumpSellos = New DataTable
+
+                        If CargarRecordset(sqlJumpSellos, rcdJumpSellos) Then
+                            Application.DoEvents()
+                            If rcdJumpSellos.Select().Count = 1 Then
+                                elementoLV.SubItems.Add(rcdJumpSellos.Select()(0)("numsaltos"))
+                                elementoLV.SubItems.Add(rcdJumpSellos.Select()(0)("saltos"))
+                            End If
+
+                        Else
+                            elementoLV.SubItems.Add("")
+                            elementoLV.SubItems.Add("Secuencia de saltos no calculada")
+                        End If
+
+                        If ListView1.Items.Count Mod 2 = 0 Then
+                            elementoLV.BackColor = Color.White
+                        Else
+                            elementoLV.BackColor = Color.WhiteSmoke
+                        End If
+                        ListView1.Items.Add(elementoLV)
+
+                        rcdJumpSellos.Dispose()
+                        rcdJumpSellos = Nothing
+                        elementoLV = Nothing
+
+
+
                     Else
-                        elementoLV.BackColor = Color.WhiteSmoke
+                        sqlJumpSellos = $"with sellos as (
+	                                    select generate_series (
+		                                    (select min(numdoc::integer) from bdsidschema.archivo where provincia_id={registro("provincia_id")}),
+		                                    (select max(numdoc::integer) from bdsidschema.archivo where provincia_id={registro("provincia_id")})
+	                                    ) as estampado
+                                    )
+                                    select COALESCE(string_agg(to_char(estampado, 'FM000009'::text),','),'No hay saltos') as saltos,count(*) as numsaltos from sellos where estampado not IN  
+	                                    (SELECT numdoc::integer FROM bdsidschema.archivo WHERE provincia_id={registro("provincia_id")})"
+
+                        elementoLV = New ListViewItem
+                        elementoLV.Text = DameProvinciaByINE(registro("provincia_id").ToString)
+                        elementoLV.SubItems.Add(registro("ultimosello").ToString)
+
+                        rcdJumpSellos = New DataTable
+
+                        If CargarRecordset(sqlJumpSellos, rcdJumpSellos) Then
+                            Application.DoEvents()
+                            If rcdJumpSellos.Select().Count = 1 Then
+                                elementoLV.SubItems.Add(rcdJumpSellos.Select()(0)("numsaltos"))
+                                elementoLV.SubItems.Add(rcdJumpSellos.Select()(0)("saltos"))
+                            End If
+
+                        Else
+                            elementoLV.SubItems.Add("")
+                            elementoLV.SubItems.Add("Secuencia de saltos no calculada")
+                        End If
+
+                        If ListView1.Items.Count Mod 2 = 0 Then
+                            elementoLV.BackColor = Color.White
+                        Else
+                            elementoLV.BackColor = Color.WhiteSmoke
+                        End If
+                        ListView1.Items.Add(elementoLV)
+
+                        rcdJumpSellos.Dispose()
+                        rcdJumpSellos = Nothing
+                        elementoLV = Nothing
                     End If
-                    ListView1.Items.Add(elementoLV)
-                    elementoLV = Nothing
+
+
+
                 Next
             End If
         End If
