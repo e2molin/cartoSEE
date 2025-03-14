@@ -173,7 +173,11 @@ Public Class MDIPrincipal
 
         'Dim endTicks As Long = DateTime.Now.Ticks
         ToolStripStatusLabel1.Text = $"{usuarioMyApp.LoginUser} / {usuarioMyApp.permisosLista.getNombrePermiso}"
-        ToolStripStatusLabel.Text = $"{DB_Instancia} en {DB_Servidor} {IIf(usuarioMyApp.permisosLista.isUserISTARI, $" .EXE:{My.Application.Info.DirectoryPath}", "")}"
+        ToolStripStatusLabel.Text = $"{DB_Instancia} en {DB_Servidor} {IIf(usuarioMyApp.permisosLista.isUserISTARI, $" .EXE:{My.Application.Info.DirectoryPath}{IIf(TestMode, "MODO SEGURO", "PELIGRO. EDICIONES ACTIVAS")}", "")}"
+        If usuarioMyApp.permisosLista.isUserISTARI Then
+            ToolStripStatusLabel.ForeColor = IIf(TestMode, Color.Green, Color.Red)
+        End If
+
         ToolStripStatusLabel2.Text = Now.ToLongDateString.ToString
         'My.Application.Info.AssemblyName.
         My.Forms.SplashScreen.Dispose()
@@ -291,7 +295,7 @@ Public Class MDIPrincipal
         ToolStripButton19.Enabled = usuarioMyApp.permisosLista.isUserISTARI
         mnuDeveloperTools.Enabled = usuarioMyApp.permisosLista.isUserISTARI
         mnuAdminTools.Enabled = usuarioMyApp.permisosLista.isUserISTARI
-
+        mnuTextModeToggle.Visible = usuarioMyApp.permisosLista.isUserISTARI
 
         mnuDeveloper.Visible = usuarioMyApp.permisosLista.isUserISTARI
         ToolStripButton1.Visible = usuarioMyApp.permisosLista.isUserISTARI
@@ -334,6 +338,10 @@ Public Class MDIPrincipal
         ComboBox6.Text = "-----"
 
         ToolStripMenuItem1.Visible = False
+
+        mnuTextModeToggle.Text = IIf(TestMode, "Modo Test activado - SEGURIDAD", "Modo test desactivado - PELIGRO")
+        mnuTextModeToggle.ForeColor = IIf(TestMode, Color.Green, Color.Red)
+
 
 
     End Sub
@@ -856,7 +864,7 @@ Public Class MDIPrincipal
     Sub ArranqueHerramientas(ByVal sender As System.Object, ByVal e As System.EventArgs) _
                                     Handles ToolStripButton10.Click, mnuGenerarRejilla.Click, ToolStripButton9.Click, mnuLanzarPlantilla.Click,
                                     mnuAddECW.Click, mnuAddContornos.Click, mnuMuniHisto.Click,
-                                    mnuQueryLibrosRegistro.Click, ToolStripButton20.Click, ToolStripButton21.Click, mnuActivity.Click
+                                    mnuQueryLibrosRegistro.Click, ToolStripButton20.Click, ToolStripButton21.Click, mnuActivity.Click, mnuTextModeToggle.Click
 
         If sender.name = "ToolStripButton9" Then
             If usuarioMyApp.permisosLista.EditarDocumentacion Then
@@ -874,6 +882,16 @@ Public Class MDIPrincipal
                     }
                 FormularioCreacionCuadernoMTN.Show()
             End If
+        ElseIf sender.name = "mnuTextModeToggle" Then
+            Application.DoEvents()
+            TestMode = IIf(TestMode, False, True)
+            mnuTextModeToggle.Text = IIf(TestMode, "Modo Test activado - SEGURIDAD", "Modo test desactivado - PELIGRO")
+            mnuTextModeToggle.ForeColor = IIf(TestMode, Color.Green, Color.Red)
+            ToolStripStatusLabel.Text = $"{DB_Instancia} en {DB_Servidor} {IIf(usuarioMyApp.permisosLista.isUserISTARI, $" .EXE:{My.Application.Info.DirectoryPath}{IIf(TestMode, "MODO SEGURO", "PELIGRO. EDICIONES ACTIVAS")}", "")}"
+            If usuarioMyApp.permisosLista.isUserISTARI Then
+                ToolStripStatusLabel.ForeColor = IIf(TestMode, Color.Green, Color.Red)
+            End If
+
         ElseIf sender.name = "mnuActivity" Then
             Dim frmVista As New frmActivity
 
@@ -1049,7 +1067,7 @@ Public Class MDIPrincipal
     End Sub
 
     Sub LanzarInformes(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _
-                    mnuTool_Informes01.Click, mnuTool_Informes02.Click, mnuTool_Informes03.Click, mnuReportDocsNoContornos.Click, mnuPPCnoGeo.Click
+                    mnuTool_Informes01.Click, mnuTool_Informes02.Click, mnuTool_Informes03.Click, mnuTool_Informes04.Click, mnuReportDocsNoContornos.Click, mnuPPCnoGeo.Click
 
 
         Dim Fecha_ini As String
@@ -1116,8 +1134,11 @@ Public Class MDIPrincipal
             FormularioInformes.Text = "Inventario del SIDCARTO clasificado por Estado de conservación"
             FormularioInformes.Informe_Resumen_PorEstadoDoc()
         ElseIf sender.name = "mnuTool_Informes03" Then
-            FormularioInformes.Text = "Último número de sellado asignado por provincia"
-            FormularioInformes.Informe_UltimoDocumentoSellado()
+            FormularioInformes.Text = "Último número de sellado semántico catalogado por provincia"
+            FormularioInformes.Informe_UltimoDocumentoSelladoSemantico()
+        ElseIf sender.name = "mnuTool_Informes04" Then
+            FormularioInformes.Text = "Último número de sellado consecutivo catalogado"
+            FormularioInformes.Informe_UltimoDocumentoSelladoConsecutivo()
         ElseIf sender.name = "mnuPPCnoGeo" Then
             FormularioInformes.Text = "Planos de población en cuaderno no georreferenciados"
             FormularioInformes.ListarPPCnoGeo()
@@ -2162,6 +2183,5 @@ Public Class MDIPrincipal
 
 
     End Sub
-
 
 End Class

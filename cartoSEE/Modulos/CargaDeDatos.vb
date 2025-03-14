@@ -190,6 +190,11 @@ Module CargaDeDatos
 
         Dim myComando As DbCommand
         If cadSQL = "" Then Exit Function
+        If TestMode Then
+            ModalInfo($"TestMode: comando no ejecutado{Environment.NewLine}{cadSQL}")
+            ExeSinTran = True
+            Exit Function
+        End If
         ExeSinTran = False
         Try
             myComando = ProData.CreateCommand
@@ -225,7 +230,12 @@ Module CargaDeDatos
                 myComando.Transaction = myTrans
                 myComando.ExecuteNonQuery()
             Next
-            myTrans.Commit()
+            If TestMode Then
+                myTrans.Rollback()
+                ModalInfo("Rollback efectuado por TestMode. La Transacción era correcta")
+            Else
+                myTrans.Commit()
+            End If
             ExeTran = True
         Catch ex As Exception
             myTrans.Rollback()
@@ -254,9 +264,12 @@ Module CargaDeDatos
                 myComando.Transaction = myTrans
                 myComando.ExecuteNonQuery()
             Next
-            'myTrans.Rollback()
-            Application.DoEvents()
-            myTrans.Commit()
+            If TestMode Then
+                myTrans.Rollback()
+                ModalInfo("Rollback efectuado por TestMode. La Transacción era correcta")
+            Else
+                myTrans.Commit()
+            End If
             ExeTran = True
         Catch ex As Exception
             myTrans.Rollback()
@@ -286,7 +299,7 @@ Module CargaDeDatos
             CargarDatatable = True
         Catch Fallo As Exception
             CargarDatatable = False
-            MessageBox.Show(Fallo.Message, My.Application.Info.AssemblyName, MessageBoxButtons.OK, MessageBoxIcon.Error)
+            ModalError(Fallo.Message)
         End Try
 
     End Function
@@ -310,7 +323,7 @@ Module CargaDeDatos
             CargarDatatableMuni = True
         Catch Fallo As Exception
             CargarDatatableMuni = False
-            MessageBox.Show(Fallo.Message, My.Application.Info.AssemblyName, MessageBoxButtons.OK, MessageBoxIcon.Error)
+            ModalError(Fallo.Message)
         End Try
 
     End Function
@@ -327,7 +340,7 @@ Module CargaDeDatos
             ObtenerEscalar = True
         Catch Fallo As Exception
             ObtenerEscalar = False
-            MessageBox.Show(Fallo.Message, My.Application.Info.AssemblyName, MessageBoxButtons.OK, MessageBoxIcon.Error)
+            ModalError(Fallo.Message)
         End Try
         cmdSQL.Dispose()
         cmdSQL = Nothing

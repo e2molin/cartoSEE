@@ -251,7 +251,7 @@ Public Class frmInformes
 
     End Sub
 
-    Sub Informe_UltimoDocumentoSellado()
+    Sub Informe_UltimoDocumentoSelladoSemantico()
 
         Dim rcdJumpSellos As DataTable
         Dim sqlJumpSellos As String
@@ -437,6 +437,133 @@ Public Class frmInformes
 
     End Sub
 
+
+    Sub Informe_UltimoDocumentoSelladoConsecutivo()
+
+        Dim rcdJumpSellos As DataTable
+        Dim sqlJumpSellos As String
+
+        'Preparo el LV para mostrar los resultados
+        ListView1.FullRowSelect = True
+        ListView1.GridLines = False
+        ListView1.View = View.Details
+        ListView1.SmallImageList = MDIPrincipal.ImageList2
+        ListView1.Columns.Clear()
+        ListView1.Items.Clear()
+        ListView1.Columns.Add("Colección", "Colección", 200, HorizontalAlignment.Left, 4)
+        ListView1.Columns.Add("Sellado", "Sellado", 100, HorizontalAlignment.Right, 4)
+        ListView1.Columns.Add("Tipo", "Tipo", 150, HorizontalAlignment.Left, 4)
+        ListView1.Columns.Add("Tomo", "Tomo", 200, HorizontalAlignment.Left, 4)
+        ListView1.Columns.Add("Provincia", "Provincia", 200, HorizontalAlignment.Left, 4)
+        ListView1.Columns.Add("Alta", "Alta", 200, HorizontalAlignment.Left, 4)
+        ListView1.Columns.Add("Usuario", "Usuario", 200, HorizontalAlignment.Left, 4)
+        ListView1.Tag = 4
+
+
+
+        Dim docSIDDAE As ListViewGroup : docSIDDAE = New ListViewGroup("SIDDAE") : ListView1.Groups.Add(docSIDDAE)
+        Dim docSIDDAE1889 As ListViewGroup : docSIDDAE1889 = New ListViewGroup("SIDDAE - Actas 1889") : ListView1.Groups.Add(docSIDDAE1889)
+        Dim docSIDDAEFallo As ListViewGroup : docSIDDAEFallo = New ListViewGroup("SIDDAE - Fallo en sellado") : ListView1.Groups.Add(docSIDDAEFallo)
+        Dim docCuadIntEmpresa As ListViewGroup : docCuadIntEmpresa = New ListViewGroup("Cuadernos interiores - Empresa") : ListView1.Groups.Add(docCuadIntEmpresa)
+        Dim docCuadIntArchivo As ListViewGroup : docCuadIntArchivo = New ListViewGroup("Cuadernos interiores - Archivo") : ListView1.Groups.Add(docCuadIntArchivo)
+        Dim docCuadIntArchivoFallo As ListViewGroup : docCuadIntArchivoFallo = New ListViewGroup("Cuadernos interiores - Archivo - Fallo en sellado") : ListView1.Groups.Add(docCuadIntArchivoFallo)
+        Dim docTriangulacion As ListViewGroup : docTriangulacion = New ListViewGroup("Triangulación de Andalucía") : ListView1.Groups.Add(docTriangulacion)
+
+
+        cadSQL = "(select 'SIDDAE' as coleccion, 
+		                    tipo,tomo,provincias.nombreprovincia as provincia,sellado,fecha_alta as create_at,user_alta  as create_by
+	                    from bdsidschema.docsiddae 
+	                    left join bdsidschema.provincias ON provincias.idprovincia=docsiddae.provincia
+	                    where sellado <500000 
+	                    order by sellado desc limit 10
+                    ) UNION (
+                    select 'SIDDAE - Actas 1889' as coleccion, 
+		                    tipo,tomo,provincias.nombreprovincia as provincia,sellado,fecha_alta as create_at,user_alta as create_by
+	                    from bdsidschema.docsiddae 
+	                    left join bdsidschema.provincias ON provincias.idprovincia=docsiddae.provincia
+	                    where tipo='Actas de 1889'
+	                    order by sellado desc limit 10
+                    ) UNION (
+                    select 'SIDDAE (Fallo sellado)' as coleccion, 
+		                    tipo,tomo,provincias.nombreprovincia as provincia,sellado,fecha_alta as create_at,user_alta  as create_by
+	                    from bdsidschema.docsiddae 
+	                    left join bdsidschema.provincias ON provincias.idprovincia=docsiddae.provincia
+	                    where sellado >500000  and tipo<>'Actas de 1889'
+	                    order by sellado desc limit 10
+                    ) UNION (
+                    SELECT 'Cuad.Int. Empresa' as coleccion,
+		                    tipo || COALESCE('-' || subtipo,'') as tipo,tomo,provincias.nombreprovincia as provincia,sellado,create_at,create_by 
+	                    from bdsidschema.archivodocmtn 
+	                    left join bdsidschema.provincias ON provincias.idprovincia=archivodocmtn.codprov
+	                    where sellado>=500000 and sellado<=1000000 
+	                    order by sellado desc limit 10
+                    ) UNION (
+                    SELECT 'Cuad.Int. Archivo' as coleccion,
+		                    tipo || COALESCE('-' || subtipo,'') as tipo,tomo,provincias.nombreprovincia as provincia,sellado,create_at,create_by 
+	                    from bdsidschema.archivodocmtn 
+	                    left join bdsidschema.provincias ON provincias.idprovincia=archivodocmtn.codprov
+	                    where sellado<=500000
+	                    order by sellado desc limit 10
+                    ) UNION (
+                    SELECT 'Cuad.Int. Archivo (Fallo sellado)' as coleccion,
+		                    tipo || COALESCE('-' || subtipo,'') as tipo,tomo,provincias.nombreprovincia as provincia,sellado,create_at,create_by 
+	                    from bdsidschema.archivodocmtn 
+	                    left join bdsidschema.provincias ON provincias.idprovincia=archivodocmtn.codprov
+	                    where sellado>1000000
+	                    order by sellado desc limit 10
+                    ) UNION (
+                    SELECT 'Triangulación Andalucía' as coleccion,
+	                    tipo,tomo,provincias.nombreprovincia as provincia,sellado,null as create_at,null as create_by
+	                    FROM bdsidschema.trabajosprevios
+	                    left join bdsidschema.provincias ON provincias.idprovincia=trabajosprevios.codprov::integer
+	                    ORDER BY sellado desc  limit 10
+                    )
+                    order by coleccion,sellado desc"
+
+        reportData = New DataTable
+        If CargarRecordset(cadSQL, reportData) = True Then
+            filas = reportData.Select
+            If filas.Length > 0 Then
+                Cancelar = False
+                For Each registro As DataRow In filas
+                    elementoLV = New ListViewItem
+                    elementoLV.Text = registro("coleccion").ToString
+                    elementoLV.SubItems.Add(registro("sellado").ToString)
+                    elementoLV.SubItems.Add(registro("tipo").ToString)
+                    elementoLV.SubItems.Add(registro("tomo").ToString)
+                    elementoLV.SubItems.Add(registro("provincia").ToString)
+                    elementoLV.SubItems.Add(registro("create_at").ToString)
+                    elementoLV.SubItems.Add(registro("create_by").ToString)
+                    If registro("coleccion").ToString = "SIDDAE" Then elementoLV.Group = docSIDDAE
+                    If registro("coleccion").ToString = "SIDDAE - Actas 1889" Then elementoLV.Group = docSIDDAE1889
+                    If registro("coleccion").ToString = "SIDDAE (Fallo sellado)" Then elementoLV.Group = docSIDDAEFallo
+                    If registro("coleccion").ToString = "Cuad.Int. Empresa" Then elementoLV.Group = docCuadIntEmpresa
+                    If registro("coleccion").ToString = "Cuad.Int. Archivo" Then elementoLV.Group = docCuadIntArchivo
+                    If registro("coleccion").ToString = "Cuad.Int. Archivo (Fallo sellado)" Then elementoLV.Group = docCuadIntArchivoFallo
+                    If registro("coleccion").ToString = "Triangulación Andalucía" Then elementoLV.Group = docTriangulacion
+
+                    If ListView1.Items.Count Mod 2 = 0 Then
+                        elementoLV.BackColor = Color.White
+                    Else
+                        elementoLV.BackColor = Color.WhiteSmoke
+                    End If
+                    ListView1.Items.Add(elementoLV)
+                    elementoLV = Nothing
+                Next
+            End If
+        End If
+        reportData.Dispose()
+        reportData = Nothing
+
+        ToolStripStatusLabel1.Text = "Registros " & ListView1.Items.Count.ToString
+        ToolStripStatusLabel2.Text = ""
+
+
+
+    End Sub
+
+
+
     Sub ListarPPCnoGeo()
 
         Dim resultsetGeodocat As docCartoSEEquery
@@ -577,8 +704,8 @@ Public Class frmInformes
     End Sub
 
 
-    Function CalcularAlturaCajetin(ByVal cadena As String, ByVal Fuente As Font, _
-                                ByVal AnchoTabular As Integer, _
+    Function CalcularAlturaCajetin(ByVal cadena As String, ByVal Fuente As Font,
+                                ByVal AnchoTabular As Integer,
                                 ByVal e As System.Drawing.Printing.PrintPageEventArgs) As Integer
 
         Dim SizeString As SizeF
@@ -600,7 +727,7 @@ Public Class frmInformes
         ElseIf ListView1.Tag = 2 Then
             Informe_Resumen_PorEstadoDoc()
         ElseIf ListView1.Tag = 3 Then
-            Informe_UltimoDocumentoSellado()
+            Informe_UltimoDocumentoSelladoSemantico()
         Else
             MessageBox.Show("Para actualizar los datos, seleccione el informe desde el menú", _
                                         AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)

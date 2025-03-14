@@ -25,7 +25,7 @@ Module Basics
     Public accessUser As String
     Public accessPass As String
     Public usuarioMyApp As myAppUser
-
+    Public TestMode As Boolean
 
 
     'Public App_User As String = ""

@@ -72,6 +72,7 @@ Partial Class MDIPrincipal
         Me.mnuTool_Informes01 = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuTool_Informes02 = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuTool_Informes03 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuTool_Informes04 = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuReportDocsNoContornos = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuPPCnoGeo = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuGenerarRejilla = New System.Windows.Forms.ToolStripMenuItem()
@@ -98,6 +99,7 @@ Partial Class MDIPrincipal
         Me.mnuOpenLoggerFile = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuOpenPreferenceFolder = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuActivity = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuTextModeToggle = New System.Windows.Forms.ToolStripMenuItem()
         Me.HelpMenu = New System.Windows.Forms.ToolStripMenuItem()
         Me.IndexToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator8 = New System.Windows.Forms.ToolStripSeparator()
@@ -586,7 +588,7 @@ Partial Class MDIPrincipal
         '
         'mnuTool_Informes
         '
-        Me.mnuTool_Informes.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuTool_Informes01, Me.mnuTool_Informes02, Me.mnuTool_Informes03, Me.mnuReportDocsNoContornos, Me.mnuPPCnoGeo})
+        Me.mnuTool_Informes.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuTool_Informes01, Me.mnuTool_Informes02, Me.mnuTool_Informes03, Me.mnuTool_Informes04, Me.mnuReportDocsNoContornos, Me.mnuPPCnoGeo})
         Me.mnuTool_Informes.Image = CType(resources.GetObject("mnuTool_Informes.Image"), System.Drawing.Image)
         Me.mnuTool_Informes.Name = "mnuTool_Informes"
         Me.mnuTool_Informes.Size = New System.Drawing.Size(307, 22)
@@ -595,31 +597,37 @@ Partial Class MDIPrincipal
         'mnuTool_Informes01
         '
         Me.mnuTool_Informes01.Name = "mnuTool_Informes01"
-        Me.mnuTool_Informes01.Size = New System.Drawing.Size(428, 22)
+        Me.mnuTool_Informes01.Size = New System.Drawing.Size(445, 22)
         Me.mnuTool_Informes01.Text = "Inventario GEODOCAT clasificado por tipo de documento"
         '
         'mnuTool_Informes02
         '
         Me.mnuTool_Informes02.Name = "mnuTool_Informes02"
-        Me.mnuTool_Informes02.Size = New System.Drawing.Size(428, 22)
+        Me.mnuTool_Informes02.Size = New System.Drawing.Size(445, 22)
         Me.mnuTool_Informes02.Text = "Inventario GEODOCAT clasificado por estado de conservación"
         '
         'mnuTool_Informes03
         '
         Me.mnuTool_Informes03.Name = "mnuTool_Informes03"
-        Me.mnuTool_Informes03.Size = New System.Drawing.Size(428, 22)
-        Me.mnuTool_Informes03.Text = "Últimos números de sellado asignados por provincia"
+        Me.mnuTool_Informes03.Size = New System.Drawing.Size(445, 22)
+        Me.mnuTool_Informes03.Text = "Últimos números de sellado semántico catalogados por provincia"
+        '
+        'mnuTool_Informes04
+        '
+        Me.mnuTool_Informes04.Name = "mnuTool_Informes04"
+        Me.mnuTool_Informes04.Size = New System.Drawing.Size(445, 22)
+        Me.mnuTool_Informes04.Text = "Últimos números de sellado consecutivo catalogados"
         '
         'mnuReportDocsNoContornos
         '
         Me.mnuReportDocsNoContornos.Name = "mnuReportDocsNoContornos"
-        Me.mnuReportDocsNoContornos.Size = New System.Drawing.Size(428, 22)
+        Me.mnuReportDocsNoContornos.Size = New System.Drawing.Size(445, 22)
         Me.mnuReportDocsNoContornos.Text = "Documentos GEODOCAT sin contorno definido"
         '
         'mnuPPCnoGeo
         '
         Me.mnuPPCnoGeo.Name = "mnuPPCnoGeo"
-        Me.mnuPPCnoGeo.Size = New System.Drawing.Size(428, 22)
+        Me.mnuPPCnoGeo.Size = New System.Drawing.Size(445, 22)
         Me.mnuPPCnoGeo.Text = "Planos de población en cuaderno no georreferenciados"
         '
         'mnuGenerarRejilla
@@ -729,7 +737,7 @@ Partial Class MDIPrincipal
         '
         'UserMenu
         '
-        Me.UserMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripSeparator11, Me.itemChangePass, Me.mnuListaPermisos, Me.itemGestionUser, Me.mnuOpenLoggerFile, Me.mnuOpenPreferenceFolder, Me.mnuActivity})
+        Me.UserMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripSeparator11, Me.itemChangePass, Me.mnuListaPermisos, Me.itemGestionUser, Me.mnuOpenLoggerFile, Me.mnuOpenPreferenceFolder, Me.mnuActivity, Me.mnuTextModeToggle})
         Me.UserMenu.Name = "UserMenu"
         Me.UserMenu.Size = New System.Drawing.Size(62, 20)
         Me.UserMenu.Text = "Usuario"
@@ -778,6 +786,12 @@ Partial Class MDIPrincipal
         Me.mnuActivity.Name = "mnuActivity"
         Me.mnuActivity.Size = New System.Drawing.Size(253, 22)
         Me.mnuActivity.Text = "Actividad en BADASID"
+        '
+        'mnuTextModeToggle
+        '
+        Me.mnuTextModeToggle.Name = "mnuTextModeToggle"
+        Me.mnuTextModeToggle.Size = New System.Drawing.Size(253, 22)
+        Me.mnuTextModeToggle.Text = "TestMode"
         '
         'HelpMenu
         '
@@ -2534,4 +2548,6 @@ Partial Class MDIPrincipal
     Friend WithEvents btnPendingCatalog As Button
     Friend WithEvents btnInvestigar As Button
     Friend WithEvents mnuActivity As ToolStripMenuItem
+    Friend WithEvents mnuTool_Informes04 As ToolStripMenuItem
+    Friend WithEvents mnuTextModeToggle As ToolStripMenuItem
 End Class

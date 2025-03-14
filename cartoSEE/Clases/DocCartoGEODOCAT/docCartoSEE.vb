@@ -550,26 +550,28 @@
             autorPersona= dR("autor_persona").ToString
             encabezadoABSYSdoc = dR("encabezado").ToString
 
-            For Each elem As String In dR("listaIdTerris").ToString.Split("#")
-                listaTerritorios.Add(New TerritorioBSID(CType(elem, Integer)))
-            Next
+            If dR("listaIdTerris").ToString <> "" Then
+                For Each elem As String In dR("listaIdTerris").ToString.Split("#")
+                    listaTerritorios.Add(New TerritorioBSID(CType(elem, Integer)))
+                Next
 
-            For Each elem As String In dR("listaMuniHisto").ToString.Split("#")
-                If elem = "" Then Continue For
-                listaMuniHistorico.Add(elem)
-            Next
-            For Each elem As String In dR("listaCodMuniHisto").ToString.Split("#")
-                If elem = "" Then Continue For
-                listaCodMuniHistorico.Add(elem)
-            Next
-            For Each elem As String In dR("listaMuniActual").ToString.Split("#")
-                If elem = "" Then Continue For
-                listaMuniActual.Add(elem)
-            Next
-            For Each elem As String In dR("listaCodMuniActual").ToString.Split("#")
-                If elem = "" Then Continue For
-                listaCodMuniActual.Add(elem)
-            Next
+                For Each elem As String In dR("listaMuniHisto").ToString.Split("#")
+                    If elem = "" Then Continue For
+                    listaMuniHistorico.Add(elem)
+                Next
+                For Each elem As String In dR("listaCodMuniHisto").ToString.Split("#")
+                    If elem = "" Then Continue For
+                    listaCodMuniHistorico.Add(elem)
+                Next
+                For Each elem As String In dR("listaMuniActual").ToString.Split("#")
+                    If elem = "" Then Continue For
+                    listaMuniActual.Add(elem)
+                Next
+                For Each elem As String In dR("listaCodMuniActual").ToString.Split("#")
+                    If elem = "" Then Continue For
+                    listaCodMuniActual.Add(elem)
+                Next
+            End If
 
             Provincias = dR("nombreprovincia").ToString
             ProvinciaRepo = dR("repoprov")
