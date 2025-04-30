@@ -590,13 +590,15 @@
             If e.Value.ToString.ToUpper = "SIDDAE" Then
                 e.CellStyle.BackColor = Color.FromArgb(160, 206, 217)
             ElseIf e.Value.ToString.ToUpper = "NOMENMANAGER" Then
-                e.CellStyle.BackColor = Color.FromArgb(255, 164, 159)
+                e.CellStyle.BackColor = Color.FromArgb(255, 182, 193)
             ElseIf e.Value.ToString.ToUpper = "SIDDES" Then
                 e.CellStyle.BackColor = Color.FromArgb(173, 247, 182)
             ElseIf e.Value.ToString.ToUpper = "CARTOSEE" Then
                 e.CellStyle.BackColor = Color.FromArgb(255, 238, 147)
             ElseIf e.Value.ToString.ToUpper = "MAPSEE 2" Then
-                e.CellStyle.BackColor = Color.FromArgb(252, 245, 199)
+                e.CellStyle.BackColor = Color.FromArgb(255, 165, 0)
+            ElseIf e.Value.ToString.ToUpper = "GEOLIM" Then
+                e.CellStyle.BackColor = Color.FromArgb(135, 206, 250)
             Else
                 e.CellStyle.BackColor = Color.White
             End If

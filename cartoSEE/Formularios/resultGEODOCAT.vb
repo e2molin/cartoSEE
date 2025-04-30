@@ -82,7 +82,7 @@
     'archivo.juntaestadistica,      19	Oculto inicio					archivo.juntaestadistica,
     'archivo.extraprops,            20  Oculto inicio					archivo.extraprops,
     'archivo.cdd_url,               21									archivo.cdd_url,
-    'archivo.titn,                  22									archivo.titn,
+    'archivo.titn,                  22  								archivo.titn,
     'archivo.autor,                 23  Oculto inicio					archivo.autor,
     'archivo.encabezado,            24									archivo.encabezado,
     'nombreprovincia,               25  Oculto inicio					string_agg(provincias.nombreprovincia,'#') as nombreprovincia,
@@ -92,8 +92,8 @@
 #End Region
 
     Const widthScrollLV As Integer = 30
-    Dim FixedCols() As Integer = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11} 'Columnas con ancho fijo aunque crezca el tamaño del datagrid
-    Dim Hide_And_Show_Columns() As Integer = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 23, 25} ' Índices de columnas que pueden mostrarse u ocultarse
+    Dim FixedCols() As Integer = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 22} 'Columnas con ancho fijo aunque crezca el tamaño del datagrid
+    Dim Hide_And_Show_Columns() As Integer = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 22, 23, 25} ' Índices de columnas que pueden mostrarse u ocultarse
 
     Dim idArchivoLoaded As Integer = 0
     Dim idArchiveTagsLoaded As Integer = 0
@@ -136,7 +136,7 @@
                     Handles mnuColumna1.Click, mnuColumna2.Click, mnuColumna3.Click, mnuColumna4.Click, mnuColumna5.Click,
                     mnuColumna6.Click, mnuColumna7.Click, mnuColumna8.Click, mnuColumna9.Click, mnuColumna10.Click, mnuColumna11.Click,
                     mnuColumna12.Click, mnuColumna13.Click, mnuColumna14.Click, mnuColumna15.Click, mnuColumna16.Click, mnuColumna17.Click,
-                    mnuColumna18.Click, mnuColumna19.Click, mnuColumna20.Click
+                    mnuColumna18.Click, mnuColumna19.Click, mnuColumna20.Click, mnuColumna21.Click
 
         Dim nombreCtrl As String
 
@@ -1046,6 +1046,14 @@
         For iCol = 13 To DataGridView1.ColumnCount - 1
             DataGridView1.Columns(iCol).Visible = False
         Next
+
+        'Ponemos el nombre a algunas colunas poor el indice
+        DataGridView1.Columns(22).HeaderText = "TITN Absys"
+        DataGridView1.Columns(22).Width = 30
+        DataGridView1.Columns(22).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
+
+
+
 
         'Activamos las columnas que pueden mostrarse y apagarse
         RenombrarItemsColumnas()

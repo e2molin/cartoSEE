@@ -117,6 +117,7 @@ Partial Class resultGEODOCAT
         Me.lvImages = New System.Windows.Forms.ListView()
         Me.Panel8 = New System.Windows.Forms.Panel()
         Me.lvPropiedades = New System.Windows.Forms.ListView()
+        Me.mnuColumna21 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStrip1.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
@@ -231,7 +232,7 @@ Partial Class resultGEODOCAT
         'ToolStripDropDownButton1
         '
         Me.ToolStripDropDownButton1.AutoSize = False
-        Me.ToolStripDropDownButton1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuColumna1, Me.mnuColumna2, Me.mnuColumna3, Me.mnuColumna4, Me.mnuColumna5, Me.mnuColumna6, Me.mnuColumna7, Me.mnuColumna8, Me.mnuColumna9, Me.mnuColumna10, Me.mnuColumna11, Me.mnuColumna12, Me.mnuColumna13, Me.mnuColumna14, Me.mnuColumna15, Me.mnuColumna16, Me.mnuColumna17, Me.mnuColumna18, Me.mnuColumna19, Me.mnuColumna20})
+        Me.ToolStripDropDownButton1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuColumna1, Me.mnuColumna2, Me.mnuColumna3, Me.mnuColumna4, Me.mnuColumna5, Me.mnuColumna6, Me.mnuColumna7, Me.mnuColumna8, Me.mnuColumna9, Me.mnuColumna10, Me.mnuColumna11, Me.mnuColumna12, Me.mnuColumna13, Me.mnuColumna14, Me.mnuColumna15, Me.mnuColumna16, Me.mnuColumna17, Me.mnuColumna18, Me.mnuColumna19, Me.mnuColumna20, Me.mnuColumna21})
         Me.ToolStripDropDownButton1.Font = New System.Drawing.Font("Tahoma", 6.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ToolStripDropDownButton1.Image = CType(resources.GetObject("ToolStripDropDownButton1.Image"), System.Drawing.Image)
         Me.ToolStripDropDownButton1.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None
@@ -765,7 +766,7 @@ Partial Class resultGEODOCAT
         Me.TableLayoutPanel2.ColumnCount = 3
         Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30.0!))
         Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70.0!))
-        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 153.0!))
+        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 154.0!))
         Me.TableLayoutPanel2.Controls.Add(Me.PictureBox1, 0, 0)
         Me.TableLayoutPanel2.Controls.Add(Me.TableLayoutPanel3, 1, 0)
         Me.TableLayoutPanel2.Controls.Add(Me.Panel1, 2, 0)
@@ -1153,6 +1154,16 @@ Partial Class resultGEODOCAT
         Me.lvPropiedades.TabIndex = 0
         Me.lvPropiedades.UseCompatibleStateImageBehavior = False
         '
+        'mnuColumna21
+        '
+        Me.mnuColumna21.Checked = True
+        Me.mnuColumna21.CheckOnClick = True
+        Me.mnuColumna21.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.mnuColumna21.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None
+        Me.mnuColumna21.Name = "mnuColumna21"
+        Me.mnuColumna21.Size = New System.Drawing.Size(181, 22)
+        Me.mnuColumna21.Text = "ToolStripMenuItem21"
+        '
         'resultGEODOCAT
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1286,4 +1297,5 @@ Partial Class resultGEODOCAT
     Friend WithEvents Button8 As Button
     Friend WithEvents mnuContornosExtract As ToolStripMenuItem
     Friend WithEvents RichTextBox3 As RichTextBox
+    Friend WithEvents mnuColumna21 As ToolStripMenuItem
 End Class

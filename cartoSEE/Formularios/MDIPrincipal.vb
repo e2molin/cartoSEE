@@ -784,6 +784,7 @@ Public Class MDIPrincipal
         TextBox20.Text = ""
         TextBox21.Text = ""
         TextBox22.Text = ""
+        TextBox23.Text = ""
         ComboBox1.Text = "-----"
         ComboBox2.Text = "-----"
         ComboBox3.SelectedIndex = -1
