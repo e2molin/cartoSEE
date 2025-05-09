@@ -122,11 +122,13 @@
     <Compile Include="Clases\Autenticacion\myAppUser.vb" />
     <Compile Include="Clases\Autenticacion\Notificacion.vb" />
     <Compile Include="Clases\Destildator.vb" />
+    <Compile Include="Clases\DocCartoGEODOCAT\docSIDCECA.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\docCartoSEE.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\docCartoSEEquery.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\docCartoSEETipoDocu.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\docCartoSEEVariacion.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\docCuadMTN.vb" />
+    <Compile Include="Clases\DocCartoGEODOCAT\docSIDCECAListaProp.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\FileGeorref.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\FlagsProperties.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\FlagsPropertiesCuaderno.vb" />
@@ -299,6 +301,12 @@
     <Compile Include="Formularios\resultGEODOCAT.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Formularios\resultSIDCECA.Designer.vb">
+      <DependentUpon>resultSIDCECA.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\resultSIDCECA.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formularios\SplashScreen.designer.vb">
       <DependentUpon>SplashScreen.vb</DependentUpon>
     </Compile>
@@ -430,6 +438,9 @@
     <EmbeddedResource Include="Formularios\resultGEODOCAT.resx">
       <DependentUpon>resultGEODOCAT.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\resultSIDCECA.resx">
+      <DependentUpon>resultSIDCECA.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Formularios\SplashScreen.resx">
       <DependentUpon>SplashScreen.vb</DependentUpon>
     </EmbeddedResource>
@@ -502,6 +513,9 @@
     </Content>
     <Content Include="resources\Plantilla_PlanoPoblacionJuntaSI.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\thumb-cedula.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\thumb-cuad-alti.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

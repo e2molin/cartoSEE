@@ -190,6 +190,19 @@ Module ConsultasGEO
         Muni = Nothing
     End Function
 
+    Function DameIdTerritorioByMuniHisto(ByVal CodigoINE As Integer) As Integer
+
+        Dim Muni() As DataRow
+        DameIdTerritorioByMuniHisto = -1
+        Muni = ListaMunicipiosHisto.Select($"cod_munihisto={CodigoINE}")
+        For Each dR As DataRow In Muni
+            DameIdTerritorioByMuniHisto = dR("idmunihisto")
+        Next
+        Muni = Nothing
+    End Function
+
+
+
     Function DameTipoEntidadByCodigoPoligono(ByVal NPoligono As Long) As String
 
         Dim Muni() As DataRow

@@ -27,6 +27,17 @@ Public Class GEOCoordenada
     Property NorthingCoord As Double = 0
     Property EPSGcode As Integer = 4326
 
+    ReadOnly Property ToStringSeparatedBy(Optional characterSeparator As String = " ") As String
+
+        Get
+
+            Return $"{EastingCoord.ToString.Replace(",", ".")}{characterSeparator}{NorthingCoord.ToString.Replace(",", ".")}"
+
+        End Get
+
+    End Property
+
+
     ''' <summary>
     ''' Devuelve en metros la longitud de un Tile en un determinado nivel de zoom
     ''' </summary>
@@ -65,6 +76,22 @@ Public Class GEOCoordenada
         Application.DoEvents()
     End Sub
 
+    Sub New(WKTcoord As String, epsgCodeIN As srs)
+
+        Dim managCoor As String
+
+        If WKTcoord.StartsWith("POINT(") Then
+            managCoor = Replace(WKTcoord, "POINT(", "")
+            managCoor = Replace(managCoor, ")", "")
+            Dim coords() As String = managCoor.Split(" ")
+            If coords.Length = 2 Then
+                _EastingCoord = CType(coords(0).Replace(".", Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator), Double)
+                _NorthingCoord = CType(coords(1).Replace(".", Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator), Double)
+                _EPSGcode = epsgCodeIN
+            End If
+        End If
+
+    End Sub
     Sub New(eastingIN As Double, northingIN As Double, epsgCodeIN As srs)
         Application.DoEvents()
         _EastingCoord = eastingIN

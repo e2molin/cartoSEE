@@ -250,6 +250,7 @@ Partial Class MDIPrincipal
         Me.Button6 = New System.Windows.Forms.Button()
         Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
         Me.ImageList2 = New System.Windows.Forms.ImageList(Me.components)
+        Me.Button1 = New System.Windows.Forms.Button()
         Me.MenuStrip.SuspendLayout()
         Me.ToolStrip.SuspendLayout()
         Me.StatusStrip.SuspendLayout()
@@ -1641,6 +1642,7 @@ Partial Class MDIPrincipal
         'Panel_DocSearch
         '
         Me.Panel_DocSearch.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
+        Me.Panel_DocSearch.Controls.Add(Me.Button1)
         Me.Panel_DocSearch.Controls.Add(Me.TextBox4)
         Me.Panel_DocSearch.Controls.Add(Me.Label4)
         Me.Panel_DocSearch.Controls.Add(Me.TextBox20)
@@ -2283,6 +2285,18 @@ Partial Class MDIPrincipal
         Me.ImageList2.Images.SetKeyName(13, "Archivador 32.png")
         Me.ImageList2.Images.SetKeyName(14, "editar_24.png")
         '
+        'Button1
+        '
+        Me.Button1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
+        Me.Button1.Location = New System.Drawing.Point(12, 621)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(111, 76)
+        Me.Button1.TabIndex = 39
+        Me.Button1.Text = "SIDCECA"
+        Me.Button1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+        Me.Button1.UseVisualStyleBackColor = True
+        '
         'MDIPrincipal
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -2550,4 +2564,5 @@ Partial Class MDIPrincipal
     Friend WithEvents mnuActivity As ToolStripMenuItem
     Friend WithEvents mnuTool_Informes04 As ToolStripMenuItem
     Friend WithEvents mnuTextModeToggle As ToolStripMenuItem
+    Friend WithEvents Button1 As Button
 End Class

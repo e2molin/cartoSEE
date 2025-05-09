@@ -303,7 +303,12 @@
             End If
         Next
 
+        If (iNumColVis - visibleWidthFixedCols) <= 0 Then
+            Exit Sub
+        End If
+
         calcWidth = (DataGridView1.Width - widthFixedCols - widthScrollControl) / (iNumColVis - visibleWidthFixedCols)
+        'calcWidth = (DataGridView1.Width - widthFixedCols - widthScrollControl) / visibleWidthFixedCols
         Try
             For iCol = 0 To DataGridView1.Columns.Count - 1
                 If FixedCols.Contains(iCol) Then Continue For
@@ -1026,8 +1031,8 @@
         DataGridView1.Columns("signatura").HeaderText = "Signatura"
         DataGridView1.Columns("signatura").Width = 50
         DataGridView1.Columns("signatura").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
-        DataGridView1.Columns("dimensiones").HeaderText = "Ancho × Alto"
-        DataGridView1.Columns("dimensiones").Width = 85
+        DataGridView1.Columns("dimensiones").HeaderText = "An. × Al."
+        DataGridView1.Columns("dimensiones").Width = 100
         DataGridView1.Columns("dimensiones").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
         DataGridView1.Columns("coleccion").HeaderText = "Colección"
         DataGridView1.Columns("coleccion").Width = 75
@@ -1047,9 +1052,9 @@
             DataGridView1.Columns(iCol).Visible = False
         Next
 
-        'Ponemos el nombre a algunas colunas poor el indice
-        DataGridView1.Columns(22).HeaderText = "TITN Absys"
-        DataGridView1.Columns(22).Width = 30
+        'Ponemos el nombre a algunas colunas por el indice
+        DataGridView1.Columns(22).HeaderText = "TITN"
+        DataGridView1.Columns(22).Width = 60
         DataGridView1.Columns(22).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
 
 

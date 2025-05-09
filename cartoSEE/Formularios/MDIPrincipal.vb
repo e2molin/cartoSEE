@@ -366,6 +366,7 @@ Public Class MDIPrincipal
             Dim resp = ModalQuestCollection("¿Qué desea buscar?")
             If resp = DialogResult.OK Then LaunchQuery(sender, e)
             If resp = DialogResult.Yes Then LaunchQueryCuadMTN(sender, e)
+            If resp = DialogResult.No Then LaunchQuerySIDCECA(sender, e)
         End If
 
     End Sub
@@ -376,6 +377,9 @@ Public Class MDIPrincipal
             Dim resp = ModalQuestCollection("¿Qué desea buscar?")
             If resp = DialogResult.OK Then LaunchQuery(sender, e)
             If resp = DialogResult.Yes Then LaunchQueryCuadMTN(sender, e)
+            If resp = DialogResult.No Then LaunchQuerySIDCECA(sender, e)
+
+
         End If
 
     End Sub
@@ -463,6 +467,7 @@ Public Class MDIPrincipal
             Dim resp = ModalQuestCollection("¿Qué desea buscar?")
             If resp = DialogResult.OK Then LaunchQuery(sender, e)
             If resp = DialogResult.Yes Then LaunchQueryCuadMTN(sender, e)
+            If resp = DialogResult.No Then LaunchQuerySIDCECA(sender, e)
         End If
 
     End Sub
@@ -478,6 +483,7 @@ Public Class MDIPrincipal
             Dim resp = ModalQuestCollection("¿Qué desea buscar?")
             If resp = DialogResult.OK Then LaunchQuery(sender, e)
             If resp = DialogResult.Yes Then LaunchQueryCuadMTN(sender, e)
+            If resp = DialogResult.No Then LaunchQuerySIDCECA(sender, e)
         End If
 
     End Sub
@@ -2185,4 +2191,127 @@ Public Class MDIPrincipal
 
     End Sub
 
+    Private Sub LaunchQuerySIDCECA(sender As Object, e As EventArgs) Handles Button1.Click
+
+        Dim FirmaYear As String = ""
+        Dim EstadosDocumento As String = ""
+        Dim TiposDocumento As String = ""
+        Dim numTomo As String = ""
+        Dim DescripFiltro As String = ". "
+        Dim territorioId As Integer = 0
+        Dim CodMunicipioINEHistorico As Integer = 0
+        Dim CodMunicipioINEActual As Integer = 0
+        Dim nSellado As String = ""
+        Dim nSellado1 As String = ""
+        Dim nSellado2 As String = ""
+        Dim listaSellos As New ArrayList
+        Dim CadFiltro As String = ""
+        Dim ibucle As Integer
+        Dim cProv As Integer = 0
+        Dim proceHoja As String
+        Dim proceCarpeta As String
+
+
+        If Not String.IsNullOrEmpty(TextBox1.Tag) Then
+            Dim CodigosMuni() As String = TextBox1.Tag.ToString.Split("|")
+            CodMunicipioINEHistorico = CodigosMuni(0)
+            territorioId = CodigosMuni(1)
+            CodMunicipioINEActual = CodigosMuni(2)
+        End If
+        Application.DoEvents()
+        If CodMunicipioINEHistorico = 0 And TextBox1.Text.Trim.Length = 7 Then
+            'Esto puede ser un INE
+            CodMunicipioINEHistorico = TextBox1.Text.Trim
+            territorioId = DameIdTerritorioByMuniHisto(CodMunicipioINEHistorico)
+        End If
+
+        Application.DoEvents()
+
+
+
+        Try
+            PictureBox3.Visible = True
+            Me.Cursor = Cursors.WaitCursor
+            LanzarSpinner("Cargando datos")
+            Dim frmResultadosSIDCECA As New resultSIDCECA
+            With frmResultadosSIDCECA
+                .MdiParent = Me
+                .filterFecha = FirmaYear
+                If TextBox23.Text.Trim <> "" Then
+                    'If IsNumeric(TextBox23.Text.Replace(",", "_").Replace(".", "_")) Then
+                    '    .paramSQL1 = TextBox23.Text.Trim
+                    '    .typeSearch = resultCMTN.TypeDataSearch.DocumentosBySellado
+                    'ElseIf obtenerIntervalo(TextBox23.Text.Trim, ",", nSellado1, nSellado2) = True Then
+                    '    .paramSQL1 = nSellado1
+                    '    .paramSQL2 = nSellado2
+                    '    .typeSearch = resultCMTN.TypeDataSearch.DocumentosByListaNumSelladoEntreLimites
+                    'ElseIf obtenerIntervalo(TextBox23.Text.Trim, "-", nSellado1, nSellado2) = True Then
+                    '    .paramSQL1 = nSellado1
+                    '    .paramSQL2 = nSellado2
+                    '    .typeSearch = resultCMTN.TypeDataSearch.DocumentosByListaNumSelladoEntreLimites
+                    'ElseIf obtenerIntervalo(TextBox23.Text.Trim, "#", nSellado1, nSellado2) = True Then
+                    '    .paramSQL1 = nSellado1
+                    '    .paramSQL2 = nSellado2
+                    '    .typeSearch = resultCMTN.TypeDataSearch.DocumentosByListaNumSelladoEntreLimites
+                    'ElseIf obtenerIntervalo(TextBox23.Text.Trim, ";", nSellado1, nSellado2) = True Then
+                    '    .paramSQL1 = nSellado1
+                    '    .paramSQL2 = nSellado2
+                    '    .typeSearch = resultCMTN.TypeDataSearch.DocumentosByListaNumSelladoEntreLimites
+                    'End If
+                ElseIf TextBox20.Text.Trim <> "" Then
+                    'Application.DoEvents()
+                    '.paramSQL1 = TextBox20.Text.Trim
+                    '.typeSearch = resultCMTN.TypeDataSearch.DocumentosByComentario
+                ElseIf numTomo <> "" Then
+                    'If cProv = 0 Then
+                    '    ModalExclamation("Para buscar por Tomo, seleccione primero una provincia")
+                    '    frmResultadosCuadMTN.Close()
+                    '    frmResultadosCuadMTN.Dispose()
+                    '    frmResultadosCuadMTN = Nothing
+                    '    Exit Sub
+                    'End If
+                    '.paramSQL1 = cProv
+                    '.filterTomo = numTomo
+                    '.typeSearch = resultCMTN.TypeDataSearch.AllDocumentsByProvincia
+                ElseIf TextBox1.Tag.Trim <> "" Then
+                    If CheckBox1.Checked Then
+                        'Búsqueda por territorio/municipio actual. Usamos en la búsqueda el códigoINE actual
+                        .paramSQL1 = CodMunicipioINEActual
+                        .typeSearch = resultSIDCECA.TypeDataSearch.AllDocumentsByTerritorioActual
+                        .Text = $"Documentos asociados al municipio actual {TextBox1.Text.Trim}"
+                    Else
+                        'Búsqueda por territorio/municipio histórico. Usamos en la búsqueda el idTerritorio
+                        .paramSQL1 = territorioId
+                        .typeSearch = resultSIDCECA.TypeDataSearch.AllDocumentsByTerritorio
+                        .Text = $"Documentos asociados al municipio histórivo {TextBox1.Text.Trim}"
+                    End If
+                ElseIf TextBox1.text.Trim <> "" Then
+                    If territorioId > 0 Then
+                        .paramSQL1 = territorioId
+                        .typeSearch = resultSIDCECA.TypeDataSearch.AllDocumentsByTerritorio
+                        .Text = $"Documentos asociados al municipio histórico con INE {TextBox1.Text.Trim}"
+                    End If
+                Else
+                    If cProv > 0 Then
+                        '.paramSQL1 = cProv
+                        '.typeSearch = resultSIDCECA.TypeDataSearch.AllDocumentsByProvincia
+                    Else
+                        .typeSearch = resultSIDCECA.TypeDataSearch.AllDocuments
+                    End If
+                End If
+
+                .Show()
+            End With
+        Catch ex As Exception
+            ModalError($"No se pueden identificar los documento: {ex.Message}")
+        Finally
+            CerrarSpinner()
+            PictureBox3.Visible = False
+            Me.Cursor = Cursors.Default
+        End Try
+
+
+
+
+    End Sub
 End Class

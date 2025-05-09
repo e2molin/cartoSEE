@@ -11,6 +11,7 @@ Module Basics
     Public rutaRepoGeorrefBase As String
     Public rutaRepoInventarioInfo As String
     Public rutaRepoCI As String = "\\sfiignmad162.ign.fomento.es\docgeo$\DocGeo\Archivo\cuadernosinteriores\"
+    Public RutaRepoSIDCECA As String = "\\sfiignmad162.ign.fomento.es\docgeo$\DocGeo\Archivo\sidceca2\"
     Public CalidadFavorita As String
     Public rutaRepoWeb As String
     Public MapaBase As String
