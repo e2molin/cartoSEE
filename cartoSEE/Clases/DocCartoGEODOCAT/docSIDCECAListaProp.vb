@@ -12,6 +12,7 @@
     Property NombreProvincia As String
     Property CodProv As Integer
     Property Tomo As String
+    Property DatasetTbl As String
 
 
     ReadOnly Property pathListaPropietariosAlfabetica() As String
@@ -41,7 +42,7 @@
         Dim consultaSQL As String = $"SELECT idlistaprop,ayuntamiento,part_jud,numcoleccion,COALESCE(coleccion,'Única') as coleccion,
 	                                    t1.nombre as munihisto, t1.munihisto as codmunihisto,
 	                                    t2.nombre as muniactual,t2.municipio as codmuniactual,
-	                                    provincias.nombreprovincia,provincias.idprovincia
+	                                    provincias.nombreprovincia,provincias.idprovincia,listaprop.dataset_tbl as dataset_tbl
 	                                    FROM bdsidschema.listaprop 
 	                                    INNER JOIN bdsidschema.territorios t1 ON listaprop.territorio_id=t1.idterritorio
 	                                    INNER JOIN bdsidschema.territorios t2 ON t1.munihisto/100=t2.municipio
@@ -86,7 +87,7 @@
                 CodMuniHisto = dR("codmunihisto")
                 NombreProvincia = dR("nombreprovincia").ToString
                 CodProv = dR("idprovincia")
-
+                DatasetTbl = dR("dataset_tbl").ToString
 
 
                 'Tomo = dR("tomo").ToString

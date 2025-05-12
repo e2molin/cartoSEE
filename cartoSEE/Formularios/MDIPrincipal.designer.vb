@@ -122,6 +122,7 @@ Partial Class MDIPrincipal
         Me.ButCarrito = New System.Windows.Forms.ToolStripButton()
         Me.btnVisorMosaicos = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripButton20 = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripButton8 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripButton10 = New System.Windows.Forms.ToolStripButton()
         Me.btnExportCdD = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripDropDownButton1 = New System.Windows.Forms.ToolStripDropDownButton()
@@ -142,7 +143,6 @@ Partial Class MDIPrincipal
         Me.ToolStripButton16 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripButton18 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripButton14 = New System.Windows.Forms.ToolStripButton()
-        Me.ToolStripButton8 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
         Me.ToolStripButton11 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripButton2 = New System.Windows.Forms.ToolStripButton()
@@ -191,6 +191,7 @@ Partial Class MDIPrincipal
         Me.btnInvestigar = New System.Windows.Forms.Button()
         Me.btnPendingCatalog = New System.Windows.Forms.Button()
         Me.Panel_DocSearch = New System.Windows.Forms.Panel()
+        Me.Button1 = New System.Windows.Forms.Button()
         Me.TextBox4 = New System.Windows.Forms.TextBox()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.TextBox20 = New System.Windows.Forms.TextBox()
@@ -250,7 +251,6 @@ Partial Class MDIPrincipal
         Me.Button6 = New System.Windows.Forms.Button()
         Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
         Me.ImageList2 = New System.Windows.Forms.ImageList(Me.components)
-        Me.Button1 = New System.Windows.Forms.Button()
         Me.MenuStrip.SuspendLayout()
         Me.ToolStrip.SuspendLayout()
         Me.StatusStrip.SuspendLayout()
@@ -824,7 +824,7 @@ Partial Class MDIPrincipal
         'ToolStrip
         '
         Me.ToolStrip.ImageScalingSize = New System.Drawing.Size(48, 48)
-        Me.ToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolConfig, Me.ToolStripSeparator1, Me.ToolStripButton5, Me.ToolStripButton6, Me.ToolStripButton15, Me.ToolStripSeparator9, Me.ToolStripDropDownButton2, Me.ToolStripButton17, Me.ToolStripSeparator3, Me.ToolStripSplitButton1, Me.ButCarrito, Me.btnVisorMosaicos, Me.ToolStripButton20, Me.ToolStripButton10, Me.btnExportCdD, Me.ToolStripDropDownButton1, Me.ToolStripButton19, Me.ToolStripButton1, Me.ToolStripSeparator4, Me.ToolStripButton3, Me.ToolStripButton4, Me.ToolMiniaturas, Me.ToolStripButton7, Me.ToolStripButton16, Me.ToolStripButton18, Me.ToolStripButton14, Me.ToolStripButton8, Me.ToolStripSeparator2, Me.ToolStripButton11, Me.ToolStripButton2, Me.HelpToolStripButton, Me.ToolStripButton13})
+        Me.ToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolConfig, Me.ToolStripSeparator1, Me.ToolStripButton5, Me.ToolStripButton6, Me.ToolStripButton15, Me.ToolStripSeparator9, Me.ToolStripDropDownButton2, Me.ToolStripButton17, Me.ToolStripSeparator3, Me.ToolStripSplitButton1, Me.ButCarrito, Me.btnVisorMosaicos, Me.ToolStripButton20, Me.ToolStripButton8, Me.ToolStripButton10, Me.btnExportCdD, Me.ToolStripDropDownButton1, Me.ToolStripButton19, Me.ToolStripButton1, Me.ToolStripSeparator4, Me.ToolStripButton3, Me.ToolStripButton4, Me.ToolMiniaturas, Me.ToolStripButton7, Me.ToolStripButton16, Me.ToolStripButton18, Me.ToolStripButton14, Me.ToolStripSeparator2, Me.ToolStripButton11, Me.ToolStripButton2, Me.HelpToolStripButton, Me.ToolStripButton13})
         Me.ToolStrip.Location = New System.Drawing.Point(0, 24)
         Me.ToolStrip.Name = "ToolStrip"
         Me.ToolStrip.Size = New System.Drawing.Size(1539, 55)
@@ -969,6 +969,16 @@ Partial Class MDIPrincipal
         Me.ToolStripButton20.Size = New System.Drawing.Size(52, 52)
         Me.ToolStripButton20.Text = "ToolStripButton20"
         Me.ToolStripButton20.ToolTipText = "Libros de registro del Archivo Topográfico"
+        '
+        'ToolStripButton8
+        '
+        Me.ToolStripButton8.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.ToolStripButton8.Image = CType(resources.GetObject("ToolStripButton8.Image"), System.Drawing.Image)
+        Me.ToolStripButton8.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.ToolStripButton8.Name = "ToolStripButton8"
+        Me.ToolStripButton8.Size = New System.Drawing.Size(52, 52)
+        Me.ToolStripButton8.Text = "Colecciones y Listas de Propietarios"
+        Me.ToolStripButton8.ToolTipText = "Exportar lista resultados a CSV"
         '
         'ToolStripButton10
         '
@@ -1152,17 +1162,6 @@ Partial Class MDIPrincipal
         Me.ToolStripButton14.Size = New System.Drawing.Size(52, 52)
         Me.ToolStripButton14.Text = "Generar metadatos de los documentos seleccionados"
         Me.ToolStripButton14.Visible = False
-        '
-        'ToolStripButton8
-        '
-        Me.ToolStripButton8.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.ToolStripButton8.Image = CType(resources.GetObject("ToolStripButton8.Image"), System.Drawing.Image)
-        Me.ToolStripButton8.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.ToolStripButton8.Name = "ToolStripButton8"
-        Me.ToolStripButton8.Size = New System.Drawing.Size(52, 52)
-        Me.ToolStripButton8.Text = "Generar CSV con el resultado de la consulta"
-        Me.ToolStripButton8.ToolTipText = "Exportar lista resultados a CSV"
-        Me.ToolStripButton8.Visible = False
         '
         'ToolStripSeparator2
         '
@@ -1673,6 +1672,18 @@ Partial Class MDIPrincipal
         Me.Panel_DocSearch.Name = "Panel_DocSearch"
         Me.Panel_DocSearch.Size = New System.Drawing.Size(250, 839)
         Me.Panel_DocSearch.TabIndex = 14
+        '
+        'Button1
+        '
+        Me.Button1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
+        Me.Button1.Location = New System.Drawing.Point(12, 621)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(111, 76)
+        Me.Button1.TabIndex = 39
+        Me.Button1.Text = "SIDCECA"
+        Me.Button1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+        Me.Button1.UseVisualStyleBackColor = True
         '
         'TextBox4
         '
@@ -2284,18 +2295,6 @@ Partial Class MDIPrincipal
         Me.ImageList2.Images.SetKeyName(12, "favicon NGBE - 32.png")
         Me.ImageList2.Images.SetKeyName(13, "Archivador 32.png")
         Me.ImageList2.Images.SetKeyName(14, "editar_24.png")
-        '
-        'Button1
-        '
-        Me.Button1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
-        Me.Button1.Location = New System.Drawing.Point(12, 621)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(111, 76)
-        Me.Button1.TabIndex = 39
-        Me.Button1.Text = "SIDCECA"
-        Me.Button1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
-        Me.Button1.UseVisualStyleBackColor = True
         '
         'MDIPrincipal
         '

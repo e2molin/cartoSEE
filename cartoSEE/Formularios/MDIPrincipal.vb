@@ -1278,8 +1278,7 @@ Public Class MDIPrincipal
                             ToolStripButton7.Click, mnuResconsulta4.Click,
                             ToolStripButton16.Click, mnuResconsulta5.Click,
                             ToolStripButton14.Click, mnuGenerarMetadatos.Click,
-                            mnuResconsulta7.Click,
-                            ToolStripButton8.Click, mnuResconsulta8.Click,
+                            mnuResconsulta7.Click, mnuResconsulta8.Click,
                             ToolStripButton18.Click, mnuResconsulta9.Click, mnuGenMiniatura.Click
 
         Dim frmAccion As frmDocumentacion
@@ -1315,7 +1314,7 @@ Public Class MDIPrincipal
         ElseIf sender.name = "ToolStripButton11" Then
 
 
-        ElseIf sender.name = "ToolStripButton8" Or sender.name = "mnuResconsulta8" Then
+        ElseIf sender.name = "mnuResconsulta8" Then
             frmAccion.ExportarListaResultados2CSV(sender, e)
         ElseIf sender.name = "mnuExtraerContornos" Then
             frmAccion.ExtraerContornos(sender, e)
@@ -2279,17 +2278,32 @@ Public Class MDIPrincipal
                         .paramSQL1 = CodMunicipioINEActual
                         .typeSearch = resultSIDCECA.TypeDataSearch.AllDocumentsByTerritorioActual
                         .Text = $"Documentos asociados al municipio actual {TextBox1.Text.Trim}"
+                        If CodMunicipioINEActual = 28079 Then
+                            .OrderField = "parcelasmadriddata.id"
+                            .PKField = "id"
+                            .datasetTbL = "parcelasmadriddata"
+                        End If
                     Else
                         'Búsqueda por territorio/municipio histórico. Usamos en la búsqueda el idTerritorio
                         .paramSQL1 = territorioId
                         .typeSearch = resultSIDCECA.TypeDataSearch.AllDocumentsByTerritorio
                         .Text = $"Documentos asociados al municipio histórivo {TextBox1.Text.Trim}"
+                        If territorioId = 5305 Then
+                            .OrderField = "parcelasmadriddata.id"
+                            .PKField = "id"
+                            .datasetTbL = "parcelasmadriddata"
+                        End If
                     End If
                 ElseIf TextBox1.text.Trim <> "" Then
                     If territorioId > 0 Then
                         .paramSQL1 = territorioId
                         .typeSearch = resultSIDCECA.TypeDataSearch.AllDocumentsByTerritorio
                         .Text = $"Documentos asociados al municipio histórico con INE {TextBox1.Text.Trim}"
+                        If territorioId = 5305 Then
+                            .OrderField = "parcelasmadriddata.id"
+                            .PKField = "id"
+                            .datasetTbL = "parcelasmadriddata"
+                        End If
                     End If
                 Else
                     If cProv > 0 Then
@@ -2313,5 +2327,161 @@ Public Class MDIPrincipal
 
 
 
+    End Sub
+
+    Private Sub ToolStripButton8_Click(sender As Object, e As EventArgs) Handles ToolStripButton8.Click
+
+        Dim frmQueryLP As New frmListaProps
+
+        frmQueryLP.MdiParent = Me
+        frmQueryLP.Text = "Lista de propietarios de la JGE"
+        frmQueryLP.SQLBase = "SELECT idlistaprop,t1.nombre as munihisto, 
+		                                COALESCE(coleccion,'Única') as coleccion,
+		                                t1.munihisto as codmunihisto,
+		                                t2.nombre as muniactual,
+		                                provincias.nombreprovincia,
+		                                t2.municipio as codmuniactual,
+		                                ayuntamiento,part_jud,numcoleccion,provincias.idprovincia as codprov,listaprop.dataset_tbl as dataset_tbl,listaprop.observaciones as observaciones
+                                FROM bdsidschema.listaprop 
+                                INNER JOIN bdsidschema.territorios t1 ON listaprop.territorio_id=t1.idterritorio
+                                INNER JOIN bdsidschema.territorios t2 ON t1.munihisto/100=t2.municipio
+                                INNER JOIN bdsidschema.provincias ON t1.provincia=provincias.idprovincia"
+        frmQueryLP.PKField = "idlistaprop"
+        frmQueryLP.OrderByField = "idlistaprop"
+        frmQueryLP.OrderByDirection = "ASC"
+        frmQueryLP.LimitResults = 3000
+        frmQueryLP.ObservacionesField = "observaciones"
+
+        frmQueryLP.DefinitionColumns.Add(New frmListaProps.DVMDataGridElement With {
+                                                                            .NameField = "idlistaprop",
+                                                                            .HeaderText = "idlistaprop",
+                                                                            .Visible = False,
+                                                                            .Hide_And_show = False,
+                                                                            .Searchable = False,
+                                                                            .AligmentText = DataGridViewContentAlignment.BottomRight,
+                                                                            .Width = 0,
+                                                                            .FixedWidth = False
+                                                    })
+        frmQueryLP.DefinitionColumns.Add(New frmListaProps.DVMDataGridElement With {
+                                                                            .NameField = "munihisto",
+                                                                            .HeaderText = "Municipio",
+                                                                            .Visible = True,
+                                                                            .Hide_And_show = True,
+                                                                            .Searchable = True,
+                                                                            .AligmentText = DataGridViewContentAlignment.BottomLeft,
+                                                                            .Width = 120,
+                                                                            .FixedWidth = False
+                                                    })
+        frmQueryLP.DefinitionColumns.Add(New frmListaProps.DVMDataGridElement With {
+                                                                            .NameField = "coleccion",
+                                                                            .HeaderText = "Colección",
+                                                                            .Visible = True,
+                                                                            .Hide_And_show = True,
+                                                                            .Searchable = True,
+                                                                            .AligmentText = DataGridViewContentAlignment.BottomLeft,
+                                                                            .Width = 120,
+                                                                            .FixedWidth = False
+                                                    })
+        frmQueryLP.DefinitionColumns.Add(New frmListaProps.DVMDataGridElement With {
+                                                                            .NameField = "codmunihisto",
+                                                                            .HeaderText = "INE Histo",
+                                                                            .Visible = True,
+                                                                            .Hide_And_show = True,
+                                                                            .Searchable = False,
+                                                                            .AligmentText = DataGridViewContentAlignment.BottomLeft,
+                                                                            .Width = 120,
+                                                                            .FixedWidth = True
+                                                    })
+        frmQueryLP.DefinitionColumns.Add(New frmListaProps.DVMDataGridElement With {
+                                                                            .NameField = "muniactual",
+                                                                            .HeaderText = "Municipio actual",
+                                                                            .Visible = False,
+                                                                            .Hide_And_show = True,
+                                                                            .Searchable = True,
+                                                                            .AligmentText = DataGridViewContentAlignment.BottomLeft,
+                                                                            .Width = 120,
+                                                                            .FixedWidth = True
+                                                    })
+        frmQueryLP.DefinitionColumns.Add(New frmListaProps.DVMDataGridElement With {
+                                                                            .NameField = "nombreprovincia",
+                                                                            .HeaderText = "Provincia",
+                                                                            .Visible = True,
+                                                                            .Hide_And_show = True,
+                                                                            .Searchable = False,
+                                                                            .AligmentText = DataGridViewContentAlignment.BottomLeft,
+                                                                            .Width = 150,
+                                                                            .FixedWidth = True
+                                                    })
+        frmQueryLP.DefinitionColumns.Add(New frmListaProps.DVMDataGridElement With {
+                                                                            .NameField = "codmuniactual",
+                                                                            .HeaderText = "INE Actual",
+                                                                            .Visible = False,
+                                                                            .Hide_And_show = False,
+                                                                            .Searchable = False,
+                                                                            .AligmentText = DataGridViewContentAlignment.BottomLeft,
+                                                                            .Width = 150,
+                                                                            .FixedWidth = False
+                                                    })
+        frmQueryLP.DefinitionColumns.Add(New frmListaProps.DVMDataGridElement With {
+                                                                            .NameField = "ayuntamiento",
+                                                                            .HeaderText = "Ayuntamiento",
+                                                                            .Visible = False,
+                                                                            .Hide_And_show = False,
+                                                                            .Searchable = False,
+                                                                            .AligmentText = DataGridViewContentAlignment.BottomLeft,
+                                                                            .Width = 150,
+                                                                            .FixedWidth = False
+                                                    })
+        frmQueryLP.DefinitionColumns.Add(New frmListaProps.DVMDataGridElement With {
+                                                                            .NameField = "part_jud",
+                                                                            .HeaderText = "Partido judicial",
+                                                                            .Visible = False,
+                                                                            .Hide_And_show = False,
+                                                                            .Searchable = False,
+                                                                            .AligmentText = DataGridViewContentAlignment.BottomLeft,
+                                                                            .Width = 150,
+                                                                            .FixedWidth = False
+                                                    })
+        frmQueryLP.DefinitionColumns.Add(New frmListaProps.DVMDataGridElement With {
+                                                                            .NameField = "numcoleccion",
+                                                                            .HeaderText = "Colección nº",
+                                                                            .Visible = False,
+                                                                            .Hide_And_show = False,
+                                                                            .Searchable = False,
+                                                                            .AligmentText = DataGridViewContentAlignment.BottomLeft,
+                                                                            .Width = 150,
+                                                                            .FixedWidth = False
+                                                    })
+        frmQueryLP.DefinitionColumns.Add(New frmListaProps.DVMDataGridElement With {
+                                                                            .NameField = "codprov",
+                                                                            .HeaderText = "INE Provincia",
+                                                                            .Visible = False,
+                                                                            .Hide_And_show = False,
+                                                                            .Searchable = False,
+                                                                            .AligmentText = DataGridViewContentAlignment.BottomLeft,
+                                                                            .Width = 150,
+                                                                            .FixedWidth = False
+                                                    })
+        frmQueryLP.DefinitionColumns.Add(New frmListaProps.DVMDataGridElement With {
+                                                                            .NameField = "dataset_tbl",
+                                                                            .HeaderText = "Dataset parcelas",
+                                                                            .Visible = False,
+                                                                            .Hide_And_show = False,
+                                                                            .Searchable = False,
+                                                                            .AligmentText = DataGridViewContentAlignment.BottomLeft,
+                                                                            .Width = 150,
+                                                                            .FixedWidth = False
+                                                    })
+        frmQueryLP.DefinitionColumns.Add(New frmListaProps.DVMDataGridElement With {
+                                                                            .NameField = "observaciones",
+                                                                            .HeaderText = "Observaciones",
+                                                                            .Visible = False,
+                                                                            .Hide_And_show = False,
+                                                                            .Searchable = False,
+                                                                            .AligmentText = DataGridViewContentAlignment.BottomLeft,
+                                                                            .Width = 150,
+                                                                            .FixedWidth = False
+                                                    })
+        frmQueryLP.Show()
     End Sub
 End Class

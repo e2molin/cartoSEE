@@ -4,7 +4,7 @@
         AllDocumentsByTerritorio = 1                    'OK
         AllDocumentsByProvincia = 2                     'OK
         AllDocumentsByTerritorioActual = 3
-        'AllDocsByFechaUpdate = 4
+        AllDocsByCodMuniHistoAndNumCol = 4
         'AllDocsPorFechaDocumento = 5
         'AllDocsPorFechaAlta = 6
         'DocumentosFiltroGenerico = 7
@@ -50,10 +50,11 @@
     'Property filterEnABSYS As String = ""
     'Property filterJGE As String = ""
 
+    Property datasetTbL As String = "parcelasdatos"
     Property limitResults As String = ""
     Property OrderField As String = "parcelasdatos.idparceladato"
     Property OrderDirection As String = "ASC"
-
+    Property PKField As String = "idparceladato"
 
     Dim rcdDataPrin As DataView
     Dim elemEntidadSel As docSIDCECA
@@ -61,40 +62,23 @@
     Dim minRows4useEnterOnFilter As Integer = 50 'Número de resultados a partir de los cuales hay que pulsar Enter para buscar.
 
 #Region "Columnas datagrid"
-    'archivo.idarchivo,             0   Oculta siempre					archivo.idarchivo,
-    'archivo.numdoc,                1   Visible siempre					archivo.numdoc,
-    'tipo,                          2   Visible inicial					tbtipodocumento.tipodoc as tipo,
-    'subtipo,                       3   Visible inicial					archivo.subtipo,
-    'archivo.tomo,                  4   Visible inicial					archivo.tomo,
-    'archivo.escala,                5   Visible inicial					archivo.escala,
-    'fechaprincipal,                6   Visible inicial					to_char(archivo.fechaprincipal, 'YYYY-MM-DD') as fechaprincipal,
-    'listaMuniHisto,                7   Visible inicial					string_agg(territorios.nombre,', ') as listaMuniHisto,
-    'archivo.signatura,             8   Visible inicial					archivo.signatura,
-    'dimensiones,                   9   Visible inicial					archivo.horizontal || ' cm × '|| archivo.vertical || ' cm' as dimensiones,
-    'archivo.coleccion,             10  Visible inicial					archivo.coleccion,
-    'archivo.subdivision,           11  Visible inicial					archivo.subdivision,
-    'estado,                        12  Visible inicial					tbestadodocumento.estadodoc as Estado,
-    'archivo.fechasmodificaciones,  13	Oculto inicio					archivo.fechasmodificaciones,
-    'archivo.observaciones,         14	Oculto inicio					archivo.observaciones,
-    'archivo.proyecto,              15	Oculto inicio					archivo.observaciones,
-    'archivo.anejo,                 16	Oculto inicio					archivo.anejo,
-    'archivo.procecarpeta,          17	Oculto inicio					archivo.procecarpeta,
-    'archivo.procehoja,             18									archivo.procehoja,
-    'archivo.juntaestadistica,      19	Oculto inicio					archivo.juntaestadistica,
-    'archivo.extraprops,            20  Oculto inicio					archivo.extraprops,
-    'archivo.cdd_url,               21									archivo.cdd_url,
-    'archivo.titn,                  22									archivo.titn,
-    'archivo.autor,                 23  Oculto inicio					archivo.autor,
-    'archivo.encabezado,            24									archivo.encabezado,
-    'nombreprovincia,               25  Oculto inicio					string_agg(provincias.nombreprovincia,'#') as nombreprovincia,
-    'listaCodMuniHisto,             26  Oculto inicio					string_agg(to_char(territorios.munihisto, 'FM0000009'::text),'#') as listaCodMuniHisto,
-    'listaMuniActual,               27									string_agg(listamunicipios.nombre,'#') as listaMuniActual,
-    'listaCodMuniActual,            28									string_agg(listamunicipios.inecorto,'#') as listaCodMuniActual
+    'parcelasdatos.idparceladato    0   Oculta siempre					parcelasdatos.idparceladato,
+    'provincias.nombreprovincia     1   Visible siempre					provincias.nombreprovincia,
+    'territorios.nombre             2   Visible inicial					territorios.nombre,
+    'listaprop.ayuntamiento         3   Visible inicial					listaprop.ayuntamiento,
+    'coleccion,                     4   Visible inicial					coleccion,
+    'propietario,                   5   Visible inicial					propietario,
+    'parcela,                       6   Visible inicial					parcela,
+    'direccion                      7   Visible inicial					direccion,
+    'superficie,                    8   Visible inicial					superficie,
+    'distribuidor,                  9   Visible inicial					distribuidor,
+    'urlcdd,                        10  Oculto inicial					urlcdd,
+    '(...)
 #End Region
 
     Const widthScrollLV As Integer = 30
     Dim FixedCols() As Integer = {0, 1} 'Columnas con ancho fijo aunque crezca el tamaño del datagrid
-    Dim Hide_And_Show_Columns() As Integer = {2, 3, 4, 5, 6, 7, 8, 9} ' Índices de columnas que pueden mostrarse u ocultarse
+    Dim Hide_And_Show_Columns() As Integer = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10} ' Índices de columnas que pueden mostrarse u ocultarse
 
     Dim idAParcelaDatoLoaded As Integer = 0
     Dim idParcelaDatoTagsLoaded As Integer = 0
@@ -372,16 +356,6 @@
         End If
 
 
-        'cboFields.Items.Add(New itemData("Municipio", "municipio"))
-        'cboFields.Items.Add(New itemData("Parcela", "parcela"))
-        'cboFields.Items.Add(New itemData("Colección", "coleccion"))
-        'cboFields.Items.Add(New itemData("Propietario", "propietario"))
-        'cboFields.Items.Add(New itemData("Distribuidor", "distribuidor"))
-        'cboFields.Items.Add(New itemData("Observaciones", "incidencia"))
-
-
-
-
 
         If ffilter = "sellado" Then
             cadFiltro = "CONVERT(" & ffilter & ", 'System.String') LIKE '%" & txtFiltro.Text.Trim.Replace("'", "''") & "%'"
@@ -428,7 +402,7 @@
 
         cancelDetails = False
         If DataGridView1.Rows.Count > 0 Then
-            FillDetailsReduced(DataGridView1.Item("idparceladato", 0).Value.ToString)
+            FillDetailsReduced(DataGridView1.Item(PKField, 0).Value.ToString)
         End If
         ToolStripStatusLabel2.Text = "Filtrados: " & DataGridView1.RowCount
 
@@ -448,13 +422,18 @@
 
 
         If typeSearch = TypeDataSearch.AllDocuments Then
-            FillDocSIDCECACAMwithFilter("")
+            If datasetTbL = "parcelasdatos" Then FillDocSIDCECACAMwithFilter("")
+            If datasetTbL = "parcelasmadriddata" Then FillDocSIDCECACapitalwithFilter("")
             Me.Text = "Todos los documentos"
         ElseIf typeSearch = TypeDataSearch.AllDocumentsByTerritorio Then
-            FillDocSIDCECACAMwithFilter($"listaprop.territorio_id={paramSQL1}")
-
+            If datasetTbL = "parcelasdatos" Then FillDocSIDCECACAMwithFilter($"listaprop.territorio_id={paramSQL1}")
+            If datasetTbL = "parcelasmadriddata" Then FillDocSIDCECACapitalwithFilter($"listaprop.territorio_id={paramSQL1}")
         ElseIf typeSearch = TypeDataSearch.AllDocumentsByTerritorioActual Then
-            FillDocSIDCECACAMwithFilter($"listaprop.territorio_id IN (SELECT idterritorio FROM bdsidschema.territorios WHERE municipio={paramSQL1})")
+            If datasetTbL = "parcelasdatos" Then FillDocSIDCECACAMwithFilter($"listaprop.territorio_id IN (SELECT idterritorio FROM bdsidschema.territorios WHERE municipio={paramSQL1})")
+            If datasetTbL = "parcelasmadriddata" Then FillDocSIDCECACapitalwithFilter($"listaprop.territorio_id IN (SELECT idterritorio FROM bdsidschema.territorios WHERE municipio={paramSQL1})")
+        ElseIf typeSearch = TypeDataSearch.AllDocsByCodMuniHistoAndNumCol Then
+            If datasetTbL = "parcelasdatos" Then FillDocSIDCECACAMwithFilter($"listaprop.territorio_id IN (SELECT idterritorio FROM bdsidschema.territorios WHERE munihisto={paramSQL1}) and listaprop.numcoleccion={paramSQL2}")
+            If datasetTbL = "parcelasmadriddata" Then FillDocSIDCECACapitalwithFilter($"listaprop.territorio_id IN (SELECT idterritorio FROM bdsidschema.territorios WHERE munihisto={paramSQL1}) and listaprop.numcoleccion={paramSQL2}")
             'ElseIf typeSearch = TypeDataSearch.AllDocumentsByProvincia Then
             '    If paramSQL1.ToString = "" Then
             '        ModalExclamation("Búsqueda por provincia no definida")
@@ -943,7 +922,7 @@
         Me.Cursor = Cursors.WaitCursor
         lvFastView.Items.Clear()
         elemEntidadSel = Nothing
-        elemEntidadSel = New docSIDCECA(DataGridView1.Item("idparceladato", rowIdx).Value)
+        elemEntidadSel = New docSIDCECA(DataGridView1.Item(PKField, rowIdx).Value)
 
         elementoLV = New ListViewItem With {.Text = "Provincia", .ImageIndex = 4, .Group = gMain}
         elementoLV.SubItems.Add(elemEntidadSel.ListaPropietarios.NombreProvincia)
@@ -1032,6 +1011,7 @@
                         COALESCE(listaprop.coleccion,'Única') as coleccion,
 	                    propietarios.nombre_completo AS propietario,
                         parcelasdatos.numparcela AS parcela,
+                        'Dirección' as direccion,
                         parcelasdatos.sup_m2 AS superficie,
                         parcelasdatos.distribuidor as distribuidor,
                         (('https://www.ign.es/cartoteca/HK/'::text || 
@@ -1049,7 +1029,7 @@
 						INNER JOIN bdsidschema.provincias ON territorios.provincia=provincias.idprovincia
                     WHERE {mainFilter}                     
                     group by 
-	                    idparceladato,provincias.nombreprovincia,territorios.nombre,listaprop.ayuntamiento,listaprop.coleccion,propietarios.nombre_completo,parcelasdatos.numparcela,parcelasdatos.sup_m2,
+	                    idparceladato,provincias.nombreprovincia,territorios.nombre,listaprop.ayuntamiento,listaprop.coleccion,propietarios.nombre_completo,parcelasdatos.numparcela,direccion,parcelasdatos.sup_m2,
 	                    parcelasdatos.distribuidor,urlcdd,parcelasdatos.sup_ha,parcelasdatos.sup_a,parcelasdatos.sup_m,parcelasdatos.sup_dec,parcelasdatos.ncc,parcelasdatos.calificador,parcelasdatos.incidencia"
 
         sqlBase &= IIf(OrderField = "", "", $" ORDER BY {OrderField}" & IIf(OrderDirection = "", "", $" {OrderDirection}"))
@@ -1070,33 +1050,148 @@
 
     End Sub
 
+    Private Sub FillDocSIDCECACapitalwithFilter(mainFilter As String)
+
+        'Ahora añadimos filtros.
+        If mainFilter = "" Then mainFilter = "parcelasmadriddata.id>0"
+        sqlBase = $"select  
+	                    parcelasmadriddata.id,
+	                    provincias.nombreprovincia as provincia,
+	                    territorios.nombre as municipio,
+	                    listaprop.ayuntamiento AS ayuntamiento,
+	                    COALESCE(listaprop.coleccion,'Única') as coleccion,
+	                    propietario,
+	                    parcelasmadriddata.parcela AS parcela,
+                        'No recogida' as direccion,
+	                    COALESCE(parcelasmadriddata.hectareas,'0'::character varying) || 'ha ' || 
+	                    COALESCE(parcelasmadriddata.areas,'0'::character varying) || 'a ' || 
+	                    COALESCE(parcelasmadriddata.metros,'0'::character varying) || 'm2' AS superficie,
+	                    parcelasmadriddata.distribuidor as distribuidor,
+	                    url_cedula_digital AS urlcdd,
+	                    territorios.munihisto AS inemunihisto,
+	                    COALESCE(parcelasmadriddata.hectareas,'0'::character varying) as sup_ha,
+	                    COALESCE(parcelasmadriddata.areas,'0'::character varying) as sup_a,
+	                    COALESCE(parcelasmadriddata.metros,'0'::character varying) as sup_m,
+	                    parcelasmadriddata.subparcela,parcelasmadriddata.comentario,
+	                    ST_AsText(ST_CENTROID(ST_UNION(parcelasmadrid.the_geom))) as nparcegeom
+                    from bdsidschema.parcelasmadriddata
+	                    LEFT JOIN bdsidschema.listaprop ON parcelasmadriddata.listaprop_id = listaprop.idlistaprop
+	                    LEFT JOIN bdsidschema.parcelasmadrid ON parcelasmadriddata.sellado = parcelasmadrid.nsellado
+	                    INNER JOIN bdsidschema.territorios ON listaprop.territorio_id=territorios.idterritorio
+	                    INNER JOIN bdsidschema.provincias ON territorios.provincia=provincias.idprovincia
+                    WHERE {mainFilter}          
+                    group by 
+	                    parcelasmadriddata.id,provincias.nombreprovincia,territorios.nombre,listaprop.ayuntamiento,listaprop.coleccion,propietario,parcelasmadriddata.parcela,direccion,
+	                    territorios.munihisto,parcelasmadriddata.distribuidor,url_cedula_digital,parcelasmadriddata.hectareas,parcelasmadriddata.areas,parcelasmadriddata.metros,
+	                    parcelasmadriddata.subparcela,parcelasmadriddata.comentario"
+
+        sqlBase &= IIf(OrderField = "", "", $" ORDER BY {OrderField}" & IIf(OrderDirection = "", "", $" {OrderDirection}"))
+        sqlBase &= IIf(limitResults = "", "", $" LIMIT {limitResults}")
+
+
+
+
+        rcdDataPrin = New DataView
+        If CargarDataView(sqlBase, rcdDataPrin) = False Then
+            ModalExclamation("No se pueden cargar los datos")
+            Exit Sub
+        End If
+
+        FormatDatagridSIDCECACapital()
+        'If columnVisualiz = 1 Then FormatDatagridMapsReduced()
+
+
+    End Sub
+
     'Este formto muestra todos los campos en columnas
     Private Sub FormatDatagridSIDCECACAM()
 
         DataGridView1.DataSource = rcdDataPrin
         'Seguidas ponemos las columnas visibles con su anchura
-        DataGridView1.Columns(0).HeaderText = "idparceladato"
+        DataGridView1.Columns(0).HeaderText = PKField
         DataGridView1.Columns(0).Visible = False
         DataGridView1.Columns("provincia").HeaderText = "Provincia"
         DataGridView1.Columns("provincia").Width = 70
         DataGridView1.Columns("municipio").HeaderText = "Municipio"
         DataGridView1.Columns("municipio").Width = 150
+        DataGridView1.Columns("ayuntamiento").HeaderText = "Ayuntamiento"
+        DataGridView1.Columns("ayuntamiento").Width = 150
+        DataGridView1.Columns("ayuntamiento").Visible = False
         DataGridView1.Columns("coleccion").HeaderText = "Colección"
         DataGridView1.Columns("coleccion").Width = 80
         DataGridView1.Columns("propietario").HeaderText = "Propietario"
         DataGridView1.Columns("propietario").Width = 80
         DataGridView1.Columns("parcela").HeaderText = "Parcela"
         DataGridView1.Columns("parcela").Width = 80
+        DataGridView1.Columns("direccion").HeaderText = "Dirección"
+        DataGridView1.Columns("direccion").Width = 80
+        DataGridView1.Columns("direccion").Visible = False
         DataGridView1.Columns("superficie").HeaderText = "Superficie"
         DataGridView1.Columns("superficie").Width = 60
         DataGridView1.Columns("superficie").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
         DataGridView1.Columns("distribuidor").HeaderText = "Distribuidor"
         DataGridView1.Columns("distribuidor").Width = 60
         DataGridView1.Columns("distribuidor").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
-        'Mostramos hasta la columna 7
+        'Mostramos hasta la columna 8
 
         'Ocultamos el resto de columnas
-        For iCol = 8 To DataGridView1.ColumnCount - 1
+        For iCol = 9 To DataGridView1.ColumnCount - 1
+            DataGridView1.Columns(iCol).Visible = False
+        Next
+
+        'Activamos las columnas que pueden mostrarse y apagarse
+        RenombrarItemsColumnas()
+
+        DataGridView1.RowsDefaultCellStyle.BackColor = Color.White
+        DataGridView1.AlternatingRowsDefaultCellStyle.BackColor = Color.AliceBlue
+        'DataGridView1.Sort(DataGridView1.Columns(0), System.ComponentModel.ListSortDirection.Ascending)
+        ToolStripStatusLabel1.Text = "Elementos: " & DataGridView1.RowCount
+
+        If DataGridView1.RowCount > minRows4useEnterOnFilter Then
+            useEnterOnFilter = True
+            ToolStripLabel1.Text = "Búsqueda (Pulsa Enter)"
+        Else
+            useEnterOnFilter = False
+            ToolStripLabel1.Text = "Buscar..."
+        End If
+
+
+
+
+    End Sub
+
+    Private Sub FormatDatagridSIDCECACapital()
+
+        DataGridView1.DataSource = rcdDataPrin
+        'Seguidas ponemos las columnas visibles con su anchura
+        DataGridView1.Columns(0).HeaderText = PKField
+        DataGridView1.Columns(0).Visible = False
+        DataGridView1.Columns("provincia").HeaderText = "Provincia"
+        DataGridView1.Columns("provincia").Width = 70
+        DataGridView1.Columns("municipio").HeaderText = "Municipio"
+        DataGridView1.Columns("municipio").Width = 150
+        DataGridView1.Columns("ayuntamiento").HeaderText = "Ayuntamiento"
+        DataGridView1.Columns("ayuntamiento").Width = 150
+        DataGridView1.Columns("ayuntamiento").Visible = False
+        DataGridView1.Columns("coleccion").HeaderText = "Colección"
+        DataGridView1.Columns("coleccion").Width = 80
+        DataGridView1.Columns("propietario").HeaderText = "Propietario"
+        DataGridView1.Columns("propietario").Width = 80
+        DataGridView1.Columns("parcela").HeaderText = "Parcela"
+        DataGridView1.Columns("parcela").Visible = False
+        DataGridView1.Columns("parcela").Width = 80
+        DataGridView1.Columns("direccion").HeaderText = "Dirección"
+        DataGridView1.Columns("direccion").Width = 80
+        DataGridView1.Columns("superficie").HeaderText = "Superficie"
+        DataGridView1.Columns("superficie").Width = 60
+        DataGridView1.Columns("superficie").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
+        DataGridView1.Columns("distribuidor").HeaderText = "Distribuidor"
+        DataGridView1.Columns("distribuidor").Width = 60
+        DataGridView1.Columns("distribuidor").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
+        'Mostramos hasta la columna 8
+
+        'Ocultamos el resto de columnas
+        For iCol = 9 To DataGridView1.ColumnCount - 1
             DataGridView1.Columns(iCol).Visible = False
         Next
 
@@ -1347,14 +1442,14 @@
                 Exit Sub
             End If
         End If
-        If DataGridView1.Item("idparceladato", DataGridView1.CurrentCell.RowIndex).Value.ToString = "" Then
+        If DataGridView1.Item(PKField, DataGridView1.CurrentCell.RowIndex).Value.ToString = "" Then
             ModalExclamation("")
             Exit Sub
         End If
-        FillDetailsReduced(DataGridView1.Item("idparceladato", DataGridView1.CurrentCell.RowIndex).Value.ToString)
+        FillDetailsReduced(DataGridView1.Item(PKField, DataGridView1.CurrentCell.RowIndex).Value.ToString)
 
         If idAParcelaDatoLoaded <> idParcelaDatoTagsLoaded Then
-            FillMarc21Tags(DataGridView1.Item("idparceladato", DataGridView1.CurrentCell.RowIndex).Value.ToString, DataGridView1.CurrentCell.RowIndex)
+            FillMarc21Tags(DataGridView1.Item(PKField, DataGridView1.CurrentCell.RowIndex).Value.ToString, DataGridView1.CurrentCell.RowIndex)
         End If
 
     End Sub
@@ -1401,7 +1496,7 @@
 
     Private Sub DataGridView1_Click(sender As Object, e As EventArgs) Handles DataGridView1.Click
         If DataGridView1.Rows.Count = 0 Then Exit Sub
-        FillDetailsReduced(DataGridView1.Item("idparceladato", DataGridView1.CurrentCell.RowIndex).Value.ToString)
+        FillDetailsReduced(DataGridView1.Item(PKField, DataGridView1.CurrentCell.RowIndex).Value.ToString)
 
     End Sub
 
@@ -1409,11 +1504,11 @@
 
         Debug.Print("CellEnter")
         If DataGridView1.CurrentCell IsNot Nothing Then
-            If DataGridView1.Item("idparceladato", DataGridView1.CurrentCell.RowIndex).Value.ToString = "" Then
+            If DataGridView1.Item(PKField, DataGridView1.CurrentCell.RowIndex).Value.ToString = "" Then
                 ModalExclamation("Índice TITN no definido")
                 Exit Sub
             End If
-            If Not gettingDetails Then FillDetailsReduced(DataGridView1.Item("idparceladato", DataGridView1.CurrentCell.RowIndex).Value.ToString)
+            If Not gettingDetails Then FillDetailsReduced(DataGridView1.Item(PKField, DataGridView1.CurrentCell.RowIndex).Value.ToString)
         End If
 
     End Sub
@@ -1481,14 +1576,14 @@
             txtFiltro.Enabled = False
             cboFields.Enabled = False
             If idAParcelaDatoLoaded <> idParcelaDatoTagsLoaded Then
-                FillMarc21Tags(DataGridView1.Item("idparceladato", DataGridView1.CurrentCell.RowIndex).Value.ToString, DataGridView1.CurrentCell.RowIndex)
+                FillMarc21Tags(DataGridView1.Item(PKField, DataGridView1.CurrentCell.RowIndex).Value.ToString, DataGridView1.CurrentCell.RowIndex)
             End If
             TabControl1.SelectedIndex = 1
         ElseIf sender.name = "btnResources" Then
             txtFiltro.Enabled = False
             cboFields.Enabled = False
             If idAParcelaDatoLoaded <> idParcelaDatoResourcesLoaded Then
-                FillResources(DataGridView1.Item("idparceladato", DataGridView1.CurrentCell.RowIndex).Value.ToString, DataGridView1.CurrentCell.RowIndex)
+                FillResources(DataGridView1.Item(PKField, DataGridView1.CurrentCell.RowIndex).Value.ToString, DataGridView1.CurrentCell.RowIndex)
             End If
             TabControl1.SelectedIndex = 2
         End If
@@ -1504,12 +1599,12 @@
         ElseIf TabControl1.SelectedIndex = 1 Then
             If DataGridView1.CurrentCell Is Nothing Then Exit Sub
             If idAParcelaDatoLoaded <> idParcelaDatoTagsLoaded Then
-                FillMarc21Tags(DataGridView1.Item("idparceladato", DataGridView1.CurrentCell.RowIndex).Value.ToString, DataGridView1.CurrentCell.RowIndex)
+                FillMarc21Tags(DataGridView1.Item(PKField, DataGridView1.CurrentCell.RowIndex).Value.ToString, DataGridView1.CurrentCell.RowIndex)
             End If
         ElseIf TabControl1.SelectedIndex = 2 Then
             If DataGridView1.CurrentCell Is Nothing Then Exit Sub
             If idAParcelaDatoLoaded <> idParcelaDatoResourcesLoaded Then
-                FillResources(DataGridView1.Item("idparceladato", DataGridView1.CurrentCell.RowIndex).Value.ToString, DataGridView1.CurrentCell.RowIndex)
+                FillResources(DataGridView1.Item(PKField, DataGridView1.CurrentCell.RowIndex).Value.ToString, DataGridView1.CurrentCell.RowIndex)
             End If
         End If
     End Sub
@@ -1992,6 +2087,10 @@
     End Sub
 
     Private Sub lvTagsM21_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lvTagsM21.SelectedIndexChanged
+
+    End Sub
+
+    Private Sub lvDocResources_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lvDocResources.SelectedIndexChanged
 
     End Sub
 End Class
