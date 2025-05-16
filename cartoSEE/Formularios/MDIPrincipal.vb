@@ -2279,8 +2279,8 @@ Public Class MDIPrincipal
                         .typeSearch = resultSIDCECA.TypeDataSearch.AllDocumentsByTerritorioActual
                         .Text = $"Documentos asociados al municipio actual {TextBox1.Text.Trim}"
                         If CodMunicipioINEActual = 28079 Then
-                            .OrderField = "parcelasmadriddata.id"
-                            .PKField = "id"
+                            .OrderField = "parcelasmadriddata.idparcelamadriddata"
+                            .PKField = "idparcelamadriddata"
                             .datasetTbL = "parcelasmadriddata"
                         End If
                     Else
@@ -2289,8 +2289,8 @@ Public Class MDIPrincipal
                         .typeSearch = resultSIDCECA.TypeDataSearch.AllDocumentsByTerritorio
                         .Text = $"Documentos asociados al municipio histórivo {TextBox1.Text.Trim}"
                         If territorioId = 5305 Then
-                            .OrderField = "parcelasmadriddata.id"
-                            .PKField = "id"
+                            .OrderField = "parcelasmadriddata.idparcelamadriddata"
+                            .PKField = "idparcelamadriddata"
                             .datasetTbL = "parcelasmadriddata"
                         End If
                     End If
@@ -2300,8 +2300,8 @@ Public Class MDIPrincipal
                         .typeSearch = resultSIDCECA.TypeDataSearch.AllDocumentsByTerritorio
                         .Text = $"Documentos asociados al municipio histórico con INE {TextBox1.Text.Trim}"
                         If territorioId = 5305 Then
-                            .OrderField = "parcelasmadriddata.id"
-                            .PKField = "id"
+                            .OrderField = "parcelasmadriddata.idparcelamadriddata"
+                            .PKField = "idparcelamadriddata"
                             .datasetTbL = "parcelasmadriddata"
                         End If
                     End If

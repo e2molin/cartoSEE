@@ -16,10 +16,21 @@
     Property FechaAlta As String
     Property FechaModificacion As String
     Property WKT_geom As String
+    Property Barrio As String = ""
+    Property CalleLugar As String = ""
+    Property FincaEdificio As String = ""
+    Property NumManzana As String = ""
+    Property NumEdificio As String = ""
+    Property DelegadoCatastral As String = ""
+    Property AutorLevantamiento As String = ""
+    Property NumParcelaReverso As String = ""
+    Property TipoCedula As String = ""
+    Property SignaturaCaja As String = ""
     Property coordenadas As New ArrayList
     Property listaMosaicos As New ArrayList
-    Dim getMosaicosConsultado As Boolean = False
 
+    Dim getMosaicosConsultado As Boolean = False
+    Dim datasetTblClass As String
 
 
     ReadOnly Property SupTotalM2() As Double
@@ -35,7 +46,8 @@
     ReadOnly Property rutaFicheroPDF() As String
 
         Get
-            Return $"{RutaRepoSIDCECA}{ListaPropietarios.CodMuniHisto}\{Replace(NombreDocumento, "A.JPG", ".pdf")}"
+            If datasetTblClass = "parcelasdatos" Then Return $"{RutaRepoSIDCECA}{ListaPropietarios.CodMuniHisto}\{Replace(NombreDocumento, "A.JPG", ".pdf")}"
+            If datasetTblClass = "parcelasmadriddata" Then Return $"{RutaRepoSIDCECA}{ListaPropietarios.CodMuniHisto}\{SignaturaCaja}\{String.Format("{0:00000000}", CType(SelladoDocumento, Integer))}.pdf"
         End Get
 
     End Property
@@ -50,14 +62,21 @@
 
     ReadOnly Property nombreParcela() As String
         Get
-            Return $"{Parcela}{SubParcela}"
+
+            Return $"{Parcela}{IIf(SubParcela <> "No definida", SubParcela, "")}"
+
         End Get
     End Property
 
     ReadOnly Property urlcdd() As String
+
         Get
-            Return $"https://www.ign.es/cartoteca/HK/{ListaPropietarios.CodMuniHisto}/{Replace(NombreDocumento, "A.JPG", ".pdf")}"
+
+            If datasetTblClass = "parcelasdatos" Then Return $"https://www.ign.es/cartoteca/HK/{ListaPropietarios.CodMuniHisto}/{Replace(NombreDocumento, "A.JPG", ".pdf")}"
+            If datasetTblClass = "parcelasmadriddata" Then Return $"https://www.ign.es/cartoteca/HK/{ListaPropietarios.CodMuniHisto}/{SignaturaCaja}/{String.Format("{0:00000000}", CType(SelladoDocumento, Integer))}.pdf"
+            '01998545
         End Get
+
     End Property
 
     ''' <summary>
@@ -79,33 +98,77 @@
     End Property
 
 
+    ''' <summary>
+    ''' El parámetro opcional datasetTbL nos indica la tabla de la cual saca los datos.
+    ''' La clase trabaja con las tablas parcelasdatos y parcelasmadriddata
+    ''' </summary>
+    ''' <param name="idParcela"></param>
+    ''' <param name="datasetTbl"></param>
+    Sub New(idParcela As Integer, Optional datasetTbl As String = "parcelasdatos")
 
-    Sub New(idParcela As Integer)
+        Dim consultaSQL As String
 
-        Dim consultasql As String = $"SELECT  
-	                                    parcelasdatos.idparceladato,parcelasdatos.numero_doc,parcelasdatos.fecha_insert,parcelasdatos.fechamodificacion,parcelasdatos.nombre_archivo,
-	                                    propietarios.nombre_completo AS propietario,
-                                        parcelasdatos.listaprop_id,
-                                        parcelasdatos.terminoid AS inemunihisto,
-                                        parcelasdatos.numparcela AS parcela,
-                                        parcelasdatos.sup_m2 AS superficie,
-                                        parcelasdatos.distribuidor,
-	                                    parcelasdatos.sup_ha,parcelasdatos.sup_a,parcelasdatos.sup_m,parcelasdatos.sup_dec,
-	                                    parcelasdatos.ncc,parcelasdatos.calificador,parcelasdatos.incidencia,
-	                                    ST_AsText(ST_UNION(parcelasgeotrans.the_geom)) as nparcegeom
-                                    FROM bdsidschema.parcelasdatos 
-                                         LEFT JOIN bdsidschema.listaprop ON parcelasdatos.listaprop_id = listaprop.idlistaprop
-                                         LEFT JOIN bdsidschema.propietarios ON parcelasdatos.propietario_id = propietarios.idpropietario
-	                                     LEFT JOIN bdsidschema.parcelasgeotrans ON parcelasdatos.idparceladato = parcelasgeotrans.parceladato_id
-  	                                where parcelasdatos.idparceladato={idParcela}
-                                    GROUP BY 
-	                                   parcelasdatos.idparceladato,parcelasdatos.numero_doc,parcelasdatos.fecha_insert,parcelasdatos.fechamodificacion,parcelasdatos.nombre_archivo,
-	                                   propietarios.nombre_completo,parcelasdatos.listaprop_id,parcelasdatos.terminoid,parcelasdatos.numparcela,parcelasdatos.sup_m2,parcelasdatos.distribuidor,
-										parcelasdatos.sup_ha,parcelasdatos.sup_a,parcelasdatos.sup_m,parcelasdatos.sup_dec,parcelasdatos.ncc,parcelasdatos.calificador,parcelasdatos.incidencia
-	                                    ORDER BY parcelasdatos.idparceladato"
+        datasetTblClass = datasetTbl
+
+        If datasetTbl = "parcelasdatos" Then
+
+            consultaSQL = $"SELECT  
+	                            parcelasdatos.idparceladato,parcelasdatos.numero_doc,parcelasdatos.fecha_insert,parcelasdatos.fechamodificacion,parcelasdatos.nombre_archivo,
+	                            propietarios.nombre_completo AS propietario,
+                                parcelasdatos.listaprop_id,
+                                parcelasdatos.terminoid AS inemunihisto,
+                                parcelasdatos.numparcela AS parcela,
+                                parcelasdatos.distribuidor,
+	                            parcelasdatos.sup_ha,parcelasdatos.sup_a,parcelasdatos.sup_m,parcelasdatos.sup_dec,
+	                            parcelasdatos.ncc,parcelasdatos.calificador,parcelasdatos.incidencia,
+	                            ST_AsText(ST_UNION(parcelasgeotrans.the_geom)) as nparcegeom
+                            FROM bdsidschema.parcelasdatos 
+                                    LEFT JOIN bdsidschema.listaprop ON parcelasdatos.listaprop_id = listaprop.idlistaprop
+                                    LEFT JOIN bdsidschema.propietarios ON parcelasdatos.propietario_id = propietarios.idpropietario
+	                                LEFT JOIN bdsidschema.parcelasgeotrans ON parcelasdatos.idparceladato = parcelasgeotrans.parceladato_id
+  	                        where parcelasdatos.idparceladato={idParcela}
+                            GROUP BY 
+	                            parcelasdatos.idparceladato,parcelasdatos.numero_doc,parcelasdatos.fecha_insert,parcelasdatos.fechamodificacion,parcelasdatos.nombre_archivo,
+	                            propietarios.nombre_completo,parcelasdatos.listaprop_id,parcelasdatos.terminoid,parcelasdatos.numparcela,parcelasdatos.distribuidor,
+							    parcelasdatos.sup_ha,parcelasdatos.sup_a,parcelasdatos.sup_m,parcelasdatos.sup_dec,parcelasdatos.ncc,parcelasdatos.calificador,parcelasdatos.incidencia
+	                            ORDER BY parcelasdatos.idparceladato"
+
+        End If
+        If datasetTbl = "parcelasmadriddata" Then
+
+            consultaSQL = $"SELECT  
+	                            parcelasmadriddata.idparcelamadriddata as idparceladato,parcelasmadriddata.sellado as numero_doc,
+	                            parcelasmadriddata.ceduladigital as nombre_archivo,
+	                            parcelasmadriddata.propietario AS propietario,
+	                            parcelasmadriddata.listaprop_id,
+	                            parcelasmadriddata.parcela AS parcela,
+	                            parcelasmadriddata.subparcela AS subparcela,
+	                            parcelasmadriddata.distribuidor,
+	                            parcelasmadriddata.sup_ha,parcelasmadriddata.sup_a,parcelasmadriddata.sup_m,parcelasmadriddata.sup_dec,
+	                            parcelasmadriddata.barrio,parcelasmadriddata.calle_lugar,parcelasmadriddata.finca_edificio,parcelasmadriddata.nummanzana,
+	                            parcelasmadriddata.numedificio,parcelasmadriddata.delegado_catastral,parcelasmadriddata.encargado_levan,parcelasmadriddata.numparcela_reverso,
+                                parcelasmadriddata.caja as signaturacaja,parcelasmadriddata.tipo as tipocedula,
+	                            parcelasmadriddata.comentario as incidencia,
+	                            create_at as fecha_insert,update_at as fechamodificacion,
+	                            ST_AsText(ST_UNION(parcelasmadrid.the_geom)) as nparcegeom
+                            FROM bdsidschema.parcelasmadriddata 
+	                             LEFT JOIN bdsidschema.listaprop ON parcelasmadriddata.listaprop_id = listaprop.idlistaprop
+	                             LEFT JOIN bdsidschema.parcelasmadrid ON parcelasmadriddata.idparcelamadriddata = parcelasmadrid.parcelamadriddata_id
+                            where parcelasmadriddata.idparcelamadriddata={idParcela}
+                            GROUP BY 
+                               parcelasmadriddata.idparcelamadriddata,parcelasmadriddata.sellado,create_at,update_at,parcelasmadriddata.ceduladigital,
+                               parcelasmadriddata.propietario,parcelasmadriddata.listaprop_id,
+	                            parcelasmadriddata.distribuidor,
+	                            parcelasmadriddata.sup_ha,parcelasmadriddata.sup_a,parcelasmadriddata.sup_m,parcelasmadriddata.sup_dec,
+	                            parcelasmadriddata.barrio,parcelasmadriddata.calle_lugar,parcelasmadriddata.finca_edificio,parcelasmadriddata.nummanzana,
+	                            parcelasmadriddata.numedificio,parcelasmadriddata.delegado_catastral,parcelasmadriddata.encargado_levan,parcelasmadriddata.numparcela_reverso,
+                                parcelasmadriddata.caja,parcelasmadriddata.tipo,
+	                            parcelasmadriddata.parcela,parcelasmadriddata.subparcela,parcelasmadriddata.comentario"
 
 
-        rellenarDataset(consultasql)
+        End If
+
+        rellenarDataset(consultaSQL)
 
     End Sub
 
@@ -127,8 +190,11 @@
                 'Esto es necesario mientras haya documentos con el documento Principal sin especificar
                 IdParcela = dR("idparceladato")
                 ListaPropietarios = New docSIDCECAListaProp(dR("listaprop_id"))
-                Parcela = dR("ncc").ToString
-                SubParcela = dR("calificador").ToString
+                If datasetTblClass = "parcelasdatos" Then Parcela = dR("ncc").ToString
+                If datasetTblClass = "parcelasdatos" Then SubParcela = dR("calificador").ToString
+                If datasetTblClass = "parcelasmadriddata" Then Parcela = dR("parcela").ToString
+                If datasetTblClass = "parcelasmadriddata" Then SubParcela = dR("subparcela").ToString
+
                 SupHa = dR("sup_ha")
                 SupA = dR("sup_a")
                 SupM2 = dR("sup_m")
@@ -138,8 +204,21 @@
                 Incidencia = dR("incidencia").ToString
                 SelladoDocumento = dR("numero_doc").ToString
                 FechaAlta = dR("fecha_insert").ToString
-                FechaAlta = dR("fechamodificacion").ToString
+                FechaModificacion = dR("fechamodificacion").ToString
                 NombreDocumento = dR("nombre_archivo").ToString
+                If datasetTblClass = "parcelasmadriddata" Then
+                    Barrio = dR("barrio").ToString
+                    CalleLugar = dR("calle_lugar").ToString
+                    FincaEdificio = dR("finca_edificio").ToString
+                    NumManzana = dR("nummanzana").ToString
+                    NumEdificio = dR("numedificio").ToString
+                    DelegadoCatastral = dR("delegado_catastral").ToString
+                    AutorLevantamiento = dR("encargado_levan").ToString
+                    NumParcelaReverso = dR("numparcela_reverso").ToString
+                    TipoCedula = dR("tipocedula").ToString
+                    SignaturaCaja = dR("signaturacaja").ToString
+                End If
+
                 WKT_geom = dR("nparcegeom").ToString
 
                 If WKT_geom.StartsWith("POINT(") Then

@@ -61,21 +61,6 @@
     Dim useEnterOnFilter As Boolean
     Dim minRows4useEnterOnFilter As Integer = 50 'Número de resultados a partir de los cuales hay que pulsar Enter para buscar.
 
-#Region "Columnas datagrid"
-    'parcelasdatos.idparceladato    0   Oculta siempre					parcelasdatos.idparceladato,
-    'provincias.nombreprovincia     1   Visible siempre					provincias.nombreprovincia,
-    'territorios.nombre             2   Visible inicial					territorios.nombre,
-    'listaprop.ayuntamiento         3   Visible inicial					listaprop.ayuntamiento,
-    'coleccion,                     4   Visible inicial					coleccion,
-    'propietario,                   5   Visible inicial					propietario,
-    'parcela,                       6   Visible inicial					parcela,
-    'direccion                      7   Visible inicial					direccion,
-    'superficie,                    8   Visible inicial					superficie,
-    'distribuidor,                  9   Visible inicial					distribuidor,
-    'urlcdd,                        10  Oculto inicial					urlcdd,
-    '(...)
-#End Region
-
     Const widthScrollLV As Integer = 30
     Dim FixedCols() As Integer = {0, 1} 'Columnas con ancho fijo aunque crezca el tamaño del datagrid
     Dim Hide_And_Show_Columns() As Integer = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10} ' Índices de columnas que pueden mostrarse u ocultarse
@@ -636,6 +621,14 @@
         elementoLV.SubItems.Add(elemEntidadSel.Propietario) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
         elementoLV = New ListViewItem With {.Text = "Sello cédula", .ImageIndex = 4, .Group = docGeneral}
         elementoLV.SubItems.Add(elemEntidadSel.SelladoDocumento) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
+        If datasetTbL = "parcelasmadriddata" Then
+            elementoLV = New ListViewItem With {.Text = "Signatura caja", .ImageIndex = 4, .Group = docGeneral}
+            elementoLV.SubItems.Add(elemEntidadSel.SignaturaCaja) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
+            elementoLV = New ListViewItem With {.Text = "Delegado catastral", .ImageIndex = 4, .Group = docGeneral}
+            elementoLV.SubItems.Add(elemEntidadSel.DelegadoCatastral) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
+            elementoLV = New ListViewItem With {.Text = "Autor levantamiento", .ImageIndex = 4, .Group = docGeneral}
+            elementoLV.SubItems.Add(elemEntidadSel.AutorLevantamiento) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
+        End If
 
 
         elementoLV = New ListViewItem With {.Text = "Hectáreas", .ImageIndex = 4, .Group = docSuperficies}
@@ -658,6 +651,21 @@
         elementoLV.SubItems.Add(elemEntidadSel.ListaPropietarios.Ayuntamiento) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
         elementoLV = New ListViewItem With {.Text = "Partido judicial", .ImageIndex = 4, .Group = docUbicacion}
         elementoLV.SubItems.Add(elemEntidadSel.ListaPropietarios.PartidoJudicial) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
+
+        If datasetTbL="parcelasmadriddata" Then
+            elementoLV = New ListViewItem With {.Text = "Barrio", .ImageIndex = 4, .Group = docUbicacion}
+            elementoLV.SubItems.Add(elemEntidadSel.Barrio) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
+            elementoLV = New ListViewItem With {.Text = "Calle/Lugar", .ImageIndex = 4, .Group = docUbicacion}
+            elementoLV.SubItems.Add(elemEntidadSel.CalleLugar) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
+            elementoLV = New ListViewItem With {.Text = "Finca/Edificio", .ImageIndex = 4, .Group = docUbicacion}
+            elementoLV.SubItems.Add(elemEntidadSel.FincaEdificio) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
+            elementoLV = New ListViewItem With {.Text = "Manzana nº", .ImageIndex = 4, .Group = docUbicacion}
+            elementoLV.SubItems.Add(elemEntidadSel.NumManzana) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
+            elementoLV = New ListViewItem With {.Text = "Edificio nº", .ImageIndex = 4, .Group = docUbicacion}
+            elementoLV.SubItems.Add(elemEntidadSel.NumEdificio) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
+        End If
+
+
 
         elementoLV = New ListViewItem With {.Text = "Fecha de alta", .ImageIndex = 4, .Group = docOtros}
         elementoLV.SubItems.Add(elemEntidadSel.FechaAlta) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
@@ -922,7 +930,7 @@
         Me.Cursor = Cursors.WaitCursor
         lvFastView.Items.Clear()
         elemEntidadSel = Nothing
-        elemEntidadSel = New docSIDCECA(DataGridView1.Item(PKField, rowIdx).Value)
+        elemEntidadSel = New docSIDCECA(DataGridView1.Item(PKField, rowIdx).Value, datasetTbL)
 
         elementoLV = New ListViewItem With {.Text = "Provincia", .ImageIndex = 4, .Group = gMain}
         elementoLV.SubItems.Add(elemEntidadSel.ListaPropietarios.NombreProvincia)
@@ -1053,19 +1061,21 @@
     Private Sub FillDocSIDCECACapitalwithFilter(mainFilter As String)
 
         'Ahora añadimos filtros.
-        If mainFilter = "" Then mainFilter = "parcelasmadriddata.id>0"
+        If mainFilter = "" Then mainFilter = "parcelasmadriddata.idparcelamadriddata>0"
         sqlBase = $"select  
-	                    parcelasmadriddata.id,
+	                    parcelasmadriddata.idparcelamadriddata,
 	                    provincias.nombreprovincia as provincia,
 	                    territorios.nombre as municipio,
 	                    listaprop.ayuntamiento AS ayuntamiento,
 	                    COALESCE(listaprop.coleccion,'Única') as coleccion,
 	                    propietario,
 	                    parcelasmadriddata.parcela AS parcela,
-                        'No recogida' as direccion,
-	                    COALESCE(parcelasmadriddata.hectareas,'0'::character varying) || 'ha ' || 
-	                    COALESCE(parcelasmadriddata.areas,'0'::character varying) || 'a ' || 
-	                    COALESCE(parcelasmadriddata.metros,'0'::character varying) || 'm2' AS superficie,
+                        calle_lugar || CASE WHEN numedificio<>'Sin rellenar' THEN ', ' || numedificio END ||
+                        ' (' || finca_edificio || ')' ||
+                        CASE WHEN nummanzana<>'Sin rellenar' THEN ' - Manzana: ' || nummanzana END as direccion,
+	                    parcelasmadriddata.sup_ha::character varying || 'ha ' || 
+	                    parcelasmadriddata.sup_a::character varying || 'a ' || 
+	                    (parcelasmadriddata.sup_m + sup_dec/100::float)::character varying || 'm2 ' AS superficie,
 	                    parcelasmadriddata.distribuidor as distribuidor,
 	                    url_cedula_digital AS urlcdd,
 	                    territorios.munihisto AS inemunihisto,
@@ -1076,14 +1086,14 @@
 	                    ST_AsText(ST_CENTROID(ST_UNION(parcelasmadrid.the_geom))) as nparcegeom
                     from bdsidschema.parcelasmadriddata
 	                    LEFT JOIN bdsidschema.listaprop ON parcelasmadriddata.listaprop_id = listaprop.idlistaprop
-	                    LEFT JOIN bdsidschema.parcelasmadrid ON parcelasmadriddata.sellado = parcelasmadrid.nsellado
+	                    LEFT JOIN bdsidschema.parcelasmadrid ON parcelasmadriddata.idparcelamadriddata = parcelasmadrid.parcelamadriddata_id
 	                    INNER JOIN bdsidschema.territorios ON listaprop.territorio_id=territorios.idterritorio
 	                    INNER JOIN bdsidschema.provincias ON territorios.provincia=provincias.idprovincia
                     WHERE {mainFilter}          
                     group by 
-	                    parcelasmadriddata.id,provincias.nombreprovincia,territorios.nombre,listaprop.ayuntamiento,listaprop.coleccion,propietario,parcelasmadriddata.parcela,direccion,
+	                    parcelasmadriddata.idparcelamadriddata,provincias.nombreprovincia,territorios.nombre,listaprop.ayuntamiento,listaprop.coleccion,propietario,parcelasmadriddata.parcela,direccion,
 	                    territorios.munihisto,parcelasmadriddata.distribuidor,url_cedula_digital,parcelasmadriddata.hectareas,parcelasmadriddata.areas,parcelasmadriddata.metros,
-	                    parcelasmadriddata.subparcela,parcelasmadriddata.comentario"
+	                    parcelasmadriddata.subparcela,parcelasmadriddata.comentario,parcelasmadriddata.calle_lugar,parcelasmadriddata.finca_edificio,parcelasmadriddata.numedificio,parcelasmadriddata.nummanzana"
 
         sqlBase &= IIf(OrderField = "", "", $" ORDER BY {OrderField}" & IIf(OrderDirection = "", "", $" {OrderDirection}"))
         sqlBase &= IIf(limitResults = "", "", $" LIMIT {limitResults}")
@@ -1103,17 +1113,35 @@
 
     End Sub
 
+
+#Region "Columnas datagrid CAM"
+    'parcelasdatos.idparceladato    0   Oculta siempre					parcelasdatos.idparceladato,
+    'provincias.nombreprovincia     1   Visible siempre					provincias.nombreprovincia,
+    'territorios.nombre             2   Visible inicial					territorios.nombre,
+    'listaprop.ayuntamiento         3   Visible inicial					listaprop.ayuntamiento,
+    'coleccion,                     4   Visible inicial					coleccion,
+    'propietario,                   5   Visible inicial					propietario,
+    'parcela,                       6   Visible inicial					parcela,
+    'direccion                      7   Visible inicial					direccion,
+    'superficie,                    8   Visible inicial					superficie,
+    'distribuidor,                  9   Visible inicial					distribuidor,
+    'urlcdd,                        10  Oculto inicial					urlcdd,
+    '(...)
+#End Region
+
     'Este formto muestra todos los campos en columnas
     Private Sub FormatDatagridSIDCECACAM()
+
+
 
         DataGridView1.DataSource = rcdDataPrin
         'Seguidas ponemos las columnas visibles con su anchura
         DataGridView1.Columns(0).HeaderText = PKField
         DataGridView1.Columns(0).Visible = False
         DataGridView1.Columns("provincia").HeaderText = "Provincia"
-        DataGridView1.Columns("provincia").Width = 70
+        DataGridView1.Columns("provincia").Width = 10
         DataGridView1.Columns("municipio").HeaderText = "Municipio"
-        DataGridView1.Columns("municipio").Width = 150
+        DataGridView1.Columns("municipio").Width = 100
         DataGridView1.Columns("ayuntamiento").HeaderText = "Ayuntamiento"
         DataGridView1.Columns("ayuntamiento").Width = 150
         DataGridView1.Columns("ayuntamiento").Visible = False
@@ -1160,33 +1188,54 @@
 
     End Sub
 
+#Region "Columnas datagrid Grid Capital"
+    'parcelasmadriddata.idparcelamadriddata         0   Oculta siempre					parcelasdatos.idparceladato,
+    'provincias.nombreprovincia as provincia        1   Visible siempre					provincias.nombreprovincia,
+    'territorios.nombre as municipio                2   Visible inicial					territorios.nombre,
+    'listaprop.ayuntamiento AS ayuntamiento         3   Visible inicial					listaprop.ayuntamiento,
+    'coleccion,                                     4   Visible inicial					coleccion,
+    'propietario,                                   5   Visible inicial					propietario,
+    'parcela,                                       6   Visible inicial					parcela,
+    'direccion                                      7   Visible inicial					direccion,
+    'superficie,                                    8   Visible inicial					superficie,
+    'distribuidor,                                  9   Visible inicial					distribuidor,
+    'urlcdd,                                        10  Oculto inicial					urlcdd,
+    '(...)
+#End Region
+
+
     Private Sub FormatDatagridSIDCECACapital()
+
+
+        Hide_And_Show_Columns = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10} ' Índices de columnas que pueden mostrarse u ocultarse
+        FixedCols = {1, 2, 3, 4, 6, 8, 9} 'Columnas con ancho fijo aunque crezca el tamaño del datagrid
 
         DataGridView1.DataSource = rcdDataPrin
         'Seguidas ponemos las columnas visibles con su anchura
         DataGridView1.Columns(0).HeaderText = PKField
         DataGridView1.Columns(0).Visible = False
         DataGridView1.Columns("provincia").HeaderText = "Provincia"
-        DataGridView1.Columns("provincia").Width = 70
+        DataGridView1.Columns("provincia").Width = 75
+        DataGridView1.Columns("provincia").Visible = False
         DataGridView1.Columns("municipio").HeaderText = "Municipio"
-        DataGridView1.Columns("municipio").Width = 150
+        DataGridView1.Columns("municipio").Width = 75
+        DataGridView1.Columns("municipio").Visible = False
         DataGridView1.Columns("ayuntamiento").HeaderText = "Ayuntamiento"
-        DataGridView1.Columns("ayuntamiento").Width = 150
+        DataGridView1.Columns("ayuntamiento").Width = 75
         DataGridView1.Columns("ayuntamiento").Visible = False
         DataGridView1.Columns("coleccion").HeaderText = "Colección"
-        DataGridView1.Columns("coleccion").Width = 80
+        DataGridView1.Columns("coleccion").Width = 130
         DataGridView1.Columns("propietario").HeaderText = "Propietario"
         DataGridView1.Columns("propietario").Width = 80
         DataGridView1.Columns("parcela").HeaderText = "Parcela"
-        DataGridView1.Columns("parcela").Visible = False
         DataGridView1.Columns("parcela").Width = 80
         DataGridView1.Columns("direccion").HeaderText = "Dirección"
         DataGridView1.Columns("direccion").Width = 80
         DataGridView1.Columns("superficie").HeaderText = "Superficie"
-        DataGridView1.Columns("superficie").Width = 60
+        DataGridView1.Columns("superficie").Width = 100
         DataGridView1.Columns("superficie").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
         DataGridView1.Columns("distribuidor").HeaderText = "Distribuidor"
-        DataGridView1.Columns("distribuidor").Width = 60
+        DataGridView1.Columns("distribuidor").Width = 80
         DataGridView1.Columns("distribuidor").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
         'Mostramos hasta la columna 8
 
@@ -1421,27 +1470,36 @@
         If DataGridView1.SelectedRows.Count = 0 Then
             DataGridView1.Rows(DataGridView1.CurrentCell.RowIndex).Selected = True
         End If
-        If sender.name = "btnPrev" Then
-            Dim _rowIndex = DataGridView1.SelectedRows(0).Index - 1
-            If _rowIndex > -1 Then
-                Dim prevRow As DataGridViewRow = DataGridView1.Rows(_rowIndex)
-                ' Move the Glyph arrow to the previous row
-                DataGridView1.CurrentCell = prevRow.Cells(1)
-                DataGridView1.Rows(_rowIndex).Selected = True
-            Else
-                Exit Sub
+
+        Try
+            'Evaluamos cual es la primera columna visible
+
+
+            If sender.name = "btnPrev" Then
+                Dim _rowIndex = DataGridView1.SelectedRows(0).Index - 1
+                If _rowIndex > -1 Then
+                    Dim prevRow As DataGridViewRow = DataGridView1.Rows(_rowIndex)
+                    ' Move the Glyph arrow to the previous row
+                    DataGridView1.CurrentCell = prevRow.Cells(DataGridView1.FirstDisplayedCell.ColumnIndex)
+                    DataGridView1.Rows(_rowIndex).Selected = True
+                Else
+                    Exit Sub
+                End If
+            ElseIf sender.name = "btnNext" Then
+                Dim _rowIndex = DataGridView1.SelectedRows(0).Index + 1
+                If _rowIndex <= DataGridView1.Rows.Count - 1 Then
+                    Dim nextRow As DataGridViewRow = DataGridView1.Rows(_rowIndex)
+                    ' Move the Glyph arrow to the next row
+                    DataGridView1.CurrentCell = nextRow.Cells(DataGridView1.FirstDisplayedCell.ColumnIndex)
+                    DataGridView1.Rows(_rowIndex).Selected = True
+                Else
+                    Exit Sub
+                End If
             End If
-        ElseIf sender.name = "btnNext" Then
-            Dim _rowIndex = DataGridView1.SelectedRows(0).Index + 1
-            If _rowIndex <= DataGridView1.Rows.Count - 1 Then
-                Dim nextRow As DataGridViewRow = DataGridView1.Rows(_rowIndex)
-                ' Move the Glyph arrow to the next row
-                DataGridView1.CurrentCell = nextRow.Cells(1)
-                DataGridView1.Rows(_rowIndex).Selected = True
-            Else
-                Exit Sub
-            End If
-        End If
+        Catch ex As Exception
+            ModalError(ex.Message)
+        End Try
+
         If DataGridView1.Item(PKField, DataGridView1.CurrentCell.RowIndex).Value.ToString = "" Then
             ModalExclamation("")
             Exit Sub
