@@ -122,6 +122,7 @@
     <Compile Include="Clases\Autenticacion\myAppUser.vb" />
     <Compile Include="Clases\Autenticacion\Notificacion.vb" />
     <Compile Include="Clases\Destildator.vb" />
+    <Compile Include="Clases\DocCartoGEODOCAT\docCuadMTNQuery.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\docSIDCECA.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\docCartoSEE.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\docCartoSEEquery.vb" />
@@ -257,6 +258,12 @@
       <DependentUpon>frmEditCuad.vb</DependentUpon>
     </Compile>
     <Compile Include="Formularios\frmEditCuad.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formularios\frmExport.Designer.vb">
+      <DependentUpon>frmExport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\frmExport.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Formularios\frmExportCdD.Designer.vb">
@@ -422,6 +429,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formularios\frmEditCuad.resx">
       <DependentUpon>frmEditCuad.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\frmExport.resx">
+      <DependentUpon>frmExport.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formularios\frmExportCdD.resx">
       <DependentUpon>frmExportCdD.vb</DependentUpon>

@@ -1516,9 +1516,13 @@ Public Class MDIPrincipal
             FrmEditAtrib.CargarDatos()
             FrmEditAtrib.Show()
         ElseIf sender.name = "mnuExportCdD" Or sender.name = "btnExportCdD" Then
-            Dim frmExportacion As New frmExportCdD
+            'Dim frmExportacion As New frmExportCdD
+            'frmExportacion.MdiParent = Me
+            'frmExportacion.Show()
+            Dim frmExportacion As New frmExport
             frmExportacion.MdiParent = Me
             frmExportacion.Show()
+
         End If
     End Sub
 

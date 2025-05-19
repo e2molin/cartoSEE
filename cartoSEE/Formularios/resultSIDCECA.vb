@@ -1132,16 +1132,17 @@
     'Este formto muestra todos los campos en columnas
     Private Sub FormatDatagridSIDCECACAM()
 
-
+        Hide_And_Show_Columns = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10} ' Índices de columnas que pueden mostrarse u ocultarse
+        FixedCols = {0, 1, 2, 6, 8} 'Columnas con ancho fijo aunque crezca el tamaño del datagrid
 
         DataGridView1.DataSource = rcdDataPrin
         'Seguidas ponemos las columnas visibles con su anchura
         DataGridView1.Columns(0).HeaderText = PKField
         DataGridView1.Columns(0).Visible = False
         DataGridView1.Columns("provincia").HeaderText = "Provincia"
-        DataGridView1.Columns("provincia").Width = 10
+        DataGridView1.Columns("provincia").Width = 75
         DataGridView1.Columns("municipio").HeaderText = "Municipio"
-        DataGridView1.Columns("municipio").Width = 100
+        DataGridView1.Columns("municipio").Width = 120
         DataGridView1.Columns("ayuntamiento").HeaderText = "Ayuntamiento"
         DataGridView1.Columns("ayuntamiento").Width = 150
         DataGridView1.Columns("ayuntamiento").Visible = False
@@ -1156,7 +1157,7 @@
         DataGridView1.Columns("direccion").Visible = False
         DataGridView1.Columns("superficie").HeaderText = "Superficie"
         DataGridView1.Columns("superficie").Width = 60
-        DataGridView1.Columns("superficie").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
+        DataGridView1.Columns("superficie").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
         DataGridView1.Columns("distribuidor").HeaderText = "Distribuidor"
         DataGridView1.Columns("distribuidor").Width = 60
         DataGridView1.Columns("distribuidor").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
