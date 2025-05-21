@@ -47,7 +47,7 @@
 
         Get
             If datasetTblClass = "parcelasdatos" Then Return $"{RutaRepoSIDCECA}{ListaPropietarios.CodMuniHisto}\{Replace(NombreDocumento, "A.JPG", ".pdf")}"
-            If datasetTblClass = "parcelasmadriddata" Then Return $"{RutaRepoSIDCECA}{ListaPropietarios.CodMuniHisto}\{SignaturaCaja}\{String.Format("{0:00000000}", CType(SelladoDocumento, Integer))}.pdf"
+            If datasetTblClass = "parcelasdata" Then Return $"{RutaRepoSIDCECA}{String.Format("{0:0000000}", ListaPropietarios.CodMuniHisto)}\{SignaturaCaja}\{String.Format("{0:00000000}", CType(SelladoDocumento, Integer))}.pdf"
         End Get
 
     End Property
@@ -73,7 +73,7 @@
         Get
 
             If datasetTblClass = "parcelasdatos" Then Return $"https://www.ign.es/cartoteca/HK/{ListaPropietarios.CodMuniHisto}/{Replace(NombreDocumento, "A.JPG", ".pdf")}"
-            If datasetTblClass = "parcelasmadriddata" Then Return $"https://www.ign.es/cartoteca/HK/{ListaPropietarios.CodMuniHisto}/{SignaturaCaja}/{String.Format("{0:00000000}", CType(SelladoDocumento, Integer))}.pdf"
+            If datasetTblClass = "parcelasdata" Then Return $"https://www.ign.es/cartoteca/HK/{ListaPropietarios.CodMuniHisto}/{SignaturaCaja}/{String.Format("{0:00000000}", CType(SelladoDocumento, Integer))}.pdf"
             '01998545
         End Get
 
@@ -134,36 +134,36 @@
 	                            ORDER BY parcelasdatos.idparceladato"
 
         End If
-        If datasetTbl = "parcelasmadriddata" Then
+        If datasetTbl = "parcelasdata" Then
 
             consultaSQL = $"SELECT  
-	                            parcelasmadriddata.idparcelamadriddata as idparceladato,parcelasmadriddata.sellado as numero_doc,
-	                            parcelasmadriddata.ceduladigital as nombre_archivo,
-	                            parcelasmadriddata.propietario AS propietario,
-	                            parcelasmadriddata.listaprop_id,
-	                            parcelasmadriddata.parcela AS parcela,
-	                            parcelasmadriddata.subparcela AS subparcela,
-	                            parcelasmadriddata.distribuidor,
-	                            parcelasmadriddata.sup_ha,parcelasmadriddata.sup_a,parcelasmadriddata.sup_m,parcelasmadriddata.sup_dec,
-	                            parcelasmadriddata.barrio,parcelasmadriddata.calle_lugar,parcelasmadriddata.finca_edificio,parcelasmadriddata.nummanzana,
-	                            parcelasmadriddata.numedificio,parcelasmadriddata.delegado_catastral,parcelasmadriddata.encargado_levan,parcelasmadriddata.numparcela_reverso,
-                                parcelasmadriddata.caja as signaturacaja,parcelasmadriddata.tipo as tipocedula,
-	                            parcelasmadriddata.comentario as incidencia,
+	                            parcelasdata.idparceladata as idparceladato,parcelasdata.sellado as numero_doc,
+	                            parcelasdata.ceduladigital as nombre_archivo,
+	                            parcelasdata.propietario AS propietario,
+	                            parcelasdata.listaprop_id,
+	                            parcelasdata.parcela AS parcela,
+	                            parcelasdata.subparcela AS subparcela,
+	                            parcelasdata.distribuidor,
+	                            parcelasdata.sup_ha,parcelasdata.sup_a,parcelasdata.sup_m,parcelasdata.sup_dec,
+	                            parcelasdata.barrio,parcelasdata.calle_lugar,parcelasdata.finca_edificio,parcelasdata.nummanzana,
+	                            parcelasdata.numedificio,parcelasdata.delegado_catastral,parcelasdata.encargado_levan,parcelasdata.numparcela_reverso,
+                                parcelasdata.caja as signaturacaja,parcelasdata.tipo as tipocedula,
+	                            parcelasdata.comentario as incidencia,
 	                            create_at as fecha_insert,update_at as fechamodificacion,
-	                            ST_AsText(ST_UNION(parcelasmadrid.the_geom)) as nparcegeom
-                            FROM bdsidschema.parcelasmadriddata 
-	                             LEFT JOIN bdsidschema.listaprop ON parcelasmadriddata.listaprop_id = listaprop.idlistaprop
-	                             LEFT JOIN bdsidschema.parcelasmadrid ON parcelasmadriddata.idparcelamadriddata = parcelasmadrid.parcelamadriddata_id
-                            where parcelasmadriddata.idparcelamadriddata={idParcela}
+	                            ST_AsText(ST_UNION(parcelasdatageo.the_geom)) as nparcegeom
+                            FROM bdsidschema.parcelasdata 
+	                             LEFT JOIN bdsidschema.listaprop ON parcelasdata.listaprop_id = listaprop.idlistaprop
+	                             LEFT JOIN bdsidschema.parcelasdatageo ON parcelasdata.idparceladata = parcelasdatageo.parceladata_id
+                            where parcelasdata.idparceladata={idParcela}
                             GROUP BY 
-                               parcelasmadriddata.idparcelamadriddata,parcelasmadriddata.sellado,create_at,update_at,parcelasmadriddata.ceduladigital,
-                               parcelasmadriddata.propietario,parcelasmadriddata.listaprop_id,
-	                            parcelasmadriddata.distribuidor,
-	                            parcelasmadriddata.sup_ha,parcelasmadriddata.sup_a,parcelasmadriddata.sup_m,parcelasmadriddata.sup_dec,
-	                            parcelasmadriddata.barrio,parcelasmadriddata.calle_lugar,parcelasmadriddata.finca_edificio,parcelasmadriddata.nummanzana,
-	                            parcelasmadriddata.numedificio,parcelasmadriddata.delegado_catastral,parcelasmadriddata.encargado_levan,parcelasmadriddata.numparcela_reverso,
-                                parcelasmadriddata.caja,parcelasmadriddata.tipo,
-	                            parcelasmadriddata.parcela,parcelasmadriddata.subparcela,parcelasmadriddata.comentario"
+                               parcelasdata.idparceladata,parcelasdata.sellado,create_at,update_at,parcelasdata.ceduladigital,
+                               parcelasdata.propietario,parcelasdata.listaprop_id,
+	                            parcelasdata.distribuidor,
+	                            parcelasdata.sup_ha,parcelasdata.sup_a,parcelasdata.sup_m,parcelasdata.sup_dec,
+	                            parcelasdata.barrio,parcelasdata.calle_lugar,parcelasdata.finca_edificio,parcelasdata.nummanzana,
+	                            parcelasdata.numedificio,parcelasdata.delegado_catastral,parcelasdata.encargado_levan,parcelasdata.numparcela_reverso,
+                                parcelasdata.caja,parcelasdata.tipo,
+	                            parcelasdata.parcela,parcelasdata.subparcela,parcelasdata.comentario"
 
 
         End If
@@ -192,8 +192,8 @@
                 ListaPropietarios = New docSIDCECAListaProp(dR("listaprop_id"))
                 If datasetTblClass = "parcelasdatos" Then Parcela = dR("ncc").ToString
                 If datasetTblClass = "parcelasdatos" Then SubParcela = dR("calificador").ToString
-                If datasetTblClass = "parcelasmadriddata" Then Parcela = dR("parcela").ToString
-                If datasetTblClass = "parcelasmadriddata" Then SubParcela = dR("subparcela").ToString
+                If datasetTblClass = "parcelasdata" Then Parcela = dR("parcela").ToString
+                If datasetTblClass = "parcelasdata" Then SubParcela = dR("subparcela").ToString
 
                 SupHa = dR("sup_ha")
                 SupA = dR("sup_a")
@@ -206,7 +206,7 @@
                 FechaAlta = dR("fecha_insert").ToString
                 FechaModificacion = dR("fechamodificacion").ToString
                 NombreDocumento = dR("nombre_archivo").ToString
-                If datasetTblClass = "parcelasmadriddata" Then
+                If datasetTblClass = "parcelasdata" Then
                     Barrio = dR("barrio").ToString
                     CalleLugar = dR("calle_lugar").ToString
                     FincaEdificio = dR("finca_edificio").ToString

@@ -1479,7 +1479,7 @@ Public Class MDIPrincipal
     Private Sub ModificarAtributosDocumentos(ByVal sender As System.Object, ByVal e As System.EventArgs) _
                         Handles mnuModDocuMedidas.Click, mnuModDocuTiposDoc.Click,
                         mnuModDocuEstados.Click, mnuModDocuObservaciones.Click, mnuVisorMosaicos.Click,
-                        btnVisorMosaicos.Click, btnExportCdD.Click, mnuExportCdD.Click
+                        btnVisorMosaicos.Click, btnExportCdD.Click, mnuExportCdD.Click, mnuMosaicos.Click
 
 
         If sender.name = "mnuModDocuTiposDoc" Then
@@ -1510,7 +1510,7 @@ Public Class MDIPrincipal
             FrmEditAtrib.Tag = 4
             FrmEditAtrib.CargarDatos(4)
             FrmEditAtrib.Show()
-        ElseIf sender.name = "mnuVisorMosaicos" Or sender.name = "btnVisorMosaicos" Then
+        ElseIf sender.name = "mnuVisorMosaicos" Or sender.name = "btnVisorMosaicos" Or sender.name = "mnuMosaicos" Then
             Dim FrmEditAtrib As New FrmEdicionesMosaicos
             FrmEditAtrib.MdiParent = Me
             FrmEditAtrib.CargarDatos()
@@ -2194,7 +2194,7 @@ Public Class MDIPrincipal
 
     End Sub
 
-    Private Sub LaunchQuerySIDCECA(sender As Object, e As EventArgs) Handles Button1.Click
+    Private Sub LaunchQuerySIDCECA(sender As Object, e As EventArgs) Handles Button1.Click, mnuCCMadProv.Click, mnuCCMadDistritos.Click, mnuCCOutMadrid.Click
 
         Dim FirmaYear As String = ""
         Dim EstadosDocumento As String = ""
@@ -2213,7 +2213,53 @@ Public Class MDIPrincipal
         Dim cProv As Integer = 0
         Dim proceHoja As String
         Dim proceCarpeta As String
+        Dim datasetTbl As String
 
+        If sender.name = "mnuCCMadProv" Or
+            sender.name = "mnuCCMadDistritos" Or
+            sender.name = "mnuCCOutMadrid" Then
+
+            Try
+                PictureBox3.Visible = True
+                Me.Cursor = Cursors.WaitCursor
+                LanzarSpinner("Cargando datos")
+                Application.DoEvents()
+                Dim frmResultadosSIDCECA As New resultSIDCECA
+                With frmResultadosSIDCECA
+                    .MdiParent = Me
+                    .filterFecha = FirmaYear
+                    If sender.name = "mnuCCMadProv" Then
+                        .OrderField = "parcelasdatos.idparceladato"
+                        .PKField = "idparceladato"
+                        .datasetTbL = "parcelasdatos"
+                        .typeSearch = resultSIDCECA.TypeDataSearch.AllDocuments
+                        .Text = $"Cédulas catastrales JGE - Madrid provincia"
+                    ElseIf sender.name = "mnuCCMadDistritos" Then
+                        .OrderField = "parcelasdata.idparceladata"
+                        .PKField = "idparceladata"
+                        .datasetTbL = "parcelasdata"
+                        .paramSQL1 = 5305 ' Madrid capital
+                        .typeSearch = resultSIDCECA.TypeDataSearch.AllDocumentsByTerritorio
+                        .Text = $"Cédulas catastrales JGE - Distritos de Madrid"
+                    ElseIf sender.name = "mnuCCOutMadrid" Then
+                        .OrderField = "parcelasdata.idparceladata"
+                        .PKField = "idparceladata"
+                        .datasetTbL = "parcelasdata"
+                        .typeSearch = resultSIDCECA.TypeDataSearch.AllDocumentsOutOfMadrid
+                        .Text = $"Cédulas catastrales JGE - España sin Madrid"
+                    End If
+                    Application.DoEvents()
+                    .Show()
+                End With
+            Catch ex As Exception
+                ModalError(ex.Message)
+            Finally
+                CerrarSpinner()
+                PictureBox3.Visible = False
+                Me.Cursor = Cursors.Default
+            End Try
+            Exit Sub
+        End If
 
         If Not String.IsNullOrEmpty(TextBox1.Tag) Then
             Dim CodigosMuni() As String = TextBox1.Tag.ToString.Split("|")
@@ -2229,6 +2275,8 @@ Public Class MDIPrincipal
         End If
 
         Application.DoEvents()
+
+        ObtenerEscalar($"SELECT dataset_tbl FROM bdsidschema.listaprop WHERE territorio_id={territorioId} limit 1", datasetTbl)
 
 
 
@@ -2281,43 +2329,52 @@ Public Class MDIPrincipal
                         'Búsqueda por territorio/municipio actual. Usamos en la búsqueda el códigoINE actual
                         .paramSQL1 = CodMunicipioINEActual
                         .typeSearch = resultSIDCECA.TypeDataSearch.AllDocumentsByTerritorioActual
-                        .Text = $"Documentos asociados al municipio actual {TextBox1.Text.Trim}"
-                        If CodMunicipioINEActual = 28079 Then
-                            .OrderField = "parcelasmadriddata.idparcelamadriddata"
-                            .PKField = "idparcelamadriddata"
-                            .datasetTbL = "parcelasmadriddata"
+                        .Text = $"Cédulas catastrales de la JGE - Municipio actual: {TextBox1.Text.Trim}"
+                        If datasetTbl = "parcelasdata" Then
+                            .OrderField = "parcelasdata.idparceladata"
+                            .PKField = "idparceladata"
+                            .datasetTbL = datasetTbl
+                        End If
+                        If datasetTbl = "parcelasdatos" Then
+                            .OrderField = "parcelasdatos.idparceladato"
+                            .PKField = "idparceladato"
+                            .datasetTbL = datasetTbl
                         End If
                     Else
                         'Búsqueda por territorio/municipio histórico. Usamos en la búsqueda el idTerritorio
                         .paramSQL1 = territorioId
                         .typeSearch = resultSIDCECA.TypeDataSearch.AllDocumentsByTerritorio
-                        .Text = $"Documentos asociados al municipio histórivo {TextBox1.Text.Trim}"
-                        If territorioId = 5305 Then
-                            .OrderField = "parcelasmadriddata.idparcelamadriddata"
-                            .PKField = "idparcelamadriddata"
-                            .datasetTbL = "parcelasmadriddata"
+                        .Text = $"Cédulas catastrales de la JGE - Municipio histórico: {TextBox1.Text.Trim}"
+                        If datasetTbl = "parcelasdata" Then
+                            .OrderField = "parcelasdata.idparceladata"
+                            .PKField = "idparceladata"
+                            .datasetTbL = datasetTbl
+                        End If
+                        If datasetTbl = "parcelasdatos" Then
+                            .OrderField = "parcelasdatos.idparceladato"
+                            .PKField = "idparceladato"
+                            .datasetTbL = datasetTbl
                         End If
                     End If
-                ElseIf TextBox1.text.Trim <> "" Then
+                ElseIf TextBox1.Text.Trim <> "" Then
                     If territorioId > 0 Then
                         .paramSQL1 = territorioId
                         .typeSearch = resultSIDCECA.TypeDataSearch.AllDocumentsByTerritorio
-                        .Text = $"Documentos asociados al municipio histórico con INE {TextBox1.Text.Trim}"
-                        If territorioId = 5305 Then
-                            .OrderField = "parcelasmadriddata.idparcelamadriddata"
-                            .PKField = "idparcelamadriddata"
-                            .datasetTbL = "parcelasmadriddata"
+                        .Text = $"Cédulas catastrales de la JGE - Municipio histórico con INE {TextBox1.Text.Trim}"
+                        If datasetTbl = "parcelasdata" Then
+                            .OrderField = "parcelasdata.idparceladata"
+                            .PKField = "idparceladata"
+                            .datasetTbL = datasetTbl
+                        End If
+                        If datasetTbl = "parcelasdatos" Then
+                            .OrderField = "parcelasdatos.idparceladato"
+                            .PKField = "idparceladato"
+                            .datasetTbL = datasetTbl
                         End If
                     End If
                 Else
-                    If cProv > 0 Then
-                        '.paramSQL1 = cProv
-                        '.typeSearch = resultSIDCECA.TypeDataSearch.AllDocumentsByProvincia
-                    Else
-                        .typeSearch = resultSIDCECA.TypeDataSearch.AllDocuments
-                    End If
+                    .typeSearch = resultSIDCECA.TypeDataSearch.AllDocuments
                 End If
-
                 .Show()
             End With
         Catch ex As Exception
@@ -2333,7 +2390,7 @@ Public Class MDIPrincipal
 
     End Sub
 
-    Private Sub ToolStripButton8_Click(sender As Object, e As EventArgs) Handles ToolStripButton8.Click
+    Private Sub ToolStripButton8_Click(sender As Object, e As EventArgs) Handles ToolStripButton8.Click, mnuListasPropJGE.Click
 
         Dim frmQueryLP As New frmListaProps
 

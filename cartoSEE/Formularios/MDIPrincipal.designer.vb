@@ -63,6 +63,11 @@ Partial Class MDIPrincipal
         Me.mnuAddContornos = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMuniHisto = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuQueryLibrosRegistro = New System.Windows.Forms.ToolStripMenuItem()
+        Me.SIDCECAToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuListasPropJGE = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuCCMadProv = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuCCMadDistritos = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuMosaicos = New System.Windows.Forms.ToolStripMenuItem()
         Me.ViewMenu = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolBarToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.StatusBarToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -251,6 +256,7 @@ Partial Class MDIPrincipal
         Me.Button6 = New System.Windows.Forms.Button()
         Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
         Me.ImageList2 = New System.Windows.Forms.ImageList(Me.components)
+        Me.mnuCCOutMadrid = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip.SuspendLayout()
         Me.ToolStrip.SuspendLayout()
         Me.StatusStrip.SuspendLayout()
@@ -270,7 +276,7 @@ Partial Class MDIPrincipal
         'MenuStrip
         '
         Me.MenuStrip.Font = New System.Drawing.Font("Verdana", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.MenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AplicaciónToolStripMenuItem, Me.FileMenu, Me.ViewMenu, Me.ToolsMenu, Me.WindowsMenu, Me.UserMenu, Me.HelpMenu})
+        Me.MenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AplicaciónToolStripMenuItem, Me.FileMenu, Me.SIDCECAToolStripMenuItem, Me.ViewMenu, Me.ToolsMenu, Me.WindowsMenu, Me.UserMenu, Me.HelpMenu})
         Me.MenuStrip.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip.MdiWindowListItem = Me.WindowsMenu
         Me.MenuStrip.Name = "MenuStrip"
@@ -545,6 +551,37 @@ Partial Class MDIPrincipal
         Me.mnuQueryLibrosRegistro.Name = "mnuQueryLibrosRegistro"
         Me.mnuQueryLibrosRegistro.Size = New System.Drawing.Size(280, 22)
         Me.mnuQueryLibrosRegistro.Text = "Consulta de libros de registro"
+        '
+        'SIDCECAToolStripMenuItem
+        '
+        Me.SIDCECAToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuListasPropJGE, Me.mnuCCMadProv, Me.mnuCCMadDistritos, Me.mnuCCOutMadrid, Me.mnuMosaicos})
+        Me.SIDCECAToolStripMenuItem.Name = "SIDCECAToolStripMenuItem"
+        Me.SIDCECAToolStripMenuItem.Size = New System.Drawing.Size(74, 20)
+        Me.SIDCECAToolStripMenuItem.Text = "SIDCECA"
+        '
+        'mnuListasPropJGE
+        '
+        Me.mnuListasPropJGE.Name = "mnuListasPropJGE"
+        Me.mnuListasPropJGE.Size = New System.Drawing.Size(331, 22)
+        Me.mnuListasPropJGE.Text = "Listas de propietarios Catastro JGE"
+        '
+        'mnuCCMadProv
+        '
+        Me.mnuCCMadProv.Name = "mnuCCMadProv"
+        Me.mnuCCMadProv.Size = New System.Drawing.Size(331, 22)
+        Me.mnuCCMadProv.Text = "Cédulas catastrales JGE - Madrid Provincia"
+        '
+        'mnuCCMadDistritos
+        '
+        Me.mnuCCMadDistritos.Name = "mnuCCMadDistritos"
+        Me.mnuCCMadDistritos.Size = New System.Drawing.Size(331, 22)
+        Me.mnuCCMadDistritos.Text = "Cédulas catastrales JGE - Distritos de Madrid"
+        '
+        'mnuMosaicos
+        '
+        Me.mnuMosaicos.Name = "mnuMosaicos"
+        Me.mnuMosaicos.Size = New System.Drawing.Size(331, 22)
+        Me.mnuMosaicos.Text = "Mosaicos de planos parcelarios de la JGE"
         '
         'ViewMenu
         '
@@ -978,7 +1015,7 @@ Partial Class MDIPrincipal
         Me.ToolStripButton8.Name = "ToolStripButton8"
         Me.ToolStripButton8.Size = New System.Drawing.Size(52, 52)
         Me.ToolStripButton8.Text = "Colecciones y Listas de Propietarios"
-        Me.ToolStripButton8.ToolTipText = "Exportar lista resultados a CSV"
+        Me.ToolStripButton8.ToolTipText = "Listas de propietarios de la JGE"
         '
         'ToolStripButton10
         '
@@ -2296,6 +2333,12 @@ Partial Class MDIPrincipal
         Me.ImageList2.Images.SetKeyName(13, "Archivador 32.png")
         Me.ImageList2.Images.SetKeyName(14, "editar_24.png")
         '
+        'mnuCCOutMadrid
+        '
+        Me.mnuCCOutMadrid.Name = "mnuCCOutMadrid"
+        Me.mnuCCOutMadrid.Size = New System.Drawing.Size(331, 22)
+        Me.mnuCCOutMadrid.Text = "Cedulas catastrales JGE - Resto España"
+        '
         'MDIPrincipal
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -2564,4 +2607,10 @@ Partial Class MDIPrincipal
     Friend WithEvents mnuTool_Informes04 As ToolStripMenuItem
     Friend WithEvents mnuTextModeToggle As ToolStripMenuItem
     Friend WithEvents Button1 As Button
+    Friend WithEvents SIDCECAToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents mnuListasPropJGE As ToolStripMenuItem
+    Friend WithEvents mnuCCMadProv As ToolStripMenuItem
+    Friend WithEvents mnuCCMadDistritos As ToolStripMenuItem
+    Friend WithEvents mnuMosaicos As ToolStripMenuItem
+    Friend WithEvents mnuCCOutMadrid As ToolStripMenuItem
 End Class

@@ -584,10 +584,13 @@
                 .paramSQL1 = docParce.CodMuniHisto
                 .paramSQL2 = docParce.NumeroColeccion
                 .datasetTbL = docParce.DatasetTbl
-                If docParce.CodMuniHisto = "2807900" Then
-                    .OrderField = "parcelasmadriddata.idparcelamadriddata"
-                    .PKField = "idparcelamadriddata"
-                    .datasetTbL = "parcelasmadriddata"
+                If .datasetTbL = "parcelasdata" Then
+                    .OrderField = "parcelasdata.idparceladata"
+                    .PKField = "idparceladata"
+                End If
+                If .datasetTbL = "parcelasdatos" Then
+                    .OrderField = "parcelasdatos.idparceladato"
+                    .PKField = "idparceladato"
                 End If
                 .typeSearch = resultSIDCECA.TypeDataSearch.AllDocsByCodMuniHistoAndNumCol
                 .Text = $"Documentos asociados a la colección {docParce.NombreColeccion} de {docParce.MunicipioHistorico} en {docParce.NombreProvincia}"

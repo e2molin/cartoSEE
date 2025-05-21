@@ -5,6 +5,7 @@
         AllDocumentsByProvincia = 2                     'OK
         AllDocumentsByTerritorioActual = 3
         AllDocsByCodMuniHistoAndNumCol = 4
+        AllDocumentsOutOfMadrid = 5
         'AllDocsPorFechaDocumento = 5
         'AllDocsPorFechaAlta = 6
         'DocumentosFiltroGenerico = 7
@@ -408,17 +409,20 @@
 
         If typeSearch = TypeDataSearch.AllDocuments Then
             If datasetTbL = "parcelasdatos" Then FillDocSIDCECACAMwithFilter("")
-            If datasetTbL = "parcelasmadriddata" Then FillDocSIDCECACapitalwithFilter("")
+            If datasetTbL = "parcelasdata" Then FillDocSIDCECACapitalwithFilter("")
             Me.Text = "Todos los documentos"
         ElseIf typeSearch = TypeDataSearch.AllDocumentsByTerritorio Then
             If datasetTbL = "parcelasdatos" Then FillDocSIDCECACAMwithFilter($"listaprop.territorio_id={paramSQL1}")
-            If datasetTbL = "parcelasmadriddata" Then FillDocSIDCECACapitalwithFilter($"listaprop.territorio_id={paramSQL1}")
+            If datasetTbL = "parcelasdata" Then FillDocSIDCECACapitalwithFilter($"listaprop.territorio_id={paramSQL1}")
         ElseIf typeSearch = TypeDataSearch.AllDocumentsByTerritorioActual Then
             If datasetTbL = "parcelasdatos" Then FillDocSIDCECACAMwithFilter($"listaprop.territorio_id IN (SELECT idterritorio FROM bdsidschema.territorios WHERE municipio={paramSQL1})")
-            If datasetTbL = "parcelasmadriddata" Then FillDocSIDCECACapitalwithFilter($"listaprop.territorio_id IN (SELECT idterritorio FROM bdsidschema.territorios WHERE municipio={paramSQL1})")
+            If datasetTbL = "parcelasdata" Then FillDocSIDCECACapitalwithFilter($"listaprop.territorio_id IN (SELECT idterritorio FROM bdsidschema.territorios WHERE municipio={paramSQL1})")
         ElseIf typeSearch = TypeDataSearch.AllDocsByCodMuniHistoAndNumCol Then
             If datasetTbL = "parcelasdatos" Then FillDocSIDCECACAMwithFilter($"listaprop.territorio_id IN (SELECT idterritorio FROM bdsidschema.territorios WHERE munihisto={paramSQL1}) and listaprop.numcoleccion={paramSQL2}")
-            If datasetTbL = "parcelasmadriddata" Then FillDocSIDCECACapitalwithFilter($"listaprop.territorio_id IN (SELECT idterritorio FROM bdsidschema.territorios WHERE munihisto={paramSQL1}) and listaprop.numcoleccion={paramSQL2}")
+            If datasetTbL = "parcelasdata" Then FillDocSIDCECACapitalwithFilter($"listaprop.territorio_id IN (SELECT idterritorio FROM bdsidschema.territorios WHERE munihisto={paramSQL1}) and listaprop.numcoleccion={paramSQL2}")
+        ElseIf typeSearch = TypeDataSearch.AllDocumentsOutOfMadrid Then
+            FillDocSIDCECACapitalwithFilter($"listaprop.idlistaprop IN (185,186,187,188)")
+
             'ElseIf typeSearch = TypeDataSearch.AllDocumentsByProvincia Then
             '    If paramSQL1.ToString = "" Then
             '        ModalExclamation("Búsqueda por provincia no definida")
@@ -1061,39 +1065,39 @@
     Private Sub FillDocSIDCECACapitalwithFilter(mainFilter As String)
 
         'Ahora añadimos filtros.
-        If mainFilter = "" Then mainFilter = "parcelasmadriddata.idparcelamadriddata>0"
+        If mainFilter = "" Then mainFilter = "parcelasdata.idparceladata>0"
         sqlBase = $"select  
-	                    parcelasmadriddata.idparcelamadriddata,
+	                    parcelasdata.idparceladata,
 	                    provincias.nombreprovincia as provincia,
 	                    territorios.nombre as municipio,
 	                    listaprop.ayuntamiento AS ayuntamiento,
 	                    COALESCE(listaprop.coleccion,'Única') as coleccion,
 	                    propietario,
-	                    parcelasmadriddata.parcela AS parcela,
+	                    parcelasdata.parcela AS parcela,
                         calle_lugar || CASE WHEN numedificio<>'Sin rellenar' THEN ', ' || numedificio END ||
                         ' (' || finca_edificio || ')' ||
                         CASE WHEN nummanzana<>'Sin rellenar' THEN ' - Manzana: ' || nummanzana END as direccion,
-	                    parcelasmadriddata.sup_ha::character varying || 'ha ' || 
-	                    parcelasmadriddata.sup_a::character varying || 'a ' || 
-	                    (parcelasmadriddata.sup_m + sup_dec/100::float)::character varying || 'm2 ' AS superficie,
-	                    parcelasmadriddata.distribuidor as distribuidor,
+	                    parcelasdata.sup_ha::character varying || 'ha ' || 
+	                    parcelasdata.sup_a::character varying || 'a ' || 
+	                    (parcelasdata.sup_m + sup_dec/100::float)::character varying || 'm2 ' AS superficie,
+	                    parcelasdata.distribuidor as distribuidor,
 	                    url_cedula_digital AS urlcdd,
 	                    territorios.munihisto AS inemunihisto,
-	                    COALESCE(parcelasmadriddata.hectareas,'0'::character varying) as sup_ha,
-	                    COALESCE(parcelasmadriddata.areas,'0'::character varying) as sup_a,
-	                    COALESCE(parcelasmadriddata.metros,'0'::character varying) as sup_m,
-	                    parcelasmadriddata.subparcela,parcelasmadriddata.comentario,
-	                    ST_AsText(ST_CENTROID(ST_UNION(parcelasmadrid.the_geom))) as nparcegeom
-                    from bdsidschema.parcelasmadriddata
-	                    LEFT JOIN bdsidschema.listaprop ON parcelasmadriddata.listaprop_id = listaprop.idlistaprop
-	                    LEFT JOIN bdsidschema.parcelasmadrid ON parcelasmadriddata.idparcelamadriddata = parcelasmadrid.parcelamadriddata_id
+	                    COALESCE(parcelasdata.hectareas,'0'::character varying) as sup_ha,
+	                    COALESCE(parcelasdata.areas,'0'::character varying) as sup_a,
+	                    COALESCE(parcelasdata.metros,'0'::character varying) as sup_m,
+	                    parcelasdata.subparcela,parcelasdata.comentario,
+	                    ST_AsText(ST_CENTROID(ST_UNION(parcelasdatageo.the_geom))) as nparcegeom
+                    from bdsidschema.parcelasdata
+	                    LEFT JOIN bdsidschema.listaprop ON parcelasdata.listaprop_id = listaprop.idlistaprop
+	                    LEFT JOIN bdsidschema.parcelasdatageo ON parcelasdata.idparceladata = parcelasdatageo.parceladata_id
 	                    INNER JOIN bdsidschema.territorios ON listaprop.territorio_id=territorios.idterritorio
 	                    INNER JOIN bdsidschema.provincias ON territorios.provincia=provincias.idprovincia
                     WHERE {mainFilter}          
                     group by 
-	                    parcelasmadriddata.idparcelamadriddata,provincias.nombreprovincia,territorios.nombre,listaprop.ayuntamiento,listaprop.coleccion,propietario,parcelasmadriddata.parcela,direccion,
-	                    territorios.munihisto,parcelasmadriddata.distribuidor,url_cedula_digital,parcelasmadriddata.hectareas,parcelasmadriddata.areas,parcelasmadriddata.metros,
-	                    parcelasmadriddata.subparcela,parcelasmadriddata.comentario,parcelasmadriddata.calle_lugar,parcelasmadriddata.finca_edificio,parcelasmadriddata.numedificio,parcelasmadriddata.nummanzana"
+	                    parcelasdata.idparceladata,provincias.nombreprovincia,territorios.nombre,listaprop.ayuntamiento,listaprop.coleccion,propietario,parcelasdata.parcela,direccion,
+	                    territorios.munihisto,parcelasdata.distribuidor,url_cedula_digital,parcelasdata.hectareas,parcelasdata.areas,parcelasdata.metros,
+	                    parcelasdata.subparcela,parcelasdata.comentario,parcelasdata.calle_lugar,parcelasdata.finca_edificio,parcelasdata.numedificio,parcelasdata.nummanzana"
 
         sqlBase &= IIf(OrderField = "", "", $" ORDER BY {OrderField}" & IIf(OrderDirection = "", "", $" {OrderDirection}"))
         sqlBase &= IIf(limitResults = "", "", $" LIMIT {limitResults}")
@@ -1190,7 +1194,7 @@
     End Sub
 
 #Region "Columnas datagrid Grid Capital"
-    'parcelasmadriddata.idparcelamadriddata         0   Oculta siempre					parcelasdatos.idparceladato,
+    'parcelasdata.idparceladata                      0   Oculta siempre					parcelasdatos.idparceladato,
     'provincias.nombreprovincia as provincia        1   Visible siempre					provincias.nombreprovincia,
     'territorios.nombre as municipio                2   Visible inicial					territorios.nombre,
     'listaprop.ayuntamiento AS ayuntamiento         3   Visible inicial					listaprop.ayuntamiento,
@@ -1220,7 +1224,6 @@
         DataGridView1.Columns("provincia").Visible = False
         DataGridView1.Columns("municipio").HeaderText = "Municipio"
         DataGridView1.Columns("municipio").Width = 75
-        DataGridView1.Columns("municipio").Visible = False
         DataGridView1.Columns("ayuntamiento").HeaderText = "Ayuntamiento"
         DataGridView1.Columns("ayuntamiento").Width = 75
         DataGridView1.Columns("ayuntamiento").Visible = False
@@ -1670,7 +1673,8 @@
 
     Private Sub btnEditar_Click(sender As Object, e As EventArgs) Handles btnEditar.Click
 
-        ModalInfo("btnEditar_Click")
+        ModalInfo("Edición no disponible")
+        Exit Sub
         'Compruebo que no haya abierta previamente una ventana para modificar este documento
         Dim nIndiceEdit As Integer
         If DataGridView1.Rows.Count = 0 Then Exit Sub
@@ -1683,12 +1687,12 @@
             ModalExclamation("Seleccione un único registro para editar")
             Exit Sub
         End If
-        If DataGridView1.Item("idarchivodocmtn", DataGridView1.CurrentCell.RowIndex).Value.ToString = "" Then
+        If DataGridView1.Item(PKField, DataGridView1.CurrentCell.RowIndex).Value.ToString = "" Then
             ModalExclamation("")
             Exit Sub
         End If
 
-        nIndiceEdit = DataGridView1.Item("idarchivodocmtn", DataGridView1.CurrentCell.RowIndex).Value
+        nIndiceEdit = DataGridView1.Item(PKField, DataGridView1.CurrentCell.RowIndex).Value
 
         For Each ChildForm As Form In MDIPrincipal.MdiChildren
             If ChildForm.Tag = nIndiceEdit Then
