@@ -2194,7 +2194,7 @@ Public Class MDIPrincipal
 
     End Sub
 
-    Private Sub LaunchQuerySIDCECA(sender As Object, e As EventArgs) Handles Button1.Click, mnuCCMadProv.Click, mnuCCMadDistritos.Click, mnuCCOutMadrid.Click
+    Private Sub LaunchQuerySIDCECA(sender As Object, e As EventArgs) Handles Button1.Click, mnuCCMadProv.Click, mnuCCMadDistritos.Click, mnuCCOutMadrid.Click, TSSearchCC.Click
 
         Dim FirmaYear As String = ""
         Dim EstadosDocumento As String = ""
@@ -2248,6 +2248,7 @@ Public Class MDIPrincipal
                         .typeSearch = resultSIDCECA.TypeDataSearch.AllDocumentsOutOfMadrid
                         .Text = $"Cédulas catastrales JGE - España sin Madrid"
                     End If
+                    registrarDatabaseLog("Consulta SIDCECA", $"TypeSearch:{ .typeSearch}")
                     Application.DoEvents()
                     .Show()
                 End With
@@ -2375,6 +2376,7 @@ Public Class MDIPrincipal
                 Else
                     .typeSearch = resultSIDCECA.TypeDataSearch.AllDocuments
                 End If
+                registrarDatabaseLog("Consulta SIDCECA", $"TypeSearch={ .typeSearch}&paramSQL1={ .paramSQL1}")
                 .Show()
             End With
         Catch ex As Exception
@@ -2544,5 +2546,6 @@ Public Class MDIPrincipal
                                                                             .FixedWidth = False
                                                     })
         frmQueryLP.Show()
+        registrarDatabaseLog("Consulta de listas de propietarios")
     End Sub
 End Class

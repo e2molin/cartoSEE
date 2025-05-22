@@ -572,9 +572,6 @@
             docParce = docSelect
         End If
 
-        'ModalInfo($"Parcelas del municipio {docParce.CodMuniHisto}, colección {docParce.NumeroColeccion}")
-
-
         Try
             Me.Cursor = Cursors.WaitCursor
             LanzarSpinner()
@@ -607,6 +604,7 @@
     End Sub
 
     Private Sub ToolStripButton1_Click(sender As Object, e As EventArgs)
+
         TimeFilter = ""
         AttributtesFilter = ""
         LanzarSpinner()

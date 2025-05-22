@@ -380,7 +380,7 @@
 
         ComboBox1.Items.Add("Cuaderno MTN")
         ComboBox1.Items.Add("Cartografía")
-
+        ComboBox1.Items.Add("Cédula catastral")
 
         CargarIncidencias()
 

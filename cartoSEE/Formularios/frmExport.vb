@@ -298,8 +298,10 @@ Public Class frmExport
             ModalExclamation("Escriba un filtro SQL")
             Exit Sub
         End If
+        registrarDatabaseLog("Lanzado proceso de exportación CdD", $"filtroSQL={filtroSQL}")
         Application.DoEvents()
         procesarListaDocsCdD(txtDirTarget.Text, filtroSQL, "Cuadernos interiores")
+        registrarDatabaseLog("Terminado proceso de exportación CdD")
         ModalInfo("Proceso de extracción para el CdD terminado")
 
     End Sub

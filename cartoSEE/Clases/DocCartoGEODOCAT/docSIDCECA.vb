@@ -98,6 +98,13 @@
     End Property
 
 
+    Sub New()
+
+
+
+
+    End Sub
+
     ''' <summary>
     ''' El parámetro opcional datasetTbL nos indica la tabla de la cual saca los datos.
     ''' La clase trabaja con las tablas parcelasdatos y parcelasmadriddata

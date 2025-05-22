@@ -67,6 +67,7 @@ Partial Class MDIPrincipal
         Me.mnuListasPropJGE = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuCCMadProv = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuCCMadDistritos = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuCCOutMadrid = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMosaicos = New System.Windows.Forms.ToolStripMenuItem()
         Me.ViewMenu = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolBarToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -256,7 +257,7 @@ Partial Class MDIPrincipal
         Me.Button6 = New System.Windows.Forms.Button()
         Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
         Me.ImageList2 = New System.Windows.Forms.ImageList(Me.components)
-        Me.mnuCCOutMadrid = New System.Windows.Forms.ToolStripMenuItem()
+        Me.TSSearchCC = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip.SuspendLayout()
         Me.ToolStrip.SuspendLayout()
         Me.StatusStrip.SuspendLayout()
@@ -555,12 +556,14 @@ Partial Class MDIPrincipal
         'SIDCECAToolStripMenuItem
         '
         Me.SIDCECAToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuListasPropJGE, Me.mnuCCMadProv, Me.mnuCCMadDistritos, Me.mnuCCOutMadrid, Me.mnuMosaicos})
+        Me.SIDCECAToolStripMenuItem.Image = CType(resources.GetObject("SIDCECAToolStripMenuItem.Image"), System.Drawing.Image)
         Me.SIDCECAToolStripMenuItem.Name = "SIDCECAToolStripMenuItem"
-        Me.SIDCECAToolStripMenuItem.Size = New System.Drawing.Size(74, 20)
+        Me.SIDCECAToolStripMenuItem.Size = New System.Drawing.Size(90, 20)
         Me.SIDCECAToolStripMenuItem.Text = "SIDCECA"
         '
         'mnuListasPropJGE
         '
+        Me.mnuListasPropJGE.Image = CType(resources.GetObject("mnuListasPropJGE.Image"), System.Drawing.Image)
         Me.mnuListasPropJGE.Name = "mnuListasPropJGE"
         Me.mnuListasPropJGE.Size = New System.Drawing.Size(331, 22)
         Me.mnuListasPropJGE.Text = "Listas de propietarios Catastro JGE"
@@ -577,8 +580,15 @@ Partial Class MDIPrincipal
         Me.mnuCCMadDistritos.Size = New System.Drawing.Size(331, 22)
         Me.mnuCCMadDistritos.Text = "Cédulas catastrales JGE - Distritos de Madrid"
         '
+        'mnuCCOutMadrid
+        '
+        Me.mnuCCOutMadrid.Name = "mnuCCOutMadrid"
+        Me.mnuCCOutMadrid.Size = New System.Drawing.Size(331, 22)
+        Me.mnuCCOutMadrid.Text = "Cedulas catastrales JGE - Resto España"
+        '
         'mnuMosaicos
         '
+        Me.mnuMosaicos.Image = CType(resources.GetObject("mnuMosaicos.Image"), System.Drawing.Image)
         Me.mnuMosaicos.Name = "mnuMosaicos"
         Me.mnuMosaicos.Size = New System.Drawing.Size(331, 22)
         Me.mnuMosaicos.Text = "Mosaicos de planos parcelarios de la JGE"
@@ -917,7 +927,7 @@ Partial Class MDIPrincipal
         'ToolStripDropDownButton2
         '
         Me.ToolStripDropDownButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.ToolStripDropDownButton2.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripButton12, Me.ToolStripButton22})
+        Me.ToolStripDropDownButton2.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripButton12, Me.ToolStripButton22, Me.TSSearchCC})
         Me.ToolStripDropDownButton2.Image = CType(resources.GetObject("ToolStripDropDownButton2.Image"), System.Drawing.Image)
         Me.ToolStripDropDownButton2.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.ToolStripDropDownButton2.Name = "ToolStripDropDownButton2"
@@ -928,14 +938,14 @@ Partial Class MDIPrincipal
         '
         Me.ToolStripButton12.Image = CType(resources.GetObject("ToolStripButton12.Image"), System.Drawing.Image)
         Me.ToolStripButton12.Name = "ToolStripButton12"
-        Me.ToolStripButton12.Size = New System.Drawing.Size(233, 22)
+        Me.ToolStripButton12.Size = New System.Drawing.Size(265, 54)
         Me.ToolStripButton12.Text = "Buscar cartografía GEODOCAT"
         '
         'ToolStripButton22
         '
         Me.ToolStripButton22.Image = Global.cartoSEE.My.Resources.Resources.Icon_Cuaderno_de_brujula_copy
         Me.ToolStripButton22.Name = "ToolStripButton22"
-        Me.ToolStripButton22.Size = New System.Drawing.Size(233, 22)
+        Me.ToolStripButton22.Size = New System.Drawing.Size(265, 54)
         Me.ToolStripButton22.Text = "Buscar Cuadernos MTN"
         '
         'ToolStripButton17
@@ -2333,11 +2343,12 @@ Partial Class MDIPrincipal
         Me.ImageList2.Images.SetKeyName(13, "Archivador 32.png")
         Me.ImageList2.Images.SetKeyName(14, "editar_24.png")
         '
-        'mnuCCOutMadrid
+        'TSSearchCC
         '
-        Me.mnuCCOutMadrid.Name = "mnuCCOutMadrid"
-        Me.mnuCCOutMadrid.Size = New System.Drawing.Size(331, 22)
-        Me.mnuCCOutMadrid.Text = "Cedulas catastrales JGE - Resto España"
+        Me.TSSearchCC.Image = CType(resources.GetObject("TSSearchCC.Image"), System.Drawing.Image)
+        Me.TSSearchCC.Name = "TSSearchCC"
+        Me.TSSearchCC.Size = New System.Drawing.Size(265, 54)
+        Me.TSSearchCC.Text = "Buscar Cédulas catastrales"
         '
         'MDIPrincipal
         '
@@ -2613,4 +2624,5 @@ Partial Class MDIPrincipal
     Friend WithEvents mnuCCMadDistritos As ToolStripMenuItem
     Friend WithEvents mnuMosaicos As ToolStripMenuItem
     Friend WithEvents mnuCCOutMadrid As ToolStripMenuItem
+    Friend WithEvents TSSearchCC As ToolStripMenuItem
 End Class

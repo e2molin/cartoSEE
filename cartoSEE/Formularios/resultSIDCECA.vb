@@ -577,7 +577,7 @@
 
         End If
 
-        ResizeDatagridView()
+
         Me.Cursor = Cursors.Default
 
     End Sub
@@ -1187,7 +1187,7 @@
             useEnterOnFilter = False
             ToolStripLabel1.Text = "Buscar..."
         End If
-
+        ResizeDatagridView()
 
 
 
@@ -1263,7 +1263,7 @@
             useEnterOnFilter = False
             ToolStripLabel1.Text = "Buscar..."
         End If
-
+        ResizeDatagridView()
 
 
 
@@ -1391,7 +1391,7 @@
         ResizeListViews()
         CargarConsulta()
         CerrarSpinner()
-
+        ResizeDatagridView()
 
     End Sub
 
@@ -1594,8 +1594,8 @@
 
         Dim frmNotify As New GestionUserNotificacion
         frmNotify.MdiParent = MDIPrincipal
-        frmNotify.incidenciaInicial = DataGridView1.Item("sellado", DataGridView1.CurrentCell.RowIndex).Value.ToString
-        frmNotify.tipoIncidencia = "Cuaderno MTN"
+        frmNotify.incidenciaInicial = DataGridView1.Item(PKField, DataGridView1.CurrentCell.RowIndex).Value.ToString
+        frmNotify.tipoIncidencia = "Cédula catastral"
         frmNotify.Show()
 
     End Sub

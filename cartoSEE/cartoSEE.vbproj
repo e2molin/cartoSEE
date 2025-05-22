@@ -130,6 +130,7 @@
     <Compile Include="Clases\DocCartoGEODOCAT\docCartoSEEVariacion.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\docCuadMTN.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\docSIDCECAListaProp.vb" />
+    <Compile Include="Clases\DocCartoGEODOCAT\docSIDCECAQuery.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\FileGeorref.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\FlagsProperties.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\FlagsPropertiesCuaderno.vb" />
