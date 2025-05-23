@@ -7,7 +7,10 @@
     Property OffsetResponse As Integer = 0
     Property LimitResponse As Integer = 0
 
-
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="datasetTblParam">Tiene tres opciones parcelasdatos / parcelasdata / bothDatasets. Por defecto el primero</param>
     Sub New(Optional datasetTblParam = "parcelasdatos")
         resultados = New ArrayList
         datasetTbl = datasetTblParam
@@ -18,11 +21,29 @@
         rellenarDataset()
     End Sub
 
+    ''' <summary>
+    ''' Si el datasetTbl tiene el valor bothDatasets, el parámetros Filtro contiene dis filtros separados por $ 
+    ''' </summary>
+    ''' <param name="Filtro"></param>
     Sub getByFiltroSQL(ByVal Filtro As String)
 
-        If datasetTbl = "parcelasdatos" Then
+        If datasetTbl = "parcelasdatos" Then    'SIDCECA I
+            getByFiltroSQLFromParcelaDatos(Filtro)
+        ElseIf datasetTbl = "parcelasdata" Then
+            getByFiltroSQLFromParcelaData(Filtro)
+        ElseIf datasetTbl = "bothDatasets" Then    'SIDCECA II
+            Dim filtros() = Filtro.Split("$")
+            datasetTbl = "parcelasdatos"
+            getByFiltroSQLFromParcelaDatos(filtros(0))
+            datasetTbl = "parcelasdata"
+            getByFiltroSQLFromParcelaData(filtros(1))
+        End If
 
-            consultaSQL = $"SELECT  
+    End Sub
+
+    Sub getByFiltroSQLFromParcelaDatos(ByVal Filtro As String)
+
+        consultaSQL = $"SELECT  
 	                            parcelasdatos.idparceladato,parcelasdatos.numero_doc,parcelasdatos.fecha_insert,parcelasdatos.fechamodificacion,parcelasdatos.nombre_archivo,
 	                            propietarios.nombre_completo AS propietario,
                                 parcelasdatos.listaprop_id,
@@ -42,11 +63,17 @@
 	                            propietarios.nombre_completo,parcelasdatos.listaprop_id,parcelasdatos.terminoid,parcelasdatos.numparcela,parcelasdatos.distribuidor,
 							    parcelasdatos.sup_ha,parcelasdatos.sup_a,parcelasdatos.sup_m,parcelasdatos.sup_dec,parcelasdatos.ncc,parcelasdatos.calificador,parcelasdatos.incidencia
 	                            ORDER BY parcelasdatos.idparceladato"
+        If LimitResponse > 0 Then _consultaSQL &= $" LIMIT {LimitResponse}"
+        If OffsetResponse > 0 Then _consultaSQL &= $" OFFSET {OffsetResponse}"
+        rellenarDataset()
 
-        End If
-        If datasetTbl = "parcelasdata" Then
+    End Sub
 
-            consultaSQL = $"SELECT  
+
+    Sub getByFiltroSQLFromParcelaData(ByVal Filtro As String)
+
+
+        consultaSQL = $"SELECT  
 	                            parcelasdata.idparceladata as idparceladato,parcelasdata.sellado as numero_doc,
 	                            parcelasdata.ceduladigital as nombre_archivo,
 	                            parcelasdata.propietario AS propietario,
@@ -73,16 +100,10 @@
 	                            parcelasdata.barrio,parcelasdata.calle_lugar,parcelasdata.finca_edificio,parcelasdata.nummanzana,
 	                            parcelasdata.numedificio,parcelasdata.delegado_catastral,parcelasdata.encargado_levan,parcelasdata.numparcela_reverso,
                                 parcelasdata.caja,parcelasdata.tipo,
-	                            parcelasdata.parcela,parcelasdata.subparcela,parcelasdata.comentario"
-
-
-        End If
-
-
+	                            parcelasdata.parcela,parcelasdata.subparcela,parcelasdata.comentario
+                                ORDER BY parcelasdata.idparceladata"
         If LimitResponse > 0 Then _consultaSQL &= $" LIMIT {LimitResponse}"
         If OffsetResponse > 0 Then _consultaSQL &= $" OFFSET {OffsetResponse}"
-
-        resumenConsultaSQL = "getCuadernosInteriores_ByFiltroSQL:" & Filtro
         rellenarDataset()
 
     End Sub
@@ -111,6 +132,7 @@
             'Esto es necesario mientras haya documentos con el documento Principal sin especificar
             item.IdParcela = dR("idparceladato")
             item.ListaPropietarios = New docSIDCECAListaProp(dR("listaprop_id"))
+            item.ProyectoBADASID = IIf(datasetTbl = "parcelasdatos", "SIDCECA_I", "SIDCECA_II")
             If datasetTbl = "parcelasdatos" Then item.Parcela = dR("ncc").ToString
             If datasetTbl = "parcelasdatos" Then item.SubParcela = dR("calificador").ToString
             If datasetTbl = "parcelasdata" Then item.Parcela = dR("parcela").ToString

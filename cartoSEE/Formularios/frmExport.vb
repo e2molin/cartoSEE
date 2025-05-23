@@ -117,7 +117,7 @@ Public Class frmExport
     ''' </summary>
     ''' <param name="folderOUT"></param>
     ''' <param name="filtroSQL"></param>
-    ''' <param name="coleccion">Dos opciones: Actas y cuadernos / Cuadernos interiores</param>
+    ''' <param name="coleccion">Dos opciones: Actas y cuadernos / Cuadernos interiores / SIDCECA_I / SIDCECA_II / SIDCECA_I_y_II</param>
     ''' <param name="cProv"></param>
     Private Sub procesarListaDocsCdD(ByVal folderOUT As String, filtroSQL As String, coleccion As String, Optional cProv As Integer = 0)
 
@@ -127,6 +127,8 @@ Public Class frmExport
         Dim cadFechaAhora As String
         Dim listaSQLFinales As New ArrayList
         Dim cadSQLtmp As String
+        Dim resultCuadernos As docCuadMTNQuery
+        Dim resultCedulas As docSIDCECAQuery
 
         Me.Cursor = Cursors.WaitCursor
         Dim RutaLOG As String = txtDirTarget.Text & "\logger.log"
@@ -152,11 +154,10 @@ Public Class frmExport
         ToolStripStatusLabel1.Text = "Accediendo a la información" & IIf(cProv > 0, " de " & DameProvinciaByINE(cProv), "...")
         Application.DoEvents()
 
-        Dim resultCuadernos As New docCuadMTNQuery
 
-
-
-        resultCuadernos.getByFiltroSQL(filtroSQL)
+        If coleccion = "Cuadernos interiores" Then
+            resultCuadernos = New docCuadMTNQuery
+            resultCuadernos.getByFiltroSQL(filtroSQL)
             If resultCuadernos.resultados.Count = 0 Then
                 ModalInfo("No se han encontrado datos")
                 Me.Cursor = Cursors.Default
@@ -168,6 +169,21 @@ Public Class frmExport
                 End If
 
             End If
+        ElseIf coleccion = "SIDCECA_I" Then
+            resultCedulas = New docSIDCECAQuery("parcelasdatos")
+            resultCedulas.LimitResponse = 100
+            resultCedulas.getByFiltroSQL(filtroSQL)
+        ElseIf coleccion = "SIDCECA_II" Then
+            resultCedulas = New docSIDCECAQuery("parcelasdata")
+            resultCedulas.LimitResponse = 100
+            resultCedulas.getByFiltroSQL(filtroSQL)
+        ElseIf coleccion = "SIDCECA_I_y_II" Then
+            resultCedulas = New docSIDCECAQuery("bothDatasets")
+            resultCedulas.LimitResponse = 100
+            resultCedulas.getByFiltroSQL(filtroSQL)
+        End If
+
+
 
 
 
@@ -175,24 +191,30 @@ Public Class frmExport
         Dim resDocParcial As New ArrayList
 
         'Aplicamos tareas
-        If chkCopiaFicheros.Checked Then
-            ToolStripStatusLabel1.Text = "Procesando datos. Copiando ficheros para el CdD"
-            proce = New procGenerateHTMLReport
-            proce.overWriteFiles = chkOverWrite.Checked 'Para que no vuelva a copiar los PDFs
-            proce.pathIncluding = False
-            proce.taxonomyCodeIncluding = False
-            If CheckBox1.Checked Then
-                proce.groupPDFbyFolderProv = True
-            End If
-            proce.CopyFiles2Directory(resultCuadernos.resultados, folderOUT, coleccion, chkCopyTest.Checked, cProv, False)
 
-            proce = Nothing
+        ToolStripStatusLabel1.Text = "Procesando datos. Copiando ficheros para el CdD"
+        proce = New procGenerateHTMLReport
+        proce.overWriteFiles = chkOverWrite.Checked 'Para que no vuelva a copiar los PDFs
+        proce.pathIncluding = False
+        proce.taxonomyCodeIncluding = False
+        If CheckBox1.Checked Then
+            proce.groupPDFbyFolderProv = True
         End If
+        If coleccion = "Cuadernos interiores" Then
+            proce.CopyFiles2Directory(resultCuadernos.resultados, folderOUT, coleccion, chkCopyTest.Checked, cProv, False)
+            resultCuadernos.resultados.Clear()
+            resultCuadernos = Nothing
+        ElseIf coleccion = "SIDCECA_I_y_II" Then
+            proce.CopyFiles2Directory(resultCedulas.resultados, folderOUT, coleccion, chkCopyTest.Checked, cProv, False)
+            resultCedulas.resultados.Clear()
+            resultCedulas = Nothing
+        End If
+        proce = Nothing
+
         Application.DoEvents()
 
         ToolStripStatusLabel1.Text = "Eliminando líneas duplicadas en ficheros TXT de salida"
         Dim pathDeleteDuplicates As String = ""
-
         pathDeleteDuplicates = folderOUT & "\_ficherospdf2codigosINE.txt"
         deleteDuplicateLinesFromFile(pathDeleteDuplicates, True)
         pathDeleteDuplicates = folderOUT & "\_ficherospdf.txt"
@@ -201,12 +223,6 @@ Public Class frmExport
         deleteDuplicateLinesFromFile(pathDeleteDuplicates, True)
         pathDeleteDuplicates = folderOUT & "\_fichaDocHTML.txt"
         deleteDuplicateLinesFromFile(pathDeleteDuplicates, True)
-
-
-
-        resultCuadernos.resultados.Clear()
-        resultCuadernos = Nothing
-
         Me.Cursor = Cursors.Default
         ToolStripStatusLabel1.Text = "Proceso terminado"
 
@@ -248,10 +264,10 @@ Public Class frmExport
         cProv = CType(cboProvincias.SelectedItem, itemData).Valor
         filtroSQL = "iddocsiddae in (Select iddocsiddae from bdsidschema.docsiddae where iddocsiddae>1"
         If cboProvincias.SelectedIndex <> 0 Then
-            filtroSQL &= $" and provincia={cProv}"
+            filtroSQL &= $" And provincia={cProv}"
         End If
         If ComboBox1.SelectedIndex <> 0 Then
-            filtroSQL &= $" and tipo='{ComboBox1.Text}'"
+            filtroSQL &= $" And tipo='{ComboBox1.Text}'"
         End If
         If ComboBox2.SelectedIndex <> 0 Then
             filtroSQL &= $"  and subtipo='{ComboBox2.Text}'"
@@ -306,5 +322,55 @@ Public Class frmExport
 
     End Sub
 
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
 
+
+        Dim filtroSQL As String
+        filtroSQL = TextBox1.Text
+        If filtroSQL = "" Then
+            ModalExclamation("Escriba un filtro SQL")
+            Exit Sub
+        End If
+        Application.DoEvents()
+
+        filtroSQL = "idparceladato>0"
+        procesarListaDocsCdD(txtDirTarget.Text, filtroSQL, "Cédulas JGE")
+        ModalInfo("Proceso terminado")
+
+
+
+
+    End Sub
+
+    Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
+
+        Dim filtroSQL As String
+        filtroSQL = TextBox1.Text
+
+        Dim cadfechaDesde As String
+        Dim cadfechaHasta As String
+
+
+        If sender.name = "Button4" Then
+            filtroSQL = "(subtipo='Itinerarios con brújula' and create_at between '" & cadfechaDesde & "' and '" & cadfechaHasta & "') OR
+                         (subtipo='Itinerarios con brújula' and  idarchivodocmtn in (Select archivodocmtn_id from bdsidschema.archivodocmtnlog where fecha_update between '" & cadfechaDesde & "' and '" & cadfechaHasta & "'))"
+        End If
+        If sender.name = "Button6" Then
+            filtroSQL = "subtipo='Itinerarios con brújula' and fechafilecdd is null"
+        End If
+
+
+        If filtroSQL = "" Then
+            ModalExclamation("Escriba un filtro SQL")
+            Exit Sub
+        End If
+        'registrarDatabaseLog("Lanzado proceso de exportación CdD", $"filtroSQL={filtroSQL}")
+        Application.DoEvents()
+        procesarListaDocsCdD(txtDirTarget.Text, "idparceladato>0$listaprop.territorio_id=5305", "SIDCECA_I_y_II")
+        'registrarDatabaseLog("Terminado proceso de exportación CdD")
+        ModalInfo("Proceso de extracción para el CdD terminado")
+
+
+
+    End Sub
 End Class

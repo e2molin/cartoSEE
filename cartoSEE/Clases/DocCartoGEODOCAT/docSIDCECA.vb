@@ -28,10 +28,50 @@
     Property SignaturaCaja As String = ""
     Property coordenadas As New ArrayList
     Property listaMosaicos As New ArrayList
+    Property NameFileCDD As String
+    Property TaxonomiaWebSemanticaCode As String = "1.3.5.1.4"
+    Property ProyectoBADASID As String
 
     Dim getMosaicosConsultado As Boolean = False
     Dim datasetTblClass As String
 
+    ''' <summary>
+    ''' Formato CCJGE00000000
+    ''' </summary>
+    ''' <returns></returns>
+    ReadOnly Property selladoIdProductor() As String
+
+        Get
+            Return $"CCJGE{String.Format("{0:00000000}", IdParcela)}"
+        End Get
+
+    End Property
+
+
+
+    ReadOnly Property ProvinciaINE() As String
+
+        Get
+            Return $"{String.Format("{0:00}", ListaPropietarios.CodProv)}"
+        End Get
+
+    End Property
+
+    ReadOnly Property FechaDoc() As String
+
+        Get
+            Return $"1861-1869"
+        End Get
+
+    End Property
+
+    ReadOnly Property Alias4CDD() As String
+        Get
+            '            Alias Colección.Localziación de la parcela. PArcela. Número de sellado
+            If ProyectoBADASID = "SIDCECA_I" Then Return $"{ListaPropietarios.MunicipioHistorico} - {ListaPropietarios.NombreColeccion}. Parcela nº{nombreParcela}. Nº{SelladoDocumento}"
+            If ProyectoBADASID = "SIDCECA_II" Then Return $"{ListaPropietarios.MunicipioHistorico} - {ListaPropietarios.NombreColeccion}. Parcela nº{nombreParcela}. Nº{SelladoDocumento}"
+        End Get
+    End Property
 
     ReadOnly Property SupTotalM2() As Double
 
@@ -51,6 +91,23 @@
         End Get
 
     End Property
+
+    ReadOnly Property FicheroPDF() As String
+        Get
+            If ProyectoBADASID = "SIDCECA_I" Then Return $"{RutaRepoSIDCECA}{ListaPropietarios.CodMuniHisto}\{Replace(NombreDocumento, "A.JPG", ".pdf")}"
+            If ProyectoBADASID = "SIDCECA_II" Then Return $"{RutaRepoSIDCECA}{String.Format("{0:0000000}", ListaPropietarios.CodMuniHisto)}\{SignaturaCaja}\{String.Format("{0:00000000}", CType(SelladoDocumento, Integer))}.pdf"
+
+        End Get
+    End Property
+
+    ReadOnly Property nameFile4CDD() As String
+        Get
+            Return $"{selladoIdProductor}.pdf"
+        End Get
+    End Property
+
+
+
 
     ReadOnly Property rutaFicheroThumb() As String
 
@@ -100,9 +157,6 @@
 
     Sub New()
 
-
-
-
     End Sub
 
     ''' <summary>
@@ -139,7 +193,7 @@
 	                            propietarios.nombre_completo,parcelasdatos.listaprop_id,parcelasdatos.terminoid,parcelasdatos.numparcela,parcelasdatos.distribuidor,
 							    parcelasdatos.sup_ha,parcelasdatos.sup_a,parcelasdatos.sup_m,parcelasdatos.sup_dec,parcelasdatos.ncc,parcelasdatos.calificador,parcelasdatos.incidencia
 	                            ORDER BY parcelasdatos.idparceladato"
-
+            ProyectoBADASID = "SIDCECA_I"
         End If
         If datasetTbl = "parcelasdata" Then
 
@@ -172,7 +226,7 @@
                                 parcelasdata.caja,parcelasdata.tipo,
 	                            parcelasdata.parcela,parcelasdata.subparcela,parcelasdata.comentario"
 
-
+            ProyectoBADASID = "SIDCECA_II"
         End If
 
         rellenarDataset(consultaSQL)
@@ -213,6 +267,7 @@
                 FechaAlta = dR("fecha_insert").ToString
                 FechaModificacion = dR("fechamodificacion").ToString
                 NombreDocumento = dR("nombre_archivo").ToString
+
                 If datasetTblClass = "parcelasdata" Then
                     Barrio = dR("barrio").ToString
                     CalleLugar = dR("calle_lugar").ToString

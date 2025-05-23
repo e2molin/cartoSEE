@@ -9,8 +9,10 @@
     Property NumeroColeccion As Integer
     Property CodMuniActual As Integer
     Property CodMuniHisto As Integer
+    Property IdTerritorio As Integer
     Property NombreProvincia As String
     Property CodProv As Integer
+    Property CodAutonomia As Integer
     Property Tomo As String
     Property DatasetTbl As String
 
@@ -35,14 +37,24 @@
 
     End Property
 
+    ReadOnly Property municipioINE_LongFormat() As String
+        Get
+
+            Return $"34{String.Format("{0:00}", CodAutonomia)}{String.Format("{0:00}", CodProv)}{String.Format("{0:00000}", CodMuniActual)}"
+
+        End Get
+
+    End Property
+
 
     Sub New(idListProp As Integer)
 
 
         Dim consultaSQL As String = $"SELECT idlistaprop,ayuntamiento,part_jud,numcoleccion,COALESCE(coleccion,'Única') as coleccion,
+                                        listaprop.territorio_id as territorio_id,
 	                                    t1.nombre as munihisto, t1.munihisto as codmunihisto,
 	                                    t2.nombre as muniactual,t2.municipio as codmuniactual,
-	                                    provincias.nombreprovincia,provincias.idprovincia,listaprop.dataset_tbl as dataset_tbl
+	                                    provincias.nombreprovincia,provincias.idprovincia,provincias.comautonoma_id,listaprop.dataset_tbl as dataset_tbl
 	                                    FROM bdsidschema.listaprop 
 	                                    INNER JOIN bdsidschema.territorios t1 ON listaprop.territorio_id=t1.idterritorio
 	                                    INNER JOIN bdsidschema.territorios t2 ON t1.munihisto/100=t2.municipio
@@ -88,8 +100,8 @@
                 NombreProvincia = dR("nombreprovincia").ToString
                 CodProv = dR("idprovincia")
                 DatasetTbl = dR("dataset_tbl").ToString
-
-
+                IdTerritorio = dR("territorio_id")
+                CodAutonomia = dR("comautonoma_id")
                 'Tomo = dR("tomo").ToString
                 'FechaDoc = dR("fecha").ToString
                 'FechaDocType = dR("nota_fecha").ToString

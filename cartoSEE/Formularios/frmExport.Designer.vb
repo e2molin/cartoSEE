@@ -64,11 +64,15 @@ Partial Class frmExport
         Me.CheckBox1 = New System.Windows.Forms.CheckBox()
         Me.chkCopyTest = New System.Windows.Forms.CheckBox()
         Me.chkOverWrite = New System.Windows.Forms.CheckBox()
+        Me.Button2 = New System.Windows.Forms.Button()
+        Me.TabPage4 = New System.Windows.Forms.TabPage()
+        Me.Button5 = New System.Windows.Forms.Button()
         Me.StatusStrip1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.TabPage2.SuspendLayout()
         Me.TabPage3.SuspendLayout()
+        Me.TabPage4.SuspendLayout()
         Me.SuspendLayout()
         '
         'txtDirTarget
@@ -224,6 +228,7 @@ Partial Class frmExport
         'TabControl1
         '
         Me.TabControl1.Controls.Add(Me.TabPage1)
+        Me.TabControl1.Controls.Add(Me.TabPage4)
         Me.TabControl1.Controls.Add(Me.TabPage2)
         Me.TabControl1.Controls.Add(Me.TabPage3)
         Me.TabControl1.Location = New System.Drawing.Point(15, 11)
@@ -337,6 +342,7 @@ Partial Class frmExport
         '
         'TabPage2
         '
+        Me.TabPage2.Controls.Add(Me.Button2)
         Me.TabPage2.Controls.Add(Me.TextBox1)
         Me.TabPage2.Controls.Add(Me.Label3)
         Me.TabPage2.Controls.Add(Me.btnSpecialProc)
@@ -478,6 +484,39 @@ Partial Class frmExport
         Me.chkOverWrite.Text = "Sobreescribir ficheros previos"
         Me.chkOverWrite.UseVisualStyleBackColor = True
         '
+        'Button2
+        '
+        Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
+        Me.Button2.Location = New System.Drawing.Point(9, 268)
+        Me.Button2.Name = "Button2"
+        Me.Button2.Size = New System.Drawing.Size(255, 36)
+        Me.Button2.TabIndex = 18
+        Me.Button2.Text = "Aplicar Filtro a parcelas de la JGE"
+        Me.Button2.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.Button2.UseVisualStyleBackColor = True
+        '
+        'TabPage4
+        '
+        Me.TabPage4.Controls.Add(Me.Button5)
+        Me.TabPage4.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage4.Name = "TabPage4"
+        Me.TabPage4.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage4.Size = New System.Drawing.Size(808, 326)
+        Me.TabPage4.TabIndex = 3
+        Me.TabPage4.Text = "Cédulas catastrales de la JGE"
+        Me.TabPage4.UseVisualStyleBackColor = True
+        '
+        'Button5
+        '
+        Me.Button5.Image = CType(resources.GetObject("Button5.Image"), System.Drawing.Image)
+        Me.Button5.Location = New System.Drawing.Point(28, 29)
+        Me.Button5.Name = "Button5"
+        Me.Button5.Size = New System.Drawing.Size(202, 36)
+        Me.Button5.TabIndex = 34
+        Me.Button5.Text = "Extraer documentos nuevos"
+        Me.Button5.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.Button5.UseVisualStyleBackColor = True
+        '
         'frmExport
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -510,6 +549,7 @@ Partial Class frmExport
         Me.TabPage2.PerformLayout()
         Me.TabPage3.ResumeLayout(False)
         Me.TabPage3.PerformLayout()
+        Me.TabPage4.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -555,4 +595,7 @@ Partial Class frmExport
     Friend WithEvents Label9 As Label
     Friend WithEvents Label11 As Label
     Friend WithEvents Button4 As Button
+    Friend WithEvents Button2 As Button
+    Friend WithEvents TabPage4 As TabPage
+    Friend WithEvents Button5 As Button
 End Class
