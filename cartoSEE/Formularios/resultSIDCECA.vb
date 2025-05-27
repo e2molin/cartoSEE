@@ -226,7 +226,7 @@
             .AppendText(Environment.NewLine)
             If elemEntidadSel.WKT_geom = "" Then
                 .SelectionColor = Color.FromArgb(255, 0, 0) 'Rojo
-                .AppendText("PArcela NO georreferenciada")
+                .AppendText("Parcela no georreferenciada")
             Else
                 .SelectionColor = Color.FromArgb(47, 79, 79) 'DimSlateGray
                 .AppendText("Parcela georreferenciada")
@@ -625,7 +625,7 @@
         elementoLV.SubItems.Add(elemEntidadSel.Propietario) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
         elementoLV = New ListViewItem With {.Text = "Sello cédula", .ImageIndex = 4, .Group = docGeneral}
         elementoLV.SubItems.Add(elemEntidadSel.SelladoDocumento) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
-        If datasetTbL = "parcelasmadriddata" Then
+        If datasetTbL = "parcelasdata" Then
             elementoLV = New ListViewItem With {.Text = "Signatura caja", .ImageIndex = 4, .Group = docGeneral}
             elementoLV.SubItems.Add(elemEntidadSel.SignaturaCaja) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
             elementoLV = New ListViewItem With {.Text = "Delegado catastral", .ImageIndex = 4, .Group = docGeneral}
@@ -656,7 +656,7 @@
         elementoLV = New ListViewItem With {.Text = "Partido judicial", .ImageIndex = 4, .Group = docUbicacion}
         elementoLV.SubItems.Add(elemEntidadSel.ListaPropietarios.PartidoJudicial) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
 
-        If datasetTbL="parcelasmadriddata" Then
+        If datasetTbL = "parcelasdata" Then
             elementoLV = New ListViewItem With {.Text = "Barrio", .ImageIndex = 4, .Group = docUbicacion}
             elementoLV.SubItems.Add(elemEntidadSel.Barrio) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
             elementoLV = New ListViewItem With {.Text = "Calle/Lugar", .ImageIndex = 4, .Group = docUbicacion}
@@ -1074,18 +1074,20 @@
 	                    COALESCE(listaprop.coleccion,'Única') as coleccion,
 	                    propietario,
 	                    parcelasdata.parcela AS parcela,
-                        calle_lugar || CASE WHEN numedificio<>'Sin rellenar' THEN ', ' || numedificio END ||
-                        ' (' || finca_edificio || ')' ||
-                        CASE WHEN nummanzana<>'Sin rellenar' THEN ' - Manzana: ' || nummanzana END as direccion,
+                        replace(replace(trim(COALESCE(calle_lugar,'')  || ' ' ||
+						COALESCE(finca_edificio,'')  || ' ,nº ' ||
+						COALESCE(numedificio,'')  || ' , manzana nº ' ||
+						COALESCE(nummanzana,'')),'ILEGIBLE',''),'Sin rellenar','') as direccion,
 	                    parcelasdata.sup_ha::character varying || 'ha ' || 
 	                    parcelasdata.sup_a::character varying || 'a ' || 
 	                    (parcelasdata.sup_m + sup_dec/100::float)::character varying || 'm2 ' AS superficie,
-	                    parcelasdata.distribuidor as distribuidor,
+	                    parcelasdata.distribuidor as distribuidor,parcelasdata.sellado,
 	                    url_cedula_digital AS urlcdd,
 	                    territorios.munihisto AS inemunihisto,
-	                    COALESCE(parcelasdata.hectareas,'0'::character varying) as sup_ha,
-	                    COALESCE(parcelasdata.areas,'0'::character varying) as sup_a,
-	                    COALESCE(parcelasdata.metros,'0'::character varying) as sup_m,
+	                    parcelasdata.sup_ha as sup_ha,
+	                    parcelasdata.sup_a as sup_a,
+	                    parcelasdata.sup_m as sup_m,
+						parcelasdata.sup_dec as sup_dec,
 	                    parcelasdata.subparcela,parcelasdata.comentario,
 	                    ST_AsText(ST_CENTROID(ST_UNION(parcelasdatageo.the_geom))) as nparcegeom
                     from bdsidschema.parcelasdata
@@ -1129,7 +1131,8 @@
     'direccion                      7   Visible inicial					direccion,
     'superficie,                    8   Visible inicial					superficie,
     'distribuidor,                  9   Visible inicial					distribuidor,
-    'urlcdd,                        10  Oculto inicial					urlcdd,
+    'distribuidor,                  10  Oculto inicial					sellado,
+    'urlcdd,                        11  Oculto inicial					urlcdd,
     '(...)
 #End Region
 
@@ -1165,10 +1168,13 @@
         DataGridView1.Columns("distribuidor").HeaderText = "Distribuidor"
         DataGridView1.Columns("distribuidor").Width = 60
         DataGridView1.Columns("distribuidor").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
+        DataGridView1.Columns("sellado").HeaderText = "Distribuidor"
+        DataGridView1.Columns("sellado").Width = 60
+        DataGridView1.Columns("sellado").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
         'Mostramos hasta la columna 8
 
         'Ocultamos el resto de columnas
-        For iCol = 9 To DataGridView1.ColumnCount - 1
+        For iCol = 10 To DataGridView1.ColumnCount - 1
             DataGridView1.Columns(iCol).Visible = False
         Next
 
@@ -1990,7 +1996,11 @@
         Try
             Me.Cursor = Cursors.WaitCursor
             rutaPDF = Button4.Tag
-            If IO.File.Exists(rutaPDF) Then Process.Start(rutaPDF)
+            If IO.File.Exists(rutaPDF) Then
+                Process.Start(rutaPDF)
+            Else
+                ModalExclamation($"No se puede localizar el fichero {rutaPDF}")
+            End If
         Catch ex As Exception
             ModalError($"Error: {ex.Message}")
         Finally

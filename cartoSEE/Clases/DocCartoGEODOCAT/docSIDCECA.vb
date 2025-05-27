@@ -87,7 +87,7 @@
 
         Get
             If datasetTblClass = "parcelasdatos" Then Return $"{RutaRepoSIDCECA}{ListaPropietarios.CodMuniHisto}\{Replace(NombreDocumento, "A.JPG", ".pdf")}"
-            If datasetTblClass = "parcelasdata" Then Return $"{RutaRepoSIDCECA}{String.Format("{0:0000000}", ListaPropietarios.CodMuniHisto)}\{SignaturaCaja}\{String.Format("{0:00000000}", CType(SelladoDocumento, Integer))}.pdf"
+            If datasetTblClass = "parcelasdata" Then Return $"{RutaRepoSIDCECA}{String.Format("{0:0000000}", ListaPropietarios.CodMuniHisto)}\{SignaturaCaja}\{String.Format("{0:0000000}", CType(SelladoDocumento, Integer))}.pdf"
         End Get
 
     End Property

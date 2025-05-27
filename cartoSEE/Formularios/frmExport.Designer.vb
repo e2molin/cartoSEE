@@ -51,7 +51,10 @@ Partial Class frmExport
         Me.DateTimePicker3 = New System.Windows.Forms.DateTimePicker()
         Me.Button6 = New System.Windows.Forms.Button()
         Me.Label10 = New System.Windows.Forms.Label()
+        Me.TabPage4 = New System.Windows.Forms.TabPage()
+        Me.Button5 = New System.Windows.Forms.Button()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.Button2 = New System.Windows.Forms.Button()
         Me.TabPage3 = New System.Windows.Forms.TabPage()
         Me.ComboBox2 = New System.Windows.Forms.ComboBox()
         Me.Label8 = New System.Windows.Forms.Label()
@@ -64,15 +67,14 @@ Partial Class frmExport
         Me.CheckBox1 = New System.Windows.Forms.CheckBox()
         Me.chkCopyTest = New System.Windows.Forms.CheckBox()
         Me.chkOverWrite = New System.Windows.Forms.CheckBox()
-        Me.Button2 = New System.Windows.Forms.Button()
-        Me.TabPage4 = New System.Windows.Forms.TabPage()
-        Me.Button5 = New System.Windows.Forms.Button()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.Label5 = New System.Windows.Forms.Label()
         Me.StatusStrip1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
+        Me.TabPage4.SuspendLayout()
         Me.TabPage2.SuspendLayout()
         Me.TabPage3.SuspendLayout()
-        Me.TabPage4.SuspendLayout()
         Me.SuspendLayout()
         '
         'txtDirTarget
@@ -322,7 +324,7 @@ Partial Class frmExport
         'Button6
         '
         Me.Button6.Image = CType(resources.GetObject("Button6.Image"), System.Drawing.Image)
-        Me.Button6.Location = New System.Drawing.Point(22, 51)
+        Me.Button6.Location = New System.Drawing.Point(22, 39)
         Me.Button6.Name = "Button6"
         Me.Button6.Size = New System.Drawing.Size(202, 36)
         Me.Button6.TabIndex = 33
@@ -334,11 +336,35 @@ Partial Class frmExport
         '
         Me.Label10.AutoSize = True
         Me.Label10.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label10.Location = New System.Drawing.Point(19, 26)
+        Me.Label10.Location = New System.Drawing.Point(26, 16)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(258, 13)
         Me.Label10.TabIndex = 32
         Me.Label10.Text = "Cuadernos interiores - Itinerarios con brújula"
+        '
+        'TabPage4
+        '
+        Me.TabPage4.Controls.Add(Me.Label5)
+        Me.TabPage4.Controls.Add(Me.Label4)
+        Me.TabPage4.Controls.Add(Me.Button5)
+        Me.TabPage4.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage4.Name = "TabPage4"
+        Me.TabPage4.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage4.Size = New System.Drawing.Size(808, 326)
+        Me.TabPage4.TabIndex = 3
+        Me.TabPage4.Text = "Cédulas catastrales de la JGE"
+        Me.TabPage4.UseVisualStyleBackColor = True
+        '
+        'Button5
+        '
+        Me.Button5.Image = CType(resources.GetObject("Button5.Image"), System.Drawing.Image)
+        Me.Button5.Location = New System.Drawing.Point(22, 39)
+        Me.Button5.Name = "Button5"
+        Me.Button5.Size = New System.Drawing.Size(202, 36)
+        Me.Button5.TabIndex = 34
+        Me.Button5.Text = "Extraer documentos nuevos"
+        Me.Button5.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.Button5.UseVisualStyleBackColor = True
         '
         'TabPage2
         '
@@ -353,6 +379,17 @@ Partial Class frmExport
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Por filtro SQL y Temporal"
         Me.TabPage2.UseVisualStyleBackColor = True
+        '
+        'Button2
+        '
+        Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
+        Me.Button2.Location = New System.Drawing.Point(9, 268)
+        Me.Button2.Name = "Button2"
+        Me.Button2.Size = New System.Drawing.Size(255, 36)
+        Me.Button2.TabIndex = 18
+        Me.Button2.Text = "Aplicar Filtro a parcelas de la JGE"
+        Me.Button2.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.Button2.UseVisualStyleBackColor = True
         '
         'TabPage3
         '
@@ -484,38 +521,24 @@ Partial Class frmExport
         Me.chkOverWrite.Text = "Sobreescribir ficheros previos"
         Me.chkOverWrite.UseVisualStyleBackColor = True
         '
-        'Button2
+        'Label4
         '
-        Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
-        Me.Button2.Location = New System.Drawing.Point(9, 268)
-        Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(255, 36)
-        Me.Button2.TabIndex = 18
-        Me.Button2.Text = "Aplicar Filtro a parcelas de la JGE"
-        Me.Button2.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
-        Me.Button2.UseVisualStyleBackColor = True
+        Me.Label4.AutoSize = True
+        Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label4.Location = New System.Drawing.Point(26, 16)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(319, 13)
+        Me.Label4.TabIndex = 35
+        Me.Label4.Text = "Cédulas catastrales de la Junta General de Estadística"
         '
-        'TabPage4
+        'Label5
         '
-        Me.TabPage4.Controls.Add(Me.Button5)
-        Me.TabPage4.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage4.Name = "TabPage4"
-        Me.TabPage4.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage4.Size = New System.Drawing.Size(808, 326)
-        Me.TabPage4.TabIndex = 3
-        Me.TabPage4.Text = "Cédulas catastrales de la JGE"
-        Me.TabPage4.UseVisualStyleBackColor = True
-        '
-        'Button5
-        '
-        Me.Button5.Image = CType(resources.GetObject("Button5.Image"), System.Drawing.Image)
-        Me.Button5.Location = New System.Drawing.Point(28, 29)
-        Me.Button5.Name = "Button5"
-        Me.Button5.Size = New System.Drawing.Size(202, 36)
-        Me.Button5.TabIndex = 34
-        Me.Button5.Text = "Extraer documentos nuevos"
-        Me.Button5.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
-        Me.Button5.UseVisualStyleBackColor = True
+        Me.Label5.AutoSize = True
+        Me.Label5.Location = New System.Drawing.Point(236, 51)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(261, 13)
+        Me.Label5.TabIndex = 40
+        Me.Label5.Text = "Documentos de este tipo que aún no están en el CdD"
         '
         'frmExport
         '
@@ -545,11 +568,12 @@ Partial Class frmExport
         Me.TabControl1.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)
         Me.TabPage1.PerformLayout()
+        Me.TabPage4.ResumeLayout(False)
+        Me.TabPage4.PerformLayout()
         Me.TabPage2.ResumeLayout(False)
         Me.TabPage2.PerformLayout()
         Me.TabPage3.ResumeLayout(False)
         Me.TabPage3.PerformLayout()
-        Me.TabPage4.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -598,4 +622,6 @@ Partial Class frmExport
     Friend WithEvents Button2 As Button
     Friend WithEvents TabPage4 As TabPage
     Friend WithEvents Button5 As Button
+    Friend WithEvents Label5 As Label
+    Friend WithEvents Label4 As Label
 End Class
