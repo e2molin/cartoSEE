@@ -903,13 +903,17 @@
         lvFastView.Items.Add(elementoLV) : elementoLV = Nothing
 
         If DataGridView1.Item("listaMuniHisto", rowIdx).Value.ToString <> "" Then
-            Dim terris() As String = DataGridView1.Item("listaMuniHisto", rowIdx).Value.ToString.Split(",")
-            For Each terri In terris
-                elementoLV = New ListViewItem With {.Text = "Territorio", .ImageIndex = 4, .Group = gTerri}
-                elementoLV.SubItems.Add(terri.Trim)
+            'Dim terris() As String = DataGridView1.Item("listaMuniHisto", rowIdx).Value.ToString.Split(",")
+            'For Each terri In terris
+            '    elementoLV = New ListViewItem With {.Text = "Territorio", .ImageIndex = 4, .Group = gTerri}
+            '    elementoLV.SubItems.Add(terri.Trim)
+            '    lvFastView.Items.Add(elementoLV) : elementoLV = Nothing
+            'Next
+            For Each terri As TerritorioBSID In elemEntidadSel.listaTerritorios
+                elementoLV = New ListViewItem With {.Text = terri.tipo, .ImageIndex = 4, .Group = gTerri}
+                elementoLV.SubItems.Add($"{terri.nombre} ({terri.CodMuniHisto})")
                 lvFastView.Items.Add(elementoLV) : elementoLV = Nothing
             Next
-
         End If
         'Rellenamos el cuadro de texto con algunos datos
         FillRichText(RichTextBox1, rowIdx)
