@@ -95,7 +95,7 @@
     ReadOnly Property FicheroPDF() As String
         Get
             If ProyectoBADASID = "SIDCECA_I" Then Return $"{RutaRepoSIDCECA}{ListaPropietarios.CodMuniHisto}\{Replace(NombreDocumento, "A.JPG", ".pdf")}"
-            If ProyectoBADASID = "SIDCECA_II" Then Return $"{RutaRepoSIDCECA}{String.Format("{0:0000000}", ListaPropietarios.CodMuniHisto)}\{SignaturaCaja}\{String.Format("{0:000000000}", CType(SelladoDocumento, Integer))}.pdf"
+            If ProyectoBADASID = "SIDCECA_II" Then Return $"{RutaRepoSIDCECA}{String.Format("{0:0000000}", ListaPropietarios.CodMuniHisto)}\{SignaturaCaja}\{String.Format("{0:00000000}", CType(SelladoDocumento, Integer))}.pdf"
 
         End Get
     End Property

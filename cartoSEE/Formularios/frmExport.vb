@@ -27,6 +27,8 @@ Public Class frmExport
 
         txtDirTarget.Text = unidadActualizCDD
 
+        txtDirTarget.Text = "\\10.67.32.101\cartoteca_temp\archivo\"
+
         DateTimePicker3.Value = CDate(Now.AddDays(-180))
         DateTimePicker4.Value = CDate(Now)
         cancelar = False
@@ -178,8 +180,10 @@ Public Class frmExport
             resultCedulas.LimitResponse = 100
             resultCedulas.getByFiltroSQL(filtroSQL)
         ElseIf coleccion = "SIDCECA_I_y_II" Then
+            ToolStripStatusLabel1.Text = "Accediendo a la información de SIDCECA I y II"
+            Application.DoEvents()
             resultCedulas = New docSIDCECAQuery("bothDatasets")
-            resultCedulas.LimitResponse = 100
+            'resultCedulas.LimitResponse = 100
             resultCedulas.getByFiltroSQL(filtroSQL)
         End If
 
@@ -197,9 +201,16 @@ Public Class frmExport
         proce.overWriteFiles = chkOverWrite.Checked 'Para que no vuelva a copiar los PDFs
         proce.pathIncluding = False
         proce.taxonomyCodeIncluding = False
-        If CheckBox1.Checked Then
-            proce.groupPDFbyFolderProv = True
-        End If
+        If CheckBox1.Checked Then proce.groupPDFbyFolderProv = True
+        If CheckBox2.Checked Then proce.groupPDFbyFolderINE = True
+        'If ModalQuestion($"Se van a preparar para el CdD {resultCedulas.resultados.Count} documentos. ¿Continuar?") = DialogResult.No Then
+        '    resultCedulas.resultados.Clear()
+        '    resultCedulas = Nothing
+        '    proce = Nothing
+        '    Application.DoEvents()
+        '    Me.Cursor = Cursors.Default
+        '    ToolStripStatusLabel1.Text = "Proceso abortado"
+        'End If
         If coleccion = "Cuadernos interiores" Then
             proce.CopyFiles2Directory(resultCuadernos.resultados, folderOUT, coleccion, chkCopyTest.Checked, cProv, False)
             resultCuadernos.resultados.Clear()
@@ -344,28 +355,31 @@ Public Class frmExport
 
     Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
 
-        Dim filtroSQL As String
-        filtroSQL = TextBox1.Text
+        'Dim filtroSQL As String
+        'filtroSQL = TextBox1.Text
 
-        Dim cadfechaDesde As String
-        Dim cadfechaHasta As String
-
-
-        If sender.name = "Button4" Then
-            filtroSQL = "(subtipo='Itinerarios con brújula' and create_at between '" & cadfechaDesde & "' and '" & cadfechaHasta & "') OR
-                         (subtipo='Itinerarios con brújula' and  idarchivodocmtn in (Select archivodocmtn_id from bdsidschema.archivodocmtnlog where fecha_update between '" & cadfechaDesde & "' and '" & cadfechaHasta & "'))"
-        End If
-        If sender.name = "Button6" Then
-            filtroSQL = "subtipo='Itinerarios con brújula' and fechafilecdd is null"
-        End If
+        'Dim cadfechaDesde As String
+        'Dim cadfechaHasta As String
 
 
-        If filtroSQL = "" Then
-            ModalExclamation("Escriba un filtro SQL")
-            Exit Sub
-        End If
+        'If sender.name = "Button4" Then
+        '    filtroSQL = "(subtipo='Itinerarios con brújula' and create_at between '" & cadfechaDesde & "' and '" & cadfechaHasta & "') OR
+        '                 (subtipo='Itinerarios con brújula' and  idarchivodocmtn in (Select archivodocmtn_id from bdsidschema.archivodocmtnlog where fecha_update between '" & cadfechaDesde & "' and '" & cadfechaHasta & "'))"
+        'End If
+        'If sender.name = "Button6" Then
+        '    filtroSQL = "subtipo='Itinerarios con brújula' and fechafilecdd is null"
+        'End If
+
+
+        'If filtroSQL = "" Then
+        '    ModalExclamation("Escriba un filtro SQL")
+        '    Exit Sub
+        'End If
         'registrarDatabaseLog("Lanzado proceso de exportación CdD", $"filtroSQL={filtroSQL}")
         Application.DoEvents()
+
+
+
         procesarListaDocsCdD(txtDirTarget.Text, "idparceladato>0$listaprop.territorio_id=5305", "SIDCECA_I_y_II")
         'registrarDatabaseLog("Terminado proceso de exportación CdD")
         ModalInfo("Proceso de extracción para el CdD terminado")

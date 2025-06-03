@@ -1740,6 +1740,10 @@
 
         If Not lvTagsM21.SelectedItems Is Nothing Then
             For Each li As ListViewItem In lvTagsM21.SelectedItems
+                If li.SubItems(0).Text = "Id de parcela" Then
+                    My.Computer.Clipboard.SetText(li.SubItems(1).Text)
+                    ModalInfo($"Valor {li.SubItems(0).Text} copiado al clipboard")
+                End If
                 If li.SubItems(0).Text = "Enlace CdD" Then
                     If li.SubItems(1).Text <> "" Then
                         My.Computer.Clipboard.SetText(li.SubItems(1).Text)

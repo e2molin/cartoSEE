@@ -9,6 +9,7 @@
     Property pathIncluding As Boolean = True   'Si queremos que entre los datos exportados se encuentre el path a los ficheros
     Property taxonomyCodeIncluding As Boolean = True ' Si queremos quer se incluya la taxonomía asociada. Si es falsy se pode el código 4.8 Sin clasificar
     Property groupPDFbyFolderProv As Boolean = False
+    Property groupPDFbyFolderINE As Boolean = False
 
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(procGenerateHTMLReport))
@@ -894,7 +895,7 @@
         Using archivoLog = New IO.StreamWriter(rutaLog, appendLogFiles, System.Text.Encoding.UTF8),
                 docMuniInfo = New IO.StreamWriter(folderOUT & "\_ficherospdf2codigosINE.txt", appendLogFiles, System.Text.Encoding.UTF8),
                 docAtributos = New IO.StreamWriter(folderOUT & "\_ficherospdfAtributos.txt", appendLogFiles, System.Text.Encoding.UTF8),
-                docSQLs = New IO.StreamWriter(folderOUT & "\_procesoInfoSIDDAE.sql", appendLogFiles, System.Text.Encoding.UTF8),
+                docSQLs = New IO.StreamWriter(folderOUT & "\_procesoInfoUPDATE.sql", appendLogFiles, System.Text.Encoding.UTF8),
                 docEliminar = New IO.StreamWriter(folderOUT & "\_ficherosEliminarCdD.txt", appendLogFiles, System.Text.Encoding.UTF8)
 
 
@@ -909,12 +910,6 @@
 
 
             If appendLogFiles = False Then docEliminar.WriteLine("idProductor")
-
-            'If appendLogFiles = False Then docMuniInfo.WriteLine("idProductor;Nombre Fichero;Ruta;NATCODE")
-            'If appendLogFiles = False Then docAtributos.WriteLine("idProductor;Nombre Fichero;Ruta completa;Extensión;Temática;Fecha;Alias;Taxonomía")
-            'If appendLogFiles = False Then docEliminar.WriteLine("idProductor")
-
-
             archivoLog.WriteLine($"*INFO: Procesando provincia nº {cProv}. Registros: {lista.Count}")
             numCopyFail = 0
             numCopyCorrect = 0
@@ -991,24 +986,23 @@
                 For Each documento As docSIDCECA In lista
                     indexProc += 1
                     ProgressBar1.Value = indexProc
-                    Label2.Text = $"Copiando {indexProc} de {lista.Count}"
+                    Label2.Text = $"Copiando {indexProc} de {lista.Count} de {documento.ProyectoBADASID}"
                     Application.DoEvents()
 
                     'Aquí meto los ficheros que ya están en el CdD y hay que eliminar antes de actulizar
                     If documento.NameFileCDD <> "" Then
-                        docEliminar.WriteLine($"{documento.SelladoIdProductor}")
+                        docEliminar.WriteLine($"{documento.selladoIdProductor}")
                     End If
-                    folderOUTfilesCopy = IIf(groupPDFbyFolderProv = True,
-                                 folderOUT & "\pdf\" & String.Format("{0:00}", documento.ProvinciaINE) & "\",
+                    folderOUTfilesCopy = IIf(groupPDFbyFolderINE = True,
+                                 folderOUT & "\pdf\" & String.Format("{0:00000}", documento.ListaPropietarios.CodMuniActual) & "\",
                                  folderOUT & "\pdf\")
-
                     Try
                         If Not IO.Directory.Exists(folderOUTfilesCopy) Then IO.Directory.CreateDirectory(folderOUTfilesCopy)
                     Catch ex As Exception
                         ModalExclamation(ex.Message)
                     End Try
 
-                    pathOrigen = documento.ficheroPDF
+                    pathOrigen = documento.FicheroPDF
                     pathDestino = folderOUTfilesCopy & documento.nameFile4CDD
 
                     Try
