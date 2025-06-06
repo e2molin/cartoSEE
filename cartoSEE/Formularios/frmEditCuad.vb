@@ -529,7 +529,9 @@
             Dim flagPropos As New FlagsProperties()
             If flagPropos.assignByContainer(CheckedListBox1) Then propsChanged.Add($"extraprops={flagPropos.propertyCode}")
         End If
-
+        If propsChanged.ToArray.Length = 0 Then
+            Exit Function
+        End If
         cadUpBase &= $"{String.Join(",", propsChanged.ToArray)} WHERE idarchivodocmtn={editRegistro.IdarchivodocMTN}"
         ActualizacionAutorAndComentarios = ExeSinTran(cadUpBase)
 
@@ -1351,6 +1353,7 @@
             ActualizacionAtributos()
             ActualizacionAutorAndComentarios()
             UpdateDigitalResources(editRegistro, True)
+            ModalInfo("Documento actualizado")
         End If
 
     End Sub

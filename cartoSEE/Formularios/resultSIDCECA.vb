@@ -1514,6 +1514,7 @@
             ModalExclamation("")
             Exit Sub
         End If
+
         FillDetailsReduced(DataGridView1.Item(PKField, DataGridView1.CurrentCell.RowIndex).Value.ToString)
 
         If idAParcelaDatoLoaded <> idParcelaDatoTagsLoaded Then
@@ -1526,16 +1527,24 @@
 
 
         If elemEntidadSel Is Nothing Then Exit Sub
+
         If sender.tag = "" Then
+
             ModalExclamation("No se dispone de la URL de acceso a esta información")
             Exit Sub
+
         End If
 
         Dim cadURL As String = sender.tag
+
         Try
+
             Process.Start(cadURL)
+
         Catch ex As Exception
+
             ModalError(ex.Message)
+
         End Try
 
     End Sub
