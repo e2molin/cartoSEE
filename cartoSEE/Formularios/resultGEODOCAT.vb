@@ -1367,6 +1367,7 @@
 
     Private Sub DataGridView1_Click(sender As Object, e As EventArgs) Handles DataGridView1.Click
         If DataGridView1.Rows.Count = 0 Then Exit Sub
+        If DataGridView1.CurrentCell Is Nothing Then Exit Sub
         FillDetailsReduced(DataGridView1.Item("idarchivo", DataGridView1.CurrentCell.RowIndex).Value.ToString)
 
     End Sub

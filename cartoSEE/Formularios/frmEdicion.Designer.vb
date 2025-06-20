@@ -924,13 +924,13 @@ Partial Class frmEdicion
         '
         Me.ToolStripStatusLabel1.Image = CType(resources.GetObject("ToolStripStatusLabel1.Image"), System.Drawing.Image)
         Me.ToolStripStatusLabel1.Name = "ToolStripStatusLabel1"
-        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(135, 17)
+        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(136, 17)
         Me.ToolStripStatusLabel1.Text = "ToolStripStatusLabel1"
         '
         'ToolStripStatusLabel2
         '
         Me.ToolStripStatusLabel2.Name = "ToolStripStatusLabel2"
-        Me.ToolStripStatusLabel2.Size = New System.Drawing.Size(119, 17)
+        Me.ToolStripStatusLabel2.Size = New System.Drawing.Size(120, 17)
         Me.ToolStripStatusLabel2.Text = "ToolStripStatusLabel2"
         '
         'GroupBox2
@@ -1535,6 +1535,7 @@ Partial Class frmEdicion
         '
         'PictureBox2
         '
+        Me.PictureBox2.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PictureBox2.Image = CType(resources.GetObject("PictureBox2.Image"), System.Drawing.Image)
         Me.PictureBox2.Location = New System.Drawing.Point(905, 456)
         Me.PictureBox2.Name = "PictureBox2"

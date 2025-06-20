@@ -619,5 +619,106 @@
 
     End Sub
 
+    Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
 
+        If FolderBrowserDialog1.ShowDialog() = Windows.Forms.DialogResult.Cancel Then Exit Sub
+        If System.IO.Directory.Exists(FolderBrowserDialog1.SelectedPath) = False Then Exit Sub
+        TextBox2.Text = FolderBrowserDialog1.SelectedPath
+
+    End Sub
+
+    Private Sub Button7_Click(sender As Object, e As EventArgs) Handles Button7.Click
+
+        If FolderBrowserDialog1.ShowDialog() = Windows.Forms.DialogResult.Cancel Then Exit Sub
+        If System.IO.Directory.Exists(FolderBrowserDialog1.SelectedPath) = False Then Exit Sub
+        TextBox3.Text = FolderBrowserDialog1.SelectedPath
+
+    End Sub
+
+    Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
+
+        'TextBox2.Text = "D:\Volcados\planpobcuad"
+        'TextBox3.Text = "D:\Volcados\planpobcuadOUT"
+        'TextBox4.Text = "D:\Volcados\test_20030_to_25830\proj23030.prj"
+        'TextBox5.Text = "D:\Volcados\test_20030_to_25830\proj25830.prj"
+
+
+        Dim rutaECWInput As String = TextBox2.Text
+        Dim rutaECWOutput As String = TextBox3.Text
+        Dim rutaPROJ23030 As String = TextBox4.Text
+        Dim rutaPROJ25830 As String = TextBox5.Text
+        Dim rutaScriptGSW As String = $"{TextBox3.Text}\conversion.gms"
+        Dim rutaSalida As String
+        Dim ListaFicheros As New ArrayList
+        Dim contador As Integer
+        Try
+            ToolStripStatusLabel1.Text = $"Analizando el directorio de entrada..."
+            Application.DoEvents()
+            Me.Cursor = Cursors.WaitCursor
+            ' Obtener todos los archivos en el directorio y subdirectorios
+            For Each archivo As String In IO.Directory.EnumerateFiles(rutaECWInput, "*.*", IO.SearchOption.AllDirectories)
+                ' Aquí puedes procesar cada archivo
+                If archivo.ToLower.EndsWith(".ecw") Then ListaFicheros.Add(archivo)
+            Next
+            Me.Cursor = Cursors.Default
+            If ModalQuestion($"Se han encontrado {ListaFicheros.Count} ficeros ECW. ¿Generar script?") = DialogResult.No Then Exit Sub
+            Me.Cursor = Cursors.WaitCursor
+
+            Using sw As New System.IO.StreamWriter(rutaScriptGSW)
+                sw.WriteLine("GLOBAL_MAPPER_SCRIPT VERSION=1.00 ENABLE_PROGRESS=YES")
+                sw.WriteLine("UNLOAD_ALL")
+                sw.WriteLine("SET_BG_COLOR COLOR=RGB(255,255,255)")
+                For Each rutaFile As String In ListaFicheros
+                    contador += 1
+                    ToolStripStatusLabel1.Text = $"Procesando fichero nº {contador}"
+                    Application.DoEvents()
+                    rutaSalida = rutaFile.ToLower.Replace(rutaECWInput.ToLower, rutaECWOutput.ToLower)
+                    sw.WriteLine($"LOAD_PROJECTION FILENAME=""{rutaPROJ23030}""")
+                    sw.WriteLine($"IMPORT FILENAME=""{rutaFile}"" TYPE=AUTO ANTI_ALIAS=NO AUTO_CONTRAST=NO")
+                    sw.WriteLine($"LOAD_PROJECTION FILENAME=""{rutaPROJ25830}""")
+                    sw.WriteLine($"EXPORT_RASTER FILENAME=""{rutaSalida}"" TYPE=ECW TARGET_COMPRESSION=1 GEN_WORLD_FILE=YES GEN_PRJ_FILE=YES")
+                    sw.WriteLine("UNLOAD_ALL")
+                    Try
+                        If Not IO.File.Exists(SacarDirDeRuta(rutaSalida)) Then IO.Directory.CreateDirectory(SacarDirDeRuta(rutaSalida))
+                    Catch ex As Exception
+                        ModalError(ex.Message)
+                        Application.DoEvents()
+                    End Try
+                    'If contador = 10 Then Exit For
+                Next
+                sw.Close()
+                sw.Dispose()
+                ToolStripStatusLabel1.Text = $"Ficheros: {contador}"
+            End Using
+        Catch ex As Exception
+            ModalError(ex.Message)
+            Application.DoEvents()
+        End Try
+        Me.Cursor = Cursors.Default
+
+        ModalInfo("Proceso terminado")
+
+
+
+    End Sub
+
+    Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click, Button9.Click
+
+        Dim openFileDialog1 As New OpenFileDialog()
+
+        ' Configurar las propiedades del cuadro de diálogo
+        openFileDialog1.InitialDirectory = "C:\" ' Establecer el directorio inicial
+        openFileDialog1.Filter = "Archivos de proyecciones (*.prj)|*.prj|Todos los archivos (*.*)|*.*" ' Establecer el filtro de archivos
+        openFileDialog1.FilterIndex = 1 ' Establecer el filtro predeterminado
+        openFileDialog1.RestoreDirectory = True ' Restaurar el directorio al cerrar
+
+        ' Mostrar el cuadro de diálogo y verificar si el usuario seleccionó un archivo
+        If openFileDialog1.ShowDialog() = DialogResult.OK Then
+            ' Obtener el nombre del archivo seleccionado
+            If sender.name = "Button8" Then TextBox4.Text = openFileDialog1.FileName
+            If sender.name = "Button9" Then TextBox5.Text = openFileDialog1.FileName
+
+        End If
+
+    End Sub
 End Class

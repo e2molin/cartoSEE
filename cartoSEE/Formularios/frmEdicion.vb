@@ -540,8 +540,12 @@
             If flagPropos.assignByContainer(CheckedListBox1) Then propsChanged.Add($"extraprops={flagPropos.propertyCode}")
         End If
 
-        cadUpBase &= $"{String.Join(",", propsChanged.ToArray)} WHERE idarchivo={editRegistro.docIndex}"
-        ActualizacionAutorAndComentarios = ExeSinTran(cadUpBase)
+        If propsChanged.ToArray.Length > 0 Then
+            cadUpBase &= $"{String.Join(",", propsChanged.ToArray)} WHERE idarchivo={editRegistro.docIndex}"
+            ActualizacionAutorAndComentarios = ExeSinTran(cadUpBase)
+        End If
+
+
 
     End Function
 
@@ -619,8 +623,10 @@
         If CheckBox4.Checked Then propsChanged.Add($"vertical={IIf(TextBox4.Text <> "", Replace(TextBox4.Text, ",", "."), 0)}")
         If CheckBox5.Checked Then propsChanged.Add($"horizontal={IIf(TextBox5.Text <> "", Replace(TextBox5.Text, ",", "."), 0)}")
 
+        If propsChanged.ToArray.Length > 0 Then
+            ListaSQL.Add($"{cadUpBase}{String.Join(",", propsChanged.ToArray)} WHERE idarchivo={editRegistro.docIndex}")
+        End If
 
-        ListaSQL.Add($"{cadUpBase}{String.Join(",", propsChanged.ToArray)} WHERE idarchivo={editRegistro.docIndex}")
 
         'Territorios
         If CheckBox18.Checked And ListView1.Items.Count > 0 Then
@@ -1470,14 +1476,23 @@
 
     Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
 
-        If ModeEdition = TypeModeEdition.CreateDocument Then CrearNuevoElemento()
-        If ModeEdition = TypeModeEdition.EditSingleDocument Then ActualizacionLote()
+        Dim infoUpdateproc As String = ""
 
-        'If Me.Tag = 0 Then
-        '    CrearNuevoElemento(sender, e)
-        'Else
-        '    ActualizacionLote()
-        'End If
+        If ModeEdition = TypeModeEdition.CreateDocument Then CrearNuevoElemento()
+        If ModeEdition = TypeModeEdition.EditSingleDocument Then
+            If ModalQuestWriteDatabase("¿Desea actualizar la información del documento?") = DialogResult.No Then Exit Sub
+
+            Me.Cursor = Cursors.WaitCursor
+            If ActualizacionAtributos() Then
+                infoUpdateproc = $"Atributos actualizados correctamente.{System.Environment.NewLine}"
+            End If
+            If ActualizacionAutorAndComentarios() Then
+                infoUpdateproc &= $"Autoría y observaciones actualizadas correctamente.{System.Environment.NewLine}"
+            End If
+            UpdateDigitalResources(editRegistro)
+            Me.Cursor = Cursors.Default
+            ModalInfo(infoUpdateproc)
+        End If
 
     End Sub
 

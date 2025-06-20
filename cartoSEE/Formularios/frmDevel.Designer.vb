@@ -46,6 +46,10 @@ Partial Class frmDevel
         Me.txtPathGCP = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.Button18 = New System.Windows.Forms.Button()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.TextBox1 = New System.Windows.Forms.TextBox()
+        Me.Button17 = New System.Windows.Forms.Button()
         Me.Button16 = New System.Windows.Forms.Button()
         Me.Button15 = New System.Windows.Forms.Button()
         Me.Button14 = New System.Windows.Forms.Button()
@@ -62,9 +66,6 @@ Partial Class frmDevel
         Me.Button3 = New System.Windows.Forms.Button()
         Me.FolderBrowserDialog1 = New System.Windows.Forms.FolderBrowserDialog()
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
-        Me.Button17 = New System.Windows.Forms.Button()
-        Me.TextBox1 = New System.Windows.Forms.TextBox()
-        Me.Label7 = New System.Windows.Forms.Label()
         Me.StatusStrip1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
@@ -94,7 +95,7 @@ Partial Class frmDevel
         'ToolStripStatusLabel1
         '
         Me.ToolStripStatusLabel1.Name = "ToolStripStatusLabel1"
-        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(119, 17)
+        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(120, 17)
         Me.ToolStripStatusLabel1.Text = "ToolStripStatusLabel1"
         '
         'Button2
@@ -299,6 +300,7 @@ Partial Class frmDevel
         '
         'TabPage2
         '
+        Me.TabPage2.Controls.Add(Me.Button18)
         Me.TabPage2.Controls.Add(Me.Label7)
         Me.TabPage2.Controls.Add(Me.TextBox1)
         Me.TabPage2.Controls.Add(Me.Button17)
@@ -324,6 +326,41 @@ Partial Class frmDevel
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "TabPage2"
         Me.TabPage2.UseVisualStyleBackColor = True
+        '
+        'Button18
+        '
+        Me.Button18.Location = New System.Drawing.Point(21, 64)
+        Me.Button18.Name = "Button18"
+        Me.Button18.Size = New System.Drawing.Size(264, 23)
+        Me.Button18.TabIndex = 18
+        Me.Button18.Text = "Obtener fichero conversión 23030->25830 para PPc"
+        Me.Button18.UseVisualStyleBackColor = True
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Location = New System.Drawing.Point(18, 131)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(51, 13)
+        Me.Label7.TabIndex = 17
+        Me.Label7.Text = "idArchivo"
+        '
+        'TextBox1
+        '
+        Me.TextBox1.Location = New System.Drawing.Point(75, 128)
+        Me.TextBox1.Name = "TextBox1"
+        Me.TextBox1.Size = New System.Drawing.Size(100, 20)
+        Me.TextBox1.TabIndex = 16
+        Me.TextBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'Button17
+        '
+        Me.Button17.Location = New System.Drawing.Point(21, 151)
+        Me.Button17.Name = "Button17"
+        Me.Button17.Size = New System.Drawing.Size(154, 23)
+        Me.Button17.TabIndex = 15
+        Me.Button17.Text = "Edición"
+        Me.Button17.UseVisualStyleBackColor = True
         '
         'Button16
         '
@@ -450,32 +487,6 @@ Partial Class frmDevel
         Me.Button3.Text = "TestECWExist"
         Me.Button3.UseVisualStyleBackColor = True
         '
-        'Button17
-        '
-        Me.Button17.Location = New System.Drawing.Point(21, 151)
-        Me.Button17.Name = "Button17"
-        Me.Button17.Size = New System.Drawing.Size(154, 23)
-        Me.Button17.TabIndex = 15
-        Me.Button17.Text = "Edición"
-        Me.Button17.UseVisualStyleBackColor = True
-        '
-        'TextBox1
-        '
-        Me.TextBox1.Location = New System.Drawing.Point(75, 128)
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(100, 20)
-        Me.TextBox1.TabIndex = 16
-        Me.TextBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        '
-        'Label7
-        '
-        Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(18, 131)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(51, 13)
-        Me.Label7.TabIndex = 17
-        Me.Label7.Text = "idArchivo"
-        '
         'frmDevel
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -543,4 +554,5 @@ Partial Class frmDevel
     Friend WithEvents Button17 As Button
     Friend WithEvents Label7 As Label
     Friend WithEvents TextBox1 As TextBox
+    Friend WithEvents Button18 As Button
 End Class
