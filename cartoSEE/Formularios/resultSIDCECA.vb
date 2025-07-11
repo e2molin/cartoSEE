@@ -945,6 +945,12 @@
         elementoLV = New ListViewItem With {.Text = "Colección", .ImageIndex = 4, .Group = gMain}
         elementoLV.SubItems.Add(DataGridView1.Item("coleccion", rowIdx).Value.ToString)
         lvFastView.Items.Add(elementoLV) : elementoLV = Nothing
+
+        elementoLV = New ListViewItem With {.Text = "Sig./Caja", .ImageIndex = 4, .Group = gMain}
+        elementoLV.SubItems.Add(elemEntidadSel.SignaturaCaja)
+        lvFastView.Items.Add(elementoLV) : elementoLV = Nothing
+
+
         elementoLV = New ListViewItem With {.Text = "Distribuidor", .ImageIndex = 4, .Group = gMain}
         elementoLV.SubItems.Add(DataGridView1.Item("distribuidor", rowIdx).Value.ToString)
         lvFastView.Items.Add(elementoLV) : elementoLV = Nothing
@@ -1081,7 +1087,7 @@
 	                    parcelasdata.sup_ha::character varying || 'ha ' || 
 	                    parcelasdata.sup_a::character varying || 'a ' || 
 	                    (parcelasdata.sup_m + sup_dec/100::float)::character varying || 'm2 ' AS superficie,
-	                    parcelasdata.distribuidor as distribuidor,parcelasdata.sellado,
+	                    parcelasdata.distribuidor as distribuidor,parcelasdata.caja as caja,parcelasdata.sellado,
 	                    url_cedula_digital AS urlcdd,
 	                    territorios.munihisto AS inemunihisto,
 	                    parcelasdata.sup_ha as sup_ha,
@@ -1098,7 +1104,7 @@
                     WHERE {mainFilter}          
                     group by 
 	                    parcelasdata.idparceladata,provincias.nombreprovincia,territorios.nombre,listaprop.ayuntamiento,listaprop.coleccion,propietario,parcelasdata.parcela,direccion,
-	                    territorios.munihisto,parcelasdata.distribuidor,url_cedula_digital,parcelasdata.hectareas,parcelasdata.areas,parcelasdata.metros,
+	                    territorios.munihisto,parcelasdata.distribuidor,parcelasdata.caja,url_cedula_digital,parcelasdata.hectareas,parcelasdata.areas,parcelasdata.metros,
 	                    parcelasdata.subparcela,parcelasdata.comentario,parcelasdata.calle_lugar,parcelasdata.finca_edificio,parcelasdata.numedificio,parcelasdata.nummanzana"
 
         sqlBase &= IIf(OrderField = "", "", $" ORDER BY {OrderField}" & IIf(OrderDirection = "", "", $" {OrderDirection}"))
@@ -1131,8 +1137,7 @@
     'direccion                      7   Visible inicial					direccion,
     'superficie,                    8   Visible inicial					superficie,
     'distribuidor,                  9   Visible inicial					distribuidor,
-    'distribuidor,                  10  Oculto inicial					sellado,
-    'urlcdd,                        11  Oculto inicial					urlcdd,
+    'urlcdd,                        10  Oculto inicial					urlcdd,
     '(...)
 #End Region
 
@@ -1140,7 +1145,7 @@
     Private Sub FormatDatagridSIDCECACAM()
 
         Hide_And_Show_Columns = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10} ' Índices de columnas que pueden mostrarse u ocultarse
-        FixedCols = {0, 1, 2, 6, 8} 'Columnas con ancho fijo aunque crezca el tamaño del datagrid
+        FixedCols = {0, 1, 2, 6, 8, 9} 'Columnas con ancho fijo aunque crezca el tamaño del datagrid
 
         DataGridView1.DataSource = rcdDataPrin
         'Seguidas ponemos las columnas visibles con su anchura
@@ -1168,13 +1173,11 @@
         DataGridView1.Columns("distribuidor").HeaderText = "Distribuidor"
         DataGridView1.Columns("distribuidor").Width = 60
         DataGridView1.Columns("distribuidor").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
-        DataGridView1.Columns("sellado").HeaderText = "Distribuidor"
-        DataGridView1.Columns("sellado").Width = 60
-        DataGridView1.Columns("sellado").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
+
         'Mostramos hasta la columna 8
 
         'Ocultamos el resto de columnas
-        For iCol = 10 To DataGridView1.ColumnCount - 1
+        For iCol = 9 To DataGridView1.ColumnCount - 1
             DataGridView1.Columns(iCol).Visible = False
         Next
 
@@ -1210,7 +1213,8 @@
     'direccion                                      7   Visible inicial					direccion,
     'superficie,                                    8   Visible inicial					superficie,
     'distribuidor,                                  9   Visible inicial					distribuidor,
-    'urlcdd,                                        10  Oculto inicial					urlcdd,
+    'caja,                                          10  Visible inicial					caja,
+    'urlcdd,                                        11  Oculto inicial					urlcdd,
     '(...)
 #End Region
 
@@ -1218,8 +1222,8 @@
     Private Sub FormatDatagridSIDCECACapital()
 
 
-        Hide_And_Show_Columns = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10} ' Índices de columnas que pueden mostrarse u ocultarse
-        FixedCols = {1, 2, 3, 4, 6, 8, 9} 'Columnas con ancho fijo aunque crezca el tamaño del datagrid
+        Hide_And_Show_Columns = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11} ' Índices de columnas que pueden mostrarse u ocultarse
+        FixedCols = {1, 2, 3, 4, 6, 8, 9, 10} 'Columnas con ancho fijo aunque crezca el tamaño del datagrid
 
         DataGridView1.DataSource = rcdDataPrin
         'Seguidas ponemos las columnas visibles con su anchura
@@ -1247,10 +1251,13 @@
         DataGridView1.Columns("distribuidor").HeaderText = "Distribuidor"
         DataGridView1.Columns("distribuidor").Width = 80
         DataGridView1.Columns("distribuidor").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
+        DataGridView1.Columns("caja").HeaderText = "Caja"
+        DataGridView1.Columns("caja").Width = 95
+        DataGridView1.Columns("caja").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
         'Mostramos hasta la columna 8
 
         'Ocultamos el resto de columnas
-        For iCol = 9 To DataGridView1.ColumnCount - 1
+        For iCol = 10 To DataGridView1.ColumnCount - 1
             DataGridView1.Columns(iCol).Visible = False
         Next
 
@@ -1389,6 +1396,7 @@
         cboFields.Items.Add(New itemData("Propietario", "propietario"))
         cboFields.Items.Add(New itemData("Distribuidor", "distribuidor"))
         cboFields.Items.Add(New itemData("Observaciones", "incidencia"))
+        If datasetTbL = "parcelasdata" Then cboFields.Items.Add(New itemData("Caja", "caja"))
 
         btnEditar.Visible = usuarioMyApp.permisosLista.EditarDocumentacion
         mnuGenerateThumb.Visible = usuarioMyApp.permisosLista.usuarioISTARI

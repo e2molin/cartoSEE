@@ -27,10 +27,9 @@ Partial Class FrmEdicionesMosaicos
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.TextBox5 = New System.Windows.Forms.TextBox()
         Me.Label6 = New System.Windows.Forms.Label()
-        Me.Button6 = New System.Windows.Forms.Button()
+        Me.Button8 = New System.Windows.Forms.Button()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.ListView2 = New System.Windows.Forms.ListView()
-        Me.Button5 = New System.Windows.Forms.Button()
         Me.Button4 = New System.Windows.Forms.Button()
         Me.TextBox3 = New System.Windows.Forms.TextBox()
         Me.TextBox2 = New System.Windows.Forms.TextBox()
@@ -38,6 +37,8 @@ Partial Class FrmEdicionesMosaicos
         Me.Label3 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
+        Me.Button6 = New System.Windows.Forms.Button()
+        Me.Button5 = New System.Windows.Forms.Button()
         Me.Button3 = New System.Windows.Forms.Button()
         Me.Button2 = New System.Windows.Forms.Button()
         Me.Button1 = New System.Windows.Forms.Button()
@@ -46,7 +47,6 @@ Partial Class FrmEdicionesMosaicos
         Me.Label5 = New System.Windows.Forms.Label()
         Me.Button7 = New System.Windows.Forms.Button()
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
-        Me.Button8 = New System.Windows.Forms.Button()
         Me.Button9 = New System.Windows.Forms.Button()
         Me.FolderBrowserDialog1 = New System.Windows.Forms.FolderBrowserDialog()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
@@ -59,22 +59,22 @@ Partial Class FrmEdicionesMosaicos
         'StatusStrip1
         '
         Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1, Me.ToolStripStatusLabel2})
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 386)
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 422)
         Me.StatusStrip1.Name = "StatusStrip1"
-        Me.StatusStrip1.Size = New System.Drawing.Size(827, 22)
+        Me.StatusStrip1.Size = New System.Drawing.Size(814, 22)
         Me.StatusStrip1.TabIndex = 5
         Me.StatusStrip1.Text = "StatusStrip1"
         '
         'ToolStripStatusLabel1
         '
         Me.ToolStripStatusLabel1.Name = "ToolStripStatusLabel1"
-        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(119, 17)
+        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(120, 17)
         Me.ToolStripStatusLabel1.Text = "ToolStripStatusLabel1"
         '
         'ToolStripStatusLabel2
         '
         Me.ToolStripStatusLabel2.Name = "ToolStripStatusLabel2"
-        Me.ToolStripStatusLabel2.Size = New System.Drawing.Size(119, 17)
+        Me.ToolStripStatusLabel2.Size = New System.Drawing.Size(120, 17)
         Me.ToolStripStatusLabel2.Text = "ToolStripStatusLabel2"
         '
         'GroupBox1
@@ -93,7 +93,7 @@ Partial Class FrmEdicionesMosaicos
         Me.GroupBox1.Controls.Add(Me.Label1)
         Me.GroupBox1.Location = New System.Drawing.Point(10, 49)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(646, 284)
+        Me.GroupBox1.Size = New System.Drawing.Size(669, 339)
         Me.GroupBox1.TabIndex = 6
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Datos del Mosaico"
@@ -116,18 +116,18 @@ Partial Class FrmEdicionesMosaicos
         Me.Label6.TabIndex = 11
         Me.Label6.Text = "Código municipio"
         '
-        'Button6
+        'Button8
         '
-        Me.Button6.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Button6.Image = CType(resources.GetObject("Button6.Image"), System.Drawing.Image)
-        Me.Button6.Location = New System.Drawing.Point(711, 121)
-        Me.Button6.Name = "Button6"
-        Me.Button6.Size = New System.Drawing.Size(104, 37)
-        Me.Button6.TabIndex = 10
-        Me.Button6.Text = "Visualizar"
-        Me.Button6.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
-        Me.ToolTip1.SetToolTip(Me.Button6, "Muestra el mosaico en el visor por defecto")
-        Me.Button6.UseVisualStyleBackColor = True
+        Me.Button8.Image = CType(resources.GetObject("Button8.Image"), System.Drawing.Image)
+        Me.Button8.Location = New System.Drawing.Point(222, 209)
+        Me.Button8.Name = "Button8"
+        Me.Button8.Size = New System.Drawing.Size(86, 34)
+        Me.Button8.TabIndex = 14
+        Me.Button8.Text = "Visualizar"
+        Me.Button8.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.ToolTip1.SetToolTip(Me.Button8, "Muestra en el visor por defecto los mosaicos seleccionados")
+        Me.Button8.UseVisualStyleBackColor = True
+        Me.Button8.Visible = False
         '
         'Label4
         '
@@ -148,30 +148,16 @@ Partial Class FrmEdicionesMosaicos
         Me.ListView2.HideSelection = False
         Me.ListView2.Location = New System.Drawing.Point(329, 52)
         Me.ListView2.Name = "ListView2"
-        Me.ListView2.Size = New System.Drawing.Size(282, 216)
+        Me.ListView2.Size = New System.Drawing.Size(305, 271)
         Me.ListView2.TabIndex = 8
         Me.ListView2.UseCompatibleStateImageBehavior = False
         '
-        'Button5
-        '
-        Me.Button5.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Button5.Image = CType(resources.GetObject("Button5.Image"), System.Drawing.Image)
-        Me.Button5.Location = New System.Drawing.Point(711, 84)
-        Me.Button5.Name = "Button5"
-        Me.Button5.Size = New System.Drawing.Size(103, 34)
-        Me.Button5.TabIndex = 7
-        Me.Button5.Text = "Lista"
-        Me.Button5.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
-        Me.ToolTip1.SetToolTip(Me.Button5, "Cierra el panel de información y muestra lista de mosaicos")
-        Me.Button5.UseVisualStyleBackColor = True
-        '
         'Button4
         '
-        Me.Button4.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button4.Image = CType(resources.GetObject("Button4.Image"), System.Drawing.Image)
-        Me.Button4.Location = New System.Drawing.Point(24, 200)
+        Me.Button4.Location = New System.Drawing.Point(131, 209)
         Me.Button4.Name = "Button4"
-        Me.Button4.Size = New System.Drawing.Size(85, 37)
+        Me.Button4.Size = New System.Drawing.Size(85, 35)
         Me.Button4.TabIndex = 6
         Me.Button4.Text = "Hojas"
         Me.Button4.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
@@ -233,6 +219,32 @@ Partial Class FrmEdicionesMosaicos
         Me.Label1.TabIndex = 0
         Me.Label1.Text = "Título"
         '
+        'Button6
+        '
+        Me.Button6.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Button6.Image = CType(resources.GetObject("Button6.Image"), System.Drawing.Image)
+        Me.Button6.Location = New System.Drawing.Point(698, 121)
+        Me.Button6.Name = "Button6"
+        Me.Button6.Size = New System.Drawing.Size(104, 37)
+        Me.Button6.TabIndex = 10
+        Me.Button6.Text = "Visualizar"
+        Me.Button6.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.ToolTip1.SetToolTip(Me.Button6, "Muestra el mosaico en el visor por defecto")
+        Me.Button6.UseVisualStyleBackColor = True
+        '
+        'Button5
+        '
+        Me.Button5.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Button5.Image = CType(resources.GetObject("Button5.Image"), System.Drawing.Image)
+        Me.Button5.Location = New System.Drawing.Point(698, 84)
+        Me.Button5.Name = "Button5"
+        Me.Button5.Size = New System.Drawing.Size(103, 34)
+        Me.Button5.TabIndex = 7
+        Me.Button5.Text = "Lista"
+        Me.Button5.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.ToolTip1.SetToolTip(Me.Button5, "Cierra el panel de información y muestra lista de mosaicos")
+        Me.Button5.UseVisualStyleBackColor = True
+        '
         'Button3
         '
         Me.Button3.Image = CType(resources.GetObject("Button3.Image"), System.Drawing.Image)
@@ -259,7 +271,7 @@ Partial Class FrmEdicionesMosaicos
         '
         Me.Button1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
-        Me.Button1.Location = New System.Drawing.Point(711, 49)
+        Me.Button1.Location = New System.Drawing.Point(698, 49)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(104, 34)
         Me.Button1.TabIndex = 7
@@ -281,7 +293,7 @@ Partial Class FrmEdicionesMosaicos
         Me.DataGridView1.Location = New System.Drawing.Point(12, 49)
         Me.DataGridView1.MultiSelect = False
         Me.DataGridView1.Name = "DataGridView1"
-        Me.DataGridView1.Size = New System.Drawing.Size(692, 319)
+        Me.DataGridView1.Size = New System.Drawing.Size(679, 355)
         Me.DataGridView1.TabIndex = 10
         '
         'TextBox4
@@ -304,7 +316,7 @@ Partial Class FrmEdicionesMosaicos
         '
         Me.Button7.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button7.Image = CType(resources.GetObject("Button7.Image"), System.Drawing.Image)
-        Me.Button7.Location = New System.Drawing.Point(711, 201)
+        Me.Button7.Location = New System.Drawing.Point(698, 201)
         Me.Button7.Name = "Button7"
         Me.Button7.Size = New System.Drawing.Size(104, 34)
         Me.Button7.TabIndex = 13
@@ -314,25 +326,11 @@ Partial Class FrmEdicionesMosaicos
         Me.Button7.UseVisualStyleBackColor = True
         Me.Button7.Visible = False
         '
-        'Button8
-        '
-        Me.Button8.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Button8.Image = CType(resources.GetObject("Button8.Image"), System.Drawing.Image)
-        Me.Button8.Location = New System.Drawing.Point(115, 201)
-        Me.Button8.Name = "Button8"
-        Me.Button8.Size = New System.Drawing.Size(86, 34)
-        Me.Button8.TabIndex = 14
-        Me.Button8.Text = "Visualizar"
-        Me.Button8.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
-        Me.ToolTip1.SetToolTip(Me.Button8, "Muestra en el visor por defecto los mosaicos seleccionados")
-        Me.Button8.UseVisualStyleBackColor = True
-        Me.Button8.Visible = False
-        '
         'Button9
         '
         Me.Button9.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button9.Image = CType(resources.GetObject("Button9.Image"), System.Drawing.Image)
-        Me.Button9.Location = New System.Drawing.Point(710, 161)
+        Me.Button9.Location = New System.Drawing.Point(697, 161)
         Me.Button9.Name = "Button9"
         Me.Button9.Size = New System.Drawing.Size(104, 34)
         Me.Button9.TabIndex = 15
@@ -340,13 +338,12 @@ Partial Class FrmEdicionesMosaicos
         Me.Button9.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
         Me.ToolTip1.SetToolTip(Me.Button9, "Guarda en un directorio los mosaicos seleccionados")
         Me.Button9.UseVisualStyleBackColor = True
-        Me.Button9.Visible = False
         '
         'Button10
         '
         Me.Button10.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button10.Image = CType(resources.GetObject("Button10.Image"), System.Drawing.Image)
-        Me.Button10.Location = New System.Drawing.Point(710, 241)
+        Me.Button10.Location = New System.Drawing.Point(697, 241)
         Me.Button10.Name = "Button10"
         Me.Button10.Size = New System.Drawing.Size(104, 34)
         Me.Button10.TabIndex = 16
@@ -361,7 +358,7 @@ Partial Class FrmEdicionesMosaicos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(827, 408)
+        Me.ClientSize = New System.Drawing.Size(814, 444)
         Me.Controls.Add(Me.Button10)
         Me.Controls.Add(Me.Button9)
         Me.Controls.Add(Me.Button7)

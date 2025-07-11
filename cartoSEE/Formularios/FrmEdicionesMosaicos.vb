@@ -14,6 +14,7 @@ Public Class FrmEdicionesMosaicos
         Me.Size = New Point(775, 400)
         DataGridView1.Size = New Point(630, 256)
         DataGridView1.Location = New Point(12, 60)
+        DataGridView1.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Bottom Or AnchorStyles.Right
         ToolStripStatusLabel2.Text = ""
         GroupBox1.Size = New Point(630, 256)
         GroupBox1.Location = New Point(12, 60)
@@ -364,7 +365,7 @@ Public Class FrmEdicionesMosaicos
         Dim cadenaLog As String
         Dim Hayfallos As Boolean = False
         If DataGridView1.SelectedRows.Count = 0 Then
-            MessageBox.Show("Seleccione al menos un mosaico", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+            ModalExclamation("Seleccione al menos un mosaico")
             Exit Sub
         End If
 
@@ -377,12 +378,11 @@ Public Class FrmEdicionesMosaicos
         Dim sw As New System.IO.StreamWriter(FolderBrowserDialog1.SelectedPath & "\_Lista" & Now.Ticks.ToString & ".log", _
                                 False, System.Text.Encoding.Unicode)
         For i = 0 To DataGridView1.SelectedRows.Count - 1
-            RutaOrigen = rutaRepoGeorref & "\MOSAICOS_DIGITALES\28\" & _
-                            DataGridView1.Item(3, DataGridView1.SelectedRows(i).Index).Value.ToString
-            RutaDestino = FolderBrowserDialog1.SelectedPath & "\" & SacarFileDeRuta(RutaOrigen)
+            RutaOrigen = $"{rutaRepoGeorrefBase}\epsg{DataGridView1.Item(6, DataGridView1.SelectedRows(i).Index).Value}\MOSAICOS_DIGITALES\{DataGridView1.Item(4, DataGridView1.SelectedRows(i).Index).Value.ToString.Substring(0, 2)}\{DataGridView1.Item(3, DataGridView1.SelectedRows(i).Index).Value}"
+            RutaDestino = $"{FolderBrowserDialog1.SelectedPath}\{DataGridView1.Item(3, DataGridView1.SelectedRows(i).Index).Value}"
             Try
                 System.IO.File.Copy(RutaOrigen, RutaDestino, True)
-                copiados = copiados + 1
+                copiados += 1
                 cadenaLog = "Copiado: " & RutaOrigen
                 sw.WriteLine(cadenaLog)
                 ToolStripStatusLabel2.Text = "Copiado " & copiados & " de " & DataGridView1.SelectedRows.Count
@@ -396,10 +396,9 @@ Public Class FrmEdicionesMosaicos
         sw.Close()
         sw.Dispose()
         If Hayfallos = True Then
-            MessageBox.Show("Se han producido errores en la transferencia de ficheros", _
-            AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            ModalExclamation("Se han producido errores en la transferencia de ficheros")
         Else
-            MessageBox.Show("Copia de ficheros terminada", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+            ModalInfo("Copia de ficheros terminada")
         End If
 
 

@@ -76,6 +76,12 @@ Partial Class frmDevelIGN
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
         Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
+        Me.Label17 = New System.Windows.Forms.Label()
+        Me.TextBox6 = New System.Windows.Forms.TextBox()
+        Me.TextBox7 = New System.Windows.Forms.TextBox()
+        Me.Label18 = New System.Windows.Forms.Label()
+        Me.Button10 = New System.Windows.Forms.Button()
+        Me.Button11 = New System.Windows.Forms.Button()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
@@ -369,6 +375,12 @@ Partial Class frmDevelIGN
         '
         'TabPage3
         '
+        Me.TabPage3.Controls.Add(Me.Button11)
+        Me.TabPage3.Controls.Add(Me.Button10)
+        Me.TabPage3.Controls.Add(Me.Label18)
+        Me.TabPage3.Controls.Add(Me.TextBox7)
+        Me.TabPage3.Controls.Add(Me.TextBox6)
+        Me.TabPage3.Controls.Add(Me.Label17)
         Me.TabPage3.Controls.Add(Me.Button9)
         Me.TabPage3.Controls.Add(Me.TextBox5)
         Me.TabPage3.Controls.Add(Me.Label16)
@@ -401,7 +413,7 @@ Partial Class frmDevelIGN
         'Button9
         '
         Me.Button9.Image = CType(resources.GetObject("Button9.Image"), System.Drawing.Image)
-        Me.Button9.Location = New System.Drawing.Point(679, 297)
+        Me.Button9.Location = New System.Drawing.Point(677, 308)
         Me.Button9.Name = "Button9"
         Me.Button9.Size = New System.Drawing.Size(44, 36)
         Me.Button9.TabIndex = 36
@@ -410,7 +422,7 @@ Partial Class frmDevelIGN
         '
         'TextBox5
         '
-        Me.TextBox5.Location = New System.Drawing.Point(137, 306)
+        Me.TextBox5.Location = New System.Drawing.Point(135, 317)
         Me.TextBox5.Name = "TextBox5"
         Me.TextBox5.Size = New System.Drawing.Size(536, 20)
         Me.TextBox5.TabIndex = 35
@@ -418,7 +430,7 @@ Partial Class frmDevelIGN
         'Label16
         '
         Me.Label16.AutoSize = True
-        Me.Label16.Location = New System.Drawing.Point(67, 309)
+        Me.Label16.Location = New System.Drawing.Point(65, 320)
         Me.Label16.Name = "Label16"
         Me.Label16.Size = New System.Drawing.Size(64, 13)
         Me.Label16.TabIndex = 34
@@ -427,7 +439,7 @@ Partial Class frmDevelIGN
         'Button8
         '
         Me.Button8.Image = CType(resources.GetObject("Button8.Image"), System.Drawing.Image)
-        Me.Button8.Location = New System.Drawing.Point(679, 255)
+        Me.Button8.Location = New System.Drawing.Point(677, 266)
         Me.Button8.Name = "Button8"
         Me.Button8.Size = New System.Drawing.Size(44, 36)
         Me.Button8.TabIndex = 33
@@ -436,7 +448,7 @@ Partial Class frmDevelIGN
         '
         'TextBox4
         '
-        Me.TextBox4.Location = New System.Drawing.Point(137, 264)
+        Me.TextBox4.Location = New System.Drawing.Point(135, 275)
         Me.TextBox4.Name = "TextBox4"
         Me.TextBox4.Size = New System.Drawing.Size(536, 20)
         Me.TextBox4.TabIndex = 32
@@ -444,7 +456,7 @@ Partial Class frmDevelIGN
         'Label15
         '
         Me.Label15.AutoSize = True
-        Me.Label15.Location = New System.Drawing.Point(72, 267)
+        Me.Label15.Location = New System.Drawing.Point(70, 278)
         Me.Label15.Name = "Label15"
         Me.Label15.Size = New System.Drawing.Size(59, 13)
         Me.Label15.TabIndex = 31
@@ -453,7 +465,7 @@ Partial Class frmDevelIGN
         'Button7
         '
         Me.Button7.Image = CType(resources.GetObject("Button7.Image"), System.Drawing.Image)
-        Me.Button7.Location = New System.Drawing.Point(679, 217)
+        Me.Button7.Location = New System.Drawing.Point(677, 228)
         Me.Button7.Name = "Button7"
         Me.Button7.Size = New System.Drawing.Size(44, 36)
         Me.Button7.TabIndex = 30
@@ -462,7 +474,7 @@ Partial Class frmDevelIGN
         '
         'TextBox3
         '
-        Me.TextBox3.Location = New System.Drawing.Point(137, 229)
+        Me.TextBox3.Location = New System.Drawing.Point(135, 240)
         Me.TextBox3.Name = "TextBox3"
         Me.TextBox3.Size = New System.Drawing.Size(536, 20)
         Me.TextBox3.TabIndex = 29
@@ -470,7 +482,7 @@ Partial Class frmDevelIGN
         'Label14
         '
         Me.Label14.AutoSize = True
-        Me.Label14.Location = New System.Drawing.Point(34, 236)
+        Me.Label14.Location = New System.Drawing.Point(32, 247)
         Me.Label14.Name = "Label14"
         Me.Label14.Size = New System.Drawing.Size(97, 13)
         Me.Label14.TabIndex = 28
@@ -479,7 +491,7 @@ Partial Class frmDevelIGN
         'Button6
         '
         Me.Button6.Image = CType(resources.GetObject("Button6.Image"), System.Drawing.Image)
-        Me.Button6.Location = New System.Drawing.Point(679, 178)
+        Me.Button6.Location = New System.Drawing.Point(677, 189)
         Me.Button6.Name = "Button6"
         Me.Button6.Size = New System.Drawing.Size(44, 36)
         Me.Button6.TabIndex = 27
@@ -488,7 +500,7 @@ Partial Class frmDevelIGN
         '
         'TextBox2
         '
-        Me.TextBox2.Location = New System.Drawing.Point(137, 194)
+        Me.TextBox2.Location = New System.Drawing.Point(135, 205)
         Me.TextBox2.Name = "TextBox2"
         Me.TextBox2.Size = New System.Drawing.Size(536, 20)
         Me.TextBox2.TabIndex = 26
@@ -496,7 +508,7 @@ Partial Class frmDevelIGN
         'Label13
         '
         Me.Label13.AutoSize = True
-        Me.Label13.Location = New System.Drawing.Point(25, 197)
+        Me.Label13.Location = New System.Drawing.Point(23, 208)
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(106, 13)
         Me.Label13.TabIndex = 25
@@ -516,7 +528,7 @@ Partial Class frmDevelIGN
         '
         Me.Label12.AutoSize = True
         Me.Label12.ForeColor = System.Drawing.Color.RoyalBlue
-        Me.Label12.Location = New System.Drawing.Point(23, 168)
+        Me.Label12.Location = New System.Drawing.Point(21, 179)
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(289, 13)
         Me.Label12.TabIndex = 23
@@ -526,16 +538,16 @@ Partial Class frmDevelIGN
         '
         Me.Label11.AutoSize = True
         Me.Label11.ForeColor = System.Drawing.Color.RoyalBlue
-        Me.Label11.Location = New System.Drawing.Point(23, 98)
+        Me.Label11.Location = New System.Drawing.Point(23, 83)
         Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(249, 13)
+        Me.Label11.Size = New System.Drawing.Size(111, 13)
         Me.Label11.TabIndex = 22
-        Me.Label11.Text = "Generar datos para la plantilla del WMS de Minutas"
+        Me.Label11.Text = "Convertir TIFF a ECW"
         '
         'Button4
         '
         Me.Button4.Image = CType(resources.GetObject("Button4.Image"), System.Drawing.Image)
-        Me.Button4.Location = New System.Drawing.Point(26, 114)
+        Me.Button4.Location = New System.Drawing.Point(653, 129)
         Me.Button4.Name = "Button4"
         Me.Button4.Size = New System.Drawing.Size(44, 36)
         Me.Button4.TabIndex = 21
@@ -603,6 +615,58 @@ Partial Class frmDevelIGN
         Me.ToolStripStatusLabel1.Name = "ToolStripStatusLabel1"
         Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(120, 17)
         Me.ToolStripStatusLabel1.Text = "ToolStripStatusLabel1"
+        '
+        'Label17
+        '
+        Me.Label17.AutoSize = True
+        Me.Label17.Location = New System.Drawing.Point(28, 108)
+        Me.Label17.Name = "Label17"
+        Me.Label17.Size = New System.Drawing.Size(106, 13)
+        Me.Label17.TabIndex = 37
+        Me.Label17.Text = "Directorio de entrada"
+        '
+        'TextBox6
+        '
+        Me.TextBox6.Location = New System.Drawing.Point(140, 105)
+        Me.TextBox6.Name = "TextBox6"
+        Me.TextBox6.Size = New System.Drawing.Size(457, 20)
+        Me.TextBox6.TabIndex = 38
+        '
+        'TextBox7
+        '
+        Me.TextBox7.Location = New System.Drawing.Point(140, 145)
+        Me.TextBox7.Name = "TextBox7"
+        Me.TextBox7.Size = New System.Drawing.Size(457, 20)
+        Me.TextBox7.TabIndex = 39
+        '
+        'Label18
+        '
+        Me.Label18.AutoSize = True
+        Me.Label18.Location = New System.Drawing.Point(32, 148)
+        Me.Label18.Name = "Label18"
+        Me.Label18.Size = New System.Drawing.Size(97, 13)
+        Me.Label18.TabIndex = 40
+        Me.Label18.Text = "Directorio de salida"
+        '
+        'Button10
+        '
+        Me.Button10.Image = CType(resources.GetObject("Button10.Image"), System.Drawing.Image)
+        Me.Button10.Location = New System.Drawing.Point(603, 96)
+        Me.Button10.Name = "Button10"
+        Me.Button10.Size = New System.Drawing.Size(44, 36)
+        Me.Button10.TabIndex = 41
+        Me.Button10.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.Button10.UseVisualStyleBackColor = True
+        '
+        'Button11
+        '
+        Me.Button11.Image = CType(resources.GetObject("Button11.Image"), System.Drawing.Image)
+        Me.Button11.Location = New System.Drawing.Point(603, 136)
+        Me.Button11.Name = "Button11"
+        Me.Button11.Size = New System.Drawing.Size(44, 36)
+        Me.Button11.TabIndex = 42
+        Me.Button11.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.Button11.UseVisualStyleBackColor = True
         '
         'frmDevelIGN
         '
@@ -684,4 +748,10 @@ Partial Class frmDevelIGN
     Friend WithEvents Button9 As Button
     Friend WithEvents TextBox5 As TextBox
     Friend WithEvents Label16 As Label
+    Friend WithEvents Button11 As Button
+    Friend WithEvents Button10 As Button
+    Friend WithEvents Label18 As Label
+    Friend WithEvents TextBox7 As TextBox
+    Friend WithEvents TextBox6 As TextBox
+    Friend WithEvents Label17 As Label
 End Class

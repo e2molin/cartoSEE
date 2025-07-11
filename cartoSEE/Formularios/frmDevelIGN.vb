@@ -451,9 +451,9 @@
         If FolderBrowserDialog1.ShowDialog() = Windows.Forms.DialogResult.Cancel Then Exit Sub
         If System.IO.Directory.Exists(FolderBrowserDialog1.SelectedPath) = False Then Exit Sub
         TextBox1.Text = FolderBrowserDialog1.SelectedPath
-        lblInfoNumFiles.Text = "Ficheros GCP encontrados: " & My.Computer.FileSystem.GetFiles( _
-                                    FolderBrowserDialog1.SelectedPath, _
-                                    FileIO.SearchOption.SearchTopLevelOnly, _
+        lblInfoNumFiles.Text = "Ficheros GCP encontrados: " & My.Computer.FileSystem.GetFiles(
+                                    FolderBrowserDialog1.SelectedPath,
+                                    FileIO.SearchOption.SearchTopLevelOnly,
                                     "*.gcp").Count
 
     End Sub
@@ -487,9 +487,9 @@
         ' SearchAllSubDirectories : incluye los Subdirectorios  
         ' SearchTopLevelOnly : para buscar solo en el nivel actual  
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''  
-        For Each Archivo As String In My.Computer.FileSystem.GetFiles( _
-                                TextBox1.Text, _
-                                FileIO.SearchOption.SearchTopLevelOnly, _
+        For Each Archivo As String In My.Computer.FileSystem.GetFiles(
+                                TextBox1.Text,
+                                FileIO.SearchOption.SearchTopLevelOnly,
                                 "*.gcp")
 
             ListBox1.Items.Add(Archivo)
@@ -538,7 +538,7 @@
 
         Dim partesCodMuni() As String = codINEs.Split("#")
         Dim partesNomMuni() As String = NombreMunis.Split("#")
-        Dim urlBase As String = "http://centrodedescargas.cnig.es/CentroDescargas/buscar.do?" & _
+        Dim urlBase As String = "http://centrodedescargas.cnig.es/CentroDescargas/buscar.do?" &
                                 "filtro.checkCoord=N&filtro.codFamilia=MIPAC&filtro.codCA=&filtro.codProv=&filtro.nombreBis=Municipio&filtro.codIne=XXXXXXXXXXX&filtro.numeroHoja="
         Dim urlMuni As String
         Dim cadOUT As String = ""
@@ -557,64 +557,76 @@
 
     Private Sub Button4_Click(sender As System.Object, e As System.EventArgs) Handles Button4.Click
 
-        Dim docPP2CD As DataTable
-        Dim filas() As DataRow
-        docPP2CD = New DataTable
+
+        Dim rutaTIFFInput As String = TextBox6.Text
+        Dim rutaECWOutput As String = TextBox7.Text
+        Dim rutaScriptGSW As String = $"{TextBox7.Text}\conversion.gms"
+        Dim rutaPROJINPUT As String
+        Dim rutaPROJOUTPUT As String
+        Dim rutaSalida As String
+        Dim ListaFicheros As New ArrayList
         Dim contador As Integer
-        Dim procSQL As String
-        Dim fechaDoc As Date
-        procSQL = "SELECT archivo.idarchivo,archivo.numdoc,archivo.fechaprincipal,tbtipodocumento.tipodoc as Tipo," & _
-                    "string_agg(distinct listamunicipios.nombre || ' (' || provincias.nombreprovincia || ')','#') as munisactual," & _
-                    "string_agg(distinct '34' || to_char(provincias.comAutonoma_id, 'FM09'::text) || to_char(provincias.idprovincia, 'FM09'::text) || listamunicipios.inecorto,'#') as inecortocdd " & _
-                    "FROM archivo " & _
-                    "INNER JOIN tbtipodocumento on tbtipodocumento.idtipodoc=archivo.tipodoc_id " & _
-                    "INNER JOIN archivo2munihisto  on archivo2munihisto.archivo_id=archivo.idarchivo " & _
-                    "INNER JOIN munihisto on munihisto.idmunihisto= archivo2munihisto.munihisto_id " & _
-                    "INNER JOIN ngmepschema.listamunicipios on listamunicipios.inecorto::integer= munihisto.cod_muni " & _
-                    "INNER JOIN provincias on munihisto.provincia_id = provincias.idprovincia " & _
-                    "WHERE tbtipodocumento.tipodoc in ('Planimetría','Altimetría','Conjunta') " & _
-                    "group by idarchivo,numdoc,fechaprincipal,tbtipodocumento.tipodoc  order by numdoc"
-
-
         Try
-            If CargarDatatableMuni(procSQL, docPP2CD) = False Then
-                MessageBox.Show("No se puede acceder a los datos para el proceso", My.Application.Info.AssemblyName, MessageBoxButtons.OK, MessageBoxIcon.Error)
-                Exit Sub
-            End If
-            filas = docPP2CD.Select
-            contador = 0
-            Me.Cursor = Cursors.WaitCursor
-            Using sw As New System.IO.StreamWriter(System.Environment.GetFolderPath(Environment.SpecialFolder.Desktop) & "\script4templateWMS.sql", False)
-                For Each fila As DataRow In filas
-                    contador = contador + 1
-                    ToolStripStatusLabel1.Text = "Procesando " & contador
-                    Application.DoEvents()
-                    fechaDoc = fila.Item("fechaprincipal")
-
-                    sw.WriteLine("UPDATE minutas_cdd SET tipodoc=E'" & fila.Item("Tipo").ToString.Replace("'", "\'") & "'," & _
-                                        "fechadoc='" & FormatearFecha(fila.Item("fechaprincipal"), "GERMAN") & "'," & _
-                                        "municipioshtml=E'" & getMunicipiosHTML(fila.Item("munisactual").ToString, fila.Item("inecortocdd").ToString).Replace("'", "\'") & "' " & _
-                                        "WHERE sellado='" & fila.Item("numdoc").ToString & "';")
-                Next
-
-
-
+            Using ofdIN As New OpenFileDialog With {
+                        .Filter = "Ficheros de proyección (*.prj)|*.prj",
+                        .Title = "Selecciona fichero de proyección de los datos de entrada"
+            }
+                If ofdIN.ShowDialog = DialogResult.OK Then rutaPROJINPUT = ofdIN.FileName : Else Exit Sub
             End Using
-           
+            Using ofdOUT As New OpenFileDialog With {
+                        .Filter = "Ficheros de proyección (*.prj)|*.prj",
+                        .Title = "Selecciona fichero de proyección de los datos de salida"
+            }
+                If ofdOUT.ShowDialog = DialogResult.OK Then rutaPROJOUTPUT = ofdOUT.FileName : Else Exit Sub
+            End Using
+
+
+            ToolStripStatusLabel1.Text = $"Analizando el directorio de entrada..."
+            Application.DoEvents()
+            Me.Cursor = Cursors.WaitCursor
+            ' Obtener todos los archivos en el directorio y subdirectorios
+            For Each archivo As String In IO.Directory.EnumerateFiles(rutaTIFFInput, "*.*", IO.SearchOption.AllDirectories)
+                ' Aquí puedes procesar cada archivo
+                If archivo.ToLower.EndsWith(".tif") Then ListaFicheros.Add(archivo)
+            Next
             Me.Cursor = Cursors.Default
+            If ModalQuestion($"Se han encontrado {ListaFicheros.Count} ficheros TIFF. ¿Generar script?") = DialogResult.No Then Exit Sub
+            Me.Cursor = Cursors.WaitCursor
 
-
-
+            Using sw As New System.IO.StreamWriter(rutaScriptGSW)
+                sw.WriteLine("GLOBAL_MAPPER_SCRIPT VERSION=1.00 ENABLE_PROGRESS=YES")
+                sw.WriteLine("UNLOAD_ALL")
+                sw.WriteLine("SET_BG_COLOR COLOR=RGB(255,255,255)")
+                For Each rutaFile As String In ListaFicheros
+                    contador += 1
+                    ToolStripStatusLabel1.Text = $"Procesando fichero nº {contador}"
+                    Application.DoEvents()
+                    rutaSalida = rutaFile.ToLower.Replace(rutaTIFFInput.ToLower, rutaECWOutput.ToLower)
+                    rutaSalida = rutaSalida.Replace(".tif", ".ecw")
+                    sw.WriteLine($"LOAD_PROJECTION FILENAME=""{rutaPROJINPUT}""")
+                    sw.WriteLine($"IMPORT FILENAME=""{rutaFile}"" TYPE=AUTO ANTI_ALIAS=NO AUTO_CONTRAST=NO")
+                    sw.WriteLine($"LOAD_PROJECTION FILENAME=""{rutaPROJOUTPUT}""")
+                    sw.WriteLine($"EXPORT_RASTER FILENAME=""{rutaSalida}"" TYPE=ECW TARGET_COMPRESSION=1 GEN_WORLD_FILE=YES GEN_PRJ_FILE=YES")
+                    sw.WriteLine("UNLOAD_ALL")
+                    Try
+                        If Not IO.File.Exists(SacarDirDeRuta(rutaSalida)) Then IO.Directory.CreateDirectory(SacarDirDeRuta(rutaSalida))
+                    Catch ex As Exception
+                        ModalError(ex.Message)
+                        Application.DoEvents()
+                    End Try
+                    'If contador = 10 Then Exit For
+                Next
+                sw.Close()
+                sw.Dispose()
+                ToolStripStatusLabel1.Text = $"Ficheros: {contador}"
+            End Using
         Catch ex As Exception
-            MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-        Finally
-            Erase filas
-            docPP2CD.Dispose()
-            docPP2CD = Nothing
+            ModalError(ex.Message)
+            Application.DoEvents()
         End Try
+        Me.Cursor = Cursors.Default
 
-
-        MessageBox.Show("Proceso terminado", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+        ModalInfo("Proceso terminado")
 
 
     End Sub
@@ -719,6 +731,22 @@
             If sender.name = "Button9" Then TextBox5.Text = openFileDialog1.FileName
 
         End If
+
+    End Sub
+
+    Private Sub Button10_Click(sender As Object, e As EventArgs) Handles Button10.Click
+
+        If FolderBrowserDialog1.ShowDialog() = Windows.Forms.DialogResult.Cancel Then Exit Sub
+        If System.IO.Directory.Exists(FolderBrowserDialog1.SelectedPath) = False Then Exit Sub
+        TextBox6.Text = FolderBrowserDialog1.SelectedPath
+
+    End Sub
+
+    Private Sub Button11_Click(sender As Object, e As EventArgs) Handles Button11.Click
+
+        If FolderBrowserDialog1.ShowDialog() = Windows.Forms.DialogResult.Cancel Then Exit Sub
+        If System.IO.Directory.Exists(FolderBrowserDialog1.SelectedPath) = False Then Exit Sub
+        TextBox7.Text = FolderBrowserDialog1.SelectedPath
 
     End Sub
 End Class

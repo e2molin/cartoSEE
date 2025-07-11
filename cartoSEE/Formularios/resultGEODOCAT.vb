@@ -832,7 +832,7 @@
             pathGeorref = ""
             epsgGeorref = ""
             For Each geoFichero As FileGeorref In elemEntidadSel.listaFicherosGeo
-                If geoFichero.NameFile.ToLower = $"{fila.Item("nombre")}.ecw" Then
+                If geoFichero.NameFile.ToLower = $"{fila.Item("geofilename")}" And geoFichero.EPSCode.ToLower = fila.Item("epsg") Then
                     pathGeorref = geoFichero.PathFile
                     epsgGeorref = geoFichero.EPSCode
                     elementoLV = New ListViewItem With {
@@ -841,12 +841,13 @@
                         .Tag = pathGeorref,
                         .Group = docGeorref
             }
-                    elementoLV.SubItems.Add($"{fila.Item("nombre")}.ecw")
+                    elementoLV.SubItems.Add($"{fila.Item("geofilename")}")
                     elementoLV.SubItems.Add(".ECW")
                     elementoLV.SubItems.Add(epsgGeorref)
-                    elementoLV.SubItems.Add($"{fila.Item("mostrarwms")}")
-                    elementoLV.SubItems.Add($"{fila.Item("tipowms")}")
+                    elementoLV.SubItems.Add($"{fila.Item("mostrar_en_wms")}")
+                    elementoLV.SubItems.Add($"{fila.Item("tipo_wms")}")
                     elementoLV.SubItems.Add($"{fila.Item("zindex")}")
+                    elementoLV.SubItems.Add($"Sí")
                     elementoLV.SubItems.Add($"{fila.Item("idcontorno")}")
                     elementoLV.ForeColor = IIf(Not IO.File.Exists(pathGeorref), Color.Red, Color.DarkGreen)
                     lvDocResources.Items.Add(elementoLV) : elementoLV = Nothing
@@ -854,6 +855,33 @@
             Next
 
         Next
+
+        ' Si no hay ficheros en base de datos, no hay contornos, pero si se localiza el ECW, lo listo
+        If elemEntidadSel.rcdgeoFiles.Select().Length = 0 Then
+            For Each geoFichero As FileGeorref In elemEntidadSel.listaFicherosGeo
+
+                Application.DoEvents()
+                elementoLV = New ListViewItem With {
+                        .Text = "Georreferenciado",
+                        .ImageIndex = 4,
+                        .Tag = geoFichero.PathFile,
+                        .Group = docGeorref
+                }
+                elementoLV.SubItems.Add($"{geoFichero.NameFile}")
+                elementoLV.SubItems.Add(".ECW")
+                elementoLV.SubItems.Add($"{geoFichero.EPSCode}")
+                elementoLV.SubItems.Add($"No")
+                elementoLV.SubItems.Add($"No asignado")
+                elementoLV.SubItems.Add($"0")
+                elementoLV.SubItems.Add($"Sin definir")
+                elementoLV.SubItems.Add($"0")
+                elementoLV.ForeColor = IIf(Not IO.File.Exists(geoFichero.PathFile), Color.Red, Color.DarkGreen)
+                lvDocResources.Items.Add(elementoLV) : elementoLV = Nothing
+
+            Next
+        End If
+
+
 
         'Rellenamos el cuadro de texto con algunos datos
         FillRichText(RichTextBox3, rowId)
@@ -1160,6 +1188,7 @@
         lvDocResources.Columns.Add("Mostrar en WMS", 100, HorizontalAlignment.Left)
         lvDocResources.Columns.Add("Tipo WMS", 150, HorizontalAlignment.Left)
         lvDocResources.Columns.Add("Z-Index", 100, HorizontalAlignment.Left)
+        lvDocResources.Columns.Add("Contorno", 100, HorizontalAlignment.Left)
         lvDocResources.Columns.Add("IdContorno", 0, HorizontalAlignment.Left)
         lvDocResources.SmallImageList = MDIPrincipal.ImageList2
         lvDocResources.FullRowSelect = True
@@ -2086,6 +2115,9 @@
                         Process.Start(URLIberPIX)
                     End If
                 End If
+            Else
+                ModalInfo("No se ha encontrado contornos definidos para el documento")
+                Exit Sub
             End If
         Catch ex As Exception
             ModalError(ex.Message)

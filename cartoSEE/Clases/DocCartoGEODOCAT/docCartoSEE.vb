@@ -612,7 +612,13 @@
 
         rcdgeoFiles.Clear()
         rcdgeoFiles.Dispose()
-        CargarDatatable($"SELECT * FROM bdsidschema.contornos WHERE archivo_id={docIndex}", rcdgeoFiles)
+        CargarDatatable($"(
+                            SELECT idarchivofp as idcontorno,'epsg25830' as epsg, nombre as geofilename,mostrar_en_wms,zindex,tipo_wms,footprint_type 
+	                            FROM  bdsidschema.archivofootprints WHERE archivodoc_id={docIndex}
+                            ) UNION(
+                            SELECT idcontorno,'epsg23030' as epsg, nombre || '.ecw' as geofilename,mostrarwms as mostrar_en_wms,zindex,tipowms as tipo_wms,'fitted' as footprint_type 
+	                            FROM  bdsidschema.contornos WHERE archivo_id={docIndex}
+                            )", rcdgeoFiles)
 
         getGeoFilesFromDatabaseConsultado = True
 
