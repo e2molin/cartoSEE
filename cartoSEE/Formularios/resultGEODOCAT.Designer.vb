@@ -67,7 +67,7 @@ Partial Class resultGEODOCAT
         Me.ToolStripDropDownButton2 = New System.Windows.Forms.ToolStripDropDownButton()
         Me.btnOpenInventary = New System.Windows.Forms.ToolStripMenuItem()
         Me.btnLinkCdD = New System.Windows.Forms.ToolStripMenuItem()
-        Me.btnTVCNIG = New System.Windows.Forms.ToolStripMenuItem()
+        Me.btnLinkImage = New System.Windows.Forms.ToolStripMenuItem()
         Me.btnLinkABSYS = New System.Windows.Forms.ToolStripMenuItem()
         Me.btnAddingCarrito = New System.Windows.Forms.ToolStripMenuItem()
         Me.btnDeletingCarrito = New System.Windows.Forms.ToolStripMenuItem()
@@ -579,7 +579,7 @@ Partial Class resultGEODOCAT
         'ToolStripDropDownButton2
         '
         Me.ToolStripDropDownButton2.AutoSize = False
-        Me.ToolStripDropDownButton2.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnOpenInventary, Me.btnLinkCdD, Me.btnTVCNIG, Me.btnLinkABSYS, Me.btnAddingCarrito, Me.btnDeletingCarrito, Me.GenerarMetadatoNEMToolStripMenuItem, Me.mnuGenerateThumb, Me.mnuLaunchECWCrop, Me.mnuContornosExtract})
+        Me.ToolStripDropDownButton2.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnOpenInventary, Me.btnLinkCdD, Me.btnLinkImage, Me.btnLinkABSYS, Me.btnAddingCarrito, Me.btnDeletingCarrito, Me.GenerarMetadatoNEMToolStripMenuItem, Me.mnuGenerateThumb, Me.mnuLaunchECWCrop, Me.mnuContornosExtract})
         Me.ToolStripDropDownButton2.Font = New System.Drawing.Font("Tahoma", 6.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ToolStripDropDownButton2.Image = CType(resources.GetObject("ToolStripDropDownButton2.Image"), System.Drawing.Image)
         Me.ToolStripDropDownButton2.ImageAlign = System.Drawing.ContentAlignment.TopCenter
@@ -594,70 +594,70 @@ Partial Class resultGEODOCAT
         '
         Me.btnOpenInventary.Image = CType(resources.GetObject("btnOpenInventary.Image"), System.Drawing.Image)
         Me.btnOpenInventary.Name = "btnOpenInventary"
-        Me.btnOpenInventary.Size = New System.Drawing.Size(327, 22)
+        Me.btnOpenInventary.Size = New System.Drawing.Size(335, 30)
         Me.btnOpenInventary.Text = "Abrir entrada en el registro de Archivo"
         '
         'btnLinkCdD
         '
         Me.btnLinkCdD.Image = CType(resources.GetObject("btnLinkCdD.Image"), System.Drawing.Image)
         Me.btnLinkCdD.Name = "btnLinkCdD"
-        Me.btnLinkCdD.Size = New System.Drawing.Size(327, 22)
+        Me.btnLinkCdD.Size = New System.Drawing.Size(335, 30)
         Me.btnLinkCdD.Text = "Enlace al Centro de Descargas / Recurso online"
         '
-        'btnTVCNIG
+        'btnLinkImage
         '
-        Me.btnTVCNIG.Image = CType(resources.GetObject("btnTVCNIG.Image"), System.Drawing.Image)
-        Me.btnTVCNIG.Name = "btnTVCNIG"
-        Me.btnTVCNIG.Size = New System.Drawing.Size(327, 22)
-        Me.btnTVCNIG.Text = "Abrir documento digitalizado"
+        Me.btnLinkImage.Image = CType(resources.GetObject("btnLinkImage.Image"), System.Drawing.Image)
+        Me.btnLinkImage.Name = "btnLinkImage"
+        Me.btnLinkImage.Size = New System.Drawing.Size(335, 30)
+        Me.btnLinkImage.Text = "Abrir documento digitalizado"
         '
         'btnLinkABSYS
         '
         Me.btnLinkABSYS.Image = CType(resources.GetObject("btnLinkABSYS.Image"), System.Drawing.Image)
         Me.btnLinkABSYS.Name = "btnLinkABSYS"
-        Me.btnLinkABSYS.Size = New System.Drawing.Size(327, 22)
+        Me.btnLinkABSYS.Size = New System.Drawing.Size(335, 30)
         Me.btnLinkABSYS.Text = "Enlace Catálogo ABSYS"
         '
         'btnAddingCarrito
         '
         Me.btnAddingCarrito.Image = CType(resources.GetObject("btnAddingCarrito.Image"), System.Drawing.Image)
         Me.btnAddingCarrito.Name = "btnAddingCarrito"
-        Me.btnAddingCarrito.Size = New System.Drawing.Size(327, 22)
+        Me.btnAddingCarrito.Size = New System.Drawing.Size(335, 30)
         Me.btnAddingCarrito.Text = "Añadir documento al carrito"
         '
         'btnDeletingCarrito
         '
         Me.btnDeletingCarrito.Image = CType(resources.GetObject("btnDeletingCarrito.Image"), System.Drawing.Image)
         Me.btnDeletingCarrito.Name = "btnDeletingCarrito"
-        Me.btnDeletingCarrito.Size = New System.Drawing.Size(327, 22)
+        Me.btnDeletingCarrito.Size = New System.Drawing.Size(335, 30)
         Me.btnDeletingCarrito.Text = "Eliminar documento del carrito"
         '
         'GenerarMetadatoNEMToolStripMenuItem
         '
         Me.GenerarMetadatoNEMToolStripMenuItem.Image = CType(resources.GetObject("GenerarMetadatoNEMToolStripMenuItem.Image"), System.Drawing.Image)
         Me.GenerarMetadatoNEMToolStripMenuItem.Name = "GenerarMetadatoNEMToolStripMenuItem"
-        Me.GenerarMetadatoNEMToolStripMenuItem.Size = New System.Drawing.Size(327, 22)
+        Me.GenerarMetadatoNEMToolStripMenuItem.Size = New System.Drawing.Size(335, 30)
         Me.GenerarMetadatoNEMToolStripMenuItem.Text = "Generar metadato NEM"
         '
         'mnuGenerateThumb
         '
         Me.mnuGenerateThumb.Image = CType(resources.GetObject("mnuGenerateThumb.Image"), System.Drawing.Image)
         Me.mnuGenerateThumb.Name = "mnuGenerateThumb"
-        Me.mnuGenerateThumb.Size = New System.Drawing.Size(327, 22)
+        Me.mnuGenerateThumb.Size = New System.Drawing.Size(335, 30)
         Me.mnuGenerateThumb.Text = "Generar miniatura de los documentos seleccionados"
         '
         'mnuLaunchECWCrop
         '
         Me.mnuLaunchECWCrop.Image = CType(resources.GetObject("mnuLaunchECWCrop.Image"), System.Drawing.Image)
         Me.mnuLaunchECWCrop.Name = "mnuLaunchECWCrop"
-        Me.mnuLaunchECWCrop.Size = New System.Drawing.Size(327, 22)
+        Me.mnuLaunchECWCrop.Size = New System.Drawing.Size(335, 30)
         Me.mnuLaunchECWCrop.Text = "Lanzar fichero georeferenciado recortado"
         '
         'mnuContornosExtract
         '
         Me.mnuContornosExtract.Image = CType(resources.GetObject("mnuContornosExtract.Image"), System.Drawing.Image)
         Me.mnuContornosExtract.Name = "mnuContornosExtract"
-        Me.mnuContornosExtract.Size = New System.Drawing.Size(327, 22)
+        Me.mnuContornosExtract.Size = New System.Drawing.Size(335, 30)
         Me.mnuContornosExtract.Text = "Extraer contornos"
         '
         'ToolStripButton1
@@ -686,19 +686,19 @@ Partial Class resultGEODOCAT
         'ToolStripStatusLabel1
         '
         Me.ToolStripStatusLabel1.Name = "ToolStripStatusLabel1"
-        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(119, 17)
+        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(120, 17)
         Me.ToolStripStatusLabel1.Text = "ToolStripStatusLabel1"
         '
         'ToolStripStatusLabel4
         '
         Me.ToolStripStatusLabel4.Name = "ToolStripStatusLabel4"
-        Me.ToolStripStatusLabel4.Size = New System.Drawing.Size(119, 17)
+        Me.ToolStripStatusLabel4.Size = New System.Drawing.Size(120, 17)
         Me.ToolStripStatusLabel4.Text = "ToolStripStatusLabel4"
         '
         'ToolStripStatusLabel2
         '
         Me.ToolStripStatusLabel2.Name = "ToolStripStatusLabel2"
-        Me.ToolStripStatusLabel2.Size = New System.Drawing.Size(776, 17)
+        Me.ToolStripStatusLabel2.Size = New System.Drawing.Size(773, 17)
         Me.ToolStripStatusLabel2.Spring = True
         Me.ToolStripStatusLabel2.Text = "ToolStripStatusLabel2"
         Me.ToolStripStatusLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -706,7 +706,7 @@ Partial Class resultGEODOCAT
         'ToolStripStatusLabel5
         '
         Me.ToolStripStatusLabel5.Name = "ToolStripStatusLabel5"
-        Me.ToolStripStatusLabel5.Size = New System.Drawing.Size(119, 17)
+        Me.ToolStripStatusLabel5.Size = New System.Drawing.Size(120, 17)
         Me.ToolStripStatusLabel5.Text = "ToolStripStatusLabel5"
         '
         'ToolStripStatusLabel3
@@ -1219,7 +1219,7 @@ Partial Class resultGEODOCAT
     Friend WithEvents btnNext As ToolStripButton
     Friend WithEvents btnOpenIncidencia As ToolStripButton
     Friend WithEvents ToolStripDropDownButton2 As ToolStripDropDownButton
-    Friend WithEvents btnTVCNIG As ToolStripMenuItem
+    Friend WithEvents btnLinkImage As ToolStripMenuItem
     Friend WithEvents btnLinkCdD As ToolStripMenuItem
     Friend WithEvents StatusStrip1 As StatusStrip
     Friend WithEvents ToolStripStatusLabel1 As ToolStripStatusLabel

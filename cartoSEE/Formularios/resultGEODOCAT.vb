@@ -1232,7 +1232,7 @@
 
         btnAddingCarrito.Enabled = Not EsCarritoCompra
         btnDeletingCarrito.Enabled = EsCarritoCompra
-        btnEditar.Visible = usuarioMyApp.permisosLista.editarDocumentacion
+        btnEditar.Visible = usuarioMyApp.permisosLista.EditarDocumentacion
         mnuGenerateThumb.Visible = usuarioMyApp.permisosLista.usuarioISTARI
 
         TaxonDetailView(modeView.PanelClose)
@@ -1354,7 +1354,7 @@
 
     End Sub
 
-    Private Sub ExternalLinks(sender As Object, e As EventArgs) Handles Button1.Click, Button2.Click, btnLinkCdD.Click, btnTVCNIG.Click, btnLinkABSYS.Click
+    Private Sub ExternalLinks(sender As Object, e As EventArgs) Handles Button1.Click, Button2.Click, btnLinkCdD.Click, btnLinkImage.Click, btnLinkABSYS.Click
 
 
         If elemEntidadSel Is Nothing Then Exit Sub
@@ -1363,8 +1363,16 @@
             Exit Sub
         End If
 
-        Dim cadURL As String = sender.tag
+        Dim cadURL As String
         Try
+            cadURL = sender.tag
+            If sender.name = "Button1" Or sender.name = "btnLinkImage" Then
+                If Not IO.File.Exists(cadURL) Then
+                    ModalExclamation("Imagen no localizada")
+                    Exit Sub
+                End If
+            End If
+
             Process.Start(cadURL)
         Catch ex As Exception
             ModalError(ex.Message)
@@ -1446,7 +1454,11 @@
 
     Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click, PictureBox2.Click
         Try
-            If IO.File.Exists(PictureBox1.Tag) Then Process.Start(PictureBox1.Tag)
+            If IO.File.Exists(PictureBox1.Tag) Then
+                ModalExclamation("Imagen no localizada")
+                Exit Sub
+            End If
+            Process.Start(PictureBox1.Tag)
         Catch ex As Exception
             GenerarLOG(ex.Message)
             ModalError(ex.Message)
@@ -1909,12 +1921,6 @@
                 pathMiniatura = docu.rutaFicheroThumb
                 If IO.File.Exists(pathMiniatura) Then IO.File.Delete(pathMiniatura)
 
-
-
-
-
-
-
                 If Ghost_ExtractPagesPDF2JPG(docu.rutaFicheroPDF, pathMiniatura, True) Then hechos += 1
                 docu = Nothing
 
@@ -1936,10 +1942,15 @@
 
         Dim rutaPDF As String
 
+
         Try
             Me.Cursor = Cursors.WaitCursor
             rutaPDF = Button4.Tag
-            If IO.File.Exists(rutaPDF) Then Process.Start(rutaPDF)
+            If Not IO.File.Exists(rutaPDF) Then
+                ModalExclamation("Documento PDF no localizado")
+                Exit Sub
+            End If
+            Process.Start(rutaPDF)
         Catch ex As Exception
             ModalError($"Error: {ex.Message}")
         Finally
@@ -2165,6 +2176,5 @@
         ModalInfo("Fichero de contornos generado")
 
     End Sub
-
 
 End Class
