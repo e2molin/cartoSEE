@@ -602,10 +602,6 @@
 
     End Sub
 
-
-
-
-
     Sub getGeoFilesFromDatabase()
 
         If getGeoFilesFromDatabaseConsultado = True Then Exit Sub

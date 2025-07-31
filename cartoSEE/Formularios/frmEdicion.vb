@@ -1077,7 +1077,7 @@
         Dim Ejecucion As Boolean = False
         Dim contador As Integer = 0
 
-        If ModalQuestion("Se va a cargar información en la base dedatos.¿Desea continuar") = DialogResult.No Then Exit Sub
+        If ModalQuestWriteDatabase("Va a cargar información en la base dedatos. ¿Desea continuar") = DialogResult.No Then Exit Sub
 
         Me.Cursor = Cursors.WaitCursor
 
@@ -1124,6 +1124,14 @@
                 Exit Function
             End If
         End If
+        Dim selladoINdatabase As String = ""
+        ObtenerEscalar($"SELECT numdoc FROM bdsidschema.archivo WHERE numdoc='{TextBox22.Text.Trim}'", selladoINdatabase)
+        If selladoINdatabase <> "" Then
+            ModalExclamation("Este número de sellado ya existe en la base de datos")
+            Exit Function
+        End If
+
+
 
         If ComboBox6.SelectedItem Is Nothing Then
             ModalExclamation("Es necesario seleccionar la provincia para almacenar los documentos")
@@ -1132,6 +1140,7 @@
 
         If CType(ComboBox6.SelectedItem, itemData).Valor <> CType(TextBox22.Text.Substring(0, 2), Integer) Then
             If ModalQuestion("Los dos primeros dígitos del número de sellado no coinciden con el código de provincia. ¿Continuar?") = Windows.Forms.DialogResult.No Then Exit Function
+
         End If
 
         'Provincia
@@ -1163,7 +1172,11 @@
         elementoInsert.CodEstado = CType(ComboBox2.SelectedItem, itemData).Valor
 
         'Escala
-        elementoInsert.Escala = IIf(CType(TextBox8.Text.Trim, Integer) > 0, TextBox8.Text.Trim, "0").Replace("'", "\'")
+        If TextBox8.Text.Trim="" Then
+            elementoInsert.Escala=""
+        Else
+            elementoInsert.Escala = IIf(CType(TextBox8.Text.Trim, Integer) > 0, TextBox8.Text.Trim, "0").Replace("'", "\'")
+        End If
 
         'Tomo
         If TextBox11.Text.Trim <> "" Then elementoInsert.Tomo = TextBox11.Text.Trim.Replace("'", "\'")
@@ -1189,12 +1202,14 @@
         If IsDate(MaskedTextBox1.Text) = True Then
             fechaDoc = CType(MaskedTextBox1.Text, Date)
             cadFechaDoc = $"{fechaDoc.Year}-{String.Format("{0:00}", CInt(fechaDoc.Month.ToString))}-{String.Format("{0:00}", CInt(fechaDoc.Day.ToString))}"
+            If ComboBox3.SelectedIndex = -1 Then ModalExclamation("Seleccione la precisión de la fecha.") : Exit Function
+            elementoInsert.TipoFechaPrincipal = ComboBox3.Text
         Else
-            ModalExclamation("Fecha no válida. Introduzca una fecha correcta")
-            Exit Function
+            If ModalQuestion("Fecha no válida. ¿Desa continuar sin asociar fecha al documento?") = DialogResult.No Then Exit Function
+            cadFechaDoc = ""
+            elementoInsert.TipoFechaPrincipal = ""
         End If
-        If ComboBox3.SelectedIndex = -1 Then ModalExclamation("Seleccione la precisión de la fecha.") : Exit Function
-        elementoInsert.TipoFechaPrincipal = ComboBox3.Text
+
 
         'Fechas Modificaciones
         If TextBox13.Text.Trim <> "" Then elementoInsert.fechasModificaciones = TextBox13.Text.Trim.Replace("'", "\'")
@@ -1274,16 +1289,16 @@
                 anejo,observaciones,observ,doctypehr,extraprops,provincia_id) VALUES (
                 {elementoInsert.docIndex},
                 '{elementoInsert.Sellado}',
-                '{usuarioMyApp.loginUser}',
+                '{usuarioMyApp.LoginUser}',
                 {elementoInsert.CodTipo},
                 {elementoInsert.CodEstado},
-                {elementoInsert.Escala},
+                {IIf(elementoInsert.Escala = "", "Null", elementoInsert.Escala)},
                 E'{elementoInsert.Tomo}',
                 {IIf(elementoInsert.proceHoja = "", "Null", elementoInsert.proceHoja)},
                 {IIf(elementoInsert.proceCarpeta = "", "Null", $"E'{elementoInsert.proceCarpeta}'")},
                 {IIf(elementoInsert.subTipoDoc = "", "Null", $"E'{elementoInsert.subTipoDoc}'")},
-                '{cadFechaDoc}',
-                '{elementoInsert.TipoFechaPrincipal}',
+                {IIf(cadFechaDoc = "", "Null", $"'{cadFechaDoc}'")},
+                '{IIf(elementoInsert.TipoFechaPrincipal = "", "Null", $"E'{elementoInsert.TipoFechaPrincipal}'")}',
                 '{elementoInsert.fechasModificaciones}',
                 {IIf(elementoInsert.Signatura = "", "Null", $"E'{elementoInsert.Signatura}'")},
                 {IIf(elementoInsert.Coleccion = "", "Null", $"E'{elementoInsert.Coleccion}'")},
