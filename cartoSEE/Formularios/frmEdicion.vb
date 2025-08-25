@@ -170,7 +170,7 @@
         ElseIf ModeEdition = TypeModeEdition.EditSingleDocument Then
             SingleEditionMode()
         ElseIf ModeEdition = TypeModeEdition.EditMUltiDocument Then
-            ModalInfo("En dsarrollo")
+            ModalInfo("En desarrollo")
         End If
 
         CheckBox21.Visible = usuarioMyApp.permisosLista.isUserISTARI
@@ -352,6 +352,19 @@
                     Label35.ForeColor = Color.Crimson
                     Button11.Enabled = False
                 End If
+
+                If IO.File.Exists(.rutaFicheroThumb) Then
+                    Label39.Text = "Este recurso existe en el repositorio"
+                    Label39.Tag = .rutaFicheroThumb
+                    Label39.ForeColor = Color.DarkGreen
+                    Button17.Enabled = True
+                Else
+                    Label39.Text = "Este recurso NO existe en el repositorio"
+                    Label39.Tag = ""
+                    Label39.ForeColor = Color.Crimson
+                    Button17.Enabled = False
+                End If
+
                 If IO.File.Exists(.rutaFicheroPDF) Then
                     Label36.Text = "Este recurso existe en el repositorio"
                     Label36.Tag = .rutaFicheroPDF
@@ -389,9 +402,11 @@
         Label34.Visible = False
         Label35.Visible = False
         Label36.Visible = False
+        Label39.Visible = False
         Button6.Enabled = False
         Button11.Enabled = False
         Button12.Enabled = False
+        Button17.Enabled = False
         CleanFields()
 
         For Each ctrl As Control In Me.TabPage1.Controls
@@ -485,6 +500,7 @@
         TextBox2.Text = ""
         TextBox3.Text = ""
         TextBox23.Text = ""
+        TextBox25.Text = ""
         ListView1.Items.Clear()
         MaskedTextBox1.Text = ""
 
@@ -929,9 +945,11 @@
 
         Dim docJPGAlta As String = TextBox2.Text.Trim
         Dim docJPGBaja As String = TextBox3.Text.Trim
+        Dim docJPGThumbnail As String = TextBox25.Text.Trim
         Dim docPDF As String = TextBox23.Text.Trim
         Dim okAlta As Boolean
         Dim okBaja As Boolean
+        Dim okThumb As Boolean
         Dim okPDF As Boolean
 
         If docJPGAlta <> "" Then
@@ -944,6 +962,12 @@
             If Not System.IO.File.Exists(docJPGBaja) Then
                 If ModalQuestion($"No se localiza el fichero origen:{Environment.NewLine}{docJPGBaja}{Environment.NewLine}¿Continuar?") = DialogResult.No Then Exit Sub
                 docJPGBaja = ""
+            End If
+        End If
+        If docJPGThumbnail <> "" Then
+            If Not System.IO.File.Exists(docJPGThumbnail) Then
+                If ModalQuestion($"No se localiza el fichero origen:{Environment.NewLine}{docJPGThumbnail}{Environment.NewLine}¿Continuar?") = DialogResult.No Then Exit Sub
+                docJPGThumbnail = ""
             End If
         End If
         If docPDF <> "" Then
@@ -966,6 +990,11 @@
                 IO.File.Copy(docJPGAlta, $"{rutaRepo}\_Scan250\{DirRepoProvinciaByINE(nuevoDoc.ProvinciaRepo)}250\{nuevoDoc.Sellado}.jpg", True)
                 okBaja = True
             End If
+            If docJPGThumbnail <> "" Then
+                ToolStripStatusLabel2.Text = "Copiando imagen miniatura"
+                IO.File.Copy(docJPGThumbnail, $"{rutaRepo}\_Miniaturas\{DirRepoProvinciaByINE(nuevoDoc.ProvinciaRepo)}\{nuevoDoc.Sellado}.jpg", True)
+                okThumb = True
+            End If
             If docPDF <> "" Then
                 ToolStripStatusLabel2.Text = "Copiando documento PDF"
                 If Not IO.Directory.Exists($"{rutaRepo}\_pdf\{String.Format("{0:00}", nuevoDoc.ProvinciaRepo)}") Then
@@ -982,8 +1011,8 @@
         Finally
             Me.Cursor = Cursors.Default
             ToolStripStatusLabel2.Text = "Ficheros actualizados"
-            If okAlta Or okBaja Or okPDF Then
-                ModalInfo($"{IIf(okAlta = True, "Recurso JPG Alta actualizado", "El recurso JPG Alta NO se ha actualizado")}{Environment.NewLine}{IIf(okBaja = True, "Recurso JPG Baja actualizado", "El recurso JPG Baja NO se ha actualizado")}{Environment.NewLine}{IIf(okPDF = True, "Recurso PDF actualizado", "El recurso PDF NO se ha actualizado")}")
+            If okAlta Or okBaja Or okPDF Or okThumb Then
+                ModalInfo($"{IIf(okAlta = True, "Recurso JPG Alta actualizado", "El recurso JPG Alta NO se ha actualizado")}{Environment.NewLine}{IIf(okBaja = True, "Recurso JPG Baja actualizado", "El recurso JPG Baja NO se ha actualizado")}{Environment.NewLine}{IIf(okThumb = True, "Recurso miniatura actualizado", "El recurso miniatura NO se ha actualizado")}{Environment.NewLine}{IIf(okPDF = True, "Recurso PDF actualizado", "El recurso PDF NO se ha actualizado")}")
             End If
         End Try
 
@@ -1298,7 +1327,7 @@
                 {IIf(elementoInsert.proceCarpeta = "", "Null", $"E'{elementoInsert.proceCarpeta}'")},
                 {IIf(elementoInsert.subTipoDoc = "", "Null", $"E'{elementoInsert.subTipoDoc}'")},
                 {IIf(cadFechaDoc = "", "Null", $"'{cadFechaDoc}'")},
-                '{IIf(elementoInsert.TipoFechaPrincipal = "", "Null", $"E'{elementoInsert.TipoFechaPrincipal}'")}',
+                {IIf(elementoInsert.TipoFechaPrincipal = "", "Null", $"E'{elementoInsert.TipoFechaPrincipal}'")},
                 '{elementoInsert.fechasModificaciones}',
                 {IIf(elementoInsert.Signatura = "", "Null", $"E'{elementoInsert.Signatura}'")},
                 {IIf(elementoInsert.Coleccion = "", "Null", $"E'{elementoInsert.Coleccion}'")},
@@ -1511,7 +1540,7 @@
 
     End Sub
 
-    Private Sub SelecciónImagen(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button5.Click, Button7.Click, Button8.Click
+    Private Sub SelecciónImagen(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button5.Click, Button7.Click, Button8.Click, Button16.Click
 
         If sender.name = "Button7" Then
             OpenFileDialog1.Title = "Selecciona imagen resolución alta"
@@ -1527,9 +1556,15 @@
             End If
         ElseIf sender.name = "Button5" Then
             OpenFileDialog1.Title = "Selecciona documento PDF"
-            OpenFileDialog1.Filter = "Archivos documento PD (*.pdf)|*.pdf"
+            OpenFileDialog1.Filter = "Archivos documento PDF (*.pdf)|*.pdf"
             If OpenFileDialog1.ShowDialog = Windows.Forms.DialogResult.OK Then
                 TextBox23.Text = OpenFileDialog1.FileName
+            End If
+        ElseIf sender.name = "Button16" Then
+            OpenFileDialog1.Title = "Selecciona imagen miniatura"
+            OpenFileDialog1.Filter = "Archivos documento JPG (*.jpg)|*.jpg"
+            If OpenFileDialog1.ShowDialog = Windows.Forms.DialogResult.OK Then
+                TextBox25.Text = OpenFileDialog1.FileName
             End If
         End If
     End Sub
@@ -1656,7 +1691,7 @@
 
     End Sub
 
-    Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click, Button11.Click, Button12.Click
+    Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click, Button11.Click, Button12.Click, Button17.Click
 
         Dim pathResource As String
         Dim ctrlSender As Windows.Forms.Button
@@ -1666,6 +1701,7 @@
         If ctrlSender.Name = "Button6" Then pathResource = Label34.Tag
         If ctrlSender.Name = "Button11" Then pathResource = Label35.Tag
         If ctrlSender.Name = "Button12" Then pathResource = Label36.Tag
+        If ctrlSender.Name = "Button17" Then pathResource = Label39.Tag
 
         Try
             If pathResource = "" Then ModalExclamation("El recurso no se encuentra en el repositorio") : Exit Sub
