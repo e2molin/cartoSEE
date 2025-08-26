@@ -16,11 +16,10 @@
         Investigar = 10
         Repetida = 11
         estrellas5 = 12
-        Disponible1 = 13
+        PapelCalco = 13
         destacado = 14
         peculiar = 15
         changeOnCdD = 16
-
     End Enum
 
     ReadOnly Property propertyList As New List(Of String) From {
@@ -36,7 +35,7 @@
                                                     "Averiguar",                        '10
                                                     "Repetida",                         '11
                                                     "5 estrellas",                      '12
-                                                    "Disponible 1",                     '13
+                                                    "Papel de calco",                   '13
                                                     "Destacado",                        '14
                                                     "Peculiar",                         '15
                                                     "Revisar CdD"                       '16

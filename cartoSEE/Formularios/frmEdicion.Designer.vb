@@ -173,6 +173,7 @@ Partial Class frmEdicion
         '
         'Button10
         '
+        Me.Button10.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button10.Image = CType(resources.GetObject("Button10.Image"), System.Drawing.Image)
         Me.Button10.Location = New System.Drawing.Point(667, 445)
         Me.Button10.Name = "Button10"
@@ -232,6 +233,7 @@ Partial Class frmEdicion
         '
         'Button9
         '
+        Me.Button9.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button9.Image = CType(resources.GetObject("Button9.Image"), System.Drawing.Image)
         Me.Button9.Location = New System.Drawing.Point(905, 184)
         Me.Button9.Name = "Button9"
@@ -534,6 +536,7 @@ Partial Class frmEdicion
         '
         'Button4
         '
+        Me.Button4.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button4.Image = CType(resources.GetObject("Button4.Image"), System.Drawing.Image)
         Me.Button4.Location = New System.Drawing.Point(905, 135)
         Me.Button4.Name = "Button4"
@@ -545,6 +548,7 @@ Partial Class frmEdicion
         '
         'Button3
         '
+        Me.Button3.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button3.Image = CType(resources.GetObject("Button3.Image"), System.Drawing.Image)
         Me.Button3.Location = New System.Drawing.Point(905, 34)
         Me.Button3.Name = "Button3"
@@ -792,6 +796,7 @@ Partial Class frmEdicion
         Me.ComboBox1.Location = New System.Drawing.Point(172, 47)
         Me.ComboBox1.Name = "ComboBox1"
         Me.ComboBox1.Size = New System.Drawing.Size(286, 21)
+        Me.ComboBox1.Sorted = True
         Me.ComboBox1.TabIndex = 2
         '
         'CheckBox11
@@ -1194,7 +1199,9 @@ Partial Class frmEdicion
         '
         'TabControl1
         '
-        Me.TabControl1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.TabControl1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.TabControl1.Controls.Add(Me.TabPage1)
         Me.TabControl1.Controls.Add(Me.TabPage3)
         Me.TabControl1.Controls.Add(Me.TabPage2)
@@ -1322,6 +1329,7 @@ Partial Class frmEdicion
         '
         'Button15
         '
+        Me.Button15.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button15.Image = CType(resources.GetObject("Button15.Image"), System.Drawing.Image)
         Me.Button15.Location = New System.Drawing.Point(667, 445)
         Me.Button15.Name = "Button15"
@@ -1399,6 +1407,7 @@ Partial Class frmEdicion
         '
         'Button14
         '
+        Me.Button14.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button14.Image = CType(resources.GetObject("Button14.Image"), System.Drawing.Image)
         Me.Button14.Location = New System.Drawing.Point(667, 445)
         Me.Button14.Name = "Button14"
@@ -1585,6 +1594,7 @@ Partial Class frmEdicion
         '
         'Button13
         '
+        Me.Button13.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button13.Image = CType(resources.GetObject("Button13.Image"), System.Drawing.Image)
         Me.Button13.Location = New System.Drawing.Point(905, 86)
         Me.Button13.Name = "Button13"

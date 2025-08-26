@@ -1672,7 +1672,7 @@
     End Sub
 
 
-    Private Sub TextBox2_TextChanged(sender As Object, e As EventArgs) Handles TextBox2.TextChanged, TextBox3.TextChanged, TextBox23.TextChanged
+    Private Sub TextBox2_TextChanged(sender As Object, e As EventArgs) Handles TextBox2.TextChanged, TextBox3.TextChanged, TextBox23.TextChanged, TextBox25.TextChanged
 
         Dim ctrlSender As Windows.Forms.TextBox
         ctrlSender = sender
@@ -1779,7 +1779,6 @@
         If sender.name = "ComboBox7" Then CheckBox32.Checked = True
         If sender.name = "TextBox17" Then CheckBox25.Checked = True
         If sender.name = "TextBox14" Then CheckBox14.Checked = True
-        If sender.name = "TextBox14" Then CheckBox14.Checked = True
         If sender.name = "TextBox12" Then CheckBox12.Checked = True
         If sender.name = "TextBox13" Then CheckBox13.Checked = True
         If sender.name = "TextBox22" Then CheckBox22.Checked = True
@@ -1796,13 +1795,13 @@
 
 #Region "Gestión Drag & Drop de los ficheros"
 
-    Private Sub textBoxesEntries(sender As Object, e As DragEventArgs) Handles TextBox2.DragEnter, TextBox3.DragEnter, TextBox23.DragEnter
+    Private Sub textBoxesEntries(sender As Object, e As DragEventArgs) Handles TextBox2.DragEnter, TextBox3.DragEnter, TextBox23.DragEnter, TextBox25.DragEnter
 
         e.Effect = DragDropEffects.Link
 
     End Sub
 
-    Private Sub textBoxesDropping(sender As Object, e As DragEventArgs) Handles TextBox2.DragDrop, TextBox3.DragDrop, TextBox23.DragDrop
+    Private Sub textBoxesDropping(sender As Object, e As DragEventArgs) Handles TextBox2.DragDrop, TextBox3.DragDrop, TextBox23.DragDrop, TextBox25.DragDrop
 
         Try
             Dim Rutas As String() = DirectCast(e.Data.GetData(DataFormats.FileDrop), String())
@@ -1810,12 +1809,12 @@
                 ModalExclamation("Arrastre un único fichero SHP")
                 Exit Sub
             End If
-            Dim extension As String = System.IO.Path.GetExtension(Rutas(0)).ToLower
 
-            If sender.name = "TextBox2" Or sender.name = "TextBox3" Then
+            Dim extension As String = System.IO.Path.GetExtension(Rutas(0)).ToLower
+            If sender.name = "TextBox2" Or sender.name = "TextBox3" Or sender.name = "TextBox25" Then
                 If extension <> ".jpg" Then ModalExclamation("Arrastre un único fichero JPG") : Exit Sub
             ElseIf sender.name = "TextBox23" Then
-                If extension <> ".pdf" Then ModalExclamation("Arrastre un único fichero JPG") : Exit Sub
+                If extension <> ".pdf" Then ModalExclamation("Arrastre un único fichero PDF") : Exit Sub
             Else
                 Exit Sub
             End If
@@ -1823,6 +1822,7 @@
             If sender.name = "TextBox2" Then TextBox2.Text = Rutas(0)
             If sender.name = "TextBox3" Then TextBox3.Text = Rutas(0)
             If sender.name = "TextBox23" Then TextBox23.Text = Rutas(0)
+            If sender.name = "TextBox25" Then TextBox25.Text = Rutas(0)
 
         Catch ex As Exception
             MessageBox.Show(ex.Message, AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Error)
