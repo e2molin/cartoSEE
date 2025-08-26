@@ -170,7 +170,7 @@
         ElseIf ModeEdition = TypeModeEdition.EditSingleDocument Then
             SingleEditionMode()
         ElseIf ModeEdition = TypeModeEdition.EditMUltiDocument Then
-            ModalInfo("En dsarrollo")
+            ModalInfo("En desarrollo")
         End If
 
         CheckBox21.Visible = usuarioMyApp.permisosLista.isUserISTARI
@@ -352,6 +352,19 @@
                     Label35.ForeColor = Color.Crimson
                     Button11.Enabled = False
                 End If
+
+                If IO.File.Exists(.rutaFicheroThumb) Then
+                    Label39.Text = "Este recurso existe en el repositorio"
+                    Label39.Tag = .rutaFicheroThumb
+                    Label39.ForeColor = Color.DarkGreen
+                    Button17.Enabled = True
+                Else
+                    Label39.Text = "Este recurso NO existe en el repositorio"
+                    Label39.Tag = ""
+                    Label39.ForeColor = Color.Crimson
+                    Button17.Enabled = False
+                End If
+
                 If IO.File.Exists(.rutaFicheroPDF) Then
                     Label36.Text = "Este recurso existe en el repositorio"
                     Label36.Tag = .rutaFicheroPDF
@@ -389,9 +402,11 @@
         Label34.Visible = False
         Label35.Visible = False
         Label36.Visible = False
+        Label39.Visible = False
         Button6.Enabled = False
         Button11.Enabled = False
         Button12.Enabled = False
+        Button17.Enabled = False
         CleanFields()
 
         For Each ctrl As Control In Me.TabPage1.Controls
@@ -485,6 +500,7 @@
         TextBox2.Text = ""
         TextBox3.Text = ""
         TextBox23.Text = ""
+        TextBox25.Text = ""
         ListView1.Items.Clear()
         MaskedTextBox1.Text = ""
 
@@ -540,8 +556,12 @@
             If flagPropos.assignByContainer(CheckedListBox1) Then propsChanged.Add($"extraprops={flagPropos.propertyCode}")
         End If
 
-        cadUpBase &= $"{String.Join(",", propsChanged.ToArray)} WHERE idarchivo={editRegistro.docIndex}"
-        ActualizacionAutorAndComentarios = ExeSinTran(cadUpBase)
+        If propsChanged.ToArray.Length > 0 Then
+            cadUpBase &= $"{String.Join(",", propsChanged.ToArray)} WHERE idarchivo={editRegistro.docIndex}"
+            ActualizacionAutorAndComentarios = ExeSinTran(cadUpBase)
+        End If
+
+
 
     End Function
 
@@ -619,8 +639,10 @@
         If CheckBox4.Checked Then propsChanged.Add($"vertical={IIf(TextBox4.Text <> "", Replace(TextBox4.Text, ",", "."), 0)}")
         If CheckBox5.Checked Then propsChanged.Add($"horizontal={IIf(TextBox5.Text <> "", Replace(TextBox5.Text, ",", "."), 0)}")
 
+        If propsChanged.ToArray.Length > 0 Then
+            ListaSQL.Add($"{cadUpBase}{String.Join(",", propsChanged.ToArray)} WHERE idarchivo={editRegistro.docIndex}")
+        End If
 
-        ListaSQL.Add($"{cadUpBase}{String.Join(",", propsChanged.ToArray)} WHERE idarchivo={editRegistro.docIndex}")
 
         'Territorios
         If CheckBox18.Checked And ListView1.Items.Count > 0 Then
@@ -923,9 +945,11 @@
 
         Dim docJPGAlta As String = TextBox2.Text.Trim
         Dim docJPGBaja As String = TextBox3.Text.Trim
+        Dim docJPGThumbnail As String = TextBox25.Text.Trim
         Dim docPDF As String = TextBox23.Text.Trim
         Dim okAlta As Boolean
         Dim okBaja As Boolean
+        Dim okThumb As Boolean
         Dim okPDF As Boolean
 
         If docJPGAlta <> "" Then
@@ -938,6 +962,12 @@
             If Not System.IO.File.Exists(docJPGBaja) Then
                 If ModalQuestion($"No se localiza el fichero origen:{Environment.NewLine}{docJPGBaja}{Environment.NewLine}¿Continuar?") = DialogResult.No Then Exit Sub
                 docJPGBaja = ""
+            End If
+        End If
+        If docJPGThumbnail <> "" Then
+            If Not System.IO.File.Exists(docJPGThumbnail) Then
+                If ModalQuestion($"No se localiza el fichero origen:{Environment.NewLine}{docJPGThumbnail}{Environment.NewLine}¿Continuar?") = DialogResult.No Then Exit Sub
+                docJPGThumbnail = ""
             End If
         End If
         If docPDF <> "" Then
@@ -960,10 +990,15 @@
                 IO.File.Copy(docJPGAlta, $"{rutaRepo}\_Scan250\{DirRepoProvinciaByINE(nuevoDoc.ProvinciaRepo)}250\{nuevoDoc.Sellado}.jpg", True)
                 okBaja = True
             End If
+            If docJPGThumbnail <> "" Then
+                ToolStripStatusLabel2.Text = "Copiando imagen miniatura"
+                IO.File.Copy(docJPGThumbnail, $"{rutaRepo}\_Miniaturas\{DirRepoProvinciaByINE(nuevoDoc.ProvinciaRepo)}\{nuevoDoc.Sellado}.jpg", True)
+                okThumb = True
+            End If
             If docPDF <> "" Then
                 ToolStripStatusLabel2.Text = "Copiando documento PDF"
-                If Not IO.Directory.Exists($"{rutaRepo}\_pdf\{DirRepoProvinciaByINE(nuevoDoc.ProvinciaRepo)}") Then
-                    IO.Directory.CreateDirectory($"{rutaRepo}\_pdf\{DirRepoProvinciaByINE(nuevoDoc.ProvinciaRepo)}")
+                If Not IO.Directory.Exists($"{rutaRepo}\_pdf\{String.Format("{0:00}", nuevoDoc.ProvinciaRepo)}") Then
+                    IO.Directory.CreateDirectory($"{rutaRepo}\_pdf\{String.Format("{0:00}", nuevoDoc.ProvinciaRepo)}")
                     okPDF = True
                 End If
                 Dim selladoFormat As String = String.Format("{0:00000000}", CType(nuevoDoc.Sellado, Integer))
@@ -976,8 +1011,8 @@
         Finally
             Me.Cursor = Cursors.Default
             ToolStripStatusLabel2.Text = "Ficheros actualizados"
-            If okAlta Or okBaja Or okPDF Then
-                ModalInfo($"{IIf(okAlta = True, "Recurso JPG Alta actualizado", "El recurso JPG Alta NO se ha actualizado")}{Environment.NewLine}{IIf(okBaja = True, "Recurso JPG Baja actualizado", "El recurso JPG Baja NO se ha actualizado")}{Environment.NewLine}{IIf(okPDF = True, "Recurso PDF actualizado", "El recurso PDF NO se ha actualizado")}")
+            If okAlta Or okBaja Or okPDF Or okThumb Then
+                ModalInfo($"{IIf(okAlta = True, "Recurso JPG Alta actualizado", "El recurso JPG Alta NO se ha actualizado")}{Environment.NewLine}{IIf(okBaja = True, "Recurso JPG Baja actualizado", "El recurso JPG Baja NO se ha actualizado")}{Environment.NewLine}{IIf(okThumb = True, "Recurso miniatura actualizado", "El recurso miniatura NO se ha actualizado")}{Environment.NewLine}{IIf(okPDF = True, "Recurso PDF actualizado", "El recurso PDF NO se ha actualizado")}")
             End If
         End Try
 
@@ -1071,7 +1106,7 @@
         Dim Ejecucion As Boolean = False
         Dim contador As Integer = 0
 
-        If ModalQuestion("Se va a cargar información en la base dedatos.¿Desea continuar") = DialogResult.No Then Exit Sub
+        If ModalQuestWriteDatabase("Va a cargar información en la base dedatos. ¿Desea continuar") = DialogResult.No Then Exit Sub
 
         Me.Cursor = Cursors.WaitCursor
 
@@ -1118,6 +1153,14 @@
                 Exit Function
             End If
         End If
+        Dim selladoINdatabase As String = ""
+        ObtenerEscalar($"SELECT numdoc FROM bdsidschema.archivo WHERE numdoc='{TextBox22.Text.Trim}'", selladoINdatabase)
+        If selladoINdatabase <> "" Then
+            ModalExclamation("Este número de sellado ya existe en la base de datos")
+            Exit Function
+        End If
+
+
 
         If ComboBox6.SelectedItem Is Nothing Then
             ModalExclamation("Es necesario seleccionar la provincia para almacenar los documentos")
@@ -1126,6 +1169,7 @@
 
         If CType(ComboBox6.SelectedItem, itemData).Valor <> CType(TextBox22.Text.Substring(0, 2), Integer) Then
             If ModalQuestion("Los dos primeros dígitos del número de sellado no coinciden con el código de provincia. ¿Continuar?") = Windows.Forms.DialogResult.No Then Exit Function
+
         End If
 
         'Provincia
@@ -1157,7 +1201,11 @@
         elementoInsert.CodEstado = CType(ComboBox2.SelectedItem, itemData).Valor
 
         'Escala
-        elementoInsert.Escala = IIf(CType(TextBox8.Text.Trim, Integer) > 0, TextBox8.Text.Trim, "0").Replace("'", "\'")
+        If TextBox8.Text.Trim="" Then
+            elementoInsert.Escala=""
+        Else
+            elementoInsert.Escala = IIf(CType(TextBox8.Text.Trim, Integer) > 0, TextBox8.Text.Trim, "0").Replace("'", "\'")
+        End If
 
         'Tomo
         If TextBox11.Text.Trim <> "" Then elementoInsert.Tomo = TextBox11.Text.Trim.Replace("'", "\'")
@@ -1183,12 +1231,14 @@
         If IsDate(MaskedTextBox1.Text) = True Then
             fechaDoc = CType(MaskedTextBox1.Text, Date)
             cadFechaDoc = $"{fechaDoc.Year}-{String.Format("{0:00}", CInt(fechaDoc.Month.ToString))}-{String.Format("{0:00}", CInt(fechaDoc.Day.ToString))}"
+            If ComboBox3.SelectedIndex = -1 Then ModalExclamation("Seleccione la precisión de la fecha.") : Exit Function
+            elementoInsert.TipoFechaPrincipal = ComboBox3.Text
         Else
-            ModalExclamation("Fecha no válida. Introduzca una fecha correcta")
-            Exit Function
+            If ModalQuestion("Fecha no válida. ¿Desa continuar sin asociar fecha al documento?") = DialogResult.No Then Exit Function
+            cadFechaDoc = ""
+            elementoInsert.TipoFechaPrincipal = ""
         End If
-        If ComboBox3.SelectedIndex = -1 Then ModalExclamation("Seleccione la precisión de la fecha.") : Exit Function
-        elementoInsert.TipoFechaPrincipal = ComboBox3.Text
+
 
         'Fechas Modificaciones
         If TextBox13.Text.Trim <> "" Then elementoInsert.fechasModificaciones = TextBox13.Text.Trim.Replace("'", "\'")
@@ -1268,16 +1318,16 @@
                 anejo,observaciones,observ,doctypehr,extraprops,provincia_id) VALUES (
                 {elementoInsert.docIndex},
                 '{elementoInsert.Sellado}',
-                '{usuarioMyApp.loginUser}',
+                '{usuarioMyApp.LoginUser}',
                 {elementoInsert.CodTipo},
                 {elementoInsert.CodEstado},
-                {elementoInsert.Escala},
+                {IIf(elementoInsert.Escala = "", "Null", elementoInsert.Escala)},
                 E'{elementoInsert.Tomo}',
                 {IIf(elementoInsert.proceHoja = "", "Null", elementoInsert.proceHoja)},
                 {IIf(elementoInsert.proceCarpeta = "", "Null", $"E'{elementoInsert.proceCarpeta}'")},
                 {IIf(elementoInsert.subTipoDoc = "", "Null", $"E'{elementoInsert.subTipoDoc}'")},
-                '{cadFechaDoc}',
-                '{elementoInsert.TipoFechaPrincipal}',
+                {IIf(cadFechaDoc = "", "Null", $"'{cadFechaDoc}'")},
+                {IIf(elementoInsert.TipoFechaPrincipal = "", "Null", $"E'{elementoInsert.TipoFechaPrincipal}'")},
                 '{elementoInsert.fechasModificaciones}',
                 {IIf(elementoInsert.Signatura = "", "Null", $"E'{elementoInsert.Signatura}'")},
                 {IIf(elementoInsert.Coleccion = "", "Null", $"E'{elementoInsert.Coleccion}'")},
@@ -1470,18 +1520,27 @@
 
     Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
 
-        If ModeEdition = TypeModeEdition.CreateDocument Then CrearNuevoElemento()
-        If ModeEdition = TypeModeEdition.EditSingleDocument Then ActualizacionLote()
+        Dim infoUpdateproc As String = ""
 
-        'If Me.Tag = 0 Then
-        '    CrearNuevoElemento(sender, e)
-        'Else
-        '    ActualizacionLote()
-        'End If
+        If ModeEdition = TypeModeEdition.CreateDocument Then CrearNuevoElemento()
+        If ModeEdition = TypeModeEdition.EditSingleDocument Then
+            If ModalQuestWriteDatabase("¿Desea actualizar la información del documento?") = DialogResult.No Then Exit Sub
+
+            Me.Cursor = Cursors.WaitCursor
+            If ActualizacionAtributos() Then
+                infoUpdateproc = $"Atributos actualizados correctamente.{System.Environment.NewLine}"
+            End If
+            If ActualizacionAutorAndComentarios() Then
+                infoUpdateproc &= $"Autoría y observaciones actualizadas correctamente.{System.Environment.NewLine}"
+            End If
+            UpdateDigitalResources(editRegistro)
+            Me.Cursor = Cursors.Default
+            ModalInfo(infoUpdateproc)
+        End If
 
     End Sub
 
-    Private Sub SelecciónImagen(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button5.Click, Button7.Click, Button8.Click
+    Private Sub SelecciónImagen(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button5.Click, Button7.Click, Button8.Click, Button16.Click
 
         If sender.name = "Button7" Then
             OpenFileDialog1.Title = "Selecciona imagen resolución alta"
@@ -1497,9 +1556,15 @@
             End If
         ElseIf sender.name = "Button5" Then
             OpenFileDialog1.Title = "Selecciona documento PDF"
-            OpenFileDialog1.Filter = "Archivos documento PD (*.pdf)|*.pdf"
+            OpenFileDialog1.Filter = "Archivos documento PDF (*.pdf)|*.pdf"
             If OpenFileDialog1.ShowDialog = Windows.Forms.DialogResult.OK Then
                 TextBox23.Text = OpenFileDialog1.FileName
+            End If
+        ElseIf sender.name = "Button16" Then
+            OpenFileDialog1.Title = "Selecciona imagen miniatura"
+            OpenFileDialog1.Filter = "Archivos documento JPG (*.jpg)|*.jpg"
+            If OpenFileDialog1.ShowDialog = Windows.Forms.DialogResult.OK Then
+                TextBox25.Text = OpenFileDialog1.FileName
             End If
         End If
     End Sub
@@ -1626,7 +1691,7 @@
 
     End Sub
 
-    Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click, Button11.Click, Button12.Click
+    Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click, Button11.Click, Button12.Click, Button17.Click
 
         Dim pathResource As String
         Dim ctrlSender As Windows.Forms.Button
@@ -1636,6 +1701,7 @@
         If ctrlSender.Name = "Button6" Then pathResource = Label34.Tag
         If ctrlSender.Name = "Button11" Then pathResource = Label35.Tag
         If ctrlSender.Name = "Button12" Then pathResource = Label36.Tag
+        If ctrlSender.Name = "Button17" Then pathResource = Label39.Tag
 
         Try
             If pathResource = "" Then ModalExclamation("El recurso no se encuentra en el repositorio") : Exit Sub

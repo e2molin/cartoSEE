@@ -82,7 +82,7 @@
     'archivo.juntaestadistica,      19	Oculto inicio					archivo.juntaestadistica,
     'archivo.extraprops,            20  Oculto inicio					archivo.extraprops,
     'archivo.cdd_url,               21									archivo.cdd_url,
-    'archivo.titn,                  22									archivo.titn,
+    'archivo.titn,                  22  								archivo.titn,
     'archivo.autor,                 23  Oculto inicio					archivo.autor,
     'archivo.encabezado,            24									archivo.encabezado,
     'nombreprovincia,               25  Oculto inicio					string_agg(provincias.nombreprovincia,'#') as nombreprovincia,
@@ -92,8 +92,8 @@
 #End Region
 
     Const widthScrollLV As Integer = 30
-    Dim FixedCols() As Integer = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11} 'Columnas con ancho fijo aunque crezca el tamaño del datagrid
-    Dim Hide_And_Show_Columns() As Integer = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 23, 25} ' Índices de columnas que pueden mostrarse u ocultarse
+    Dim FixedCols() As Integer = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 22} 'Columnas con ancho fijo aunque crezca el tamaño del datagrid
+    Dim Hide_And_Show_Columns() As Integer = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 22, 23, 25} ' Índices de columnas que pueden mostrarse u ocultarse
 
     Dim idArchivoLoaded As Integer = 0
     Dim idArchiveTagsLoaded As Integer = 0
@@ -136,7 +136,7 @@
                     Handles mnuColumna1.Click, mnuColumna2.Click, mnuColumna3.Click, mnuColumna4.Click, mnuColumna5.Click,
                     mnuColumna6.Click, mnuColumna7.Click, mnuColumna8.Click, mnuColumna9.Click, mnuColumna10.Click, mnuColumna11.Click,
                     mnuColumna12.Click, mnuColumna13.Click, mnuColumna14.Click, mnuColumna15.Click, mnuColumna16.Click, mnuColumna17.Click,
-                    mnuColumna18.Click, mnuColumna19.Click, mnuColumna20.Click
+                    mnuColumna18.Click, mnuColumna19.Click, mnuColumna20.Click, mnuColumna21.Click
 
         Dim nombreCtrl As String
 
@@ -303,7 +303,12 @@
             End If
         Next
 
+        If (iNumColVis - visibleWidthFixedCols) <= 0 Then
+            Exit Sub
+        End If
+
         calcWidth = (DataGridView1.Width - widthFixedCols - widthScrollControl) / (iNumColVis - visibleWidthFixedCols)
+        'calcWidth = (DataGridView1.Width - widthFixedCols - widthScrollControl) / visibleWidthFixedCols
         Try
             For iCol = 0 To DataGridView1.Columns.Count - 1
                 If FixedCols.Contains(iCol) Then Continue For
@@ -577,7 +582,7 @@
                 ModalExclamation("Búsqueda por fecha de alta no definida correctamente")
                 Exit Sub
             End If
-            FillDocCARTOSEEwithFilter($"archivo.fecha_creacion between '{paramSQL1}' AND '{paramSQL2}'")
+            FillDocCARTOSEEwithFilter($"archivo.fechacreacion between '{paramSQL1}' AND '{paramSQL2}'")
             Me.Text = $"Documentos dados de alta en BADASID entre {paramSQL1} y {paramSQL2}"
 
 
@@ -827,7 +832,7 @@
             pathGeorref = ""
             epsgGeorref = ""
             For Each geoFichero As FileGeorref In elemEntidadSel.listaFicherosGeo
-                If geoFichero.NameFile.ToLower = $"{fila.Item("nombre")}.ecw" Then
+                If geoFichero.NameFile.ToLower = $"{fila.Item("geofilename")}" And geoFichero.EPSCode.ToLower = fila.Item("epsg") Then
                     pathGeorref = geoFichero.PathFile
                     epsgGeorref = geoFichero.EPSCode
                     elementoLV = New ListViewItem With {
@@ -836,12 +841,13 @@
                         .Tag = pathGeorref,
                         .Group = docGeorref
             }
-                    elementoLV.SubItems.Add($"{fila.Item("nombre")}.ecw")
+                    elementoLV.SubItems.Add($"{fila.Item("geofilename")}")
                     elementoLV.SubItems.Add(".ECW")
                     elementoLV.SubItems.Add(epsgGeorref)
-                    elementoLV.SubItems.Add($"{fila.Item("mostrarwms")}")
-                    elementoLV.SubItems.Add($"{fila.Item("tipowms")}")
+                    elementoLV.SubItems.Add($"{fila.Item("mostrar_en_wms")}")
+                    elementoLV.SubItems.Add($"{fila.Item("tipo_wms")}")
                     elementoLV.SubItems.Add($"{fila.Item("zindex")}")
+                    elementoLV.SubItems.Add($"Sí")
                     elementoLV.SubItems.Add($"{fila.Item("idcontorno")}")
                     elementoLV.ForeColor = IIf(Not IO.File.Exists(pathGeorref), Color.Red, Color.DarkGreen)
                     lvDocResources.Items.Add(elementoLV) : elementoLV = Nothing
@@ -849,6 +855,33 @@
             Next
 
         Next
+
+        ' Si no hay ficheros en base de datos, no hay contornos, pero si se localiza el ECW, lo listo
+        If elemEntidadSel.rcdgeoFiles.Select().Length = 0 Then
+            For Each geoFichero As FileGeorref In elemEntidadSel.listaFicherosGeo
+
+                Application.DoEvents()
+                elementoLV = New ListViewItem With {
+                        .Text = "Georreferenciado",
+                        .ImageIndex = 4,
+                        .Tag = geoFichero.PathFile,
+                        .Group = docGeorref
+                }
+                elementoLV.SubItems.Add($"{geoFichero.NameFile}")
+                elementoLV.SubItems.Add(".ECW")
+                elementoLV.SubItems.Add($"{geoFichero.EPSCode}")
+                elementoLV.SubItems.Add($"No")
+                elementoLV.SubItems.Add($"No asignado")
+                elementoLV.SubItems.Add($"0")
+                elementoLV.SubItems.Add($"Sin definir")
+                elementoLV.SubItems.Add($"0")
+                elementoLV.ForeColor = IIf(Not IO.File.Exists(geoFichero.PathFile), Color.Red, Color.DarkGreen)
+                lvDocResources.Items.Add(elementoLV) : elementoLV = Nothing
+
+            Next
+        End If
+
+
 
         'Rellenamos el cuadro de texto con algunos datos
         FillRichText(RichTextBox3, rowId)
@@ -898,13 +931,17 @@
         lvFastView.Items.Add(elementoLV) : elementoLV = Nothing
 
         If DataGridView1.Item("listaMuniHisto", rowIdx).Value.ToString <> "" Then
-            Dim terris() As String = DataGridView1.Item("listaMuniHisto", rowIdx).Value.ToString.Split(",")
-            For Each terri In terris
-                elementoLV = New ListViewItem With {.Text = "Territorio", .ImageIndex = 4, .Group = gTerri}
-                elementoLV.SubItems.Add(terri.Trim)
+            'Dim terris() As String = DataGridView1.Item("listaMuniHisto", rowIdx).Value.ToString.Split(",")
+            'For Each terri In terris
+            '    elementoLV = New ListViewItem With {.Text = "Territorio", .ImageIndex = 4, .Group = gTerri}
+            '    elementoLV.SubItems.Add(terri.Trim)
+            '    lvFastView.Items.Add(elementoLV) : elementoLV = Nothing
+            'Next
+            For Each terri As TerritorioBSID In elemEntidadSel.listaTerritorios
+                elementoLV = New ListViewItem With {.Text = terri.tipo, .ImageIndex = 4, .Group = gTerri}
+                elementoLV.SubItems.Add($"{terri.nombre} ({terri.CodMuniHisto})")
                 lvFastView.Items.Add(elementoLV) : elementoLV = Nothing
             Next
-
         End If
         'Rellenamos el cuadro de texto con algunos datos
         FillRichText(RichTextBox1, rowIdx)
@@ -1026,8 +1063,8 @@
         DataGridView1.Columns("signatura").HeaderText = "Signatura"
         DataGridView1.Columns("signatura").Width = 50
         DataGridView1.Columns("signatura").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
-        DataGridView1.Columns("dimensiones").HeaderText = "Ancho × Alto"
-        DataGridView1.Columns("dimensiones").Width = 85
+        DataGridView1.Columns("dimensiones").HeaderText = "An. × Al."
+        DataGridView1.Columns("dimensiones").Width = 100
         DataGridView1.Columns("dimensiones").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
         DataGridView1.Columns("coleccion").HeaderText = "Colección"
         DataGridView1.Columns("coleccion").Width = 75
@@ -1046,6 +1083,14 @@
         For iCol = 13 To DataGridView1.ColumnCount - 1
             DataGridView1.Columns(iCol).Visible = False
         Next
+
+        'Ponemos el nombre a algunas colunas por el indice
+        DataGridView1.Columns(22).HeaderText = "TITN"
+        DataGridView1.Columns(22).Width = 60
+        DataGridView1.Columns(22).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
+
+
+
 
         'Activamos las columnas que pueden mostrarse y apagarse
         RenombrarItemsColumnas()
@@ -1143,6 +1188,7 @@
         lvDocResources.Columns.Add("Mostrar en WMS", 100, HorizontalAlignment.Left)
         lvDocResources.Columns.Add("Tipo WMS", 150, HorizontalAlignment.Left)
         lvDocResources.Columns.Add("Z-Index", 100, HorizontalAlignment.Left)
+        lvDocResources.Columns.Add("Contorno", 100, HorizontalAlignment.Left)
         lvDocResources.Columns.Add("IdContorno", 0, HorizontalAlignment.Left)
         lvDocResources.SmallImageList = MDIPrincipal.ImageList2
         lvDocResources.FullRowSelect = True
@@ -1186,7 +1232,7 @@
 
         btnAddingCarrito.Enabled = Not EsCarritoCompra
         btnDeletingCarrito.Enabled = EsCarritoCompra
-        btnEditar.Visible = usuarioMyApp.permisosLista.editarDocumentacion
+        btnEditar.Visible = usuarioMyApp.permisosLista.EditarDocumentacion
         mnuGenerateThumb.Visible = usuarioMyApp.permisosLista.usuarioISTARI
 
         TaxonDetailView(modeView.PanelClose)
@@ -1308,7 +1354,7 @@
 
     End Sub
 
-    Private Sub ExternalLinks(sender As Object, e As EventArgs) Handles Button1.Click, Button2.Click, btnLinkCdD.Click, btnTVCNIG.Click, btnLinkABSYS.Click
+    Private Sub ExternalLinks(sender As Object, e As EventArgs) Handles Button1.Click, Button2.Click, btnLinkCdD.Click, btnLinkImage.Click, btnLinkABSYS.Click
 
 
         If elemEntidadSel Is Nothing Then Exit Sub
@@ -1317,8 +1363,16 @@
             Exit Sub
         End If
 
-        Dim cadURL As String = sender.tag
+        Dim cadURL As String
         Try
+            cadURL = sender.tag
+            If sender.name = "Button1" Or sender.name = "btnLinkImage" Then
+                If Not IO.File.Exists(cadURL) Then
+                    ModalExclamation("Imagen no localizada")
+                    Exit Sub
+                End If
+            End If
+
             Process.Start(cadURL)
         Catch ex As Exception
             ModalError(ex.Message)
@@ -1350,6 +1404,7 @@
 
     Private Sub DataGridView1_Click(sender As Object, e As EventArgs) Handles DataGridView1.Click
         If DataGridView1.Rows.Count = 0 Then Exit Sub
+        If DataGridView1.CurrentCell Is Nothing Then Exit Sub
         FillDetailsReduced(DataGridView1.Item("idarchivo", DataGridView1.CurrentCell.RowIndex).Value.ToString)
 
     End Sub
@@ -1399,7 +1454,11 @@
 
     Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click, PictureBox2.Click
         Try
-            If IO.File.Exists(PictureBox1.Tag) Then Process.Start(PictureBox1.Tag)
+            If IO.File.Exists(PictureBox1.Tag) Then
+                ModalExclamation("Imagen no localizada")
+                Exit Sub
+            End If
+            Process.Start(PictureBox1.Tag)
         Catch ex As Exception
             GenerarLOG(ex.Message)
             ModalError(ex.Message)
@@ -1862,12 +1921,6 @@
                 pathMiniatura = docu.rutaFicheroThumb
                 If IO.File.Exists(pathMiniatura) Then IO.File.Delete(pathMiniatura)
 
-
-
-
-
-
-
                 If Ghost_ExtractPagesPDF2JPG(docu.rutaFicheroPDF, pathMiniatura, True) Then hechos += 1
                 docu = Nothing
 
@@ -1889,10 +1942,15 @@
 
         Dim rutaPDF As String
 
+
         Try
             Me.Cursor = Cursors.WaitCursor
             rutaPDF = Button4.Tag
-            If IO.File.Exists(rutaPDF) Then Process.Start(rutaPDF)
+            If Not IO.File.Exists(rutaPDF) Then
+                ModalExclamation("Documento PDF no localizado")
+                Exit Sub
+            End If
+            Process.Start(rutaPDF)
         Catch ex As Exception
             ModalError($"Error: {ex.Message}")
         Finally
@@ -2068,6 +2126,9 @@
                         Process.Start(URLIberPIX)
                     End If
                 End If
+            Else
+                ModalInfo("No se ha encontrado contornos definidos para el documento")
+                Exit Sub
             End If
         Catch ex As Exception
             ModalError(ex.Message)

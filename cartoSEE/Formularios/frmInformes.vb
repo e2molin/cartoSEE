@@ -251,7 +251,10 @@ Public Class frmInformes
 
     End Sub
 
-    Sub Informe_UltimoDocumentoSellado()
+    Sub Informe_UltimoDocumentoSelladoSemantico()
+
+        Dim rcdJumpSellos As DataTable
+        Dim sqlJumpSellos As String
 
         'Preparo el LV para mostrar los resultados
         ListView1.FullRowSelect = True
@@ -260,8 +263,10 @@ Public Class frmInformes
         ListView1.SmallImageList = MDIPrincipal.ImageList2
         ListView1.Columns.Clear()
         ListView1.Items.Clear()
-        ListView1.Columns.Add("Provincia", "Provincia", 150, HorizontalAlignment.Left, 0)
-        ListView1.Columns.Add("Sellado", "Último nº asignado", 250, HorizontalAlignment.Right, 0)
+        ListView1.Columns.Add("Provincia", "Provincia", 200, HorizontalAlignment.Left, 4)
+        ListView1.Columns.Add("Sellado", "Último nº asignado", 150, HorizontalAlignment.Right, 4)
+        ListView1.Columns.Add("Saltos", "Saltos", 100, HorizontalAlignment.Right, 4)
+        ListView1.Columns.Add("Sellados intermedios disponibles", "Disponibles", 200, HorizontalAlignment.Left, 4)
 
         ListView1.Tag = 3
         cadSQL = "SELECT provincia_id,max(numdoc) as ultimosello FROM bdsidschema.archivo GROUP BY provincia_id order by provincia_id"
@@ -272,9 +277,271 @@ Public Class frmInformes
             If filas.Length > 0 Then
                 Cancelar = False
                 For Each registro As DataRow In filas
+                    If registro("provincia_id") = 28 Then
+                        'Calculamos para la secuencia de sellados 280001-289999
+                        sqlJumpSellos = $"WITH sellos as (SELECT generate_series(280001,289999) as estampado)
+                                            SELECT COALESCE(string_agg(to_char(estampado, 'FM000009'::text),','),'No hay saltos') as saltos,count(*) as numsaltos 
+	                                            FROM sellos WHERE estampado NOT IN  
+                                            (SELECT numdoc::integer FROM bdsidschema.archivo WHERE provincia_id=28 and numdoc::integer BETWEEN 280000 AND 289999) "
+                        elementoLV = New ListViewItem
+                        elementoLV.Text = "Madrid. Secuencia entre 280000 y 289999"
+                        elementoLV.SubItems.Add(registro("ultimosello").ToString)
+
+                        rcdJumpSellos = New DataTable
+
+                        If CargarRecordset(sqlJumpSellos, rcdJumpSellos) Then
+                            Application.DoEvents()
+                            If rcdJumpSellos.Select().Count = 1 Then
+                                elementoLV.SubItems.Add(rcdJumpSellos.Select()(0)("numsaltos"))
+                                elementoLV.SubItems.Add(rcdJumpSellos.Select()(0)("saltos"))
+                            End If
+
+                        Else
+                            elementoLV.SubItems.Add("")
+                            elementoLV.SubItems.Add("Secuencia de saltos no calculada")
+                        End If
+
+                        If ListView1.Items.Count Mod 2 = 0 Then
+                            elementoLV.BackColor = Color.White
+                        Else
+                            elementoLV.BackColor = Color.WhiteSmoke
+                        End If
+                        ListView1.Items.Add(elementoLV)
+
+                        rcdJumpSellos.Dispose()
+                        rcdJumpSellos = Nothing
+                        elementoLV = Nothing
+
+                        'Calculamos para la secuencia de sellados 820001-829999
+                        sqlJumpSellos = $"WITH sellos as (SELECT generate_series(820001,829999) as estampado)
+                                            SELECT COALESCE(string_agg(to_char(estampado, 'FM000009'::text),','),'No hay saltos') as saltos,count(*) as numsaltos 
+	                                            FROM sellos WHERE estampado NOT IN  
+                                            (SELECT numdoc::integer FROM bdsidschema.archivo WHERE provincia_id=28 and numdoc::integer BETWEEN 820001 AND 829999) "
+                        elementoLV = New ListViewItem
+                        elementoLV.Text = "Madrid. Secuencia entre 820001 y 829999"
+                        elementoLV.SubItems.Add(registro("ultimosello").ToString)
+
+                        rcdJumpSellos = New DataTable
+
+                        If CargarRecordset(sqlJumpSellos, rcdJumpSellos) Then
+                            Application.DoEvents()
+                            If rcdJumpSellos.Select().Count = 1 Then
+                                elementoLV.SubItems.Add(rcdJumpSellos.Select()(0)("numsaltos"))
+                                elementoLV.SubItems.Add(rcdJumpSellos.Select()(0)("saltos"))
+                            End If
+
+                        Else
+                            elementoLV.SubItems.Add("")
+                            elementoLV.SubItems.Add("Secuencia de saltos no calculada")
+                        End If
+
+                        If ListView1.Items.Count Mod 2 = 0 Then
+                            elementoLV.BackColor = Color.White
+                        Else
+                            elementoLV.BackColor = Color.WhiteSmoke
+                        End If
+                        ListView1.Items.Add(elementoLV)
+
+                        rcdJumpSellos.Dispose()
+                        rcdJumpSellos = Nothing
+                        elementoLV = Nothing
+
+                        'Calculamos para la secuencia de sellados 880001-889999
+                        sqlJumpSellos = $"WITH sellos as (SELECT generate_series(880001,889999) as estampado)
+                                            SELECT COALESCE(string_agg(to_char(estampado, 'FM000009'::text),','),'No hay saltos') as saltos,count(*) as numsaltos 
+	                                            FROM sellos WHERE estampado NOT IN  
+                                            (SELECT numdoc::integer FROM bdsidschema.archivo WHERE provincia_id=28 and numdoc::integer BETWEEN 880001 AND 889999) "
+                        elementoLV = New ListViewItem
+                        elementoLV.Text = "Madrid. Secuencia entre 880001 y 889999"
+                        elementoLV.SubItems.Add(registro("ultimosello").ToString)
+
+                        rcdJumpSellos = New DataTable
+
+                        If CargarRecordset(sqlJumpSellos, rcdJumpSellos) Then
+                            Application.DoEvents()
+                            If rcdJumpSellos.Select().Count = 1 Then
+                                elementoLV.SubItems.Add(rcdJumpSellos.Select()(0)("numsaltos"))
+                                elementoLV.SubItems.Add(rcdJumpSellos.Select()(0)("saltos"))
+                            End If
+
+                        Else
+                            elementoLV.SubItems.Add("")
+                            elementoLV.SubItems.Add("Secuencia de saltos no calculada")
+                        End If
+
+                        If ListView1.Items.Count Mod 2 = 0 Then
+                            elementoLV.BackColor = Color.White
+                        Else
+                            elementoLV.BackColor = Color.WhiteSmoke
+                        End If
+                        ListView1.Items.Add(elementoLV)
+
+                        rcdJumpSellos.Dispose()
+                        rcdJumpSellos = Nothing
+                        elementoLV = Nothing
+
+
+
+                    Else
+                        sqlJumpSellos = $"with sellos as (
+	                                    select generate_series (
+		                                    (select min(numdoc::integer) from bdsidschema.archivo where provincia_id={registro("provincia_id")}),
+		                                    (select max(numdoc::integer) from bdsidschema.archivo where provincia_id={registro("provincia_id")})
+	                                    ) as estampado
+                                    )
+                                    select COALESCE(string_agg(to_char(estampado, 'FM000009'::text),','),'No hay saltos') as saltos,count(*) as numsaltos from sellos where estampado not IN  
+	                                    (SELECT numdoc::integer FROM bdsidschema.archivo WHERE provincia_id={registro("provincia_id")})"
+
+                        elementoLV = New ListViewItem
+                        elementoLV.Text = DameProvinciaByINE(registro("provincia_id").ToString)
+                        elementoLV.SubItems.Add(registro("ultimosello").ToString)
+
+                        rcdJumpSellos = New DataTable
+
+                        If CargarRecordset(sqlJumpSellos, rcdJumpSellos) Then
+                            Application.DoEvents()
+                            If rcdJumpSellos.Select().Count = 1 Then
+                                elementoLV.SubItems.Add(rcdJumpSellos.Select()(0)("numsaltos"))
+                                elementoLV.SubItems.Add(rcdJumpSellos.Select()(0)("saltos"))
+                            End If
+
+                        Else
+                            elementoLV.SubItems.Add("")
+                            elementoLV.SubItems.Add("Secuencia de saltos no calculada")
+                        End If
+
+                        If ListView1.Items.Count Mod 2 = 0 Then
+                            elementoLV.BackColor = Color.White
+                        Else
+                            elementoLV.BackColor = Color.WhiteSmoke
+                        End If
+                        ListView1.Items.Add(elementoLV)
+
+                        rcdJumpSellos.Dispose()
+                        rcdJumpSellos = Nothing
+                        elementoLV = Nothing
+                    End If
+
+
+
+                Next
+            End If
+        End If
+        reportData.Dispose()
+        reportData = Nothing
+
+        ToolStripStatusLabel1.Text = "Nº total de Provincias " & ListView1.Items.Count.ToString
+        ToolStripStatusLabel2.Text = ""
+
+
+
+    End Sub
+
+
+    Sub Informe_UltimoDocumentoSelladoConsecutivo()
+
+        Dim rcdJumpSellos As DataTable
+        Dim sqlJumpSellos As String
+
+        'Preparo el LV para mostrar los resultados
+        ListView1.FullRowSelect = True
+        ListView1.GridLines = False
+        ListView1.View = View.Details
+        ListView1.SmallImageList = MDIPrincipal.ImageList2
+        ListView1.Columns.Clear()
+        ListView1.Items.Clear()
+        ListView1.Columns.Add("Colección", "Colección", 200, HorizontalAlignment.Left, 4)
+        ListView1.Columns.Add("Sellado", "Sellado", 100, HorizontalAlignment.Right, 4)
+        ListView1.Columns.Add("Tipo", "Tipo", 150, HorizontalAlignment.Left, 4)
+        ListView1.Columns.Add("Tomo", "Tomo", 200, HorizontalAlignment.Left, 4)
+        ListView1.Columns.Add("Provincia", "Provincia", 200, HorizontalAlignment.Left, 4)
+        ListView1.Columns.Add("Alta", "Alta", 200, HorizontalAlignment.Left, 4)
+        ListView1.Columns.Add("Usuario", "Usuario", 200, HorizontalAlignment.Left, 4)
+        ListView1.Tag = 4
+
+
+
+        Dim docSIDDAE As ListViewGroup : docSIDDAE = New ListViewGroup("SIDDAE") : ListView1.Groups.Add(docSIDDAE)
+        Dim docSIDDAE1889 As ListViewGroup : docSIDDAE1889 = New ListViewGroup("SIDDAE - Actas 1889") : ListView1.Groups.Add(docSIDDAE1889)
+        Dim docSIDDAEFallo As ListViewGroup : docSIDDAEFallo = New ListViewGroup("SIDDAE - Fallo en sellado") : ListView1.Groups.Add(docSIDDAEFallo)
+        Dim docCuadIntEmpresa As ListViewGroup : docCuadIntEmpresa = New ListViewGroup("Cuadernos interiores - Empresa") : ListView1.Groups.Add(docCuadIntEmpresa)
+        Dim docCuadIntArchivo As ListViewGroup : docCuadIntArchivo = New ListViewGroup("Cuadernos interiores - Archivo") : ListView1.Groups.Add(docCuadIntArchivo)
+        Dim docCuadIntArchivoFallo As ListViewGroup : docCuadIntArchivoFallo = New ListViewGroup("Cuadernos interiores - Archivo - Fallo en sellado") : ListView1.Groups.Add(docCuadIntArchivoFallo)
+        Dim docTriangulacion As ListViewGroup : docTriangulacion = New ListViewGroup("Triangulación de Andalucía") : ListView1.Groups.Add(docTriangulacion)
+
+
+        cadSQL = "(select 'SIDDAE' as coleccion, 
+		                    tipo,tomo,provincias.nombreprovincia as provincia,sellado,fecha_alta as create_at,user_alta  as create_by
+	                    from bdsidschema.docsiddae 
+	                    left join bdsidschema.provincias ON provincias.idprovincia=docsiddae.provincia
+	                    where sellado <500000 
+	                    order by sellado desc limit 10
+                    ) UNION (
+                    select 'SIDDAE - Actas 1889' as coleccion, 
+		                    tipo,tomo,provincias.nombreprovincia as provincia,sellado,fecha_alta as create_at,user_alta as create_by
+	                    from bdsidschema.docsiddae 
+	                    left join bdsidschema.provincias ON provincias.idprovincia=docsiddae.provincia
+	                    where tipo='Actas de 1889'
+	                    order by sellado desc limit 10
+                    ) UNION (
+                    select 'SIDDAE (Fallo sellado)' as coleccion, 
+		                    tipo,tomo,provincias.nombreprovincia as provincia,sellado,fecha_alta as create_at,user_alta  as create_by
+	                    from bdsidschema.docsiddae 
+	                    left join bdsidschema.provincias ON provincias.idprovincia=docsiddae.provincia
+	                    where sellado >500000  and tipo<>'Actas de 1889'
+	                    order by sellado desc limit 10
+                    ) UNION (
+                    SELECT 'Cuad.Int. Empresa' as coleccion,
+		                    tipo || COALESCE('-' || subtipo,'') as tipo,tomo,provincias.nombreprovincia as provincia,sellado,create_at,create_by 
+	                    from bdsidschema.archivodocmtn 
+	                    left join bdsidschema.provincias ON provincias.idprovincia=archivodocmtn.codprov
+	                    where sellado>=500000 and sellado<=1000000 
+	                    order by sellado desc limit 10
+                    ) UNION (
+                    SELECT 'Cuad.Int. Archivo' as coleccion,
+		                    tipo || COALESCE('-' || subtipo,'') as tipo,tomo,provincias.nombreprovincia as provincia,sellado,create_at,create_by 
+	                    from bdsidschema.archivodocmtn 
+	                    left join bdsidschema.provincias ON provincias.idprovincia=archivodocmtn.codprov
+	                    where sellado<=500000
+	                    order by sellado desc limit 10
+                    ) UNION (
+                    SELECT 'Cuad.Int. Archivo (Fallo sellado)' as coleccion,
+		                    tipo || COALESCE('-' || subtipo,'') as tipo,tomo,provincias.nombreprovincia as provincia,sellado,create_at,create_by 
+	                    from bdsidschema.archivodocmtn 
+	                    left join bdsidschema.provincias ON provincias.idprovincia=archivodocmtn.codprov
+	                    where sellado>1000000
+	                    order by sellado desc limit 10
+                    ) UNION (
+                    SELECT 'Triangulación Andalucía' as coleccion,
+	                    tipo,tomo,provincias.nombreprovincia as provincia,sellado,null as create_at,null as create_by
+	                    FROM bdsidschema.trabajosprevios
+	                    left join bdsidschema.provincias ON provincias.idprovincia=trabajosprevios.codprov::integer
+	                    ORDER BY sellado desc  limit 10
+                    )
+                    order by coleccion,sellado desc"
+
+        reportData = New DataTable
+        If CargarRecordset(cadSQL, reportData) = True Then
+            filas = reportData.Select
+            If filas.Length > 0 Then
+                Cancelar = False
+                For Each registro As DataRow In filas
                     elementoLV = New ListViewItem
-                    elementoLV.Text = DameProvinciaByINE(registro("provincia_id").ToString)
-                    elementoLV.SubItems.Add(registro("ultimosello").ToString)
+                    elementoLV.Text = registro("coleccion").ToString
+                    elementoLV.SubItems.Add(registro("sellado").ToString)
+                    elementoLV.SubItems.Add(registro("tipo").ToString)
+                    elementoLV.SubItems.Add(registro("tomo").ToString)
+                    elementoLV.SubItems.Add(registro("provincia").ToString)
+                    elementoLV.SubItems.Add(registro("create_at").ToString)
+                    elementoLV.SubItems.Add(registro("create_by").ToString)
+                    If registro("coleccion").ToString = "SIDDAE" Then elementoLV.Group = docSIDDAE
+                    If registro("coleccion").ToString = "SIDDAE - Actas 1889" Then elementoLV.Group = docSIDDAE1889
+                    If registro("coleccion").ToString = "SIDDAE (Fallo sellado)" Then elementoLV.Group = docSIDDAEFallo
+                    If registro("coleccion").ToString = "Cuad.Int. Empresa" Then elementoLV.Group = docCuadIntEmpresa
+                    If registro("coleccion").ToString = "Cuad.Int. Archivo" Then elementoLV.Group = docCuadIntArchivo
+                    If registro("coleccion").ToString = "Cuad.Int. Archivo (Fallo sellado)" Then elementoLV.Group = docCuadIntArchivoFallo
+                    If registro("coleccion").ToString = "Triangulación Andalucía" Then elementoLV.Group = docTriangulacion
+
                     If ListView1.Items.Count Mod 2 = 0 Then
                         elementoLV.BackColor = Color.White
                     Else
@@ -288,12 +555,14 @@ Public Class frmInformes
         reportData.Dispose()
         reportData = Nothing
 
-        ToolStripStatusLabel1.Text = "Nº total de Provincias " & ListView1.Items.Count.ToString
+        ToolStripStatusLabel1.Text = "Registros " & ListView1.Items.Count.ToString
         ToolStripStatusLabel2.Text = ""
 
 
 
     End Sub
+
+
 
     Sub ListarPPCnoGeo()
 
@@ -435,8 +704,8 @@ Public Class frmInformes
     End Sub
 
 
-    Function CalcularAlturaCajetin(ByVal cadena As String, ByVal Fuente As Font, _
-                                ByVal AnchoTabular As Integer, _
+    Function CalcularAlturaCajetin(ByVal cadena As String, ByVal Fuente As Font,
+                                ByVal AnchoTabular As Integer,
                                 ByVal e As System.Drawing.Printing.PrintPageEventArgs) As Integer
 
         Dim SizeString As SizeF
@@ -458,7 +727,7 @@ Public Class frmInformes
         ElseIf ListView1.Tag = 2 Then
             Informe_Resumen_PorEstadoDoc()
         ElseIf ListView1.Tag = 3 Then
-            Informe_UltimoDocumentoSellado()
+            Informe_UltimoDocumentoSelladoSemantico()
         Else
             MessageBox.Show("Para actualizar los datos, seleccione el informe desde el menú", _
                                         AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)

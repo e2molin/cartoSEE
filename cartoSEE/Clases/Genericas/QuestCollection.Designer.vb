@@ -90,7 +90,6 @@ Partial Class QuestCollection
         '
         'Button3
         '
-        Me.Button3.Enabled = False
         Me.Button3.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button3.Image = CType(resources.GetObject("Button3.Image"), System.Drawing.Image)
         Me.Button3.Location = New System.Drawing.Point(301, 105)

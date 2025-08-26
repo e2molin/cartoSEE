@@ -225,17 +225,7 @@
 
         container.Image = Nothing
         Try
-            If IO.File.Exists(thumbImageName) Then
-                cargarImagenFromWeb(container, thumbImageName, $"{My.Application.Info.DirectoryPath}\resources\thumb-cuad.jpg", False, elemEntidadSel.rutaFicheroThumb)
-            Else
-                If elemEntidadSel.Subtipo = "Itinerarios con brújula" Then
-                    cargarImagenFromWeb(container, "{My.Application.Info.DirectoryPath}\resources\thumb-cuad-plani.jpg", $"{My.Application.Info.DirectoryPath}\resources\thumb-cuad-plani.jpg", False, "")
-                ElseIf elemEntidadSel.Subtipo = "Nivelación" Then
-                    cargarImagenFromWeb(container, "{My.Application.Info.DirectoryPath}\resources\thumb-cuad-alti.jpg", $"{My.Application.Info.DirectoryPath}\resources\thumb-cuad-alti.jpg", False, "")
-                Else
-                    cargarImagenFromWeb(container, "{My.Application.Info.DirectoryPath}\resources\thumb-cuad-plani.jpg", $"{My.Application.Info.DirectoryPath}\resources\thumb-cuad-plani.jpg", False, "")
-                End If
-            End If
+            cargarImagenFromWeb(container, thumbImageName, $"{My.Application.Info.DirectoryPath}\resources\thumb-cedula.png", False, elemEntidadSel.rutaFicheroThumb)
         Catch ex As Exception
             GenerarLOG(ex.Message)
             ModalError(ex.Message)

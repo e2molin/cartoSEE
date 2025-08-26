@@ -370,6 +370,89 @@
 
     End Sub
 
+
+    'Generar fichero conversion 23030 a 25830 para PP
+    Sub generate_conversionFile_planospoblacionEnCuaderno_report()
+
+        Dim docPP2CD As DataTable
+        Dim filas() As DataRow
+        Dim rutaFile As String
+        Dim contador As Integer
+        Dim LineaOUT As String
+        Dim cadsql As String
+        docPP2CD = New DataTable
+
+        Dim swConversion As New System.IO.StreamWriter(System.Environment.GetFolderPath(Environment.SpecialFolder.Desktop) & "\conversionPP.gms", False, System.Text.Encoding.Unicode)
+        Dim swMkdir As New System.IO.StreamWriter(System.Environment.GetFolderPath(Environment.SpecialFolder.Desktop) & "\conversionPP_mkdir.bat", False, System.Text.Encoding.Unicode)
+        swConversion.WriteLine("GLOBAL_MAPPER_SCRIPT VERSION=1.00 ENABLE_PROGRESS=YES")
+        swConversion.WriteLine("UNLOAD_ALL")
+        swConversion.WriteLine("SET_BG_COLOR COLOR=RGB(255,255,255)")
+
+
+        cadsql = "SELECT archivo.numdoc, tbtipodocumento.tipodoc, " &
+                "to_char(min(munihisto.cod_munihisto), 'FM0000009'::text) AS codinehisto, to_char(min(munihisto.cod_muni), 'FM00009'::text) AS codigoine, " &
+                "date_part('year'::text, archivo.fechaprincipal) AS anyo, " &
+                "((((((('file://sbdignmad650/geodocat_ii/'::text || tbtipodocumento.dirrepo::text) || '/'::text) || " &
+                "substring(to_char(archivo.municipiohistorico1_id, 'FM0000009'::text), 0, 3)) || '/'::text) || " &
+                "to_char(archivo.municipiohistorico1_id, 'FM0000009'::text)) || '/'::text) || contornos.nombre::text) || '.ecw'::text AS rutaresource, 'ECW' AS extension, archivo.provincia_id AS provin " &
+                "FROM contornos " &
+                "INNER JOIN archivo ON archivo.idarchivo = contornos.archivo_id " &
+                "INNER JOIN provincias ON provincias.idprovincia = archivo.provincia_id " &
+                "INNER JOIN tbtipodocumento ON archivo.tipodoc_id = tbtipodocumento.idtipodoc " &
+                "INNER JOIN archivo2munihisto ON archivo.idarchivo = archivo2munihisto.archivo_id " &
+                "INNER JOIN munihisto ON archivo2munihisto.munihisto_id = munihisto.idmunihisto " &
+                "WHERE (archivo.tipodoc_id = 7) AND archivo.municipiohistorico1_id <> 0 " &
+                "GROUP BY archivo.numdoc, tbtipodocumento.tipodoc, archivo.fechaprincipal, provincias.dirrepo, tbtipodocumento.dirrepo, archivo.provincia_id, archivo.municipiohistorico1_id, contornos.nombre"
+
+
+        ListBox2.Items.Clear()
+        If CargarDatatableMuni(cadsql, docPP2CD) = False Then
+            MessageBox.Show("No se puede acceder a la vista de cdd_planospoblacion_report", My.Application.Info.AssemblyName, MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Exit Sub
+        End If
+        filas = docPP2CD.Select
+        contador = 0
+        For Each fila As DataRow In filas
+            contador = contador + 1
+            ToolStripStatusLabel1.Text = "Procesando " & contador
+            Application.DoEvents()
+            rutaFile = fila.Item("rutaresource").ToString
+            If Not System.IO.File.Exists(rutaFile.Replace("file:", "")) Then
+                ListBox2.Items.Add("Fichero no localizado: " & rutaFile)
+            Else
+                Application.DoEvents()
+                LineaOUT = "IMPORT FILENAME=""" & rutaFile.Replace("file:", "") & """ TYPE=AUTO ANTI_ALIAS=NO AUTO_CONTRAST=NO"
+                swConversion.WriteLine(LineaOUT)
+                LineaOUT = "LOAD_PROJECTION FILENAME=""G:\test25830.prj"""
+                swConversion.WriteLine(LineaOUT)
+                LineaOUT = "EXPORT_RASTER FILENAME=""" &
+                            rutaFile.Replace("file:", "").Replace("/", "\").Replace("\\sbdignmad650\geodocat_ii", "g:\25830") &
+                            """ TYPE=ECW TARGET_COMPRESSION=1 GEN_WORLD_FILE=YES GEN_PRJ_FILE=YES"
+                swConversion.WriteLine(LineaOUT)
+                swConversion.WriteLine("UNLOAD_ALL")
+                swMkdir.WriteLine("mkdir " & SacarDirDeRuta(rutaFile.Replace("file:", "").Replace("/", "\").Replace("\\sbdignmad650\geodocat_ii", "g:\25830")))
+            End If
+            Application.DoEvents()
+
+        Next
+
+        Erase filas
+        docPP2CD.Clear()
+        docPP2CD = Nothing
+        swConversion.Close()
+        swConversion.Dispose()
+        swConversion = Nothing
+        swMkdir.Close()
+        swMkdir.Dispose()
+        swMkdir = Nothing
+        MessageBox.Show("Fichero de conversión generado", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+
+
+
+    End Sub
+
+
+
     'Generar fichero conversion 23030 a 25830 para PP
     Sub generate_conversionFile_planospoblacion_report()
 
@@ -723,6 +806,103 @@
         generate_conversionFile_hojaskilometricas_report()
     End Sub
 
+    Private Sub Button18_Click(sender As Object, e As EventArgs) Handles Button18.Click
+
+        Dim rutaECWInput As String = "D:\Volcados\planpobcuad"
+        Dim rutaECWOutput As String = "D:\Volcados\planpobcuadOUT"
+        Dim rutaPROJ23030 As String = "D:\Volcados\test_20030_to 25830\proj23030.prj"
+        Dim rutaPROJ25830 As String = "D:\Volcados\test_20030_to 25830\proj25830.prj"
+        Dim rutaScriptGSW As String = "D:\Volcados\test_20030_to 25830\conversion.gms"
+        Dim rutaSalida As String
+        Dim ListaFicheros As New ArrayList
+        Dim contador As Integer
+        Try
+            ' Obtener todos los archivos en el directorio y subdirectorios
+            For Each archivo As String In IO.Directory.EnumerateFiles(rutaECWInput, "*.*", IO.SearchOption.AllDirectories)
+                ' Aquí puedes procesar cada archivo
+                Application.DoEvents()
+                If archivo.ToLower.EndsWith(".ecw") Then ListaFicheros.Add(archivo)
+            Next
+            Application.DoEvents()
+
+
+
+            Using sw As New System.IO.StreamWriter(rutaScriptGSW)
+                sw.WriteLine("GLOBAL_MAPPER_SCRIPT VERSION=1.00 ENABLE_PROGRESS=YES")
+                sw.WriteLine("UNLOAD_ALL")
+                sw.WriteLine("SET_BG_COLOR COLOR=RGB(255,255,255)")
+
+                For Each rutaFile As String In ListaFicheros
+                    contador += 1
+                    rutaSalida = rutaFile.ToLower.Replace(rutaECWInput.ToLower, rutaECWOutput.ToLower)
+                    sw.WriteLine($"LOAD_PROJECTION FILENAME=""{rutaPROJ23030}""")
+                    sw.WriteLine($"IMPORT FILENAME=""{rutaFile}"" TYPE=AUTO ANTI_ALIAS=NO AUTO_CONTRAST=NO")
+                    sw.WriteLine($"LOAD_PROJECTION FILENAME=""{rutaPROJ25830}""")
+                    sw.WriteLine($"EXPORT_RASTER FILENAME=""{rutaSalida}"" TYPE=ECW TARGET_COMPRESSION=1 GEN_WORLD_FILE=YES GEN_PRJ_FILE=YES")
+                    sw.WriteLine("UNLOAD_ALL")
+                    Try
+                        If Not System.IO.File.Exists(SacarDirDeRuta(rutaSalida)) Then
+                            IO.Directory.CreateDirectory(SacarDirDeRuta(rutaSalida))
+                        End If
+                        Application.DoEvents()
+                    Catch ex As Exception
+                        Application.DoEvents()
+                    End Try
+                    If contador = 10 Then Exit For
+                Next
+                sw.Close()
+                sw.Dispose()
+            End Using
+
+
+
+
+
+
+            'For Each rutaFile As String In ListaFicheros
+            '    contador = contador + 1
+            '    ToolStripStatusLabel1.Text = "Procesando " & contador
+            '    Application.DoEvents()
+            '    If Not System.IO.File.Exists(rutaFile.Replace("file:", "")) Then
+            '        ListBox2.Items.Add("Fichero no localizado: " & rutaFile)
+            '    Else
+            '        Application.DoEvents()
+            '        LineaOUT = "IMPORT FILENAME=""" & rutaFile & """ TYPE=AUTO ANTI_ALIAS=NO AUTO_CONTRAST=NO"
+            '        swConversion.WriteLine(LineaOUT)
+            '        LineaOUT = "LOAD_PROJECTION FILENAME=""G:\test25830.prj"""
+            '        swConversion.WriteLine(LineaOUT)
+            '        LineaOUT = "EXPORT_RASTER FILENAME=""" &
+            '                    rutaFile.Replace("file:", "").Replace("/", "\").Replace("\\sbdignmad650\geodocat_ii", "g:\25830") &
+            '                    """ TYPE=ECW TARGET_COMPRESSION=1 GEN_WORLD_FILE=YES GEN_PRJ_FILE=YES"
+            '        swConversion.WriteLine(LineaOUT)
+            '        swConversion.WriteLine("UNLOAD_ALL")
+            '        swMkdir.WriteLine("mkdir " & SacarDirDeRuta(rutaFile.Replace("file:", "").Replace("/", "\").Replace("\\sbdignmad650\geodocat_ii", "g:\25830")))
+            '    End If
+            '    Application.DoEvents()
+
+            'Next
+
+
+
+
+            ' Alternativamente, puedes usar GetFiles, pero puede ser menos eficiente para directorios grandes
+            ' Dim archivos() As String = Directory.GetFiles(rutaDirectorio, "*.*", SearchOption.AllDirectories)
+            ' For Each archivo As String In archivos
+            '     Console.WriteLine(archivo)
+            ' Next
+
+        Catch ex As Exception
+            Console.WriteLine($"Error al iterar el directorio: {ex.Message}")
+        End Try
+
+
+        ModalInfo("proceso terminado")
+
+
+
+    End Sub
+
+
     Private Sub Button10_Click(sender As System.Object, e As System.EventArgs) Handles Button10.Click
 
         Dim iBucle As Integer
@@ -884,4 +1064,5 @@
             ModalError(ex.Message)
         End Try
     End Sub
+
 End Class

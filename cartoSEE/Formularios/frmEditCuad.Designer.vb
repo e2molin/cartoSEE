@@ -114,6 +114,9 @@ Partial Class frmEditCuad
         Me.CheckBox31 = New System.Windows.Forms.CheckBox()
         Me.ComboBox3 = New System.Windows.Forms.ComboBox()
         Me.TabPage3 = New System.Windows.Forms.TabPage()
+        Me.TextBox3 = New System.Windows.Forms.TextBox()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.CheckBox5 = New System.Windows.Forms.CheckBox()
         Me.Button14 = New System.Windows.Forms.Button()
         Me.TextBox24 = New System.Windows.Forms.TextBox()
         Me.Label32 = New System.Windows.Forms.Label()
@@ -127,9 +130,7 @@ Partial Class frmEditCuad
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.ErrorProvider1 = New System.Windows.Forms.ErrorProvider(Me.components)
         Me.Button13 = New System.Windows.Forms.Button()
-        Me.TextBox3 = New System.Windows.Forms.TextBox()
-        Me.Label7 = New System.Windows.Forms.Label()
-        Me.CheckBox5 = New System.Windows.Forms.CheckBox()
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.StatusStrip1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
@@ -138,6 +139,7 @@ Partial Class frmEditCuad
         Me.TabPage3.SuspendLayout()
         Me.TabPage2.SuspendLayout()
         CType(Me.ErrorProvider1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Button10
@@ -1038,9 +1040,9 @@ Partial Class frmEditCuad
         'Button15
         '
         Me.Button15.Image = CType(resources.GetObject("Button15.Image"), System.Drawing.Image)
-        Me.Button15.Location = New System.Drawing.Point(676, 454)
+        Me.Button15.Location = New System.Drawing.Point(667, 445)
         Me.Button15.Name = "Button15"
-        Me.Button15.Size = New System.Drawing.Size(199, 43)
+        Me.Button15.Size = New System.Drawing.Size(205, 48)
         Me.Button15.TabIndex = 90
         Me.Button15.Text = "«Atributos GEODOCAT»"
         Me.Button15.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
@@ -1106,12 +1108,39 @@ Partial Class frmEditCuad
         Me.TabPage3.Text = "Autoría y observaciones"
         Me.TabPage3.ToolTipText = "14"
         '
+        'TextBox3
+        '
+        Me.TextBox3.Location = New System.Drawing.Point(169, 135)
+        Me.TextBox3.Name = "TextBox3"
+        Me.TextBox3.Size = New System.Drawing.Size(484, 20)
+        Me.TextBox3.TabIndex = 21
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Location = New System.Drawing.Point(43, 136)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(67, 13)
+        Me.Label7.TabIndex = 91
+        Me.Label7.Text = "Instrumentos"
+        '
+        'CheckBox5
+        '
+        Me.CheckBox5.AutoSize = True
+        Me.CheckBox5.ForeColor = System.Drawing.SystemColors.ActiveCaption
+        Me.CheckBox5.Location = New System.Drawing.Point(23, 134)
+        Me.CheckBox5.Name = "CheckBox5"
+        Me.CheckBox5.Size = New System.Drawing.Size(86, 17)
+        Me.CheckBox5.TabIndex = 92
+        Me.CheckBox5.Text = "Instrumentos"
+        Me.CheckBox5.UseVisualStyleBackColor = True
+        '
         'Button14
         '
         Me.Button14.Image = CType(resources.GetObject("Button14.Image"), System.Drawing.Image)
-        Me.Button14.Location = New System.Drawing.Point(676, 454)
+        Me.Button14.Location = New System.Drawing.Point(667, 445)
         Me.Button14.Name = "Button14"
-        Me.Button14.Size = New System.Drawing.Size(199, 43)
+        Me.Button14.Size = New System.Drawing.Size(205, 48)
         Me.Button14.TabIndex = 89
         Me.Button14.Text = "«Autoría y observaciones»"
         Me.Button14.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
@@ -1226,32 +1255,14 @@ Partial Class frmEditCuad
         Me.Button13.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
         Me.Button13.UseVisualStyleBackColor = True
         '
-        'TextBox3
+        'PictureBox2
         '
-        Me.TextBox3.Location = New System.Drawing.Point(169, 135)
-        Me.TextBox3.Name = "TextBox3"
-        Me.TextBox3.Size = New System.Drawing.Size(484, 20)
-        Me.TextBox3.TabIndex = 21
-        '
-        'Label7
-        '
-        Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(43, 136)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(67, 13)
-        Me.Label7.TabIndex = 91
-        Me.Label7.Text = "Instrumentos"
-        '
-        'CheckBox5
-        '
-        Me.CheckBox5.AutoSize = True
-        Me.CheckBox5.ForeColor = System.Drawing.SystemColors.ActiveCaption
-        Me.CheckBox5.Location = New System.Drawing.Point(23, 134)
-        Me.CheckBox5.Name = "CheckBox5"
-        Me.CheckBox5.Size = New System.Drawing.Size(86, 17)
-        Me.CheckBox5.TabIndex = 92
-        Me.CheckBox5.Text = "Instrumentos"
-        Me.CheckBox5.UseVisualStyleBackColor = True
+        Me.PictureBox2.Image = CType(resources.GetObject("PictureBox2.Image"), System.Drawing.Image)
+        Me.PictureBox2.Location = New System.Drawing.Point(905, 449)
+        Me.PictureBox2.Name = "PictureBox2"
+        Me.PictureBox2.Size = New System.Drawing.Size(96, 96)
+        Me.PictureBox2.TabIndex = 74
+        Me.PictureBox2.TabStop = False
         '
         'frmEditCuad
         '
@@ -1259,6 +1270,7 @@ Partial Class frmEditCuad
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Gainsboro
         Me.ClientSize = New System.Drawing.Size(1015, 586)
+        Me.Controls.Add(Me.PictureBox2)
         Me.Controls.Add(Me.Button13)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.StatusStrip1)
@@ -1280,6 +1292,7 @@ Partial Class frmEditCuad
         Me.TabPage3.PerformLayout()
         Me.TabPage2.ResumeLayout(False)
         CType(Me.ErrorProvider1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1390,4 +1403,5 @@ Partial Class frmEditCuad
     Friend WithEvents TextBox3 As TextBox
     Friend WithEvents Label7 As Label
     Friend WithEvents CheckBox5 As CheckBox
+    Friend WithEvents PictureBox2 As PictureBox
 End Class

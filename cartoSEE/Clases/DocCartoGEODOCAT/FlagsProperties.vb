@@ -54,7 +54,6 @@
             valorDecimal = value
             valorBinario = develmap.develcode.BaseConversor.ToNumBase(value, 2)
             valorBinarioFormat = StrDup(propertyList.Count - valorBinario.Length, "0") & valorBinario
-            Application.DoEvents()
         End Set
     End Property
 

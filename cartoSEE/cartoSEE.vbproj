@@ -122,11 +122,15 @@
     <Compile Include="Clases\Autenticacion\myAppUser.vb" />
     <Compile Include="Clases\Autenticacion\Notificacion.vb" />
     <Compile Include="Clases\Destildator.vb" />
+    <Compile Include="Clases\DocCartoGEODOCAT\docCuadMTNQuery.vb" />
+    <Compile Include="Clases\DocCartoGEODOCAT\docSIDCECA.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\docCartoSEE.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\docCartoSEEquery.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\docCartoSEETipoDocu.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\docCartoSEEVariacion.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\docCuadMTN.vb" />
+    <Compile Include="Clases\DocCartoGEODOCAT\docSIDCECAListaProp.vb" />
+    <Compile Include="Clases\DocCartoGEODOCAT\docSIDCECAQuery.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\FileGeorref.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\FlagsProperties.vb" />
     <Compile Include="Clases\DocCartoGEODOCAT\FlagsPropertiesCuaderno.vb" />
@@ -134,6 +138,18 @@
       <DependentUpon>dataViewerForm.vb</DependentUpon>
     </Compile>
     <Compile Include="Clases\forms\dataViewerForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Clases\forms\frmActivity.Designer.vb">
+      <DependentUpon>frmActivity.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Clases\forms\frmActivity.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Clases\forms\frmListaProps.Designer.vb">
+      <DependentUpon>frmListaProps.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Clases\forms\frmListaProps.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Clases\Genericas\BaseConversor.vb" />
@@ -245,6 +261,12 @@
     <Compile Include="Formularios\frmEditCuad.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Formularios\frmExport.Designer.vb">
+      <DependentUpon>frmExport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\frmExport.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formularios\frmExportCdD.Designer.vb">
       <DependentUpon>frmExportCdD.vb</DependentUpon>
     </Compile>
@@ -293,6 +315,12 @@
     <Compile Include="Formularios\resultGEODOCAT.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Formularios\resultSIDCECA.Designer.vb">
+      <DependentUpon>resultSIDCECA.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\resultSIDCECA.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formularios\SplashScreen.designer.vb">
       <DependentUpon>SplashScreen.vb</DependentUpon>
     </Compile>
@@ -339,6 +367,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Clases\forms\dataViewerForm.resx">
       <DependentUpon>dataViewerForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Clases\forms\frmActivity.resx">
+      <DependentUpon>frmActivity.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Clases\forms\frmListaProps.resx">
+      <DependentUpon>frmListaProps.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Clases\Genericas\CustomMsgbox.resx">
       <DependentUpon>CustomMsgbox.vb</DependentUpon>
@@ -397,6 +431,9 @@
     <EmbeddedResource Include="Formularios\frmEditCuad.resx">
       <DependentUpon>frmEditCuad.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\frmExport.resx">
+      <DependentUpon>frmExport.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Formularios\frmExportCdD.resx">
       <DependentUpon>frmExportCdD.vb</DependentUpon>
     </EmbeddedResource>
@@ -420,6 +457,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formularios\resultGEODOCAT.resx">
       <DependentUpon>resultGEODOCAT.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\resultSIDCECA.resx">
+      <DependentUpon>resultSIDCECA.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formularios\SplashScreen.resx">
       <DependentUpon>SplashScreen.vb</DependentUpon>
@@ -493,6 +533,9 @@
     </Content>
     <Content Include="resources\Plantilla_PlanoPoblacionJuntaSI.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\thumb-cedula.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\thumb-cuad-alti.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

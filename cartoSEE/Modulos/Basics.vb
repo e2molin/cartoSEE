@@ -11,10 +11,12 @@ Module Basics
     Public rutaRepoGeorrefBase As String
     Public rutaRepoInventarioInfo As String
     Public rutaRepoCI As String = "\\sfiignmad162.ign.fomento.es\docgeo$\DocGeo\Archivo\cuadernosinteriores\"
+    Public RutaRepoSIDCECA As String = "\\sfiignmad162.ign.fomento.es\docgeo$\DocGeo\Archivo\sidceca2\"
     Public CalidadFavorita As String
     Public rutaRepoWeb As String
     Public MapaBase As String
     Public RutaRejillaNTV2 As String
+    Public unidadActualizCDD As String = ""
 
     Public DB_Servidor As String
     Public DB_Port As Long
@@ -25,7 +27,7 @@ Module Basics
     Public accessUser As String
     Public accessPass As String
     Public usuarioMyApp As myAppUser
-
+    Public TestMode As Boolean
 
 
     'Public App_User As String = ""
@@ -95,6 +97,8 @@ Module Basics
 
 
         canonicalURLCatalogoNew = LeeIni("Configuracion", "canonicalURLCatalogoNew")
+        unidadActualizCDD = LeeIni("Configuracion", "unidadActualizCDD")
+
 
         CalidadFavorita = LeeIni("Repositorio", "CalidadFavorita")
         RutaRejillaNTV2 = LeeIni("Configuracion", "RutaRejillaNTV2")
@@ -509,6 +513,64 @@ Module Basics
         ElseIf tipo = "GERMAN" Or tipo = "ISO8601" Then
             Return $"{fecha.Year}-{String.Format("{0:00}", fecha.Month)}-{ String.Format("{0:00}", fecha.Day)}"
         End If
+
+    End Function
+
+    Function ArrayEliminarDuplicadosInCuadernos(ByVal items() As docCuadMTN) As docCuadMTN()
+        Dim noDupsArrList As New ArrayList
+        For i As Integer = 0 To items.Length - 1
+            If Not noDupsArrList.Contains(items(i)) Then
+                noDupsArrList.Add(items(i))
+            End If
+        Next
+
+        Dim uniqueItems() As docCuadMTN
+        ReDim uniqueItems(noDupsArrList.Count - 1)
+        noDupsArrList.CopyTo(uniqueItems)
+        Return uniqueItems
+
+    End Function
+
+    Function deleteDuplicateLinesFromFile(path As String, Optional keepBAK As Boolean = False) As Boolean
+
+        Dim sr As System.IO.StreamReader
+        Dim sw As System.IO.StreamWriter
+        Dim linesFich As ArrayList
+        Dim strLine As String
+        Try
+            If Not System.IO.File.Exists(path) Then Return False
+            System.IO.File.Copy(path, path & ".bak", True)
+        Catch ex As Exception
+            GenerarLOG(ex.Message)
+            Return False
+        End Try
+
+        Try
+            linesFich = New ArrayList
+
+            sr = New System.IO.StreamReader(path)
+            Do While sr.Peek <> -1
+                strLine = sr.ReadLine()
+                If linesFich.Contains(strLine) = False Then
+                    linesFich.Add(strLine)
+                End If
+            Loop
+            sr.Close() : sr.Dispose() : sr = Nothing
+
+            sw = New System.IO.StreamWriter(path, False)
+            For Each item As String In linesFich
+                sw.WriteLine(item)
+            Next
+            sw.Close() : sw.Dispose() : sw = Nothing
+            If Not keepBAK Then System.IO.File.Delete(path & ".bak")
+            Return True
+        Catch ex As Exception
+            GenerarLOG(ex.Message)
+            Return False
+        Finally
+            linesFich.Clear()
+            linesFich = Nothing
+        End Try
 
     End Function
 

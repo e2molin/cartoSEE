@@ -14,6 +14,7 @@ Public Class FrmEdicionesMosaicos
         Me.Size = New Point(775, 400)
         DataGridView1.Size = New Point(630, 256)
         DataGridView1.Location = New Point(12, 60)
+        DataGridView1.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Bottom Or AnchorStyles.Right
         ToolStripStatusLabel2.Text = ""
         GroupBox1.Size = New Point(630, 256)
         GroupBox1.Location = New Point(12, 60)
@@ -22,6 +23,7 @@ Public Class FrmEdicionesMosaicos
 
         Button2.Visible = False
         Button3.Visible = False
+        registrarDatabaseLog("Consulta de mosaicos")
 
     End Sub
 
@@ -50,7 +52,7 @@ Public Class FrmEdicionesMosaicos
     Sub RellenarDataview()
 
         rcdMosaicos = New DataView
-        If CargarDataView("SELECT iddocdigital,titulo,coleccion,rutamosaico,codmuni FROM bdsidschema.docdigital", rcdMosaicos) = False Then
+        If CargarDataView("SELECT iddocdigital,titulo,coleccion,rutamosaico,codmuni,provincia_id,epsgcode FROM bdsidschema.docdigital", rcdMosaicos) = False Then
             MessageBox.Show("No se pueden cargar los mosaicos", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
             Exit Sub
         End If
@@ -62,6 +64,8 @@ Public Class FrmEdicionesMosaicos
         DataGridView1.Columns(2).HeaderText = "Tipo de mosaico"
         DataGridView1.Columns(3).Visible = False
         DataGridView1.Columns(4).Visible = False
+        DataGridView1.Columns(5).Visible = False
+        DataGridView1.Columns(6).Visible = False
         DataGridView1.RowsDefaultCellStyle.BackColor = Color.White
         DataGridView1.AlternatingRowsDefaultCellStyle.BackColor = Color.AliceBlue
         DataGridView1.Sort(DataGridView1.Columns(0), System.ComponentModel.ListSortDirection.Ascending)
@@ -85,8 +89,13 @@ Public Class FrmEdicionesMosaicos
         TextBox2.Text = DataGridView1.Item(2, DataGridView1.CurrentCell.RowIndex).Value.ToString
         TextBox3.Text = DataGridView1.Item(3, DataGridView1.CurrentCell.RowIndex).Value.ToString
         TextBox5.Text = DataGridView1.Item(4, DataGridView1.CurrentCell.RowIndex).Value.ToString
-        Button6.Tag = rutaRepoGeorref & "\MOSAICOS_DIGITALES\28\" & _
-                            DataGridView1.Item(3, DataGridView1.CurrentCell.RowIndex).Value.ToString
+
+        DataGridView1.Item(3, DataGridView1.CurrentCell.RowIndex).Value.ToString
+
+        Button6.Tag = $"{rutaRepoGeorrefBase}\epsg{DataGridView1.Item("epsgcode", DataGridView1.CurrentCell.RowIndex).Value}\MOSAICOS_DIGITALES\
+                        {String.Format("{0:00}", DataGridView1.Item("provincia_id", DataGridView1.CurrentCell.RowIndex).Value)}\
+                        {DataGridView1.Item("rutamosaico", DataGridView1.CurrentCell.RowIndex).Value}"
+
 
         'Ahora Relleno LV con las imágenes que forman el mosaico
         ListView2.Items.Clear()
@@ -217,9 +226,11 @@ Public Class FrmEdicionesMosaicos
     Private Sub Button6_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button6.Click
 
         Dim Fichero As String
-        Fichero = Button6.Tag
+
+        Fichero = $"{rutaRepoGeorrefBase}\epsg{DataGridView1.Item("epsgcode", DataGridView1.CurrentCell.RowIndex).Value}\MOSAICOS_DIGITALES\{String.Format("{0:00}", DataGridView1.Item("provincia_id", DataGridView1.CurrentCell.RowIndex).Value)}\{DataGridView1.Item("rutamosaico", DataGridView1.CurrentCell.RowIndex).Value}"
+
         If System.IO.File.Exists(Fichero) = False Then
-            MessageBox.Show("Fichero mosaico no disponible", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+            ModalExclamation("Fichero mosaico no disponible")
             Exit Sub
         End If
         LanzarVisorExterno(Fichero)
@@ -354,7 +365,7 @@ Public Class FrmEdicionesMosaicos
         Dim cadenaLog As String
         Dim Hayfallos As Boolean = False
         If DataGridView1.SelectedRows.Count = 0 Then
-            MessageBox.Show("Seleccione al menos un mosaico", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+            ModalExclamation("Seleccione al menos un mosaico")
             Exit Sub
         End If
 
@@ -367,12 +378,11 @@ Public Class FrmEdicionesMosaicos
         Dim sw As New System.IO.StreamWriter(FolderBrowserDialog1.SelectedPath & "\_Lista" & Now.Ticks.ToString & ".log", _
                                 False, System.Text.Encoding.Unicode)
         For i = 0 To DataGridView1.SelectedRows.Count - 1
-            RutaOrigen = rutaRepoGeorref & "\MOSAICOS_DIGITALES\28\" & _
-                            DataGridView1.Item(3, DataGridView1.SelectedRows(i).Index).Value.ToString
-            RutaDestino = FolderBrowserDialog1.SelectedPath & "\" & SacarFileDeRuta(RutaOrigen)
+            RutaOrigen = $"{rutaRepoGeorrefBase}\epsg{DataGridView1.Item(6, DataGridView1.SelectedRows(i).Index).Value}\MOSAICOS_DIGITALES\{DataGridView1.Item(4, DataGridView1.SelectedRows(i).Index).Value.ToString.Substring(0, 2)}\{DataGridView1.Item(3, DataGridView1.SelectedRows(i).Index).Value}"
+            RutaDestino = $"{FolderBrowserDialog1.SelectedPath}\{DataGridView1.Item(3, DataGridView1.SelectedRows(i).Index).Value}"
             Try
                 System.IO.File.Copy(RutaOrigen, RutaDestino, True)
-                copiados = copiados + 1
+                copiados += 1
                 cadenaLog = "Copiado: " & RutaOrigen
                 sw.WriteLine(cadenaLog)
                 ToolStripStatusLabel2.Text = "Copiado " & copiados & " de " & DataGridView1.SelectedRows.Count
@@ -386,10 +396,9 @@ Public Class FrmEdicionesMosaicos
         sw.Close()
         sw.Dispose()
         If Hayfallos = True Then
-            MessageBox.Show("Se han producido errores en la transferencia de ficheros", _
-            AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            ModalExclamation("Se han producido errores en la transferencia de ficheros")
         Else
-            MessageBox.Show("Copia de ficheros terminada", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+            ModalInfo("Copia de ficheros terminada")
         End If
 
 

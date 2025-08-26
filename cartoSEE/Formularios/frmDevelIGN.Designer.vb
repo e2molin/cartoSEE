@@ -51,6 +51,22 @@ Partial Class frmDevelIGN
         Me.btnTextExist = New System.Windows.Forms.Button()
         Me.ListBox2 = New System.Windows.Forms.ListBox()
         Me.TabPage3 = New System.Windows.Forms.TabPage()
+        Me.Button9 = New System.Windows.Forms.Button()
+        Me.TextBox5 = New System.Windows.Forms.TextBox()
+        Me.Label16 = New System.Windows.Forms.Label()
+        Me.Button8 = New System.Windows.Forms.Button()
+        Me.TextBox4 = New System.Windows.Forms.TextBox()
+        Me.Label15 = New System.Windows.Forms.Label()
+        Me.Button7 = New System.Windows.Forms.Button()
+        Me.TextBox3 = New System.Windows.Forms.TextBox()
+        Me.Label14 = New System.Windows.Forms.Label()
+        Me.Button6 = New System.Windows.Forms.Button()
+        Me.TextBox2 = New System.Windows.Forms.TextBox()
+        Me.Label13 = New System.Windows.Forms.Label()
+        Me.Button5 = New System.Windows.Forms.Button()
+        Me.Label12 = New System.Windows.Forms.Label()
+        Me.Label11 = New System.Windows.Forms.Label()
+        Me.Button4 = New System.Windows.Forms.Button()
         Me.Button3 = New System.Windows.Forms.Button()
         Me.Button2 = New System.Windows.Forms.Button()
         Me.TextBox1 = New System.Windows.Forms.TextBox()
@@ -60,8 +76,12 @@ Partial Class frmDevelIGN
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
         Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
-        Me.Button4 = New System.Windows.Forms.Button()
-        Me.Label11 = New System.Windows.Forms.Label()
+        Me.Label17 = New System.Windows.Forms.Label()
+        Me.TextBox6 = New System.Windows.Forms.TextBox()
+        Me.TextBox7 = New System.Windows.Forms.TextBox()
+        Me.Label18 = New System.Windows.Forms.Label()
+        Me.Button10 = New System.Windows.Forms.Button()
+        Me.Button11 = New System.Windows.Forms.Button()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
@@ -111,7 +131,7 @@ Partial Class frmDevelIGN
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(443, 13)
         Me.Label7.TabIndex = 17
-        Me.Label7.Text = "Dado un directorio con GCPs , aplica un parámetro de desplazamiento en  cada coor" & _
+        Me.Label7.Text = "Dado un directorio con GCPs , aplica un parámetro de desplazamiento en  cada coor" &
     "denada"
         '
         'procTranslate
@@ -133,7 +153,7 @@ Partial Class frmDevelIGN
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(540, 13)
         Me.Label6.TabIndex = 15
-        Me.Label6.Text = "Dado un directorio con GCPs en una proyección dada, los procesa reproyectándolos " & _
+        Me.Label6.Text = "Dado un directorio con GCPs en una proyección dada, los procesa reproyectándolos " &
     "a otro sistema de referencia"
         '
         'GroupBox2
@@ -355,6 +375,26 @@ Partial Class frmDevelIGN
         '
         'TabPage3
         '
+        Me.TabPage3.Controls.Add(Me.Button11)
+        Me.TabPage3.Controls.Add(Me.Button10)
+        Me.TabPage3.Controls.Add(Me.Label18)
+        Me.TabPage3.Controls.Add(Me.TextBox7)
+        Me.TabPage3.Controls.Add(Me.TextBox6)
+        Me.TabPage3.Controls.Add(Me.Label17)
+        Me.TabPage3.Controls.Add(Me.Button9)
+        Me.TabPage3.Controls.Add(Me.TextBox5)
+        Me.TabPage3.Controls.Add(Me.Label16)
+        Me.TabPage3.Controls.Add(Me.Button8)
+        Me.TabPage3.Controls.Add(Me.TextBox4)
+        Me.TabPage3.Controls.Add(Me.Label15)
+        Me.TabPage3.Controls.Add(Me.Button7)
+        Me.TabPage3.Controls.Add(Me.TextBox3)
+        Me.TabPage3.Controls.Add(Me.Label14)
+        Me.TabPage3.Controls.Add(Me.Button6)
+        Me.TabPage3.Controls.Add(Me.TextBox2)
+        Me.TabPage3.Controls.Add(Me.Label13)
+        Me.TabPage3.Controls.Add(Me.Button5)
+        Me.TabPage3.Controls.Add(Me.Label12)
         Me.TabPage3.Controls.Add(Me.Label11)
         Me.TabPage3.Controls.Add(Me.Button4)
         Me.TabPage3.Controls.Add(Me.Button3)
@@ -369,6 +409,150 @@ Partial Class frmDevelIGN
         Me.TabPage3.TabIndex = 2
         Me.TabPage3.Text = "Otros procedimientos"
         Me.TabPage3.UseVisualStyleBackColor = True
+        '
+        'Button9
+        '
+        Me.Button9.Image = CType(resources.GetObject("Button9.Image"), System.Drawing.Image)
+        Me.Button9.Location = New System.Drawing.Point(677, 308)
+        Me.Button9.Name = "Button9"
+        Me.Button9.Size = New System.Drawing.Size(44, 36)
+        Me.Button9.TabIndex = 36
+        Me.Button9.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.Button9.UseVisualStyleBackColor = True
+        '
+        'TextBox5
+        '
+        Me.TextBox5.Location = New System.Drawing.Point(135, 317)
+        Me.TextBox5.Name = "TextBox5"
+        Me.TextBox5.Size = New System.Drawing.Size(536, 20)
+        Me.TextBox5.TabIndex = 35
+        '
+        'Label16
+        '
+        Me.Label16.AutoSize = True
+        Me.Label16.Location = New System.Drawing.Point(65, 320)
+        Me.Label16.Name = "Label16"
+        Me.Label16.Size = New System.Drawing.Size(64, 13)
+        Me.Label16.TabIndex = 34
+        Me.Label16.Text = "PRJ destino"
+        '
+        'Button8
+        '
+        Me.Button8.Image = CType(resources.GetObject("Button8.Image"), System.Drawing.Image)
+        Me.Button8.Location = New System.Drawing.Point(677, 266)
+        Me.Button8.Name = "Button8"
+        Me.Button8.Size = New System.Drawing.Size(44, 36)
+        Me.Button8.TabIndex = 33
+        Me.Button8.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.Button8.UseVisualStyleBackColor = True
+        '
+        'TextBox4
+        '
+        Me.TextBox4.Location = New System.Drawing.Point(135, 275)
+        Me.TextBox4.Name = "TextBox4"
+        Me.TextBox4.Size = New System.Drawing.Size(536, 20)
+        Me.TextBox4.TabIndex = 32
+        '
+        'Label15
+        '
+        Me.Label15.AutoSize = True
+        Me.Label15.Location = New System.Drawing.Point(70, 278)
+        Me.Label15.Name = "Label15"
+        Me.Label15.Size = New System.Drawing.Size(59, 13)
+        Me.Label15.TabIndex = 31
+        Me.Label15.Text = "PRJ origen"
+        '
+        'Button7
+        '
+        Me.Button7.Image = CType(resources.GetObject("Button7.Image"), System.Drawing.Image)
+        Me.Button7.Location = New System.Drawing.Point(677, 228)
+        Me.Button7.Name = "Button7"
+        Me.Button7.Size = New System.Drawing.Size(44, 36)
+        Me.Button7.TabIndex = 30
+        Me.Button7.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.Button7.UseVisualStyleBackColor = True
+        '
+        'TextBox3
+        '
+        Me.TextBox3.Location = New System.Drawing.Point(135, 240)
+        Me.TextBox3.Name = "TextBox3"
+        Me.TextBox3.Size = New System.Drawing.Size(536, 20)
+        Me.TextBox3.TabIndex = 29
+        '
+        'Label14
+        '
+        Me.Label14.AutoSize = True
+        Me.Label14.Location = New System.Drawing.Point(32, 247)
+        Me.Label14.Name = "Label14"
+        Me.Label14.Size = New System.Drawing.Size(97, 13)
+        Me.Label14.TabIndex = 28
+        Me.Label14.Text = "Directorio de salida"
+        '
+        'Button6
+        '
+        Me.Button6.Image = CType(resources.GetObject("Button6.Image"), System.Drawing.Image)
+        Me.Button6.Location = New System.Drawing.Point(677, 189)
+        Me.Button6.Name = "Button6"
+        Me.Button6.Size = New System.Drawing.Size(44, 36)
+        Me.Button6.TabIndex = 27
+        Me.Button6.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.Button6.UseVisualStyleBackColor = True
+        '
+        'TextBox2
+        '
+        Me.TextBox2.Location = New System.Drawing.Point(135, 205)
+        Me.TextBox2.Name = "TextBox2"
+        Me.TextBox2.Size = New System.Drawing.Size(536, 20)
+        Me.TextBox2.TabIndex = 26
+        '
+        'Label13
+        '
+        Me.Label13.AutoSize = True
+        Me.Label13.Location = New System.Drawing.Point(23, 208)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(106, 13)
+        Me.Label13.TabIndex = 25
+        Me.Label13.Text = "Directorio de entrada"
+        '
+        'Button5
+        '
+        Me.Button5.Image = CType(resources.GetObject("Button5.Image"), System.Drawing.Image)
+        Me.Button5.Location = New System.Drawing.Point(608, 352)
+        Me.Button5.Name = "Button5"
+        Me.Button5.Size = New System.Drawing.Size(115, 36)
+        Me.Button5.TabIndex = 24
+        Me.Button5.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.Button5.UseVisualStyleBackColor = True
+        '
+        'Label12
+        '
+        Me.Label12.AutoSize = True
+        Me.Label12.ForeColor = System.Drawing.Color.RoyalBlue
+        Me.Label12.Location = New System.Drawing.Point(21, 179)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(289, 13)
+        Me.Label12.TabIndex = 23
+        Me.Label12.Text = "Reproyección de un directorio con ECWs de un epsg a otro"
+        '
+        'Label11
+        '
+        Me.Label11.AutoSize = True
+        Me.Label11.ForeColor = System.Drawing.Color.RoyalBlue
+        Me.Label11.Location = New System.Drawing.Point(23, 83)
+        Me.Label11.Name = "Label11"
+        Me.Label11.Size = New System.Drawing.Size(111, 13)
+        Me.Label11.TabIndex = 22
+        Me.Label11.Text = "Convertir TIFF a ECW"
+        '
+        'Button4
+        '
+        Me.Button4.Image = CType(resources.GetObject("Button4.Image"), System.Drawing.Image)
+        Me.Button4.Location = New System.Drawing.Point(653, 129)
+        Me.Button4.Name = "Button4"
+        Me.Button4.Size = New System.Drawing.Size(44, 36)
+        Me.Button4.TabIndex = 21
+        Me.Button4.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.Button4.UseVisualStyleBackColor = True
         '
         'Button3
         '
@@ -414,7 +598,7 @@ Partial Class frmDevelIGN
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(574, 13)
         Me.Label9.TabIndex = 16
-        Me.Label9.Text = "Dado un directorio con GCPs los fusiona en un único ASCII file etiquetando cada e" & _
+        Me.Label9.Text = "Dado un directorio con GCPs los fusiona en un único ASCII file etiquetando cada e" &
     "ntidad con el nombre del fichero GCP"
         '
         'StatusStrip1
@@ -429,31 +613,60 @@ Partial Class frmDevelIGN
         'ToolStripStatusLabel1
         '
         Me.ToolStripStatusLabel1.Name = "ToolStripStatusLabel1"
-        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(121, 17)
+        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(120, 17)
         Me.ToolStripStatusLabel1.Text = "ToolStripStatusLabel1"
         '
-        'SaveFileDialog1
+        'Label17
         '
+        Me.Label17.AutoSize = True
+        Me.Label17.Location = New System.Drawing.Point(28, 108)
+        Me.Label17.Name = "Label17"
+        Me.Label17.Size = New System.Drawing.Size(106, 13)
+        Me.Label17.TabIndex = 37
+        Me.Label17.Text = "Directorio de entrada"
         '
-        'Button4
+        'TextBox6
         '
-        Me.Button4.Image = CType(resources.GetObject("Button4.Image"), System.Drawing.Image)
-        Me.Button4.Location = New System.Drawing.Point(26, 114)
-        Me.Button4.Name = "Button4"
-        Me.Button4.Size = New System.Drawing.Size(44, 36)
-        Me.Button4.TabIndex = 21
-        Me.Button4.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
-        Me.Button4.UseVisualStyleBackColor = True
+        Me.TextBox6.Location = New System.Drawing.Point(140, 105)
+        Me.TextBox6.Name = "TextBox6"
+        Me.TextBox6.Size = New System.Drawing.Size(457, 20)
+        Me.TextBox6.TabIndex = 38
         '
-        'Label11
+        'TextBox7
         '
-        Me.Label11.AutoSize = True
-        Me.Label11.ForeColor = System.Drawing.Color.RoyalBlue
-        Me.Label11.Location = New System.Drawing.Point(23, 98)
-        Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(249, 13)
-        Me.Label11.TabIndex = 22
-        Me.Label11.Text = "Generar datos para la plantilla del WMS de Minutas"
+        Me.TextBox7.Location = New System.Drawing.Point(140, 145)
+        Me.TextBox7.Name = "TextBox7"
+        Me.TextBox7.Size = New System.Drawing.Size(457, 20)
+        Me.TextBox7.TabIndex = 39
+        '
+        'Label18
+        '
+        Me.Label18.AutoSize = True
+        Me.Label18.Location = New System.Drawing.Point(32, 148)
+        Me.Label18.Name = "Label18"
+        Me.Label18.Size = New System.Drawing.Size(97, 13)
+        Me.Label18.TabIndex = 40
+        Me.Label18.Text = "Directorio de salida"
+        '
+        'Button10
+        '
+        Me.Button10.Image = CType(resources.GetObject("Button10.Image"), System.Drawing.Image)
+        Me.Button10.Location = New System.Drawing.Point(603, 96)
+        Me.Button10.Name = "Button10"
+        Me.Button10.Size = New System.Drawing.Size(44, 36)
+        Me.Button10.TabIndex = 41
+        Me.Button10.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.Button10.UseVisualStyleBackColor = True
+        '
+        'Button11
+        '
+        Me.Button11.Image = CType(resources.GetObject("Button11.Image"), System.Drawing.Image)
+        Me.Button11.Location = New System.Drawing.Point(603, 136)
+        Me.Button11.Name = "Button11"
+        Me.Button11.Size = New System.Drawing.Size(44, 36)
+        Me.Button11.TabIndex = 42
+        Me.Button11.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.Button11.UseVisualStyleBackColor = True
         '
         'frmDevelIGN
         '
@@ -521,4 +734,24 @@ Partial Class frmDevelIGN
     Friend WithEvents Button3 As System.Windows.Forms.Button
     Friend WithEvents Label11 As System.Windows.Forms.Label
     Friend WithEvents Button4 As System.Windows.Forms.Button
+    Friend WithEvents Button6 As Button
+    Friend WithEvents TextBox2 As TextBox
+    Friend WithEvents Label13 As Label
+    Friend WithEvents Button5 As Button
+    Friend WithEvents Label12 As Label
+    Friend WithEvents Button7 As Button
+    Friend WithEvents TextBox3 As TextBox
+    Friend WithEvents Label14 As Label
+    Friend WithEvents Button8 As Button
+    Friend WithEvents TextBox4 As TextBox
+    Friend WithEvents Label15 As Label
+    Friend WithEvents Button9 As Button
+    Friend WithEvents TextBox5 As TextBox
+    Friend WithEvents Label16 As Label
+    Friend WithEvents Button11 As Button
+    Friend WithEvents Button10 As Button
+    Friend WithEvents Label18 As Label
+    Friend WithEvents TextBox7 As TextBox
+    Friend WithEvents TextBox6 As TextBox
+    Friend WithEvents Label17 As Label
 End Class

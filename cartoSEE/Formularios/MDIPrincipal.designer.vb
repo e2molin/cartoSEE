@@ -63,6 +63,12 @@ Partial Class MDIPrincipal
         Me.mnuAddContornos = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMuniHisto = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuQueryLibrosRegistro = New System.Windows.Forms.ToolStripMenuItem()
+        Me.SIDCECAToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuListasPropJGE = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuCCMadProv = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuCCMadDistritos = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuCCOutMadrid = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuMosaicos = New System.Windows.Forms.ToolStripMenuItem()
         Me.ViewMenu = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolBarToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.StatusBarToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -72,6 +78,7 @@ Partial Class MDIPrincipal
         Me.mnuTool_Informes01 = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuTool_Informes02 = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuTool_Informes03 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuTool_Informes04 = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuReportDocsNoContornos = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuPPCnoGeo = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuGenerarRejilla = New System.Windows.Forms.ToolStripMenuItem()
@@ -91,13 +98,14 @@ Partial Class MDIPrincipal
         Me.CloseAllToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ArrangeIconsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.UserMenu = New System.Windows.Forms.ToolStripMenuItem()
-        Me.itemUsermenu = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator11 = New System.Windows.Forms.ToolStripSeparator()
         Me.itemChangePass = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuListaPermisos = New System.Windows.Forms.ToolStripMenuItem()
         Me.itemGestionUser = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuOpenLoggerFile = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuOpenPreferenceFolder = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuActivity = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuTextModeToggle = New System.Windows.Forms.ToolStripMenuItem()
         Me.HelpMenu = New System.Windows.Forms.ToolStripMenuItem()
         Me.IndexToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator8 = New System.Windows.Forms.ToolStripSeparator()
@@ -120,6 +128,7 @@ Partial Class MDIPrincipal
         Me.ButCarrito = New System.Windows.Forms.ToolStripButton()
         Me.btnVisorMosaicos = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripButton20 = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripButton8 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripButton10 = New System.Windows.Forms.ToolStripButton()
         Me.btnExportCdD = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripDropDownButton1 = New System.Windows.Forms.ToolStripDropDownButton()
@@ -140,7 +149,6 @@ Partial Class MDIPrincipal
         Me.ToolStripButton16 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripButton18 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripButton14 = New System.Windows.Forms.ToolStripButton()
-        Me.ToolStripButton8 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
         Me.ToolStripButton11 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripButton2 = New System.Windows.Forms.ToolStripButton()
@@ -186,8 +194,10 @@ Partial Class MDIPrincipal
         Me.Label9 = New System.Windows.Forms.Label()
         Me.Button2 = New System.Windows.Forms.Button()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
+        Me.btnInvestigar = New System.Windows.Forms.Button()
         Me.btnPendingCatalog = New System.Windows.Forms.Button()
         Me.Panel_DocSearch = New System.Windows.Forms.Panel()
+        Me.Button1 = New System.Windows.Forms.Button()
         Me.TextBox4 = New System.Windows.Forms.TextBox()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.TextBox20 = New System.Windows.Forms.TextBox()
@@ -247,7 +257,7 @@ Partial Class MDIPrincipal
         Me.Button6 = New System.Windows.Forms.Button()
         Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
         Me.ImageList2 = New System.Windows.Forms.ImageList(Me.components)
-        Me.btnInvestigar = New System.Windows.Forms.Button()
+        Me.TSSearchCC = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip.SuspendLayout()
         Me.ToolStrip.SuspendLayout()
         Me.StatusStrip.SuspendLayout()
@@ -267,7 +277,7 @@ Partial Class MDIPrincipal
         'MenuStrip
         '
         Me.MenuStrip.Font = New System.Drawing.Font("Verdana", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.MenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AplicaciónToolStripMenuItem, Me.FileMenu, Me.ViewMenu, Me.ToolsMenu, Me.WindowsMenu, Me.UserMenu, Me.HelpMenu})
+        Me.MenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AplicaciónToolStripMenuItem, Me.FileMenu, Me.SIDCECAToolStripMenuItem, Me.ViewMenu, Me.ToolsMenu, Me.WindowsMenu, Me.UserMenu, Me.HelpMenu})
         Me.MenuStrip.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip.MdiWindowListItem = Me.WindowsMenu
         Me.MenuStrip.Name = "MenuStrip"
@@ -543,6 +553,46 @@ Partial Class MDIPrincipal
         Me.mnuQueryLibrosRegistro.Size = New System.Drawing.Size(280, 22)
         Me.mnuQueryLibrosRegistro.Text = "Consulta de libros de registro"
         '
+        'SIDCECAToolStripMenuItem
+        '
+        Me.SIDCECAToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuListasPropJGE, Me.mnuCCMadProv, Me.mnuCCMadDistritos, Me.mnuCCOutMadrid, Me.mnuMosaicos})
+        Me.SIDCECAToolStripMenuItem.Image = CType(resources.GetObject("SIDCECAToolStripMenuItem.Image"), System.Drawing.Image)
+        Me.SIDCECAToolStripMenuItem.Name = "SIDCECAToolStripMenuItem"
+        Me.SIDCECAToolStripMenuItem.Size = New System.Drawing.Size(90, 20)
+        Me.SIDCECAToolStripMenuItem.Text = "SIDCECA"
+        '
+        'mnuListasPropJGE
+        '
+        Me.mnuListasPropJGE.Image = CType(resources.GetObject("mnuListasPropJGE.Image"), System.Drawing.Image)
+        Me.mnuListasPropJGE.Name = "mnuListasPropJGE"
+        Me.mnuListasPropJGE.Size = New System.Drawing.Size(331, 22)
+        Me.mnuListasPropJGE.Text = "Listas de propietarios Catastro JGE"
+        '
+        'mnuCCMadProv
+        '
+        Me.mnuCCMadProv.Name = "mnuCCMadProv"
+        Me.mnuCCMadProv.Size = New System.Drawing.Size(331, 22)
+        Me.mnuCCMadProv.Text = "Cédulas catastrales JGE - Madrid Provincia"
+        '
+        'mnuCCMadDistritos
+        '
+        Me.mnuCCMadDistritos.Name = "mnuCCMadDistritos"
+        Me.mnuCCMadDistritos.Size = New System.Drawing.Size(331, 22)
+        Me.mnuCCMadDistritos.Text = "Cédulas catastrales JGE - Distritos de Madrid"
+        '
+        'mnuCCOutMadrid
+        '
+        Me.mnuCCOutMadrid.Name = "mnuCCOutMadrid"
+        Me.mnuCCOutMadrid.Size = New System.Drawing.Size(331, 22)
+        Me.mnuCCOutMadrid.Text = "Cedulas catastrales JGE - Resto España"
+        '
+        'mnuMosaicos
+        '
+        Me.mnuMosaicos.Image = CType(resources.GetObject("mnuMosaicos.Image"), System.Drawing.Image)
+        Me.mnuMosaicos.Name = "mnuMosaicos"
+        Me.mnuMosaicos.Size = New System.Drawing.Size(331, 22)
+        Me.mnuMosaicos.Text = "Mosaicos de planos parcelarios de la JGE"
+        '
         'ViewMenu
         '
         Me.ViewMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolBarToolStripMenuItem, Me.StatusBarToolStripMenuItem, Me.PanelLateralIzquierdoToolStripMenuItem})
@@ -586,7 +636,7 @@ Partial Class MDIPrincipal
         '
         'mnuTool_Informes
         '
-        Me.mnuTool_Informes.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuTool_Informes01, Me.mnuTool_Informes02, Me.mnuTool_Informes03, Me.mnuReportDocsNoContornos, Me.mnuPPCnoGeo})
+        Me.mnuTool_Informes.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuTool_Informes01, Me.mnuTool_Informes02, Me.mnuTool_Informes03, Me.mnuTool_Informes04, Me.mnuReportDocsNoContornos, Me.mnuPPCnoGeo})
         Me.mnuTool_Informes.Image = CType(resources.GetObject("mnuTool_Informes.Image"), System.Drawing.Image)
         Me.mnuTool_Informes.Name = "mnuTool_Informes"
         Me.mnuTool_Informes.Size = New System.Drawing.Size(307, 22)
@@ -595,31 +645,37 @@ Partial Class MDIPrincipal
         'mnuTool_Informes01
         '
         Me.mnuTool_Informes01.Name = "mnuTool_Informes01"
-        Me.mnuTool_Informes01.Size = New System.Drawing.Size(428, 22)
+        Me.mnuTool_Informes01.Size = New System.Drawing.Size(445, 22)
         Me.mnuTool_Informes01.Text = "Inventario GEODOCAT clasificado por tipo de documento"
         '
         'mnuTool_Informes02
         '
         Me.mnuTool_Informes02.Name = "mnuTool_Informes02"
-        Me.mnuTool_Informes02.Size = New System.Drawing.Size(428, 22)
+        Me.mnuTool_Informes02.Size = New System.Drawing.Size(445, 22)
         Me.mnuTool_Informes02.Text = "Inventario GEODOCAT clasificado por estado de conservación"
         '
         'mnuTool_Informes03
         '
         Me.mnuTool_Informes03.Name = "mnuTool_Informes03"
-        Me.mnuTool_Informes03.Size = New System.Drawing.Size(428, 22)
-        Me.mnuTool_Informes03.Text = "Últimos números de sellado asignados por provincia"
+        Me.mnuTool_Informes03.Size = New System.Drawing.Size(445, 22)
+        Me.mnuTool_Informes03.Text = "Últimos números de sellado semántico catalogados por provincia"
+        '
+        'mnuTool_Informes04
+        '
+        Me.mnuTool_Informes04.Name = "mnuTool_Informes04"
+        Me.mnuTool_Informes04.Size = New System.Drawing.Size(445, 22)
+        Me.mnuTool_Informes04.Text = "Últimos números de sellado consecutivo catalogados"
         '
         'mnuReportDocsNoContornos
         '
         Me.mnuReportDocsNoContornos.Name = "mnuReportDocsNoContornos"
-        Me.mnuReportDocsNoContornos.Size = New System.Drawing.Size(428, 22)
+        Me.mnuReportDocsNoContornos.Size = New System.Drawing.Size(445, 22)
         Me.mnuReportDocsNoContornos.Text = "Documentos GEODOCAT sin contorno definido"
         '
         'mnuPPCnoGeo
         '
         Me.mnuPPCnoGeo.Name = "mnuPPCnoGeo"
-        Me.mnuPPCnoGeo.Size = New System.Drawing.Size(428, 22)
+        Me.mnuPPCnoGeo.Size = New System.Drawing.Size(445, 22)
         Me.mnuPPCnoGeo.Text = "Planos de población en cuaderno no georreferenciados"
         '
         'mnuGenerarRejilla
@@ -729,17 +785,10 @@ Partial Class MDIPrincipal
         '
         'UserMenu
         '
-        Me.UserMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.itemUsermenu, Me.ToolStripSeparator11, Me.itemChangePass, Me.mnuListaPermisos, Me.itemGestionUser, Me.mnuOpenLoggerFile, Me.mnuOpenPreferenceFolder})
+        Me.UserMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripSeparator11, Me.itemChangePass, Me.mnuListaPermisos, Me.itemGestionUser, Me.mnuOpenLoggerFile, Me.mnuOpenPreferenceFolder, Me.mnuActivity, Me.mnuTextModeToggle})
         Me.UserMenu.Name = "UserMenu"
         Me.UserMenu.Size = New System.Drawing.Size(62, 20)
         Me.UserMenu.Text = "Usuario"
-        '
-        'itemUsermenu
-        '
-        Me.itemUsermenu.Image = CType(resources.GetObject("itemUsermenu.Image"), System.Drawing.Image)
-        Me.itemUsermenu.Name = "itemUsermenu"
-        Me.itemUsermenu.Size = New System.Drawing.Size(253, 22)
-        Me.itemUsermenu.Text = "Notificación de incidencia"
         '
         'ToolStripSeparator11
         '
@@ -779,6 +828,19 @@ Partial Class MDIPrincipal
         Me.mnuOpenPreferenceFolder.Size = New System.Drawing.Size(253, 22)
         Me.mnuOpenPreferenceFolder.Text = "Abrir directorio de preferencias"
         '
+        'mnuActivity
+        '
+        Me.mnuActivity.Image = CType(resources.GetObject("mnuActivity.Image"), System.Drawing.Image)
+        Me.mnuActivity.Name = "mnuActivity"
+        Me.mnuActivity.Size = New System.Drawing.Size(253, 22)
+        Me.mnuActivity.Text = "Actividad en BADASID"
+        '
+        'mnuTextModeToggle
+        '
+        Me.mnuTextModeToggle.Name = "mnuTextModeToggle"
+        Me.mnuTextModeToggle.Size = New System.Drawing.Size(253, 22)
+        Me.mnuTextModeToggle.Text = "TestMode"
+        '
         'HelpMenu
         '
         Me.HelpMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.IndexToolStripMenuItem, Me.ToolStripSeparator8, Me.AboutToolStripMenuItem})
@@ -809,7 +871,7 @@ Partial Class MDIPrincipal
         'ToolStrip
         '
         Me.ToolStrip.ImageScalingSize = New System.Drawing.Size(48, 48)
-        Me.ToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolConfig, Me.ToolStripSeparator1, Me.ToolStripButton5, Me.ToolStripButton6, Me.ToolStripButton15, Me.ToolStripSeparator9, Me.ToolStripDropDownButton2, Me.ToolStripButton17, Me.ToolStripSeparator3, Me.ToolStripSplitButton1, Me.ButCarrito, Me.btnVisorMosaicos, Me.ToolStripButton20, Me.ToolStripButton10, Me.btnExportCdD, Me.ToolStripDropDownButton1, Me.ToolStripButton19, Me.ToolStripButton1, Me.ToolStripSeparator4, Me.ToolStripButton3, Me.ToolStripButton4, Me.ToolMiniaturas, Me.ToolStripButton7, Me.ToolStripButton16, Me.ToolStripButton18, Me.ToolStripButton14, Me.ToolStripButton8, Me.ToolStripSeparator2, Me.ToolStripButton11, Me.ToolStripButton2, Me.HelpToolStripButton, Me.ToolStripButton13})
+        Me.ToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolConfig, Me.ToolStripSeparator1, Me.ToolStripButton5, Me.ToolStripButton6, Me.ToolStripButton15, Me.ToolStripSeparator9, Me.ToolStripDropDownButton2, Me.ToolStripButton17, Me.ToolStripSeparator3, Me.ToolStripSplitButton1, Me.ButCarrito, Me.btnVisorMosaicos, Me.ToolStripButton20, Me.ToolStripButton8, Me.ToolStripButton10, Me.btnExportCdD, Me.ToolStripDropDownButton1, Me.ToolStripButton19, Me.ToolStripButton1, Me.ToolStripSeparator4, Me.ToolStripButton3, Me.ToolStripButton4, Me.ToolMiniaturas, Me.ToolStripButton7, Me.ToolStripButton16, Me.ToolStripButton18, Me.ToolStripButton14, Me.ToolStripSeparator2, Me.ToolStripButton11, Me.ToolStripButton2, Me.HelpToolStripButton, Me.ToolStripButton13})
         Me.ToolStrip.Location = New System.Drawing.Point(0, 24)
         Me.ToolStrip.Name = "ToolStrip"
         Me.ToolStrip.Size = New System.Drawing.Size(1539, 55)
@@ -865,7 +927,7 @@ Partial Class MDIPrincipal
         'ToolStripDropDownButton2
         '
         Me.ToolStripDropDownButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.ToolStripDropDownButton2.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripButton12, Me.ToolStripButton22})
+        Me.ToolStripDropDownButton2.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripButton12, Me.ToolStripButton22, Me.TSSearchCC})
         Me.ToolStripDropDownButton2.Image = CType(resources.GetObject("ToolStripDropDownButton2.Image"), System.Drawing.Image)
         Me.ToolStripDropDownButton2.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.ToolStripDropDownButton2.Name = "ToolStripDropDownButton2"
@@ -876,14 +938,14 @@ Partial Class MDIPrincipal
         '
         Me.ToolStripButton12.Image = CType(resources.GetObject("ToolStripButton12.Image"), System.Drawing.Image)
         Me.ToolStripButton12.Name = "ToolStripButton12"
-        Me.ToolStripButton12.Size = New System.Drawing.Size(233, 22)
+        Me.ToolStripButton12.Size = New System.Drawing.Size(265, 54)
         Me.ToolStripButton12.Text = "Buscar cartografía GEODOCAT"
         '
         'ToolStripButton22
         '
         Me.ToolStripButton22.Image = Global.cartoSEE.My.Resources.Resources.Icon_Cuaderno_de_brujula_copy
         Me.ToolStripButton22.Name = "ToolStripButton22"
-        Me.ToolStripButton22.Size = New System.Drawing.Size(233, 22)
+        Me.ToolStripButton22.Size = New System.Drawing.Size(265, 54)
         Me.ToolStripButton22.Text = "Buscar Cuadernos MTN"
         '
         'ToolStripButton17
@@ -954,6 +1016,16 @@ Partial Class MDIPrincipal
         Me.ToolStripButton20.Size = New System.Drawing.Size(52, 52)
         Me.ToolStripButton20.Text = "ToolStripButton20"
         Me.ToolStripButton20.ToolTipText = "Libros de registro del Archivo Topográfico"
+        '
+        'ToolStripButton8
+        '
+        Me.ToolStripButton8.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.ToolStripButton8.Image = CType(resources.GetObject("ToolStripButton8.Image"), System.Drawing.Image)
+        Me.ToolStripButton8.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.ToolStripButton8.Name = "ToolStripButton8"
+        Me.ToolStripButton8.Size = New System.Drawing.Size(52, 52)
+        Me.ToolStripButton8.Text = "Colecciones y Listas de Propietarios"
+        Me.ToolStripButton8.ToolTipText = "Listas de propietarios de la JGE"
         '
         'ToolStripButton10
         '
@@ -1137,17 +1209,6 @@ Partial Class MDIPrincipal
         Me.ToolStripButton14.Size = New System.Drawing.Size(52, 52)
         Me.ToolStripButton14.Text = "Generar metadatos de los documentos seleccionados"
         Me.ToolStripButton14.Visible = False
-        '
-        'ToolStripButton8
-        '
-        Me.ToolStripButton8.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.ToolStripButton8.Image = CType(resources.GetObject("ToolStripButton8.Image"), System.Drawing.Image)
-        Me.ToolStripButton8.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.ToolStripButton8.Name = "ToolStripButton8"
-        Me.ToolStripButton8.Size = New System.Drawing.Size(52, 52)
-        Me.ToolStripButton8.Text = "Generar CSV con el resultado de la consulta"
-        Me.ToolStripButton8.ToolTipText = "Exportar lista resultados a CSV"
-        Me.ToolStripButton8.Visible = False
         '
         'ToolStripSeparator2
         '
@@ -1599,6 +1660,18 @@ Partial Class MDIPrincipal
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Otros filtros cuadernos MTN"
         '
+        'btnInvestigar
+        '
+        Me.btnInvestigar.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnInvestigar.Image = CType(resources.GetObject("btnInvestigar.Image"), System.Drawing.Image)
+        Me.btnInvestigar.Location = New System.Drawing.Point(103, 41)
+        Me.btnInvestigar.Name = "btnInvestigar"
+        Me.btnInvestigar.Size = New System.Drawing.Size(93, 50)
+        Me.btnInvestigar.TabIndex = 42
+        Me.btnInvestigar.Text = "Investigar"
+        Me.btnInvestigar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+        Me.btnInvestigar.UseVisualStyleBackColor = True
+        '
         'btnPendingCatalog
         '
         Me.btnPendingCatalog.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
@@ -1615,6 +1688,7 @@ Partial Class MDIPrincipal
         'Panel_DocSearch
         '
         Me.Panel_DocSearch.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
+        Me.Panel_DocSearch.Controls.Add(Me.Button1)
         Me.Panel_DocSearch.Controls.Add(Me.TextBox4)
         Me.Panel_DocSearch.Controls.Add(Me.Label4)
         Me.Panel_DocSearch.Controls.Add(Me.TextBox20)
@@ -1645,6 +1719,18 @@ Partial Class MDIPrincipal
         Me.Panel_DocSearch.Name = "Panel_DocSearch"
         Me.Panel_DocSearch.Size = New System.Drawing.Size(250, 839)
         Me.Panel_DocSearch.TabIndex = 14
+        '
+        'Button1
+        '
+        Me.Button1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
+        Me.Button1.Location = New System.Drawing.Point(12, 621)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(111, 76)
+        Me.Button1.TabIndex = 39
+        Me.Button1.Text = "SIDCECA"
+        Me.Button1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+        Me.Button1.UseVisualStyleBackColor = True
         '
         'TextBox4
         '
@@ -2224,8 +2310,8 @@ Partial Class MDIPrincipal
         Me.ImageList1.ImageStream = CType(resources.GetObject("ImageList1.ImageStream"), System.Windows.Forms.ImageListStreamer)
         Me.ImageList1.TransparentColor = System.Drawing.Color.Transparent
         Me.ImageList1.Images.SetKeyName(0, "Citaciones.ico")
-        Me.ImageList1.Images.SetKeyName(1, "Correspondencia.ico")
-        Me.ImageList1.Images.SetKeyName(2, "cuaderno_32.png")
+        Me.ImageList1.Images.SetKeyName(1, "SignoOK_24.png")
+        Me.ImageList1.Images.SetKeyName(2, "SignoNAK_24.png")
         Me.ImageList1.Images.SetKeyName(3, "item24.png")
         Me.ImageList1.Images.SetKeyName(4, "jpeg file.png")
         Me.ImageList1.Images.SetKeyName(5, "Earth_007.png")
@@ -2257,17 +2343,12 @@ Partial Class MDIPrincipal
         Me.ImageList2.Images.SetKeyName(13, "Archivador 32.png")
         Me.ImageList2.Images.SetKeyName(14, "editar_24.png")
         '
-        'btnInvestigar
+        'TSSearchCC
         '
-        Me.btnInvestigar.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnInvestigar.Image = CType(resources.GetObject("btnInvestigar.Image"), System.Drawing.Image)
-        Me.btnInvestigar.Location = New System.Drawing.Point(103, 41)
-        Me.btnInvestigar.Name = "btnInvestigar"
-        Me.btnInvestigar.Size = New System.Drawing.Size(93, 50)
-        Me.btnInvestigar.TabIndex = 42
-        Me.btnInvestigar.Text = "Investigar"
-        Me.btnInvestigar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
-        Me.btnInvestigar.UseVisualStyleBackColor = True
+        Me.TSSearchCC.Image = CType(resources.GetObject("TSSearchCC.Image"), System.Drawing.Image)
+        Me.TSSearchCC.Name = "TSSearchCC"
+        Me.TSSearchCC.Size = New System.Drawing.Size(265, 54)
+        Me.TSSearchCC.Text = "Buscar Cédulas catastrales"
         '
         'MDIPrincipal
         '
@@ -2452,7 +2533,6 @@ Partial Class MDIPrincipal
     Friend WithEvents Query_Advance05 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents UserMenu As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripStatusLabel2 As System.Windows.Forms.ToolStripStatusLabel
-    Friend WithEvents itemUsermenu As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents itemGestionUser As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents btnVisorMosaicos As System.Windows.Forms.ToolStripButton
     Friend WithEvents mnuLanzarPlantilla As System.Windows.Forms.ToolStripMenuItem
@@ -2534,4 +2614,15 @@ Partial Class MDIPrincipal
     Friend WithEvents PictureBox6 As PictureBox
     Friend WithEvents btnPendingCatalog As Button
     Friend WithEvents btnInvestigar As Button
+    Friend WithEvents mnuActivity As ToolStripMenuItem
+    Friend WithEvents mnuTool_Informes04 As ToolStripMenuItem
+    Friend WithEvents mnuTextModeToggle As ToolStripMenuItem
+    Friend WithEvents Button1 As Button
+    Friend WithEvents SIDCECAToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents mnuListasPropJGE As ToolStripMenuItem
+    Friend WithEvents mnuCCMadProv As ToolStripMenuItem
+    Friend WithEvents mnuCCMadDistritos As ToolStripMenuItem
+    Friend WithEvents mnuMosaicos As ToolStripMenuItem
+    Friend WithEvents mnuCCOutMadrid As ToolStripMenuItem
+    Friend WithEvents TSSearchCC As ToolStripMenuItem
 End Class

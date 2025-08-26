@@ -550,26 +550,28 @@
             autorPersona= dR("autor_persona").ToString
             encabezadoABSYSdoc = dR("encabezado").ToString
 
-            For Each elem As String In dR("listaIdTerris").ToString.Split("#")
-                listaTerritorios.Add(New TerritorioBSID(CType(elem, Integer)))
-            Next
+            If dR("listaIdTerris").ToString <> "" Then
+                For Each elem As String In dR("listaIdTerris").ToString.Split("#")
+                    listaTerritorios.Add(New TerritorioBSID(CType(elem, Integer)))
+                Next
 
-            For Each elem As String In dR("listaMuniHisto").ToString.Split("#")
-                If elem = "" Then Continue For
-                listaMuniHistorico.Add(elem)
-            Next
-            For Each elem As String In dR("listaCodMuniHisto").ToString.Split("#")
-                If elem = "" Then Continue For
-                listaCodMuniHistorico.Add(elem)
-            Next
-            For Each elem As String In dR("listaMuniActual").ToString.Split("#")
-                If elem = "" Then Continue For
-                listaMuniActual.Add(elem)
-            Next
-            For Each elem As String In dR("listaCodMuniActual").ToString.Split("#")
-                If elem = "" Then Continue For
-                listaCodMuniActual.Add(elem)
-            Next
+                For Each elem As String In dR("listaMuniHisto").ToString.Split("#")
+                    If elem = "" Then Continue For
+                    listaMuniHistorico.Add(elem)
+                Next
+                For Each elem As String In dR("listaCodMuniHisto").ToString.Split("#")
+                    If elem = "" Then Continue For
+                    listaCodMuniHistorico.Add(elem)
+                Next
+                For Each elem As String In dR("listaMuniActual").ToString.Split("#")
+                    If elem = "" Then Continue For
+                    listaMuniActual.Add(elem)
+                Next
+                For Each elem As String In dR("listaCodMuniActual").ToString.Split("#")
+                    If elem = "" Then Continue For
+                    listaCodMuniActual.Add(elem)
+                Next
+            End If
 
             Provincias = dR("nombreprovincia").ToString
             ProvinciaRepo = dR("repoprov")
@@ -600,17 +602,19 @@
 
     End Sub
 
-
-
-
-
     Sub getGeoFilesFromDatabase()
 
         If getGeoFilesFromDatabaseConsultado = True Then Exit Sub
 
         rcdgeoFiles.Clear()
         rcdgeoFiles.Dispose()
-        CargarDatatable($"SELECT * FROM bdsidschema.contornos WHERE archivo_id={docIndex}", rcdgeoFiles)
+        CargarDatatable($"(
+                            SELECT idarchivofp as idcontorno,'epsg25830' as epsg, nombre as geofilename,mostrar_en_wms,zindex,tipo_wms,footprint_type 
+	                            FROM  bdsidschema.archivofootprints WHERE archivodoc_id={docIndex}
+                            ) UNION(
+                            SELECT idcontorno,'epsg23030' as epsg, nombre || '.ecw' as geofilename,mostrarwms as mostrar_en_wms,zindex,tipowms as tipo_wms,'fitted' as footprint_type 
+	                            FROM  bdsidschema.contornos WHERE archivo_id={docIndex}
+                            )", rcdgeoFiles)
 
         getGeoFilesFromDatabaseConsultado = True
 

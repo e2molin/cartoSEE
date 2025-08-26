@@ -529,7 +529,9 @@
             Dim flagPropos As New FlagsProperties()
             If flagPropos.assignByContainer(CheckedListBox1) Then propsChanged.Add($"extraprops={flagPropos.propertyCode}")
         End If
-
+        If propsChanged.ToArray.Length = 0 Then
+            Exit Function
+        End If
         cadUpBase &= $"{String.Join(",", propsChanged.ToArray)} WHERE idarchivodocmtn={editRegistro.IdarchivodocMTN}"
         ActualizacionAutorAndComentarios = ExeSinTran(cadUpBase)
 
@@ -1121,7 +1123,7 @@
         If ComboBox1.SelectedIndex = -1 Then ModalExclamation("Seleccione un tipo de documento.") : Exit Function
         elementoInsert.Tipo = CType(ComboBox1.SelectedItem, itemData).Name
 
-
+        If ComboBox2.SelectedIndex = -1 Then ModalExclamation("Seleccione un subtipo de documento.") : Exit Function
         elementoInsert.Subtipo = CType(ComboBox2.SelectedItem, itemData).Name
 
 
@@ -1344,11 +1346,15 @@
 
     Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
 
-        If Not usuarioMyApp.permisosLista.editarDocumentacion Then Exit Sub
+        If Not usuarioMyApp.permisosLista.EditarDocumentacion Then Exit Sub
         If ModeEdition = TypeModeEdition.CreateDocument Then CrearNuevoCuadernoMTN()
-        If ModeEdition = TypeModeEdition.EditSingleDocument Then ActualizacionLote()
-
-
+        If ModeEdition = TypeModeEdition.EditSingleDocument Then
+            If ModalQuestWriteDatabase("¿Desea actualizar la información del documento?") = DialogResult.No Then Exit Sub
+            ActualizacionAtributos()
+            ActualizacionAutorAndComentarios()
+            UpdateDigitalResources(editRegistro, True)
+            ModalInfo("Documento actualizado")
+        End If
 
     End Sub
 

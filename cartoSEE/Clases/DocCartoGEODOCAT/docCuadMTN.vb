@@ -251,8 +251,6 @@
 
         Dim rcdDoc As DataTable
         Dim filas() As DataRow
-        Dim contador As Long
-        Dim Anterior As Integer
         Dim terriDeslin As TerritorioBSID
 
         rcdDoc = New DataTable
@@ -262,8 +260,6 @@
         End If
 
         filas = rcdDoc.Select
-        contador = -1
-        Anterior = 0
         For Each dR As DataRow In filas
             'Esto es necesario mientras haya documentos con el documento Principal sin especificar
 
@@ -333,47 +329,6 @@
             NombreNEW = dR("nombre_new").ToString
             ProvinciaNombre = dR("nombreprovincia").ToString
 
-            'For iBucle As Integer = 0 To idTerris.Count - 1
-            '    Try
-            '        Application.DoEvents()
-            '        If tipoTerris(iBucle) = "Condominio" Then
-            '            terriDeslin = New TerritorioBSID(idTerris(iBucle))
-            '        ElseIf tipoTerris(iBucle) = "Accidente geográfico" Then
-            '            terriDeslin = New TerritorioBSID(idTerris(iBucle))
-            '        ElseIf tipoTerris(iBucle) = "Condominio histórico" Then
-            '            Continue For
-            '        ElseIf tipoTerris(iBucle) = "Desconocido" Then
-            '            Continue For
-            '        ElseIf tipoTerris(iBucle) = "País" Then
-            '            terriDeslin = New TerritorioBSID
-            '            terriDeslin.indice = idTerris(iBucle)
-            '            terriDeslin.territorioNombre = nombreTerris(iBucle)
-            '            terriDeslin.tipo = tipoTerris(iBucle)
-            '            terriDeslin.codigoINE = muniTerris(iBucle)
-            '            terriDeslin.municipioNombre = "No procede"
-            '            terriDeslin.centroide_id = 0
-            '            terriDeslin.provinciaINE = "99"
-            '            terriDeslin.autonomiaINE = "20"
-            '        Else
-            '            terriDeslin = New TerritorioBSID
-            '            terriDeslin.indice = idTerris(iBucle)
-            '            terriDeslin.territorioNombre = nombreTerris(iBucle)
-            '            terriDeslin.tipo = tipoTerris(iBucle)
-            '            terriDeslin.codigoINE = muniTerris(iBucle)
-            '            terriDeslin.municipioNombre = DameMunicipioByINE(muniTerris(iBucle))
-            '            terriDeslin.centroide_id = poligosCarto(iBucle)
-            '            terriDeslin.provinciaINE = String.Format("{0:00000}", CType(muniTerris(iBucle), Integer)).Substring(0, 2)
-            '            terriDeslin.autonomiaINE = ListaProvincias.Rows(terriDeslin.provinciaINE - 1).Item(2).ToString()
-            '        End If
-            '        item.territorios.Add(terriDeslin)
-            'Catch ex As Exception
-            '        GenerarLOG("Error:" & ex.Message)
-            '    Finally
-            '        terriDeslin = Nothing
-            '    End Try
-            'Next
-            'resultados.Add(item)
-            'item = Nothing
         Next
         rcdDoc.Dispose()
         rcdDoc = Nothing

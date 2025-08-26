@@ -105,6 +105,9 @@ Partial Class frmEdicion
         Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
         Me.ToolStripStatusLabel2 = New System.Windows.Forms.ToolStripStatusLabel()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.Button17 = New System.Windows.Forms.Button()
+        Me.Label39 = New System.Windows.Forms.Label()
+        Me.Label38 = New System.Windows.Forms.Label()
         Me.Label36 = New System.Windows.Forms.Label()
         Me.Label35 = New System.Windows.Forms.Label()
         Me.Label34 = New System.Windows.Forms.Label()
@@ -127,6 +130,9 @@ Partial Class frmEdicion
         Me.Label26 = New System.Windows.Forms.Label()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.Label37 = New System.Windows.Forms.Label()
+        Me.CheckBox32 = New System.Windows.Forms.CheckBox()
+        Me.ComboBox7 = New System.Windows.Forms.ComboBox()
         Me.Button15 = New System.Windows.Forms.Button()
         Me.Label33 = New System.Windows.Forms.Label()
         Me.CheckBox31 = New System.Windows.Forms.CheckBox()
@@ -149,11 +155,11 @@ Partial Class frmEdicion
         Me.TextBox18 = New System.Windows.Forms.TextBox()
         Me.CheckBox26 = New System.Windows.Forms.CheckBox()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.TextBox25 = New System.Windows.Forms.TextBox()
+        Me.Button16 = New System.Windows.Forms.Button()
         Me.ErrorProvider1 = New System.Windows.Forms.ErrorProvider(Me.components)
         Me.Button13 = New System.Windows.Forms.Button()
-        Me.ComboBox7 = New System.Windows.Forms.ComboBox()
-        Me.CheckBox32 = New System.Windows.Forms.CheckBox()
-        Me.Label37 = New System.Windows.Forms.Label()
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.StatusStrip1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
@@ -162,6 +168,7 @@ Partial Class frmEdicion
         Me.TabPage3.SuspendLayout()
         Me.TabPage2.SuspendLayout()
         CType(Me.ErrorProvider1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Button10
@@ -922,18 +929,21 @@ Partial Class frmEdicion
         '
         Me.ToolStripStatusLabel1.Image = CType(resources.GetObject("ToolStripStatusLabel1.Image"), System.Drawing.Image)
         Me.ToolStripStatusLabel1.Name = "ToolStripStatusLabel1"
-        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(135, 17)
+        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(136, 17)
         Me.ToolStripStatusLabel1.Text = "ToolStripStatusLabel1"
         '
         'ToolStripStatusLabel2
         '
         Me.ToolStripStatusLabel2.Name = "ToolStripStatusLabel2"
-        Me.ToolStripStatusLabel2.Size = New System.Drawing.Size(119, 17)
+        Me.ToolStripStatusLabel2.Size = New System.Drawing.Size(120, 17)
         Me.ToolStripStatusLabel2.Text = "ToolStripStatusLabel2"
         '
         'GroupBox2
         '
         Me.GroupBox2.BackColor = System.Drawing.Color.Gainsboro
+        Me.GroupBox2.Controls.Add(Me.Button17)
+        Me.GroupBox2.Controls.Add(Me.Label39)
+        Me.GroupBox2.Controls.Add(Me.Label38)
         Me.GroupBox2.Controls.Add(Me.Label36)
         Me.GroupBox2.Controls.Add(Me.Label35)
         Me.GroupBox2.Controls.Add(Me.Label34)
@@ -951,10 +961,41 @@ Partial Class frmEdicion
         Me.GroupBox2.Controls.Add(Me.TextBox2)
         Me.GroupBox2.Location = New System.Drawing.Point(18, 21)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(859, 276)
+        Me.GroupBox2.Size = New System.Drawing.Size(859, 361)
         Me.GroupBox2.TabIndex = 52
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Información digital"
+        '
+        'Button17
+        '
+        Me.Button17.Image = CType(resources.GetObject("Button17.Image"), System.Drawing.Image)
+        Me.Button17.Location = New System.Drawing.Point(755, 278)
+        Me.Button17.Name = "Button17"
+        Me.Button17.Size = New System.Drawing.Size(99, 45)
+        Me.Button17.TabIndex = 79
+        Me.Button17.Text = "Consultar Repo"
+        Me.Button17.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.Button17.UseVisualStyleBackColor = True
+        '
+        'Label39
+        '
+        Me.Label39.AutoSize = True
+        Me.Label39.Font = New System.Drawing.Font("Segoe UI Semibold", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label39.ForeColor = System.Drawing.Color.Crimson
+        Me.Label39.Location = New System.Drawing.Point(423, 270)
+        Me.Label39.Name = "Label39"
+        Me.Label39.Size = New System.Drawing.Size(207, 13)
+        Me.Label39.TabIndex = 78
+        Me.Label39.Text = "Este recurso NO existe en el repositorio"
+        '
+        'Label38
+        '
+        Me.Label38.AutoSize = True
+        Me.Label38.Location = New System.Drawing.Point(110, 270)
+        Me.Label38.Name = "Label38"
+        Me.Label38.Size = New System.Drawing.Size(73, 13)
+        Me.Label38.TabIndex = 77
+        Me.Label38.Text = "Miniatura JPG"
         '
         'Label36
         '
@@ -1153,6 +1194,7 @@ Partial Class frmEdicion
         '
         'TabControl1
         '
+        Me.TabControl1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.TabControl1.Controls.Add(Me.TabPage1)
         Me.TabControl1.Controls.Add(Me.TabPage3)
         Me.TabControl1.Controls.Add(Me.TabPage2)
@@ -1248,12 +1290,42 @@ Partial Class frmEdicion
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Atributos GEODOCAT"
         '
+        'Label37
+        '
+        Me.Label37.AutoSize = True
+        Me.Label37.Font = New System.Drawing.Font("Segoe UI Semibold", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label37.Location = New System.Drawing.Point(46, 469)
+        Me.Label37.Name = "Label37"
+        Me.Label37.Size = New System.Drawing.Size(125, 13)
+        Me.Label37.TabIndex = 93
+        Me.Label37.Text = "Apartado hoja registral"
+        '
+        'CheckBox32
+        '
+        Me.CheckBox32.AutoSize = True
+        Me.CheckBox32.ForeColor = System.Drawing.SystemColors.ActiveCaption
+        Me.CheckBox32.Location = New System.Drawing.Point(27, 468)
+        Me.CheckBox32.Name = "CheckBox32"
+        Me.CheckBox32.Size = New System.Drawing.Size(133, 17)
+        Me.CheckBox32.TabIndex = 92
+        Me.CheckBox32.Text = "Apartado Hoja registral"
+        Me.CheckBox32.UseVisualStyleBackColor = True
+        '
+        'ComboBox7
+        '
+        Me.ComboBox7.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBox7.FormattingEnabled = True
+        Me.ComboBox7.Location = New System.Drawing.Point(175, 469)
+        Me.ComboBox7.Name = "ComboBox7"
+        Me.ComboBox7.Size = New System.Drawing.Size(283, 21)
+        Me.ComboBox7.TabIndex = 91
+        '
         'Button15
         '
         Me.Button15.Image = CType(resources.GetObject("Button15.Image"), System.Drawing.Image)
-        Me.Button15.Location = New System.Drawing.Point(676, 454)
+        Me.Button15.Location = New System.Drawing.Point(667, 445)
         Me.Button15.Name = "Button15"
-        Me.Button15.Size = New System.Drawing.Size(199, 43)
+        Me.Button15.Size = New System.Drawing.Size(205, 48)
         Me.Button15.TabIndex = 90
         Me.Button15.Text = "«Atributos GEODOCAT»"
         Me.Button15.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
@@ -1328,9 +1400,9 @@ Partial Class frmEdicion
         'Button14
         '
         Me.Button14.Image = CType(resources.GetObject("Button14.Image"), System.Drawing.Image)
-        Me.Button14.Location = New System.Drawing.Point(676, 454)
+        Me.Button14.Location = New System.Drawing.Point(667, 445)
         Me.Button14.Name = "Button14"
-        Me.Button14.Size = New System.Drawing.Size(199, 43)
+        Me.Button14.Size = New System.Drawing.Size(205, 48)
         Me.Button14.TabIndex = 89
         Me.Button14.Text = "«Autoría y observaciones»"
         Me.Button14.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
@@ -1475,6 +1547,8 @@ Partial Class frmEdicion
         'TabPage2
         '
         Me.TabPage2.BackColor = System.Drawing.Color.Gainsboro
+        Me.TabPage2.Controls.Add(Me.TextBox25)
+        Me.TabPage2.Controls.Add(Me.Button16)
         Me.TabPage2.Controls.Add(Me.GroupBox2)
         Me.TabPage2.Controls.Add(Me.Button10)
         Me.TabPage2.ImageIndex = 2
@@ -1484,6 +1558,26 @@ Partial Class frmEdicion
         Me.TabPage2.Size = New System.Drawing.Size(885, 514)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Ficheros"
+        '
+        'TextBox25
+        '
+        Me.TextBox25.AllowDrop = True
+        Me.TextBox25.Location = New System.Drawing.Point(131, 307)
+        Me.TextBox25.Multiline = True
+        Me.TextBox25.Name = "TextBox25"
+        Me.TextBox25.Size = New System.Drawing.Size(585, 37)
+        Me.TextBox25.TabIndex = 81
+        '
+        'Button16
+        '
+        Me.Button16.Image = CType(resources.GetObject("Button16.Image"), System.Drawing.Image)
+        Me.Button16.Location = New System.Drawing.Point(41, 303)
+        Me.Button16.Name = "Button16"
+        Me.Button16.Size = New System.Drawing.Size(75, 45)
+        Me.Button16.TabIndex = 80
+        Me.Button16.Text = "Abrir"
+        Me.Button16.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.Button16.UseVisualStyleBackColor = True
         '
         'ErrorProvider1
         '
@@ -1500,35 +1594,15 @@ Partial Class frmEdicion
         Me.Button13.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
         Me.Button13.UseVisualStyleBackColor = True
         '
-        'ComboBox7
+        'PictureBox2
         '
-        Me.ComboBox7.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBox7.FormattingEnabled = True
-        Me.ComboBox7.Location = New System.Drawing.Point(175, 469)
-        Me.ComboBox7.Name = "ComboBox7"
-        Me.ComboBox7.Size = New System.Drawing.Size(283, 21)
-        Me.ComboBox7.TabIndex = 91
-        '
-        'CheckBox32
-        '
-        Me.CheckBox32.AutoSize = True
-        Me.CheckBox32.ForeColor = System.Drawing.SystemColors.ActiveCaption
-        Me.CheckBox32.Location = New System.Drawing.Point(27, 468)
-        Me.CheckBox32.Name = "CheckBox32"
-        Me.CheckBox32.Size = New System.Drawing.Size(133, 17)
-        Me.CheckBox32.TabIndex = 92
-        Me.CheckBox32.Text = "Apartado Hoja registral"
-        Me.CheckBox32.UseVisualStyleBackColor = True
-        '
-        'Label37
-        '
-        Me.Label37.AutoSize = True
-        Me.Label37.Font = New System.Drawing.Font("Segoe UI Semibold", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label37.Location = New System.Drawing.Point(46, 469)
-        Me.Label37.Name = "Label37"
-        Me.Label37.Size = New System.Drawing.Size(125, 13)
-        Me.Label37.TabIndex = 93
-        Me.Label37.Text = "Apartado hoja registral"
+        Me.PictureBox2.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.PictureBox2.Image = CType(resources.GetObject("PictureBox2.Image"), System.Drawing.Image)
+        Me.PictureBox2.Location = New System.Drawing.Point(905, 456)
+        Me.PictureBox2.Name = "PictureBox2"
+        Me.PictureBox2.Size = New System.Drawing.Size(96, 96)
+        Me.PictureBox2.TabIndex = 74
+        Me.PictureBox2.TabStop = False
         '
         'frmEdicion
         '
@@ -1536,6 +1610,7 @@ Partial Class frmEdicion
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Gainsboro
         Me.ClientSize = New System.Drawing.Size(1015, 586)
+        Me.Controls.Add(Me.PictureBox2)
         Me.Controls.Add(Me.Button13)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.StatusStrip1)
@@ -1556,7 +1631,9 @@ Partial Class frmEdicion
         Me.TabPage3.ResumeLayout(False)
         Me.TabPage3.PerformLayout()
         Me.TabPage2.ResumeLayout(False)
+        Me.TabPage2.PerformLayout()
         CType(Me.ErrorProvider1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1691,4 +1768,10 @@ Partial Class frmEdicion
     Friend WithEvents Label37 As Label
     Friend WithEvents CheckBox32 As CheckBox
     Friend WithEvents ComboBox7 As ComboBox
+    Friend WithEvents PictureBox2 As PictureBox
+    Friend WithEvents Label38 As Label
+    Friend WithEvents TextBox25 As TextBox
+    Friend WithEvents Button16 As Button
+    Friend WithEvents Label39 As Label
+    Friend WithEvents Button17 As Button
 End Class

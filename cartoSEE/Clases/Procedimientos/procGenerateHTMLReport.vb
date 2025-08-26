@@ -2,13 +2,21 @@
     Inherits System.Windows.Forms.Form
     Friend WithEvents ProgressBar1 As System.Windows.Forms.ProgressBar
     Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents Label2 As Label
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
+
+    Property overWriteFiles As Boolean = True
+    Property pathIncluding As Boolean = True   'Si queremos que entre los datos exportados se encuentre el path a los ficheros
+    Property taxonomyCodeIncluding As Boolean = True ' Si queremos quer se incluya la taxonomía asociada. Si es falsy se pode el código 4.8 Sin clasificar
+    Property groupPDFbyFolderProv As Boolean = False
+    Property groupPDFbyFolderINE As Boolean = False
 
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(procGenerateHTMLReport))
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
         Me.Label1 = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -34,15 +42,25 @@
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(9, 68)
+        Me.Label1.Location = New System.Drawing.Point(12, 57)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(39, 13)
         Me.Label1.TabIndex = 2
         Me.Label1.Text = "Label1"
         '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(12, 80)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(39, 13)
+        Me.Label2.TabIndex = 3
+        Me.Label2.Text = "Label2"
+        '
         'procGenerateHTMLReport
         '
         Me.ClientSize = New System.Drawing.Size(420, 131)
+        Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.ProgressBar1)
         Me.Controls.Add(Me.PictureBox1)
@@ -834,6 +852,210 @@
     End Function
 
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="lista"></param>
+    ''' <param name="folderOUT"></param>
+    ''' <param name="coleccion"> Actas y cuadernos / Cuadernos interiores </param>
+    ''' <param name="copyTest"> Booleano que controla la simulación de la copia de ficheros.</param>
+    ''' <param name="cProv"></param>
+    ''' <param name="appendLogFiles"></param>
+    ''' <returns></returns>
+    Function CopyFiles2Directory(ByVal lista As ArrayList, folderOUT As String, coleccion As String, copyTest As Boolean, Optional cProv As Integer = 0, Optional appendLogFiles As Boolean = False) As Boolean
+
+        Dim indexProc As Integer
+        Dim pathOrigen As String
+        Dim pathDestino As String
+        Dim folderOUTfilesCopy As String
+        Dim rutaLog As String
+        Dim rutaPdfdata As String
+        Dim secuenciaINEs As String
+        Dim secuenciaIdterris As String
+        Dim numCopyFail As Integer
+        Dim numCopyCorrect As Integer
+        Dim numNoSelect As Integer
+        Dim fechaExtraccion As String = $"{Now.Year}-{String.Format("{0:00}", CInt(Now.Month.ToString))}-{String.Format("{0:00}", CInt(Now.Day.ToString))}"
+
+        Me.Text = "Copia de los ficheros PDF para el Centro de Descargas"
+        Label1.Text = "Copiando los ficheros PDF de " & IIf(cProv > 0, " de " & DameProvinciaByINE(cProv), "...")
+        ProgressBar1.Minimum = 0
+        ProgressBar1.Maximum = lista.Count
+        Me.Show()
+
+        If Not System.IO.Directory.Exists(folderOUT) Then
+            ModalExclamation("La ruta destino de los ficheros no existe")
+            Me.Close()
+            Return False
+        End If
+
+        rutaLog = folderOUT & "\_logCopy.log"
+        rutaPdfdata = folderOUT & "\_ficherospdf2codigosINE.txt"
+
+        Using archivoLog = New IO.StreamWriter(rutaLog, appendLogFiles, System.Text.Encoding.UTF8),
+                docMuniInfo = New IO.StreamWriter(folderOUT & "\_ficherospdf2codigosINE.txt", appendLogFiles, System.Text.Encoding.UTF8),
+                docAtributos = New IO.StreamWriter(folderOUT & "\_ficherospdfAtributos.txt", appendLogFiles, System.Text.Encoding.UTF8),
+                docSQLs = New IO.StreamWriter(folderOUT & "\_procesoInfoUPDATE.sql", appendLogFiles, System.Text.Encoding.UTF8),
+                docEliminar = New IO.StreamWriter(folderOUT & "\_ficherosEliminarCdD.txt", appendLogFiles, System.Text.Encoding.UTF8)
+
+
+            If appendLogFiles = False Then docMuniInfo.WriteLine($"idProductor;Nombre Fichero{IIf(pathIncluding, ";Ruta", "")};NATCODE")
+            If coleccion = "Cuadernos interiores" Then
+                If appendLogFiles = False Then docAtributos.WriteLine($"idProductor;Nombre Fichero{IIf(pathIncluding, ";Ruta", "")};Extensión;Temática;Fecha;Alias;Taxonomía")
+            ElseIf coleccion = "SIDCECA_I_y_II" Then
+                If appendLogFiles = False Then docAtributos.WriteLine($"idProductor;Nombre Fichero{IIf(pathIncluding, ";Ruta", "")};Extensión;Temática;Fecha;Alias;Taxonomía")
+            End If
+
+
+
+
+            If appendLogFiles = False Then docEliminar.WriteLine("idProductor")
+            archivoLog.WriteLine($"*INFO: Procesando provincia nº {cProv}. Registros: {lista.Count}")
+            numCopyFail = 0
+            numCopyCorrect = 0
+            numNoSelect = 0
+
+
+            If coleccion = "Cuadernos interiores" Then
+                For Each documento As docCuadMTN In lista
+                    indexProc += 1
+                    ProgressBar1.Value = indexProc
+                    Label2.Text = $"Copiando {indexProc} de {lista.Count}"
+                    Application.DoEvents()
+
+                    'Aquí meto los ficheros que ya están en el CdD y hay que eliminar antes de actulizar
+                    If documento.NameFileCDD <> "" Then
+                        docEliminar.WriteLine($"{documento.SelladoIdProductor}")
+                    End If
+                    folderOUTfilesCopy = IIf(groupPDFbyFolderProv = True,
+                                 folderOUT & "\pdf\" & String.Format("{0:00}", documento.ProvinciaINE) & "\",
+                                 folderOUT & "\pdf\")
+
+                    Try
+                        If Not IO.Directory.Exists(folderOUTfilesCopy) Then IO.Directory.CreateDirectory(folderOUTfilesCopy)
+                    Catch ex As Exception
+                        ModalExclamation(ex.Message)
+                    End Try
+
+                    pathOrigen = documento.ficheroPDF
+                    pathDestino = folderOUTfilesCopy & documento.nameFile4CDD
+
+                    Try
+                        If overWriteFiles Then
+                            If Not copyTest Then IO.File.Copy(pathOrigen, pathDestino, True)
+                        Else
+                            If Not IO.File.Exists(pathDestino) Then
+                                If Not copyTest Then IO.File.Copy(pathOrigen, pathDestino, True)
+                            End If
+                        End If
+                        If copyTest Then
+                            If Not IO.File.Exists(pathOrigen) Then
+                                archivoLog.WriteLine($"#!No se localiza el fichero origen#{pathOrigen}")
+                            Else
+                                numCopyCorrect += 1
+                                archivoLog.WriteLine($"#COPIA CORRECTA*{pathOrigen}#{pathDestino}") ';{pathDestino}
+                            End If
+                        Else
+                            numCopyCorrect += 1
+                            archivoLog.WriteLine($"#COPIA CORRECTA*{pathOrigen}#{pathDestino}") ';{pathDestino}
+                        End If
+
+                        docAtributos.WriteLine($"{documento.SelladoIdProductor};{documento.nameFile4CDD}{IIf(pathIncluding, ";" & pathDestino, "")};.pdf;Itinerario de planimetría;{documento.FechaDoc};{documento.Alias4CDD};{IIf(taxonomyCodeIncluding, documento.TaxonomiaWebSemanticaCode, "4.8")}")
+
+                        secuenciaIdterris = ""
+                        For Each munP As TerritorioBSID In documento.listaTerritorios
+                            If munP.tipo = "País" Then Continue For 'Si un acta tiene como deslinde un país, no se pasa ningún código
+                            If munP.tipo = "Accidente geográfico" Then Continue For 'Si un acta tiene como deslinde un accidente geográfico, no se pasa ningún código
+                            docMuniInfo.WriteLine($"{documento.SelladoIdProductor};{documento.nameFile4CDD};{munP.municipioINE_LongFormat}")
+                            secuenciaIdterris = IIf(secuenciaIdterris = "", munP.indice, $"{secuenciaIdterris}-{munP.indice}")
+                        Next
+                        'docSQLs.WriteLine("UPDATE bdsidschema.archivodocnew SET namefilecdd='" & documento.nameFile4CDD & "', " &
+                        '                  "fechafilecdd='" & Now.Year & "-" & String.Format("{0:00}", CInt(Now.Month.ToString)) & "-" & String.Format("{0:00}", CInt(Now.Day.ToString)) & "', " &
+                        '                  "descriptcdd=E'" & documento.Alias4CDD.Replace("'", "\'") & "'," &
+                        '                  "terriscdd='" & secuenciaIdterris & "' where idarchivodocmtn= " & documento.IdarchivodocMTN)
+                        docSQLs.WriteLine($"UPDATE bbdsidschema.archivodocmtn SET namefilecdd='{documento.nameFile4CDD}',fechafilecdd='{fechaExtraccion}',descriptcdd=E'{documento.Alias4CDD.Replace("'", "\'")}',terriscdd='{secuenciaIdterris}' where idarchivodocmtn={documento.IdarchivodocMTN};".Replace(vbCrLf, ""))
+
+
+                    Catch ex As Exception
+                        numCopyFail += 1
+                        archivoLog.WriteLine($"#!ERROR EN COPIA#{pathOrigen}#{pathDestino}#{ex.Message}")
+                    End Try
+
+                Next
+            ElseIf coleccion = "SIDCECA_I_y_II" Then
+                For Each documento As docSIDCECA In lista
+                    indexProc += 1
+                    ProgressBar1.Value = indexProc
+                    Label2.Text = $"Copiando {indexProc} de {lista.Count} de {documento.ProyectoBADASID}"
+                    Application.DoEvents()
+
+                    'Aquí meto los ficheros que ya están en el CdD y hay que eliminar antes de actulizar
+                    If documento.NameFileCDD <> "" Then
+                        docEliminar.WriteLine($"{documento.selladoIdProductor}")
+                    End If
+                    folderOUTfilesCopy = IIf(groupPDFbyFolderINE = True,
+                                 folderOUT & "\pdf\" & String.Format("{0:00000}", documento.ListaPropietarios.CodMuniActual) & "\",
+                                 folderOUT & "\pdf\")
+                    Try
+                        If Not IO.Directory.Exists(folderOUTfilesCopy) Then IO.Directory.CreateDirectory(folderOUTfilesCopy)
+                    Catch ex As Exception
+                        ModalExclamation(ex.Message)
+                    End Try
+
+                    pathOrigen = documento.FicheroPDF
+                    pathDestino = folderOUTfilesCopy & documento.nameFile4CDD
+
+                    Try
+                        If overWriteFiles Then
+                            If Not copyTest Then IO.File.Copy(pathOrigen, pathDestino, True)
+                        Else
+                            If Not IO.File.Exists(pathDestino) Then
+                                If Not copyTest Then IO.File.Copy(pathOrigen, pathDestino, True)
+                            End If
+                        End If
+                        If copyTest Then
+                            If Not IO.File.Exists(pathOrigen) Then
+                                archivoLog.WriteLine($"#!No se localiza el fichero origen#{pathOrigen}")
+                            Else
+                                numCopyCorrect += 1
+                                archivoLog.WriteLine($"#COPIA CORRECTA*{pathOrigen}#{pathDestino}") ';{pathDestino}
+                            End If
+                        Else
+                            numCopyCorrect += 1
+                            archivoLog.WriteLine($"#COPIA CORRECTA*{pathOrigen}#{pathDestino}") ';{pathDestino}
+                        End If
+
+                        docAtributos.WriteLine($"{documento.selladoIdProductor};{documento.nameFile4CDD}{IIf(pathIncluding, ";" & pathDestino, "")};.pdf;Cédula catastral de la JGE;{documento.FechaDoc};{documento.Alias4CDD};{IIf(taxonomyCodeIncluding, documento.TaxonomiaWebSemanticaCode, "4.8")}")
+
+                        docMuniInfo.WriteLine($"{documento.selladoIdProductor};{documento.nameFile4CDD};{documento.ListaPropietarios.municipioINE_LongFormat}")
+                        secuenciaIdterris = documento.ListaPropietarios.IdTerritorio
+                        If documento.ProyectoBADASID = "SIDCECA_I" Then
+                            docSQLs.WriteLine($"UPDATE bbdsidschema.parcelasdatos SET namefilecdd='{documento.nameFile4CDD}',fechafilecdd='{fechaExtraccion}',descriptcdd=E'{documento.Alias4CDD.Replace("'", "\'")}',terriscdd='{secuenciaIdterris}' where idparceladato={documento.IdParcela};".Replace(vbCrLf, ""))
+                        ElseIf documento.ProyectoBADASID = "SIDCECA_II" Then
+                            docSQLs.WriteLine($"UPDATE bbdsidschema.parcelasdata SET namefilecdd='{documento.nameFile4CDD}',fechafilecdd='{fechaExtraccion}',descriptcdd=E'{documento.Alias4CDD.Replace("'", "\'")}',terriscdd='{secuenciaIdterris}' where idparceladata={documento.IdParcela};".Replace(vbCrLf, ""))
+                        End If
+
+                    Catch ex As Exception
+                        numCopyFail += 1
+                        archivoLog.WriteLine($"#!ERROR EN COPIA#{pathOrigen}#{pathDestino}#{ex.Message}")
+                    End Try
+
+                Next
+
+            End If
+
+
+
+
+            archivoLog.WriteLine($"*INFO: Total de registros: {lista.Count}. Copias correctas: {numCopyCorrect}. Copias fallidas: {numCopyFail}. Ficheros no distribuibles: {numNoSelect}")
+        End Using
+
+        ProgressBar1.Value = lista.Count
+        Me.Close()
+        Return True
+
+
+    End Function
 
 
 

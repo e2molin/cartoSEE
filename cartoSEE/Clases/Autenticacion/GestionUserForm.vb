@@ -1112,9 +1112,9 @@
             elementoLV.Tag = contador
             elementoLV.BackColor = IIf(lvListaUser.Items.Count Mod 2 = 0, Color.White, Color.WhiteSmoke)
             If usu.userEnabled Then
-                elementoLV.ImageIndex = 2
+                elementoLV.ImageIndex = 1
             Else
-                elementoLV.ImageIndex = 3
+                elementoLV.ImageIndex = 2
             End If
             lvListaUser.Items.Add(elementoLV)
             elementoLV = Nothing
