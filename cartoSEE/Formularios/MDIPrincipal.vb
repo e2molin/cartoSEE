@@ -65,11 +65,9 @@ Public Class MDIPrincipal
                 Desarrollo.Show()
             End If
         ElseIf sender.name = "ToolStripButton19" Or sender.name = "mnuAdminTools" Then
-            If usuarioMyApp.permisosLista.isUserISTARI Then
-                Dim Desarrollo As New frmDevelIGN
-                Desarrollo.MdiParent = Me
-                Desarrollo.Show()
-            End If
+            Dim Desarrollo As New frmDevelIGN
+            Desarrollo.MdiParent = Me
+            Desarrollo.Show()
         ElseIf sender.name = "mnuOpenAppFolderSetting" Then
             Try
                 Process.Start(AppFolderSetting)
@@ -160,12 +158,11 @@ Public Class MDIPrincipal
             Me.Show()
 
         Else
-            MessageBox.Show("No es posible conectarse a la base de datos", My.Application.Info.AssemblyName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            ModalExclamation("No es posible conectarse a la base de datos")
             ResizingElements()
             Button6.Enabled = False
             Button7.Enabled = False
             TextBox1.Enabled = False
-            ToolStripButton19.Enabled = False
             ToolStripMenuItem2.Enabled = False
             mnuTool_Informes.Enabled = False
             ToolStripStatusLabel.Text = "Modo de Configuración. Consultas no disponibles"
@@ -230,7 +227,6 @@ Public Class MDIPrincipal
                         LeeIni("Metadatos", "PrefijoNom" & RutasPlantillasMetadatos(iBucle).idTipodoc.ToString)
         Next
 
-
     End Sub
 
 
@@ -288,13 +284,9 @@ Public Class MDIPrincipal
         mnuAddContornos.Enabled = usuarioMyApp.permisosLista.EditarDocumentacion
         btnExportCdD.Enabled = usuarioMyApp.permisosLista.GenerarVersionCdD
         mnuExportCdD.Enabled = usuarioMyApp.permisosLista.GenerarVersionCdD
-        ToolStripButton19.Enabled = usuarioMyApp.permisosLista.EditarDocumentacion
-        mnuAdminTools.Enabled = usuarioMyApp.permisosLista.EditarDocumentacion
 
         ToolStripButton1.Enabled = usuarioMyApp.permisosLista.isUserISTARI
-        ToolStripButton19.Enabled = usuarioMyApp.permisosLista.isUserISTARI
         mnuDeveloperTools.Enabled = usuarioMyApp.permisosLista.isUserISTARI
-        mnuAdminTools.Enabled = usuarioMyApp.permisosLista.isUserISTARI
         mnuTextModeToggle.Visible = usuarioMyApp.permisosLista.isUserISTARI
 
         mnuDeveloper.Visible = usuarioMyApp.permisosLista.isUserISTARI
@@ -341,8 +333,6 @@ Public Class MDIPrincipal
 
         mnuTextModeToggle.Text = IIf(TestMode, "Modo Test activado - SEGURIDAD", "Modo test desactivado - PELIGRO")
         mnuTextModeToggle.ForeColor = IIf(TestMode, Color.Green, Color.Red)
-
-
 
     End Sub
 

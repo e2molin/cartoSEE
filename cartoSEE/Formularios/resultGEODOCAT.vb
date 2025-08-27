@@ -731,7 +731,7 @@
         elementoLV = New ListViewItem With {.Text = "URL Metadatos", .ImageIndex = 4, .Group = docABSYS}
         elementoLV.SubItems.Add(elemEntidadSel.GetURIMetadatoMARC21) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
 
-        btnLinkABSYS.Tag = elemEntidadSel.urlABSYSdoc
+        mnuStripLinkABSYS.Tag = elemEntidadSel.urlABSYSdoc
 
 
         elemEntidadSel.cargarHistorial()
@@ -951,23 +951,27 @@
         'Enlace al tomo del inventario
         Button3.Tag = $"{elemEntidadSel.ProvinciaRepo}|{elemEntidadSel.Tomo}"
 
-        ''Documento Cabina
-        Button1.Enabled = IIf(elemEntidadSel.rutaFicheroBajaRes <> "", True, False)
-        Button1.Tag = elemEntidadSel.rutaFicheroBajaRes
+        'Documento JPG Cabina
+        btnLinkJPG.Enabled = IIf(elemEntidadSel.rutaFicheroBajaRes <> "", True, False)
+        btnLinkJPG.Tag = elemEntidadSel.rutaFicheroBajaRes
+        mnuStripLinkJPG.Enabled = IIf(elemEntidadSel.rutaFicheroBajaRes <> "", True, False)
+        mnuStripLinkJPG.Tag = elemEntidadSel.rutaFicheroBajaRes
 
-        Try
-            Button4.Enabled = IIf(elemEntidadSel.rutaFicheroPDF <> "", True, False)
-            Button4.Tag = elemEntidadSel.rutaFicheroPDF
-        Catch ex As Exception
+        'Documento PDF Cabina
+        btnLinkPDF.Enabled = IIf(elemEntidadSel.rutaFicheroPDF <> "", True, False)
+        btnLinkPDF.Tag = elemEntidadSel.rutaFicheroPDF
+        mnuStripLinkPDF.Enabled = IIf(elemEntidadSel.rutaFicheroPDF <> "", True, False)
+        mnuStripLinkPDF.Tag = elemEntidadSel.rutaFicheroPDF
 
-        End Try
-
-        btnLinkABSYS.Tag = elemEntidadSel.urlABSYSdoc
+        'Absys
+        mnuStripLinkABSYS.Enabled = IIf(elemEntidadSel.urlABSYSdoc <> "", True, False)
+        mnuStripLinkABSYS.Tag = elemEntidadSel.urlABSYSdoc
 
         'CDD
-        'https://centrodedescargas.cnig.es/CentroDescargas/busquedaIdProductor.do?idProductor=50940&Serie=ACLLI
-        Button2.Enabled = IIf(elemEntidadSel.cddURL <> "", True, False)
-        Button2.Tag = elemEntidadSel.cddURL
+        btnLinkCdD.Enabled = IIf(elemEntidadSel.cddURL <> "", True, False)
+        btnLinkCdD.Tag = elemEntidadSel.cddURL
+        mnuStripLinkCdD.Enabled = IIf(elemEntidadSel.cddURL <> "", True, False)
+        mnuStripLinkCdD.Tag = elemEntidadSel.cddURL
 
         'Cargamos la imagen en miniatura
         LoadThumb(PictureBox1)
@@ -1232,7 +1236,8 @@
 
         btnAddingCarrito.Enabled = Not EsCarritoCompra
         btnDeletingCarrito.Enabled = EsCarritoCompra
-        btnEditar.Visible = usuarioMyApp.permisosLista.EditarDocumentacion
+        btnEditar.Enabled = usuarioMyApp.permisosLista.EditarDocumentacion
+        mnuStripEditar.Enabled = usuarioMyApp.permisosLista.EditarDocumentacion
         mnuGenerateThumb.Visible = usuarioMyApp.permisosLista.usuarioISTARI
 
         TaxonDetailView(modeView.PanelClose)
@@ -1242,7 +1247,7 @@
 
     End Sub
 
-    Private Sub btnExportCSV_Click(sender As Object, e As EventArgs) Handles btnExportCSV.Click
+    Private Sub btnExportCSV_Click(sender As Object, e As EventArgs) Handles btnExportCSV.Click, mnuStripExportCSV.Click
 
         Dim ExportarSelect As Boolean = False
         Dim cadLinea As String = ""
@@ -1354,7 +1359,7 @@
 
     End Sub
 
-    Private Sub ExternalLinks(sender As Object, e As EventArgs) Handles Button1.Click, Button2.Click, btnLinkCdD.Click, btnLinkImage.Click, btnLinkABSYS.Click
+    Private Sub ExternalLinks(sender As Object, e As EventArgs) Handles btnLinkJPG.Click, btnLinkCdD.Click, mnuStripLinkJPG.Click, mnuStripLinkABSYS.Click, mnuStripLinkPDF.Click, mnuStripLinkCdD.Click, btnLinkPDF.Click
 
 
         If elemEntidadSel Is Nothing Then Exit Sub
@@ -1366,13 +1371,20 @@
         Dim cadURL As String
         Try
             cadURL = sender.tag
-            If sender.name = "Button1" Or sender.name = "btnLinkImage" Then
-                If Not IO.File.Exists(cadURL) Then
-                    ModalExclamation("Imagen no localizada")
+
+            If Not IO.File.Exists(cadURL) Then
+                If sender.name = "btnLinkJPG" Or sender.name = "mnuStripLinkJPG" Then
+                    ModalExclamation("Imagen de trabajo no disponible")
+                    Exit Sub
+                End If
+                If sender.name = "btnLinkPDF" Or sender.name = "mnuStripLinkPDF" Then
+                    ModalExclamation("Documento PDF no disponible")
                     Exit Sub
                 End If
             End If
-
+            If sender.name = "btnLinkCdD" Or sender.name = "mnuStripLinkABSYS" Or sender.name = "mnuStripLinkCdD" Then
+                ModalInfo("La URL se abrirá en el navegador")
+            End If
             Process.Start(cadURL)
         Catch ex As Exception
             ModalError(ex.Message)
@@ -1431,7 +1443,7 @@
         'FillDetailsReduced(DataGridView1.Item("iddocsiddae", info.RowIndex).Value.ToString)
     End Sub
 
-    Private Sub btnOpenIncidencia_Click(sender As Object, e As EventArgs) Handles btnOpenIncidencia.Click
+    Private Sub btnOpenIncidencia_Click(sender As Object, e As EventArgs) Handles btnOpenIncidencia.Click, mnuStripOpenIncidencia.Click
 
         If DataGridView1.Rows.Count = 0 Then Exit Sub
         If DataGridView1.SelectedRows.Count > 1 Then
@@ -1522,7 +1534,7 @@
         End If
     End Sub
 
-    Private Sub btnEditar_Click(sender As Object, e As EventArgs) Handles btnEditar.Click
+    Private Sub btnEditar_Click(sender As Object, e As EventArgs) Handles btnEditar.Click, mnuStripEditar.Click
 
 
         'Compruebo que no haya abierta previamente una ventana para modificar este documento
@@ -1555,7 +1567,7 @@
 
     End Sub
 
-    Private Sub btnRefresh_Click(sender As Object, e As EventArgs) Handles btnRefresh.Click
+    Private Sub btnRefresh_Click(sender As Object, e As EventArgs) Handles btnRefresh.Click, mnuStripRefresh.Click
 
         DataGridView1.DataSource = Nothing
         DataGridView1.Rows.Clear()
@@ -1594,6 +1606,33 @@
         Dim f As Form
         f = sender
         If f.WindowState = FormWindowState.Maximized Then ResizeListViews()
+
+        If Me.Width < 1280 Then
+            btnExportCSV.Visible = False
+            btnExport.Visible = False
+            btnEditar.Visible = False
+            btnRefresh.Visible = False
+            btnOpenIncidencia.Visible = False
+            mnuStripEditar.Visible = True
+            mnuStripExport.Visible = True
+            mnuStripExportCSV.Visible = True
+            mnuStripOpenIncidencia.Visible = True
+            mnuStripRefresh.Visible = True
+            ToolStripSeparator3.Visible = True
+        Else
+            btnExportCSV.Visible = True
+            btnExport.Visible = True
+            btnEditar.Visible = True
+            btnRefresh.Visible = True
+            btnOpenIncidencia.Visible = True
+            mnuStripEditar.Visible = False
+            mnuStripExport.Visible = False
+            mnuStripExportCSV.Visible = False
+            mnuStripOpenIncidencia.Visible = False
+            mnuStripRefresh.Visible = False
+            ToolStripSeparator3.Visible = False
+        End If
+
 
     End Sub
 
@@ -1646,7 +1685,7 @@
         End If
     End Sub
 
-    Private Sub btnExport_Click(sender As Object, e As EventArgs) Handles btnExport.Click
+    Private Sub btnExport_Click(sender As Object, e As EventArgs) Handles btnExport.Click, mnuStripExport.Click
 
         If DataGridView1.RowCount = 0 Then Exit Sub
         If DataGridView1.SelectedRows.Count = 0 Then Exit Sub
@@ -1937,28 +1976,6 @@
     End Sub
 
 
-
-    Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
-
-        Dim rutaPDF As String
-
-
-        Try
-            Me.Cursor = Cursors.WaitCursor
-            rutaPDF = Button4.Tag
-            If Not IO.File.Exists(rutaPDF) Then
-                ModalExclamation("Documento PDF no localizado")
-                Exit Sub
-            End If
-            Process.Start(rutaPDF)
-        Catch ex As Exception
-            ModalError($"Error: {ex.Message}")
-        Finally
-            Me.Cursor = Cursors.Default
-        End Try
-
-    End Sub
-
     Private Sub ProcResources(sender As Object, e As EventArgs) Handles Button6.Click, Button7.Click
 
         If lvDocResources.SelectedItems.Count = 0 Then Exit Sub
@@ -2176,5 +2193,6 @@
         ModalInfo("Fichero de contornos generado")
 
     End Sub
+
 
 End Class
