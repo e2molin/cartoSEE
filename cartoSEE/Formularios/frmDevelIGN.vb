@@ -391,6 +391,7 @@
                     Application.DoEvents()
                     rutaSalida = rutaFile.ToLower.Replace(rutaTIFFInput.ToLower, rutaECWOutput.ToLower)
                     rutaSalida = rutaSalida.Replace(".tif", ".ecw")
+                    'rutaSalida = rutaSalida.Replace("_modified.tif", ".ecw")
                     sw.WriteLine($"LOAD_PROJECTION FILENAME=""{rutaPROJINPUT}""")
                     sw.WriteLine($"IMPORT FILENAME=""{rutaFile}"" TYPE=AUTO ANTI_ALIAS=NO AUTO_CONTRAST=NO")
                     sw.WriteLine($"LOAD_PROJECTION FILENAME=""{rutaPROJOUTPUT}""")
