@@ -198,7 +198,7 @@ Partial Class frmEdicion
         Me.TextBox9.Location = New System.Drawing.Point(172, 76)
         Me.TextBox9.Name = "TextBox9"
         Me.TextBox9.Size = New System.Drawing.Size(286, 20)
-        Me.TextBox9.TabIndex = 76
+        Me.TextBox9.TabIndex = 3
         '
         'Label24
         '
@@ -278,7 +278,7 @@ Partial Class frmEdicion
         Me.TextBox13.Location = New System.Drawing.Point(172, 282)
         Me.TextBox13.Name = "TextBox13"
         Me.TextBox13.Size = New System.Drawing.Size(286, 20)
-        Me.TextBox13.TabIndex = 12
+        Me.TextBox13.TabIndex = 11
         '
         'Label20
         '
@@ -490,6 +490,7 @@ Partial Class frmEdicion
         '
         Me.ComboBox6.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox6.FormattingEnabled = True
+        Me.ComboBox6.ItemHeight = 13
         Me.ComboBox6.Location = New System.Drawing.Point(175, 386)
         Me.ComboBox6.Name = "ComboBox6"
         Me.ComboBox6.Size = New System.Drawing.Size(283, 21)
@@ -532,7 +533,7 @@ Partial Class frmEdicion
         Me.MaskedTextBox1.Location = New System.Drawing.Point(173, 256)
         Me.MaskedTextBox1.Name = "MaskedTextBox1"
         Me.MaskedTextBox1.Size = New System.Drawing.Size(104, 20)
-        Me.MaskedTextBox1.TabIndex = 11
+        Me.MaskedTextBox1.TabIndex = 9
         '
         'Button4
         '
@@ -641,7 +642,7 @@ Partial Class frmEdicion
         Me.TextBox14.Location = New System.Drawing.Point(173, 174)
         Me.TextBox14.Name = "TextBox14"
         Me.TextBox14.Size = New System.Drawing.Size(285, 20)
-        Me.TextBox14.TabIndex = 15
+        Me.TextBox14.TabIndex = 6
         '
         'CheckBox16
         '
@@ -670,14 +671,14 @@ Partial Class frmEdicion
         Me.TextBox12.Location = New System.Drawing.Point(173, 204)
         Me.TextBox12.Name = "TextBox12"
         Me.TextBox12.Size = New System.Drawing.Size(285, 20)
-        Me.TextBox12.TabIndex = 14
+        Me.TextBox12.TabIndex = 7
         '
         'TextBox11
         '
         Me.TextBox11.Location = New System.Drawing.Point(371, 414)
         Me.TextBox11.Name = "TextBox11"
         Me.TextBox11.Size = New System.Drawing.Size(87, 20)
-        Me.TextBox11.TabIndex = 13
+        Me.TextBox11.TabIndex = 16
         '
         'CheckBox14
         '
@@ -695,7 +696,7 @@ Partial Class frmEdicion
         Me.TextBox10.Location = New System.Drawing.Point(175, 442)
         Me.TextBox10.Name = "TextBox10"
         Me.TextBox10.Size = New System.Drawing.Size(70, 20)
-        Me.TextBox10.TabIndex = 7
+        Me.TextBox10.TabIndex = 17
         '
         'CheckBox13
         '
@@ -724,7 +725,7 @@ Partial Class frmEdicion
         Me.TextBox8.Location = New System.Drawing.Point(172, 230)
         Me.TextBox8.Name = "TextBox8"
         Me.TextBox8.Size = New System.Drawing.Size(286, 20)
-        Me.TextBox8.TabIndex = 10
+        Me.TextBox8.TabIndex = 8
         Me.TextBox8.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'TextBox7
@@ -732,21 +733,21 @@ Partial Class frmEdicion
         Me.TextBox7.Location = New System.Drawing.Point(175, 411)
         Me.TextBox7.Name = "TextBox7"
         Me.TextBox7.Size = New System.Drawing.Size(70, 20)
-        Me.TextBox7.TabIndex = 9
+        Me.TextBox7.TabIndex = 15
         '
         'TextBox6
         '
         Me.TextBox6.Location = New System.Drawing.Point(371, 442)
         Me.TextBox6.Name = "TextBox6"
         Me.TextBox6.Size = New System.Drawing.Size(87, 20)
-        Me.TextBox6.TabIndex = 8
+        Me.TextBox6.TabIndex = 18
         '
         'TextBox5
         '
         Me.TextBox5.Location = New System.Drawing.Point(172, 307)
         Me.TextBox5.Name = "TextBox5"
         Me.TextBox5.Size = New System.Drawing.Size(71, 20)
-        Me.TextBox5.TabIndex = 6
+        Me.TextBox5.TabIndex = 12
         Me.TextBox5.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'TextBox4
@@ -754,7 +755,7 @@ Partial Class frmEdicion
         Me.TextBox4.Location = New System.Drawing.Point(173, 333)
         Me.TextBox4.Name = "TextBox4"
         Me.TextBox4.Size = New System.Drawing.Size(71, 20)
-        Me.TextBox4.TabIndex = 5
+        Me.TextBox4.TabIndex = 13
         Me.TextBox4.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'TextBox16
@@ -763,7 +764,7 @@ Partial Class frmEdicion
         Me.TextBox16.Multiline = True
         Me.TextBox16.Name = "TextBox16"
         Me.TextBox16.Size = New System.Drawing.Size(629, 98)
-        Me.TextBox16.TabIndex = 17
+        Me.TextBox16.TabIndex = 27
         '
         'TextBox15
         '
@@ -771,7 +772,7 @@ Partial Class frmEdicion
         Me.TextBox15.Multiline = True
         Me.TextBox15.Name = "TextBox15"
         Me.TextBox15.Size = New System.Drawing.Size(314, 46)
-        Me.TextBox15.TabIndex = 16
+        Me.TextBox15.TabIndex = 22
         '
         'TextBox1
         '
@@ -787,7 +788,7 @@ Partial Class frmEdicion
         Me.ComboBox2.Location = New System.Drawing.Point(172, 108)
         Me.ComboBox2.Name = "ComboBox2"
         Me.ComboBox2.Size = New System.Drawing.Size(286, 21)
-        Me.ComboBox2.TabIndex = 3
+        Me.ComboBox2.TabIndex = 4
         '
         'ComboBox1
         '
@@ -1175,7 +1176,7 @@ Partial Class frmEdicion
         Me.TextBox17.Location = New System.Drawing.Point(173, 144)
         Me.TextBox17.Name = "TextBox17"
         Me.TextBox17.Size = New System.Drawing.Size(285, 20)
-        Me.TextBox17.TabIndex = 81
+        Me.TextBox17.TabIndex = 5
         '
         'Label25
         '
@@ -1325,7 +1326,7 @@ Partial Class frmEdicion
         Me.ComboBox7.Location = New System.Drawing.Point(175, 469)
         Me.ComboBox7.Name = "ComboBox7"
         Me.ComboBox7.Size = New System.Drawing.Size(283, 21)
-        Me.ComboBox7.TabIndex = 91
+        Me.ComboBox7.TabIndex = 19
         '
         'Button15
         '
@@ -1367,7 +1368,7 @@ Partial Class frmEdicion
         Me.ComboBox3.Location = New System.Drawing.Point(328, 255)
         Me.ComboBox3.Name = "ComboBox3"
         Me.ComboBox3.Size = New System.Drawing.Size(130, 21)
-        Me.ComboBox3.TabIndex = 84
+        Me.ComboBox3.TabIndex = 10
         '
         'TabPage3
         '
@@ -1422,7 +1423,7 @@ Partial Class frmEdicion
         Me.TextBox24.Location = New System.Drawing.Point(169, 98)
         Me.TextBox24.Name = "TextBox24"
         Me.TextBox24.Size = New System.Drawing.Size(484, 20)
-        Me.TextBox24.TabIndex = 88
+        Me.TextBox24.TabIndex = 25
         '
         'Label32
         '
@@ -1449,7 +1450,7 @@ Partial Class frmEdicion
         Me.TextBox21.Location = New System.Drawing.Point(169, 128)
         Me.TextBox21.Name = "TextBox21"
         Me.TextBox21.Size = New System.Drawing.Size(484, 20)
-        Me.TextBox21.TabIndex = 85
+        Me.TextBox21.TabIndex = 26
         '
         'Label30
         '
@@ -1476,7 +1477,7 @@ Partial Class frmEdicion
         Me.TextBox20.Location = New System.Drawing.Point(169, 67)
         Me.TextBox20.Name = "TextBox20"
         Me.TextBox20.Size = New System.Drawing.Size(484, 20)
-        Me.TextBox20.TabIndex = 82
+        Me.TextBox20.TabIndex = 24
         '
         'Label29
         '
@@ -1503,7 +1504,7 @@ Partial Class frmEdicion
         Me.TextBox19.Location = New System.Drawing.Point(169, 32)
         Me.TextBox19.Name = "TextBox19"
         Me.TextBox19.Size = New System.Drawing.Size(338, 20)
-        Me.TextBox19.TabIndex = 79
+        Me.TextBox19.TabIndex = 23
         '
         'Label28
         '
@@ -1540,7 +1541,7 @@ Partial Class frmEdicion
         Me.TextBox18.Multiline = True
         Me.TextBox18.Name = "TextBox18"
         Me.TextBox18.Size = New System.Drawing.Size(629, 104)
-        Me.TextBox18.TabIndex = 63
+        Me.TextBox18.TabIndex = 28
         '
         'CheckBox26
         '
