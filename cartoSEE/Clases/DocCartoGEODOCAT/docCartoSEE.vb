@@ -645,7 +645,18 @@
                     .PathFile = RutaDoc,
                     .EPSCode = epsgCode
                 })
-
+                RutaDoc = $"{rutaRepoGeorrefBase}\{epsgCode}\{DirRepoProvinciaByTipodoc(tipoDocumento.idTipodoc)}\{Muni.Substring(0, 2)}\{Muni}\{Sellado}.tif"
+                If IO.File.Exists(RutaDoc) Then listaFicherosGeo.Add(New FileGeorref With {
+                    .NameFile = $"{Sellado}.tif",
+                    .PathFile = RutaDoc,
+                    .EPSCode = epsgCode
+                })
+                RutaDoc = $"{rutaRepoGeorrefBase}\{epsgCode}\{DirRepoProvinciaByTipodoc(tipoDocumento.idTipodoc)}\{Muni.Substring(0, 2)}\{Muni}\{Sellado}_geo.tif"
+                If IO.File.Exists(RutaDoc) Then listaFicherosGeo.Add(New FileGeorref With {
+                    .NameFile = $"{Sellado}_geo.tif",
+                    .PathFile = RutaDoc,
+                    .EPSCode = epsgCode
+                })
             Next
             If listaFicherosGeo.Count > 0 Then Exit Sub
         Next
