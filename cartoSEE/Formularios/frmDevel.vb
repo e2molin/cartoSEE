@@ -165,11 +165,158 @@
 
     Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
 
-        For ibucle As Integer = 1 To 50
-            TestECWExist(ibucle)
-        Next
+        'Vamos a comprobar que todo documento de Archivo con provincia_id e municipiohistorico1_id distinto de cero,
+        'tienen georreferenciado al menos un. En el caso de los planos de población , puede tener más de 1
+        Dim sqlBase As String
+        Dim rcdTest As DataTable
+        Dim rutaECW23030 As String
+        Dim rutaECW25830 As String
+        Dim pathProv As String
+        Dim pathMuni As String
+        Dim fileECW As String
+        Dim Existe_23030 As Boolean
+        Dim Existe_25830 As Boolean
 
-        MessageBox.Show("Proceso terminado", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+        Using sw As New System.IO.StreamWriter($"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\georef_report.csv", False, System.Text.Encoding.Unicode)
+            sw.WriteLine($"idArchivo;Sellado;Provincia;municipiohistorico1_id;Tipo;Subtipo;epsg23030;epsg25830;Fichero")
+            For iBucle = 1 To 50
+                ToolStripStatusLabel1.Text = $"Procesando idprovincia: {iBucle}"
+                Application.DoEvents()
+                sqlBase = $"SELECT archivo.idarchivo,archivo.numdoc,tbtipodocumento.tipodoc as tipo,coalesce(archivo.subtipo,'') as subtipo,archivo.tomo,archivo.escala,to_char(archivo.fechaprincipal, 'YYYY-MM-DD') as fechaprincipal,
+                            string_agg(territorios.nombre,', ') as listaMuniHisto,archivo.signatura,archivo.horizontal || ' cm × '|| archivo.vertical || ' cm' as dimensiones,
+                            archivo.coleccion,archivo.subdivision,tbestadodocumento.estadodoc as Estado,archivo.fechasmodificaciones,archivo.observaciones,archivo.proyecto,archivo.municipiohistorico1_id,archivo.tipodoc_id,archivo.provincia_id,
+		                    archivo.anejo,archivo.procecarpeta,archivo.procehoja,
+		                    archivo.juntaestadistica,archivo.extraprops,
+		                    archivo.cdd_url,archivo.titn,archivo.autor,archivo.encabezado,
+                            string_agg(DISTINCT provincias.nombreprovincia,'#') as nombreprovincia,
+		                    string_agg(to_char(territorios.munihisto, 'FM0000009'::text),'#') as listaCodMuniHisto,
+		                    string_agg(listamunicipios.nombre,'#') as listaMuniActual,
+                            string_agg(listamunicipios.inecorto,'#') as listaCodMuniActual
+                    FROM bdsidschema.archivo 
+	                    LEFT JOIN bdsidschema.tbtipodocumento ON tbtipodocumento.idtipodoc=archivo.tipodoc_id 
+	                    LEFT JOIN bdsidschema.tbestadodocumento ON tbestadodocumento.idestadodoc=archivo.estadodoc_id 
+	                    LEFT JOIN bdsidschema.archivo2territorios  ON archivo2territorios.archivo_id=archivo.idarchivo 
+	                    LEFT JOIN bdsidschema.territorios on territorios.idterritorio= archivo2territorios.territorio_id 
+	                    LEFT JOIN ngmepschema.listamunicipios on territorios.nomen_id= listamunicipios.identidad 
+	                    LEFT JOIN bdsidschema.provincias on territorios.provincia= provincias.idprovincia 
+                    WHERE archivo.provincia_id= {iBucle}
+                      group by archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal,
+  	                    archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, archivo.horizontal, archivo.procecarpeta, archivo.procehoja, 
+                        archivo.subtipo,archivo.juntaestadistica, archivo.signatura,archivo.extraprops, archivo.observaciones,archivo.proyecto,archivo.municipiohistorico1_id,archivo.tipodoc_id,archivo.provincia_id,
+	                    tbtipodocumento.tipodoc,archivo.cdd_url,archivo.titn,archivo.autor,archivo.encabezado,tbestadodocumento.estadodoc"
+                Try
+                    rcdTest = New DataTable
+                    If CargarRecordset(sqlBase, rcdTest) Then
+                        For Each reg As DataRow In rcdTest.Select
+                            Application.DoEvents()
+                            Existe_23030 = False
+                            Existe_25830 = False
+                            pathMuni = ""
+                            fileECW = ""
+                            'If reg("numdoc").ToString = "010030" Then
+                            '    Application.DoEvents()
+                            'End If
+
+                            If reg("municipiohistorico1_id") = 0 Then
+                                sw.WriteLine($"{reg("idarchivo")};{reg("numdoc")};{reg("nombreprovincia")};{pathMuni};{reg("tipo")};{reg("subtipo")};{Existe_23030};{Existe_25830};{fileECW}")
+                                Continue For
+                            End If
+                            pathProv = String.Format("{0:00}", CType(reg("provincia_id").ToString, Integer))
+                            pathMuni = String.Format("{0:0000000}", CType(reg("municipiohistorico1_id").ToString, Integer))
+                            fileECW = $"{reg("numdoc")}.ecw"
+                            rutaECW23030 = $"{rutaRepoGeorrefBase}\epsg23030\{DirRepoProvinciaByTipodoc(CType(reg("tipodoc_id").ToString, Integer))}\{pathProv}\{pathMuni}\{fileECW}"
+                            rutaECW25830 = $"{rutaRepoGeorrefBase}\epsg25830\{DirRepoProvinciaByTipodoc(CType(reg("tipodoc_id").ToString, Integer))}\{pathProv}\{pathMuni}\{fileECW}"
+
+
+
+                            Existe_23030 = IO.File.Exists(rutaECW23030)
+                            Existe_25830 = IO.File.Exists(rutaECW25830)
+
+                            If Not Existe_23030 Then
+                                fileECW = $"{reg("numdoc")}_01.ecw"
+                                rutaECW23030 = $"{rutaRepoGeorrefBase}\epsg23030\{DirRepoProvinciaByTipodoc(CType(reg("tipodoc_id").ToString, Integer))}\{pathProv}\{pathMuni}\{fileECW}"
+                                Existe_23030 = IO.File.Exists(rutaECW23030)
+                            End If
+                            If Not Existe_25830 Then
+                                fileECW = $"{reg("numdoc")}_01.ecw"
+                                rutaECW25830 = $"{rutaRepoGeorrefBase}\epsg25830\{DirRepoProvinciaByTipodoc(CType(reg("tipodoc_id").ToString, Integer))}\{pathProv}\{pathMuni}\{fileECW}"
+                                Existe_25830 = IO.File.Exists(rutaECW25830)
+                            End If
+
+                            sw.WriteLine($"{reg("idarchivo")};{reg("numdoc")};{reg("nombreprovincia")};{pathMuni};{reg("tipo")};{reg("subtipo")};{Existe_23030};{Existe_25830};{fileECW}")
+
+                        Next
+                        Application.DoEvents()
+                    End If
+                Catch ex As Exception
+                    ModalError(ex.Message)
+                Finally
+                    rcdTest.Dispose()
+                    rcdTest = Nothing
+                End Try
+            Next
+
+            sw.Close()
+            sw.Dispose()
+        End Using
+
+
+        ModalInfo("Proceso terminado")
+
+
+
+        'Dim RutaDOC As String
+        'Dim contador As Integer
+
+        'ReDim Rutas(0)
+
+        ''Si no hay acceso al repositorio Base, directamente salgo
+        'If System.IO.Directory.Exists(rutaRepoGeorref) = False Then Exit Function
+
+        ''Comprobamos el más simple de todos
+        'Dim Munis() As String = Documento.MunicipiosINE.Split("#")
+        'For Each Muni As String In Munis
+        '    RutaDOC = rutaRepoGeorref &
+        '                     "\" & DirRepoProvinciaByTipodoc(Documento.CodTipo) &
+        '                     "\" & Muni.Substring(0, 2) &
+        '                     "\" & Muni &
+        '                    "\" & Documento.Sellado & ".ecw"
+        '    If System.IO.File.Exists(RutaDOC) = True Then
+        '        Rutas(0) = RutaDOC
+        '        Return True
+        '    End If
+        'Next
+        ''El nombre del documento es compuesto
+        'ReDim Rutas(20)
+        'For Each Muni As String In Munis
+        '    RutaDOC = rutaRepoGeorref &
+        '                     "\" & DirRepoProvinciaByTipodoc(Documento.CodTipo) &
+        '                     "\" & Muni.Substring(0, 2) &
+        '                     "\" & Muni &
+        '                    "\" & Documento.Sellado & "_01.ecw"
+        '    If System.IO.File.Exists(RutaDOC) = True Then
+        '        Rutas(0) = RutaDOC
+        '        contador = 0
+        '        Do Until contador = 20
+        '            contador = contador + 1
+        '            RutaDOC = rutaRepoGeorref &
+        '                             "\" & DirRepoProvinciaByTipodoc(Documento.CodTipo) &
+        '                             "\" & Muni.Substring(0, 2) &
+        '                             "\" & Muni &
+        '                            "\" & Documento.Sellado & "_" & String.Format("{000}", contador + 1) & ".ecw"
+
+        '            If System.IO.File.Exists(RutaDOC) = True Then
+        '                Rutas(contador) = RutaDOC
+        '            Else
+        '                Exit Do
+        '            End If
+        '        Loop
+        '        ReDim Preserve Rutas(contador - 1)
+        '        Exit For
+        '    End If
+        'Next
+
+
 
 
 

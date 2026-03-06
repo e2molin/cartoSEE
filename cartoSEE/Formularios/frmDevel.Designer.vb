@@ -86,9 +86,9 @@ Partial Class frmDevel
         'StatusStrip1
         '
         Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1})
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 452)
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 712)
         Me.StatusStrip1.Name = "StatusStrip1"
-        Me.StatusStrip1.Size = New System.Drawing.Size(798, 22)
+        Me.StatusStrip1.Size = New System.Drawing.Size(1238, 22)
         Me.StatusStrip1.TabIndex = 1
         Me.StatusStrip1.Text = "StatusStrip1"
         '
@@ -122,7 +122,7 @@ Partial Class frmDevel
         Me.TabControl1.Location = New System.Drawing.Point(12, 12)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(774, 433)
+        Me.TabControl1.Size = New System.Drawing.Size(1214, 697)
         Me.TabControl1.TabIndex = 4
         '
         'TabPage1
@@ -322,7 +322,7 @@ Partial Class frmDevel
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(766, 407)
+        Me.TabPage2.Size = New System.Drawing.Size(1206, 671)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "TabPage2"
         Me.TabPage2.UseVisualStyleBackColor = True
@@ -480,7 +480,7 @@ Partial Class frmDevel
         '
         'Button3
         '
-        Me.Button3.Location = New System.Drawing.Point(566, 304)
+        Me.Button3.Location = New System.Drawing.Point(21, 409)
         Me.Button3.Name = "Button3"
         Me.Button3.Size = New System.Drawing.Size(194, 46)
         Me.Button3.TabIndex = 1
@@ -491,7 +491,7 @@ Partial Class frmDevel
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(798, 474)
+        Me.ClientSize = New System.Drawing.Size(1238, 734)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.StatusStrip1)
         Me.Name = "frmDevel"

@@ -763,12 +763,8 @@
 
         LoadThumb(PictureBox2)
 
-
         idArchiveTagsLoaded = idArchivo
         FillResources(idArchivo, rowId)
-
-
-
 
     End Sub
 

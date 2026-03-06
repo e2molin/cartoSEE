@@ -217,28 +217,27 @@ Module Documentacion
     ''' <param name="ListaDoc">Array para almacenar los datos del SIDCARTO</param>
     ''' <param name="Filtro">Cadena SQL opcional para limitar la consulta</param>
     ''' <remarks></remarks>
-    Sub DameDocumentacionSIDCARTO_ByProvincia(ByVal CodigoProvincia As Integer, _
-                                ByRef ListaDoc() As docSIDCARTO, ByRef CadenaSQL As String, _
+    Sub DameDocumentacionSIDCARTO_ByProvincia(CodigoProvincia As Integer,
+                                ByRef ListaDoc() As docSIDCARTO, ByRef CadenaSQL As String,
                                 Optional ByVal Filtro As String = "")
 
-        CadenaSQL = "SELECT archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion," &
-                        "archivo.subdivision,archivo.fechaprincipal,archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, " &
-                        "archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja,archivo.subtipo," &
-                        "archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.observaciones," &
-                        "tbtipodocumento.tipodoc as Tipo," &
-                        "tbestadodocumento.estadodoc as Estado," &
-                        "tbobservaciones.observestandar," &
-                        "munihisto.cod_munihisto,munihisto.nombremunicipiohistorico,munihisto.provincia_id as CodProv,provincias.nombreprovincia " &
-                        "FROM bdsidschema.archivo " &
-                        "INNER JOIN bdsidschema.tbtipodocumento on tbtipodocumento.idtipodoc=archivo.tipodoc_id " &
-                        "INNER JOIN bdsidschema.tbestadodocumento on tbestadodocumento.idestadodoc=archivo.estadodoc_id " &
-                        "INNER JOIN bdsidschema.archivo2munihisto  on archivo2munihisto.archivo_id=archivo.idarchivo " &
-                        "LEFT JOIN bdsidschema.tbobservaciones  on tbobservaciones.idobservestandar=archivo.observestandar_id " &
-                        "INNER JOIN bdsidschema.munihisto on munihisto.idmunihisto= archivo2munihisto.munihisto_id " &
-                        "INNER JOIN bdsidschema.provincias on munihisto.provincia_id = provincias.idprovincia " &
-                        "WHERE archivo.provincia_id=" & CodigoProvincia & " " &
-                        IIf(Filtro = "", "", " " & Filtro & "") & " " &
-                        "order by archivo.idarchivo"
+        CadenaSQL = $"SELECT archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,
+                        archivo.subdivision,archivo.fechaprincipal,archivo.fechasmodificaciones,archivo.anejo,archivo.vertical,
+                        archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja,archivo.subtipo,
+                        archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.observaciones,
+                        tbtipodocumento.tipodoc as Tipo,
+                        tbestadodocumento.estadodoc as Estado,
+                        tbobservaciones.observestandar,
+                        munihisto.cod_munihisto,munihisto.nombremunicipiohistorico,munihisto.provincia_id as CodProv,provincias.nombreprovincia 
+                        FROM bdsidschema.archivo 
+                        INNER JOIN bdsidschema.tbtipodocumento on tbtipodocumento.idtipodoc=archivo.tipodoc_id 
+                        INNER JOIN bdsidschema.tbestadodocumento on tbestadodocumento.idestadodoc=archivo.estadodoc_id 
+                        INNER JOIN bdsidschema.archivo2munihisto  on archivo2munihisto.archivo_id=archivo.idarchivo 
+                        LEFT JOIN bdsidschema.tbobservaciones  on tbobservaciones.idobservestandar=archivo.observestandar_id 
+                        INNER JOIN bdsidschema.munihisto on munihisto.idmunihisto= archivo2munihisto.munihisto_id 
+                        INNER JOIN bdsidschema.provincias on munihisto.provincia_id = provincias.idprovincia 
+                        WHERE archivo.provincia_id={CodigoProvincia} {If(Filtro = "", "", " " & Filtro & "")} ORDER BY archivo.idarchivo"
+
         CargarListaDocumentosSIDCARTO(CadenaSQL, ListaDoc)
 
     End Sub
