@@ -8,6 +8,9 @@ Module CargaDeDatos
     Public ListaTiposDocumento As DataTable
     Public ListaMunicipiosActual As DataTable
     Public tiposDocSIDCARTO As ArrayList
+    Public ListasDePropietarios As DataTable
+    Public listasProps As ArrayList
+
 
     Dim dA As DbDataAdapter
     Dim cmdSQL As DbCommand
@@ -18,6 +21,57 @@ Module CargaDeDatos
                                     {2, "El documento aparece como Documento Técnico"},
                                     {3, "El documento aparece como Otros Documentos"}
                                 }
+
+    Function CargarListasDePropietarios() As Boolean
+
+        ListasDePropietarios = New DataTable
+        listasProps = Nothing
+        listasProps = New ArrayList
+        If Not CargarDatatable("SELECT idlistaprop,ayuntamiento,part_jud,numcoleccion,COALESCE(coleccion,'Única') as coleccion,
+                                        listaprop.territorio_id as territorio_id,
+	                                    t1.nombre as munihisto, t1.munihisto as codmunihisto,
+	                                    t2.nombre as muniactual,t2.municipio as codmuniactual,
+	                                    provincias.nombreprovincia,provincias.idprovincia,provincias.comautonoma_id,listaprop.dataset_tbl as dataset_tbl
+	                                    FROM bdsidschema.listaprop 
+	                                    INNER JOIN bdsidschema.territorios t1 ON listaprop.territorio_id=t1.idterritorio
+	                                    INNER JOIN bdsidschema.territorios t2 ON t1.munihisto/100=t2.municipio
+	                                    INNER JOIN bdsidschema.provincias ON t1.provincia=provincias.idprovincia
+	                                    where t2.tipo='Municipio'", ListasDePropietarios) Then
+            ModalError("No se puede acceder a la tabla de tipos de documentos")
+            Return False
+        End If
+
+        Dim item As docSIDCECAListaProp
+
+        For Each dr As DataRow In ListasDePropietarios.Select()
+
+            item = New docSIDCECAListaProp
+            With item
+                .IdListaProp = dr("idlistaprop")
+                .Ayuntamiento = dr("ayuntamiento").ToString
+                .PartidoJudicial = dr("part_jud").ToString
+                .MunicipioActual = dr("muniactual").ToString
+                .MunicipioHistorico = dr("munihisto").ToString
+                .NombreColeccion = dr("coleccion").ToString
+                .NumeroColeccion = dr("numcoleccion").ToString
+                .CodMuniActual = dr("codmuniactual")
+                .CodMuniHisto = dr("codmunihisto")
+                .NombreProvincia = dr("nombreprovincia").ToString
+                .CodProv = dr("idprovincia")
+                .DatasetTbl = dr("dataset_tbl").ToString
+                .IdTerritorio = dr("territorio_id")
+                .CodAutonomia = dr("comautonoma_id")
+            End With
+            listasProps.Add(item)
+            item = Nothing
+        Next
+
+
+
+
+    End Function
+
+
 
     Function CargarListaTiposDocumento() As Boolean
 

@@ -70,6 +70,8 @@ Partial Class frmExport
         Me.chkCopyTest = New System.Windows.Forms.CheckBox()
         Me.chkOverWrite = New System.Windows.Forms.CheckBox()
         Me.CheckBox2 = New System.Windows.Forms.CheckBox()
+        Me.Button7 = New System.Windows.Forms.Button()
+        Me.Label6 = New System.Windows.Forms.Label()
         Me.StatusStrip1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
@@ -345,6 +347,8 @@ Partial Class frmExport
         '
         'TabPage4
         '
+        Me.TabPage4.Controls.Add(Me.Label6)
+        Me.TabPage4.Controls.Add(Me.Button7)
         Me.TabPage4.Controls.Add(Me.Label5)
         Me.TabPage4.Controls.Add(Me.Label4)
         Me.TabPage4.Controls.Add(Me.Button5)
@@ -359,7 +363,7 @@ Partial Class frmExport
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(236, 51)
+        Me.Label5.Location = New System.Drawing.Point(243, 145)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(261, 13)
         Me.Label5.TabIndex = 40
@@ -378,7 +382,7 @@ Partial Class frmExport
         'Button5
         '
         Me.Button5.Image = CType(resources.GetObject("Button5.Image"), System.Drawing.Image)
-        Me.Button5.Location = New System.Drawing.Point(22, 39)
+        Me.Button5.Location = New System.Drawing.Point(29, 133)
         Me.Button5.Name = "Button5"
         Me.Button5.Size = New System.Drawing.Size(202, 36)
         Me.Button5.TabIndex = 34
@@ -551,6 +555,26 @@ Partial Class frmExport
         Me.CheckBox2.Text = "Agrupar ficheros PDF por código INE"
         Me.CheckBox2.UseVisualStyleBackColor = True
         '
+        'Button7
+        '
+        Me.Button7.Image = CType(resources.GetObject("Button7.Image"), System.Drawing.Image)
+        Me.Button7.Location = New System.Drawing.Point(29, 47)
+        Me.Button7.Name = "Button7"
+        Me.Button7.Size = New System.Drawing.Size(202, 36)
+        Me.Button7.TabIndex = 41
+        Me.Button7.Text = "Extraer todas las cédulas"
+        Me.Button7.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.Button7.UseVisualStyleBackColor = True
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Location = New System.Drawing.Point(243, 59)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(240, 13)
+        Me.Label6.TabIndex = 42
+        Me.Label6.Text = "Exportación inicial de Cédulas catastrales  al CdD"
+        '
         'frmExport
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -637,4 +661,6 @@ Partial Class frmExport
     Friend WithEvents Label5 As Label
     Friend WithEvents Label4 As Label
     Friend WithEvents CheckBox2 As CheckBox
+    Friend WithEvents Label6 As Label
+    Friend WithEvents Button7 As Button
 End Class

@@ -46,7 +46,9 @@
 
     End Property
 
-
+    Sub New()
+        Application.DoEvents()
+    End Sub
     Sub New(idListProp As Integer)
 
 

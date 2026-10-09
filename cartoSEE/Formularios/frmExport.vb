@@ -187,7 +187,11 @@ Public Class frmExport
             resultCedulas.getByFiltroSQL(filtroSQL)
         End If
 
-
+        If resultCedulas.resultados.Count = 0 Then
+            Me.Cursor = Cursors.Default
+            ModalExclamation("No hay datos para exportar")
+            Exit Sub
+        End If
 
 
 
@@ -353,7 +357,7 @@ Public Class frmExport
 
     End Sub
 
-    Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
+    Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click, Button7.Click
 
         'Dim filtroSQL As String
         'filtroSQL = TextBox1.Text
@@ -379,10 +383,15 @@ Public Class frmExport
         Application.DoEvents()
 
 
+        If sender.name = "Button5" Then
+            procesarListaDocsCdD(txtDirTarget.Text, "idparceladato>0$listaprop.territorio_id=5305", "SIDCECA_I_y_II")
+            'registrarDatabaseLog("Terminado proceso de exportación CdD")
+            ModalInfo("Proceso de extracción para el CdD terminado")
+        ElseIf sender.name = "Button7" Then
+            procesarListaDocsCdD(txtDirTarget.Text, "$", "SIDCECA_I_y_II")
+            ModalInfo("Proceso de extracción para el CdD terminado")
+        End If
 
-        procesarListaDocsCdD(txtDirTarget.Text, "idparceladato>0$listaprop.territorio_id=5305", "SIDCECA_I_y_II")
-        'registrarDatabaseLog("Terminado proceso de exportación CdD")
-        ModalInfo("Proceso de extracción para el CdD terminado")
 
 
 

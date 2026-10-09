@@ -124,6 +124,7 @@ Public Class MDIPrincipal
             GenerarLOG("Inicio sesión en " & DB_Servidor)
             CargarListasProvincias()
             CargarListaTiposDocumento()
+            CargarListasDePropietarios()
             ''----Lanzamos un hilo para la carga de los municipios, que es más lenta
             CargarListasMunicipios()
             CargarListasMunicipiosActual()
@@ -2326,6 +2327,7 @@ Public Class MDIPrincipal
                             .PKField = "idparceladata"
                             .datasetTbL = datasetTbl
                         End If
+                        'Parcelas dentro de Madrid
                         If datasetTbl = "parcelasdatos" Then
                             .OrderField = "parcelasdatos.idparceladato"
                             .PKField = "idparceladato"

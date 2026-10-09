@@ -57,7 +57,7 @@
                                     LEFT JOIN bdsidschema.listaprop ON parcelasdatos.listaprop_id = listaprop.idlistaprop
                                     LEFT JOIN bdsidschema.propietarios ON parcelasdatos.propietario_id = propietarios.idpropietario
 	                                LEFT JOIN bdsidschema.parcelasgeotrans ON parcelasdatos.idparceladato = parcelasgeotrans.parceladato_id
-  	                        where {Filtro}
+  	                        {IIf(Filtro = "", "", $"where {Filtro}")}
                             GROUP BY 
 	                            parcelasdatos.idparceladato,parcelasdatos.numero_doc,parcelasdatos.fecha_insert,parcelasdatos.fechamodificacion,parcelasdatos.nombre_archivo,
 	                            propietarios.nombre_completo,parcelasdatos.listaprop_id,parcelasdatos.terminoid,parcelasdatos.numparcela,parcelasdatos.distribuidor,
@@ -91,7 +91,7 @@
                             FROM bdsidschema.parcelasdata 
 	                             LEFT JOIN bdsidschema.listaprop ON parcelasdata.listaprop_id = listaprop.idlistaprop
 	                             LEFT JOIN bdsidschema.parcelasdatageo ON parcelasdata.idparceladata = parcelasdatageo.parceladata_id
-                            where {Filtro}
+                            {IIf(Filtro = "", "", $"where {Filtro}")}
                             GROUP BY 
                                parcelasdata.idparceladata,parcelasdata.sellado,create_at,update_at,parcelasdata.ceduladigital,
                                parcelasdata.propietario,parcelasdata.listaprop_id,
@@ -128,10 +128,19 @@
         For Each dR As DataRow In filas
             'Esto es necesario mientras haya documentos con el documento Principal sin especificar
             Dim item As New docSIDCECA
-
-            'Esto es necesario mientras haya documentos con el documento Principal sin especificar
             item.IdParcela = dR("idparceladato")
-            item.ListaPropietarios = New docSIDCECAListaProp(dR("listaprop_id"))
+
+            If dR("listaprop_id").ToString <> "" Then
+                For Each list As docSIDCECAListaProp In listasProps
+                    If list.IdListaProp = dR("listaprop_id") Then
+                        item.ListaPropietarios = New docSIDCECAListaProp
+                        item.ListaPropietarios = list
+                        Exit For
+                    End If
+                Next
+            End If
+            'Si no encuentro lista asociada, item.ListaPropietarios is nothing = true
+
             item.ProyectoBADASID = IIf(datasetTbl = "parcelasdatos", "SIDCECA_I", "SIDCECA_II")
             If datasetTbl = "parcelasdatos" Then item.Parcela = dR("ncc").ToString
             If datasetTbl = "parcelasdatos" Then item.SubParcela = dR("calificador").ToString

@@ -1022,7 +1022,7 @@
                             End If
                         Else
                             numCopyCorrect += 1
-                            archivoLog.WriteLine($"#COPIA CORRECTA*{pathOrigen}#{pathDestino}") ';{pathDestino}
+                            archivoLog.WriteLine($"#COPIA CORRECTA PREVIA*{pathOrigen}#{pathDestino}") ';{pathDestino}
                         End If
 
                         docAtributos.WriteLine($"{documento.selladoIdProductor};{documento.nameFile4CDD}{IIf(pathIncluding, ";" & pathDestino, "")};.pdf;Cédula catastral de la JGE;{documento.FechaDoc};{documento.Alias4CDD};{IIf(taxonomyCodeIncluding, documento.TaxonomiaWebSemanticaCode, "4.8")}")
@@ -1030,9 +1030,9 @@
                         docMuniInfo.WriteLine($"{documento.selladoIdProductor};{documento.nameFile4CDD};{documento.ListaPropietarios.municipioINE_LongFormat}")
                         secuenciaIdterris = documento.ListaPropietarios.IdTerritorio
                         If documento.ProyectoBADASID = "SIDCECA_I" Then
-                            docSQLs.WriteLine($"UPDATE bbdsidschema.parcelasdatos SET namefilecdd='{documento.nameFile4CDD}',fechafilecdd='{fechaExtraccion}',descriptcdd=E'{documento.Alias4CDD.Replace("'", "\'")}',terriscdd='{secuenciaIdterris}' where idparceladato={documento.IdParcela};".Replace(vbCrLf, ""))
+                            docSQLs.WriteLine($"UPDATE bdsidschema.parcelasdatos SET namefilecdd='{documento.nameFile4CDD}',fechafilecdd='{fechaExtraccion}',descriptcdd=E'{documento.Alias4CDD.Replace("'", "\'")}',terriscdd='{secuenciaIdterris}' where idparceladato={documento.IdParcela};".Replace(vbCrLf, ""))
                         ElseIf documento.ProyectoBADASID = "SIDCECA_II" Then
-                            docSQLs.WriteLine($"UPDATE bbdsidschema.parcelasdata SET namefilecdd='{documento.nameFile4CDD}',fechafilecdd='{fechaExtraccion}',descriptcdd=E'{documento.Alias4CDD.Replace("'", "\'")}',terriscdd='{secuenciaIdterris}' where idparceladata={documento.IdParcela};".Replace(vbCrLf, ""))
+                            docSQLs.WriteLine($"UPDATE bdsidschema.parcelasdata SET namefilecdd='{documento.nameFile4CDD}',fechafilecdd='{fechaExtraccion}',descriptcdd=E'{documento.Alias4CDD.Replace("'", "\'")}',terriscdd='{secuenciaIdterris}' where idparceladata={documento.IdParcela};".Replace(vbCrLf, ""))
                         End If
 
                     Catch ex As Exception
@@ -1056,7 +1056,6 @@
 
 
     End Function
-
 
 
 End Class
