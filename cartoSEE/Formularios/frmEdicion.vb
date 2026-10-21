@@ -237,6 +237,9 @@
         Next
         ComboBox7.SelectedIndex = 0
 
+        cboSignatura.Items.Add("Archivo de Legajos")
+        cboSignatura.Items.Add("No disponible físicamente")
+
 
 
     End Sub
@@ -250,7 +253,7 @@
             TextBox4.Text = .Vertical
             TextBox5.Text = .Horizontal
             TextBox6.Text = .proceCarpeta
-            TextBox7.Text = .Signatura
+            cboSignatura.Text = .Signatura
             TextBox8.Text = .Escala
             TextBox9.Text = .subTipoDoc
             TextBox10.Text = .proceHoja
@@ -261,12 +264,13 @@
             TextBox15.Text = .Anejo
             TextBox16.Text = .Observaciones
             TextBox17.Text = .Proyecto
-            TextBox18.Text = .Comentarios
+            TextBox18.Text = .ObservacionesAbsys
             TextBox19.Text = .encabezadoABSYSdoc
             TextBox20.Text = .autorEntidad
             TextBox24.Text = .autorPersona
             TextBox21.Text = .EdificiosCitados
             TextBox22.Text = .Sellado
+            ckkDistribuible.Checked = .distribuible
 
             For Each item As itemData In ComboBox1.Items
                 If item.Name = .Tipo Then ComboBox1.SelectedIndex = ComboBox1.Items.IndexOf(item)
@@ -578,13 +582,15 @@
         If CheckBox14.Checked Then propsChanged.Add($"coleccion={IIf(TextBox14.Text.Trim = "", "Null", $"E'{TextBox14.Text.Trim.Replace("'", "\'")}'")}")
         If CheckBox12.Checked Then propsChanged.Add($"subdivision={IIf(TextBox12.Text.Trim = "", "Null", $"E'{TextBox12.Text.Trim.Replace("'", "\'")}'")}")
         If CheckBox13.Checked Then propsChanged.Add($"fechamodificacion={IIf(TextBox13.Text.Trim = "", "Null", $"E'{TextBox13.Text.Trim.Replace("'", "\'")}'")}")
-        If CheckBox7.Checked Then propsChanged.Add($"signatura={IIf(TextBox7.Text.Trim = "", "Null", $"E'{TextBox7.Text.Trim.Replace("'", "\'")}'")}")
+        If CheckBox7.Checked Then propsChanged.Add($"signatura={IIf(cboSignatura.Text.Trim = "", "Null", $"E'{cboSignatura.Text.Trim.Replace("'", "\'")}'")}")
         If CheckBox11.Checked Then propsChanged.Add($"tomo={IIf(TextBox11.Text.Trim = "", "Null", $"E'{TextBox11.Text.Trim.Replace("'", "\'")}'")}")
         If CheckBox15.Checked Then propsChanged.Add($"anejo={IIf(TextBox15.Text.Trim = "", "Null", $"E'{TextBox15.Text.Trim.Replace("'", "\'")}'")}")
         If CheckBox6.Checked Then propsChanged.Add($"procecarpeta={IIf(TextBox6.Text.Trim = "", "Null", $"E'{TextBox6.Text.Trim.Replace("'", "\'")}'")}")
         If CheckBox31.Checked Then propsChanged.Add($"tipo_fechaprincipal={IIf(ComboBox3.SelectedIndex <> -1, $"E'{ComboBox3.Text}'", "null")}")
         If CheckBox32.Checked Then propsChanged.Add($"doctypehr={IIf(ComboBox7.SelectedIndex <> -1, $"{CType(ComboBox7.SelectedItem, itemData).Valor}", "0")}")
 
+        'Este lo ejecutamos siempre
+        propsChanged.Add($"distribuible={IIf(ckkDistribuible.Checked, $"true", "false")}")
 
 
         If CheckBox20.Checked Then
@@ -739,13 +745,13 @@
 
                 ListaSQL.Add($"DELETE FROM bdsidschema.archivo2territorios where archivo_id={item.docIndex}")
                 ListaSQL.Add($"INSERT INTO bdsidschema.archivolog (archivo_id, sellado, usuario_update, tabla, tipo_variacion, valor_old, valor_new) 
-                                 VALUES ({item.docIndex},'{ item.Sellado}','{usuarioMyApp.loginUser}','archivo2territorios','Desasignación municipio histórico',
+                                 VALUES ({item.docIndex},'{ item.Sellado}','{usuarioMyApp.LoginUser}','archivo2territorios','Desasignación municipio histórico',
                                  E'{item.muniHistoLiteralConINEHistorico.Replace("'", "\'")}',null)")
 
                 For Each itemLV As ListViewItem In ListView1.Items
                     ListaSQL.Add($"INSERT INTO bdsidschema.archivo2territorios (territorio_id,archivo_id) VALUES ({itemLV.SubItems(3).Text},{item.docIndex})")
                     ListaSQL.Add($"INSERT INTO bdsidschema.archivolog (archivo_id, sellado, usuario_update, tabla, tipo_variacion, valor_old, valor_new) 
-                                VALUES ({item.docIndex},'{item.Sellado}','{usuarioMyApp.loginUser}','archivo2munihisto','Asignación municipio histórico',null,
+                                VALUES ({item.docIndex},'{item.Sellado}','{usuarioMyApp.LoginUser}','archivo2munihisto','Asignación municipio histórico',null,
                                 E'{itemLV.SubItems(0).Text.Replace("'", "\'")}({itemLV.SubItems(2).Text})')")
                 Next
 
@@ -1186,6 +1192,7 @@
         ObtenerEscalar($"SELECT idarchivo from bdsidschema.archivo where numdoc='{TextBox22.Text.Trim}'", Resultado)
         If Resultado > 0 Then ModalExclamation($"El número de sellado {TextBox22.Text.Trim} ya existe en GEODOCAT") : Exit Function
         elementoInsert.Sellado = TextBox22.Text.Trim
+        elementoInsert.distribuible = ckkDistribuible.Checked
 
         If ComboBox1.SelectedIndex = -1 Then ModalExclamation("Seleccione un tipo de documento.") : Exit Function
         elementoInsert.CodTipo = CType(ComboBox1.SelectedItem, itemData).Valor
@@ -1201,8 +1208,8 @@
         elementoInsert.CodEstado = CType(ComboBox2.SelectedItem, itemData).Valor
 
         'Escala
-        If TextBox8.Text.Trim="" Then
-            elementoInsert.Escala=""
+        If TextBox8.Text.Trim = "" Then
+            elementoInsert.Escala = ""
         Else
             elementoInsert.Escala = IIf(CType(TextBox8.Text.Trim, Integer) > 0, TextBox8.Text.Trim, "0").Replace("'", "\'")
         End If
@@ -1244,7 +1251,7 @@
         If TextBox13.Text.Trim <> "" Then elementoInsert.fechasModificaciones = TextBox13.Text.Trim.Replace("'", "\'")
 
         'Signatura
-        If TextBox7.Text.Trim <> "" Then elementoInsert.Signatura = TextBox7.Text.Trim.Replace("'", "\'")
+        If cboSignatura.Text.Trim <> "" Then elementoInsert.Signatura = cboSignatura.Text.Trim.Replace("'", "\'")
 
         'Coleccion
         If TextBox14.Text.Trim <> "" Then elementoInsert.Coleccion = TextBox14.Text.Trim.Replace("'", "\'")
@@ -1271,7 +1278,7 @@
         elementoInsert.Observaciones = IIf(TextBox16.Text.Trim <> "", TextBox16.Text.Trim.Replace("'", "\'"), "")
 
         'Comentarios ABSYS
-        elementoInsert.Comentarios = IIf(TextBox18.Text.Trim <> "", TextBox18.Text.Trim.Replace("'", "\'"), "")
+        elementoInsert.ObservacionesAbsys = IIf(TextBox18.Text.Trim <> "", TextBox18.Text.Trim.Replace("'", "\'"), "")
 
         'Provincia repo
         elementoInsert.ProvinciaRepo = CType(ComboBox6.SelectedItem, itemData).Valor
@@ -1315,7 +1322,7 @@
         ValidarNuevoDocumentoGEODOCAT = $"INSERT INTO bdsidschema.archivo 
                 (idarchivo,numdoc,user_create,tipodoc_id,estadodoc_id,escala,tomo,procehoja,procecarpeta,subtipo,fechaprincipal,tipo_fechaprincipal,
                 fechasmodificaciones,signatura,coleccion,subdivision,proyecto,vertical,horizontal,juntaestadistica,encabezado,autor,autor_persona,nombreedificio,
-                anejo,observaciones,observ,doctypehr,extraprops,provincia_id) VALUES (
+                anejo,observaciones,observ,doctypehr,extraprops,distribuible,provincia_id) VALUES (
                 {elementoInsert.docIndex},
                 '{elementoInsert.Sellado}',
                 '{usuarioMyApp.LoginUser}',
@@ -1342,9 +1349,10 @@
                 {IIf(elementoInsert.EdificiosCitados = "", "Null", $"E'{elementoInsert.EdificiosCitados}'")},
                 {IIf(elementoInsert.Anejo = "", "Null", $"E'{elementoInsert.Anejo}'")},
                 {IIf(elementoInsert.Observaciones = "", "Null", $"E'{elementoInsert.Observaciones}'")},
-                {IIf(elementoInsert.Comentarios = "", "Null", $"E'{elementoInsert.Comentarios}'")},
+                {IIf(elementoInsert.ObservacionesAbsys = "", "Null", $"E'{elementoInsert.ObservacionesAbsys}'")},
                 {elementoInsert.docTypeHR},
                 {elementoInsert.extraProps.propertyCode},
+                {elementoInsert.distribuible},
                 {elementoInsert.ProvinciaRepo})"
 
 
@@ -1434,8 +1442,8 @@
             End If
         End If
 
-        If CheckBox7.Checked And TextBox7.Text.Trim <> "" Then
-            CadenaUpdateLote = CadenaUpdateLote & "signatura='" & TextBox7.Text.Trim.Replace("'", "\'") & "',"
+        If CheckBox7.Checked And cboSignatura.Text.Trim <> "" Then
+            CadenaUpdateLote = CadenaUpdateLote & "signatura='" & cboSignatura.Text.Trim.Replace("'", "\'") & "',"
         End If
         If CheckBox8.Checked And TextBox8.Text.Trim <> "" Then
             CadenaUpdateLote = CadenaUpdateLote & "escala=" & CType(TextBox8.Text.Trim.Replace(".", ","), Integer) & ","
@@ -1760,7 +1768,7 @@
                     TextBox20.TextChanged, TextBox24.TextChanged, TextBox21.TextChanged, CheckedListBox1.SelectedIndexChanged, ComboBox5.SelectedIndexChanged,
                     TextBox9.TextChanged, ComboBox1.SelectedIndexChanged, ComboBox2.SelectedIndexChanged, ComboBox3.SelectedIndexChanged, ComboBox6.SelectedIndexChanged, ComboBox7.SelectedIndexChanged, TextBox17.TextChanged,
                     TextBox14.TextChanged, TextBox14.TextChanged, TextBox12.TextChanged, TextBox13.TextChanged, TextBox22.TextChanged, TextBox4.TextChanged, TextBox5.TextChanged,
-                    TextBox6.TextChanged, TextBox7.TextChanged, TextBox8.TextChanged, TextBox10.TextChanged, TextBox11.TextChanged, TextBox15.TextChanged
+                    TextBox6.TextChanged, TextBox8.TextChanged, TextBox10.TextChanged, TextBox11.TextChanged, TextBox15.TextChanged
 
         If Not autoCheckFlag Then Exit Sub
         If sender.name = "TextBox16" Then CheckBox16.Checked = True

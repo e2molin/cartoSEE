@@ -21,8 +21,16 @@
     Property Subdivision As String
     Property Vertical As String
     Property Horizontal As String
+    ''' <summary>
+    ''' Texto almacenado en el campo observaciones
+    ''' </summary>
+    ''' <returns></returns>
     Property Observaciones As String
-    Property Comentarios As String
+    ''' <summary>
+    ''' Texto almacenado en el campo observ. Son observaciones que Santi necesita para el Absys
+    ''' </summary>
+    ''' <returns></returns>
+    Property ObservacionesAbsys As String
     Property EdificiosCitados As String
     Property ObservacionesStandard As String
     Property extraProps As New FlagsProperties
@@ -68,6 +76,11 @@
     ''' <returns></returns>
     Property docTypeHR As Integer
 
+    ''' <summary>
+    ''' Nos indica si tenemos permisos de distribución del documento o no
+    ''' </summary>
+    ''' <returns></returns>
+    Property distribuible As Boolean
 
     ' Historial de cambios
     Property createAt As String
@@ -439,7 +452,7 @@
 		                        archivo.subtipo,archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.extraprops,archivo.observaciones,archivo.observ,archivo.proyecto,
 		                        archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.cdd_geometria,archivo.cdd_fecha,archivo.titn,archivo.autor,archivo.autor_persona,archivo.encabezado,archivo.nombreedificio,
 		                        tbtipodocumento.tipodoc as Tipo,tbestadodocumento.estadodoc as Estado, tbobservaciones.observestandar,
-                                archivo.provincia_id as repoprov,archivo.fechacreacion,archivo.fechamodificacion,archivo.user_create,archivo.doctypehr,
+                                archivo.provincia_id as repoprov,archivo.fechacreacion,archivo.fechamodificacion,archivo.user_create,archivo.doctypehr,archivo.distribuible,
                                 string_agg(territorios.idterritorio::character varying,'#') as listaIdTerris,
 		                        string_agg(territorios.nombre,'#') as listaMuniHisto,string_agg(to_char(territorios.munihisto, 'FM0000009'::text),'#') as listaCodMuniHisto,
 		                        string_agg(listamunicipios.nombre,'#') as listaMuniActual, string_agg(listamunicipios.inecorto,'#') as listaCodMuniActual, 
@@ -457,7 +470,7 @@
   	                        archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, archivo.horizontal, archivo.tipodoc_id, archivo.estadodoc_id, archivo.procecarpeta, 
   	                        archivo.procehoja, archivo.subtipo,archivo.juntaestadistica, archivo.signatura, archivo.observestandar_id,archivo.extraprops, archivo.observaciones,archivo.observ,
                             archivo.proyecto,tbtipodocumento.tipodoc,archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.titn,archivo.autor,archivo.autor_persona,archivo.encabezado,archivo.nombreedificio,
-                            tbestadodocumento.estadodoc,tbobservaciones.observestandar,archivo.fechacreacion,archivo.fechamodificacion,archivo.user_create,archivo.doctypehr"
+                            tbestadodocumento.estadodoc,tbobservaciones.observestandar,archivo.fechacreacion,archivo.fechamodificacion,archivo.user_create,archivo.doctypehr,archivo.distribuible"
             loadDocAttributesFromDatabase(consultaSQL)
         End If
 
@@ -483,6 +496,7 @@
             item = New docCartoSEE
             docIndex = dR("idarchivo").ToString
             Sellado = dR("numdoc").ToString
+            distribuible = dR("distribuible")
             'If flag_ActualizarInfoGeom = True Then item.getFootprint()
             'Maquillamos el tomo
             If dR("tomo").ToString = "" Then
@@ -547,7 +561,7 @@
                 urlABSYSdoc = ""
             End If
             autorEntidad = dR("autor").ToString
-            autorPersona= dR("autor_persona").ToString
+            autorPersona = dR("autor_persona").ToString
             encabezadoABSYSdoc = dR("encabezado").ToString
 
             If dR("listaIdTerris").ToString <> "" Then
@@ -580,7 +594,7 @@
             JuntaEstadistica = IIf(dR("JuntaEstadistica").ToString = "1", "Sí", "No")
             ObservacionesStandard = dR("observestandar").ToString
             Observaciones = dR("observaciones").ToString
-            Comentarios = dR("observ").ToString
+            ObservacionesAbsys = dR("observ").ToString
             EdificiosCitados = dR("nombreedificio").ToString
             extraProps.propertyCode = dR("extraprops")
 

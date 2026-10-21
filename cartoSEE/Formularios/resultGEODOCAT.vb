@@ -251,7 +251,15 @@
 
             AddTitulo(container, $"{elemEntidadSel.Tipo} Nº {elemEntidadSel.Sellado}")
 
+            If Not elemEntidadSel.distribuible Then
+                .SelectionColor = Color.FromArgb(255, 0, 0) 'DimSlateGray
+                .SelectionFont = New Font("Segoe UI Semibold", 12, FontStyle.Bold)
+                .AppendText("DOCUMENTO NO DISTRIBUIBLE")
+                .AppendText(Environment.NewLine)
+            End If
+
             .SelectionFont = New Font("Segoe UI Semibold", 10, FontStyle.Bold)
+            .SelectionColor = Color.FromArgb(47, 79, 79) 'DimSlateGray
             .AppendText($"{elemEntidadSel.getListaProvincias}. Tomo: {elemEntidadSel.Tomo}.Fecha: {elemEntidadSel.FechaPrincipal}{Environment.NewLine}")
             .AppendText(Environment.NewLine)
 
@@ -271,6 +279,12 @@
                 .AppendText(IIf(elemEntidadSel.Observaciones.ToString <> "", elemEntidadSel.Observaciones.ToString, "No hay observaciones"))
                 .AppendText(Environment.NewLine)
             End If
+
+
+
+
+
+
 
         End With
 
@@ -633,6 +647,7 @@
         lvDocEditions.Items.Clear()
 
         Dim docGeneral As ListViewGroup : docGeneral = New ListViewGroup("General") : lvTagsM21.Groups.Add(docGeneral)
+        Dim docContribucion As ListViewGroup : docContribucion = New ListViewGroup("Contribuciones") : lvTagsM21.Groups.Add(docContribucion)
         Dim docUbicacion As ListViewGroup : docUbicacion = New ListViewGroup("Localización") : lvTagsM21.Groups.Add(docUbicacion)
         Dim docTerritorios As ListViewGroup : docTerritorios = New ListViewGroup("Territorios") : lvTagsM21.Groups.Add(docTerritorios)
         Dim docCDD As ListViewGroup : docCDD = New ListViewGroup("Centro de descargas") : lvTagsM21.Groups.Add(docCDD)
@@ -666,6 +681,8 @@
 
         elementoLV = New ListViewItem With {.Text = "Sellado", .ImageIndex = 4, .Group = docGeneral}
         elementoLV.SubItems.Add(elemEntidadSel.Sellado) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
+        elementoLV = New ListViewItem With {.Text = "Distribuible", .ImageIndex = 4, .Group = docGeneral}
+        elementoLV.SubItems.Add(IIf(elemEntidadSel.distribuible, "Se permite su distribución", "Prohibida su distribución")) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
         elementoLV = New ListViewItem With {.Text = "Tipo", .ImageIndex = 4, .Group = docGeneral}
         elementoLV.SubItems.Add(elemEntidadSel.tipoDocumento.NombreTipo) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
         elementoLV = New ListViewItem With {.Text = "Subtipo", .ImageIndex = 4, .Group = docGeneral}
@@ -686,6 +703,16 @@
         elementoLV.SubItems.Add(elemEntidadSel.fechasModificaciones) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
         elementoLV = New ListViewItem With {.Text = "JGE", .ImageIndex = 4, .Group = docGeneral}
         elementoLV.SubItems.Add(elemEntidadSel.JuntaEstadistica) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
+
+        elementoLV = New ListViewItem With {.Text = "Entidad", .ImageIndex = 4, .Group = docContribucion}
+        elementoLV.SubItems.Add(elemEntidadSel.autorEntidad) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
+        elementoLV = New ListViewItem With {.Text = "Personas", .ImageIndex = 4, .Group = docContribucion}
+        elementoLV.SubItems.Add(elemEntidadSel.autorPersona) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
+        elementoLV = New ListViewItem With {.Text = "Encabezado", .ImageIndex = 4, .Group = docContribucion}
+        elementoLV.SubItems.Add(elemEntidadSel.encabezadoABSYSdoc) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
+        elementoLV = New ListViewItem With {.Text = "Edificios", .ImageIndex = 4, .Group = docContribucion}
+        elementoLV.SubItems.Add(elemEntidadSel.EdificiosCitados) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
+
 
         elementoLV = New ListViewItem With {.Text = "Provincia", .ImageIndex = 4, .Group = docUbicacion}
         elementoLV.SubItems.Add($"{elemEntidadSel.Provincias} ({elemEntidadSel.ProvinciaRepo})") : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing

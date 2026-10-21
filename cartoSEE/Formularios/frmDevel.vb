@@ -166,7 +166,7 @@
     Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
 
         'Vamos a comprobar que todo documento de Archivo con provincia_id e municipiohistorico1_id distinto de cero,
-        'tienen georreferenciado al menos un. En el caso de los planos de población , puede tener más de 1
+        'tienen georreferenciado al menos un ECW En el caso de los planos de población , puede tener más de 1
         Dim sqlBase As String
         Dim rcdTest As DataTable
         Dim rutaECW23030 As String
