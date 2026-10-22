@@ -265,10 +265,11 @@
 
             .SelectionColor = Color.FromArgb(47, 79, 79) 'DimSlateGray
             .AppendText(IIf(elemEntidadSel.subTipoDoc = "", "", $"Subtipo: {elemEntidadSel.subTipoDoc}"))
-            .AppendText($"Dimensiones {elemEntidadSel.Horizontal} cm × {elemEntidadSel.Vertical} cm.")
-            .AppendText(Environment.NewLine)
-            .AppendText(IIf(elemEntidadSel.Coleccion = "", "Sin colección asociada.", elemEntidadSel.Coleccion))
-            .AppendText(Environment.NewLine)
+            If elemEntidadSel.descriptFisica <> "" Then .AppendText($"{elemEntidadSel.descriptFisica}.{Environment.NewLine}")
+            .AppendText($"{elemEntidadSel.Horizontal} cm × {elemEntidadSel.Vertical} cm.")
+            If elemEntidadSel.Escala <> "" Then .AppendText($" Escala 1:{elemEntidadSel.Escala}.{Environment.NewLine}")
+            .AppendText(IIf(elemEntidadSel.Coleccion = "", $"Sin colección asociada.{Environment.NewLine}", $"Colección: {elemEntidadSel.Coleccion}{Environment.NewLine}"))
+            .AppendText(IIf(elemEntidadSel.Proyecto = "", $"Sin proyecto asociado.{Environment.NewLine}", $"Proyecto: {elemEntidadSel.Proyecto}{Environment.NewLine}"))
             .AppendText(IIf(elemEntidadSel.Subdivision = "", "", $"Subdivisión: {elemEntidadSel.Subdivision}.{Environment.NewLine}"))
 
             AddSubTitulo(container, "Notas / Observaciones originales")
@@ -727,6 +728,8 @@
 
         elementoLV = New ListViewItem With {.Text = "Escala", .ImageIndex = 4, .Group = docGeneral}
         elementoLV.SubItems.Add(elemEntidadSel.Escala) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
+        elementoLV = New ListViewItem With {.Text = "Descripción física", .ImageIndex = 4, .Group = docGeneral}
+        elementoLV.SubItems.Add(elemEntidadSel.descriptFisica) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
         elementoLV = New ListViewItem With {.Text = "Horizontal (cm)", .ImageIndex = 4, .Group = docGeneral}
         elementoLV.SubItems.Add(elemEntidadSel.Horizontal) : lvTagsM21.Items.Add(elementoLV) : elementoLV = Nothing
         elementoLV = New ListViewItem With {.Text = "Vertical (cm)", .ImageIndex = 4, .Group = docGeneral}

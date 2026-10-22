@@ -240,6 +240,9 @@
         cboSignatura.Items.Add("Archivo de Legajos")
         cboSignatura.Items.Add("No disponible físicamente")
 
+        cboDescripFisica.Items.Add("1 plano")
+        cboDescripFisica.Items.Add("1 plano; borrador")
+        cboDescripFisica.Items.Add("1 plano; copia heliográfica en ferroprusiato")
 
 
     End Sub
@@ -254,6 +257,7 @@
             TextBox5.Text = .Horizontal
             TextBox6.Text = .proceCarpeta
             cboSignatura.Text = .Signatura
+            cboDescripFisica.Text = .descriptFisica
             TextBox8.Text = .Escala
             TextBox9.Text = .subTipoDoc
             TextBox10.Text = .proceHoja
@@ -578,6 +582,7 @@
         If editRegistro.docIndex < 1 Then Exit Function
 
         If CheckBox24.Checked Then propsChanged.Add($"subtipo={IIf(TextBox9.Text.Trim = "", "Null", $"E'{TextBox9.Text.Trim.Replace("'", "\'")}'")}")
+        If CheckBox33.Checked Then propsChanged.Add($"descript_fisica={IIf(cboDescripFisica.Text.Trim = "", "Null", $"E'{cboDescripFisica.Text.Trim.Replace("'", "\'")}'")}")
         If CheckBox25.Checked Then propsChanged.Add($"proyecto={IIf(TextBox17.Text.Trim = "", "Null", $"E'{TextBox17.Text.Trim.Replace("'", "\'")}'")}")
         If CheckBox14.Checked Then propsChanged.Add($"coleccion={IIf(TextBox14.Text.Trim = "", "Null", $"E'{TextBox14.Text.Trim.Replace("'", "\'")}'")}")
         If CheckBox12.Checked Then propsChanged.Add($"subdivision={IIf(TextBox12.Text.Trim = "", "Null", $"E'{TextBox12.Text.Trim.Replace("'", "\'")}'")}")
@@ -1214,6 +1219,9 @@
             elementoInsert.Escala = IIf(CType(TextBox8.Text.Trim, Integer) > 0, TextBox8.Text.Trim, "0").Replace("'", "\'")
         End If
 
+        'Descripción física
+        If cboDescripFisica.Text.Trim <> "" Then elementoInsert.descriptFisica = cboDescripFisica.Text.Trim.Replace("'", "\'")
+
         'Tomo
         If TextBox11.Text.Trim <> "" Then elementoInsert.Tomo = TextBox11.Text.Trim.Replace("'", "\'")
 
@@ -1321,7 +1329,7 @@
 
         ValidarNuevoDocumentoGEODOCAT = $"INSERT INTO bdsidschema.archivo 
                 (idarchivo,numdoc,user_create,tipodoc_id,estadodoc_id,escala,tomo,procehoja,procecarpeta,subtipo,fechaprincipal,tipo_fechaprincipal,
-                fechasmodificaciones,signatura,coleccion,subdivision,proyecto,vertical,horizontal,juntaestadistica,encabezado,autor,autor_persona,nombreedificio,
+                fechasmodificaciones,signatura,descript_fisica,coleccion,subdivision,proyecto,vertical,horizontal,juntaestadistica,encabezado,autor,autor_persona,nombreedificio,
                 anejo,observaciones,observ,doctypehr,extraprops,distribuible,provincia_id) VALUES (
                 {elementoInsert.docIndex},
                 '{elementoInsert.Sellado}',
@@ -1337,6 +1345,7 @@
                 {IIf(elementoInsert.TipoFechaPrincipal = "", "Null", $"E'{elementoInsert.TipoFechaPrincipal}'")},
                 '{elementoInsert.fechasModificaciones}',
                 {IIf(elementoInsert.Signatura = "", "Null", $"E'{elementoInsert.Signatura}'")},
+                {IIf(elementoInsert.descriptFisica = "", "Null", $"E'{elementoInsert.descriptFisica}'")},
                 {IIf(elementoInsert.Coleccion = "", "Null", $"E'{elementoInsert.Coleccion}'")},
                 {IIf(elementoInsert.Subdivision = "", "Null", $"E'{elementoInsert.Subdivision}'")},
                 {IIf(elementoInsert.Proyecto = "", "Null", $"E'{elementoInsert.Proyecto}'")},

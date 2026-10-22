@@ -11,6 +11,7 @@
     Property proceHoja As String
     Property proceCarpeta As String
     Property NumDisco As String
+    Property descriptFisica As String
     Property FechaPrincipal As String
     Property TipoFechaPrincipal As String
     Property fechasModificaciones As String
@@ -452,7 +453,7 @@
 		                        archivo.subtipo,archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.extraprops,archivo.observaciones,archivo.observ,archivo.proyecto,
 		                        archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.cdd_geometria,archivo.cdd_fecha,archivo.titn,archivo.autor,archivo.autor_persona,archivo.encabezado,archivo.nombreedificio,
 		                        tbtipodocumento.tipodoc as Tipo,tbestadodocumento.estadodoc as Estado, tbobservaciones.observestandar,
-                                archivo.provincia_id as repoprov,archivo.fechacreacion,archivo.fechamodificacion,archivo.user_create,archivo.doctypehr,archivo.distribuible,
+                                archivo.provincia_id as repoprov,archivo.fechacreacion,archivo.fechamodificacion,archivo.user_create,archivo.doctypehr,archivo.distribuible,archivo.descript_fisica,
                                 string_agg(territorios.idterritorio::character varying,'#') as listaIdTerris,
 		                        string_agg(territorios.nombre,'#') as listaMuniHisto,string_agg(to_char(territorios.munihisto, 'FM0000009'::text),'#') as listaCodMuniHisto,
 		                        string_agg(listamunicipios.nombre,'#') as listaMuniActual, string_agg(listamunicipios.inecorto,'#') as listaCodMuniActual, 
@@ -470,7 +471,7 @@
   	                        archivo.fechasmodificaciones,archivo.anejo,archivo.vertical, archivo.horizontal, archivo.tipodoc_id, archivo.estadodoc_id, archivo.procecarpeta, 
   	                        archivo.procehoja, archivo.subtipo,archivo.juntaestadistica, archivo.signatura, archivo.observestandar_id,archivo.extraprops, archivo.observaciones,archivo.observ,
                             archivo.proyecto,tbtipodocumento.tipodoc,archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.titn,archivo.autor,archivo.autor_persona,archivo.encabezado,archivo.nombreedificio,
-                            tbestadodocumento.estadodoc,tbobservaciones.observestandar,archivo.fechacreacion,archivo.fechamodificacion,archivo.user_create,archivo.doctypehr,archivo.distribuible"
+                            tbestadodocumento.estadodoc,tbobservaciones.observestandar,archivo.fechacreacion,archivo.fechamodificacion,archivo.user_create,archivo.doctypehr,archivo.distribuible,archivo.descript_fisica"
             loadDocAttributesFromDatabase(consultaSQL)
         End If
 
@@ -541,6 +542,7 @@
             proceCarpeta = dR("Procecarpeta").ToString
             subTipoDoc = dR("subtipo").ToString
             NumDisco = "" 'dR("NumDisco").ToString
+            descriptFisica = dR("descript_fisica").ToString
             Anejo = dR("Anejo").ToString
             Signatura = dR("Signatura").ToString
             Proyecto = dR("proyecto").ToString

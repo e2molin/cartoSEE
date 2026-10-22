@@ -129,6 +129,8 @@ Partial Class frmEdicion
         Me.Label26 = New System.Windows.Forms.Label()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.ckkDistribuible = New System.Windows.Forms.CheckBox()
+        Me.cboSignatura = New System.Windows.Forms.ComboBox()
         Me.Label37 = New System.Windows.Forms.Label()
         Me.CheckBox32 = New System.Windows.Forms.CheckBox()
         Me.ComboBox7 = New System.Windows.Forms.ComboBox()
@@ -159,8 +161,9 @@ Partial Class frmEdicion
         Me.ErrorProvider1 = New System.Windows.Forms.ErrorProvider(Me.components)
         Me.Button13 = New System.Windows.Forms.Button()
         Me.PictureBox2 = New System.Windows.Forms.PictureBox()
-        Me.cboSignatura = New System.Windows.Forms.ComboBox()
-        Me.ckkDistribuible = New System.Windows.Forms.CheckBox()
+        Me.cboDescripFisica = New System.Windows.Forms.ComboBox()
+        Me.Label40 = New System.Windows.Forms.Label()
+        Me.CheckBox33 = New System.Windows.Forms.CheckBox()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.StatusStrip1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
@@ -176,7 +179,7 @@ Partial Class frmEdicion
         '
         Me.Button10.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button10.Image = CType(resources.GetObject("Button10.Image"), System.Drawing.Image)
-        Me.Button10.Location = New System.Drawing.Point(667, 445)
+        Me.Button10.Location = New System.Drawing.Point(670, 520)
         Me.Button10.Name = "Button10"
         Me.Button10.Size = New System.Drawing.Size(205, 48)
         Me.Button10.TabIndex = 79
@@ -191,7 +194,7 @@ Partial Class frmEdicion
         Me.CheckedListBox1.FormattingEnabled = True
         Me.CheckedListBox1.Location = New System.Drawing.Point(676, 59)
         Me.CheckedListBox1.Name = "CheckedListBox1"
-        Me.CheckedListBox1.Size = New System.Drawing.Size(199, 379)
+        Me.CheckedListBox1.Size = New System.Drawing.Size(199, 439)
         Me.CheckedListBox1.TabIndex = 78
         '
         'TextBox9
@@ -236,7 +239,7 @@ Partial Class frmEdicion
         '
         Me.Button9.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button9.Image = CType(resources.GetObject("Button9.Image"), System.Drawing.Image)
-        Me.Button9.Location = New System.Drawing.Point(905, 184)
+        Me.Button9.Location = New System.Drawing.Point(908, 184)
         Me.Button9.Name = "Button9"
         Me.Button9.Size = New System.Drawing.Size(102, 43)
         Me.Button9.TabIndex = 72
@@ -276,7 +279,7 @@ Partial Class frmEdicion
         '
         'TextBox13
         '
-        Me.TextBox13.Location = New System.Drawing.Point(172, 282)
+        Me.TextBox13.Location = New System.Drawing.Point(172, 311)
         Me.TextBox13.Name = "TextBox13"
         Me.TextBox13.Size = New System.Drawing.Size(357, 20)
         Me.TextBox13.TabIndex = 11
@@ -285,7 +288,7 @@ Partial Class frmEdicion
         '
         Me.Label20.AutoSize = True
         Me.Label20.Font = New System.Drawing.Font("Segoe UI Semibold", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label20.Location = New System.Drawing.Point(46, 282)
+        Me.Label20.Location = New System.Drawing.Point(46, 311)
         Me.Label20.Name = "Label20"
         Me.Label20.Size = New System.Drawing.Size(84, 13)
         Me.Label20.TabIndex = 70
@@ -295,7 +298,7 @@ Partial Class frmEdicion
         '
         Me.Label19.AutoSize = True
         Me.Label19.Font = New System.Drawing.Font("Segoe UI Semibold", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label19.Location = New System.Drawing.Point(389, 417)
+        Me.Label19.Location = New System.Drawing.Point(389, 446)
         Me.Label19.Name = "Label19"
         Me.Label19.Size = New System.Drawing.Size(36, 13)
         Me.Label19.TabIndex = 69
@@ -305,7 +308,7 @@ Partial Class frmEdicion
         '
         Me.Label18.AutoSize = True
         Me.Label18.Font = New System.Drawing.Font("Segoe UI Semibold", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label18.Location = New System.Drawing.Point(45, 441)
+        Me.Label18.Location = New System.Drawing.Point(45, 470)
         Me.Label18.Name = "Label18"
         Me.Label18.Size = New System.Drawing.Size(31, 13)
         Me.Label18.TabIndex = 68
@@ -315,7 +318,7 @@ Partial Class frmEdicion
         '
         Me.Label17.AutoSize = True
         Me.Label17.Font = New System.Drawing.Font("Segoe UI Semibold", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label17.Location = New System.Drawing.Point(46, 258)
+        Me.Label17.Location = New System.Drawing.Point(46, 287)
         Me.Label17.Name = "Label17"
         Me.Label17.Size = New System.Drawing.Size(97, 13)
         Me.Label17.TabIndex = 67
@@ -325,7 +328,7 @@ Partial Class frmEdicion
         '
         Me.Label16.AutoSize = True
         Me.Label16.Font = New System.Drawing.Font("Segoe UI Semibold", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label16.Location = New System.Drawing.Point(46, 233)
+        Me.Label16.Location = New System.Drawing.Point(46, 262)
         Me.Label16.Name = "Label16"
         Me.Label16.Size = New System.Drawing.Size(38, 13)
         Me.Label16.TabIndex = 66
@@ -353,7 +356,7 @@ Partial Class frmEdicion
         '
         Me.Label14.AutoSize = True
         Me.Label14.Font = New System.Drawing.Font("Segoe UI Semibold", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label14.Location = New System.Drawing.Point(45, 391)
+        Me.Label14.Location = New System.Drawing.Point(45, 420)
         Me.Label14.Name = "Label14"
         Me.Label14.Size = New System.Drawing.Size(120, 13)
         Me.Label14.TabIndex = 64
@@ -371,7 +374,7 @@ Partial Class frmEdicion
         'Label12
         '
         Me.Label12.AutoSize = True
-        Me.Label12.Location = New System.Drawing.Point(43, 172)
+        Me.Label12.Location = New System.Drawing.Point(43, 230)
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(78, 13)
         Me.Label12.TabIndex = 62
@@ -391,7 +394,7 @@ Partial Class frmEdicion
         '
         Me.Label10.AutoSize = True
         Me.Label10.Font = New System.Drawing.Font("Segoe UI Semibold", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label10.Location = New System.Drawing.Point(46, 177)
+        Me.Label10.Location = New System.Drawing.Point(46, 206)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(56, 13)
         Me.Label10.TabIndex = 60
@@ -401,7 +404,7 @@ Partial Class frmEdicion
         '
         Me.Label9.AutoSize = True
         Me.Label9.Font = New System.Drawing.Font("Segoe UI Semibold", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label9.Location = New System.Drawing.Point(46, 207)
+        Me.Label9.Location = New System.Drawing.Point(46, 236)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(66, 13)
         Me.Label9.TabIndex = 59
@@ -411,7 +414,7 @@ Partial Class frmEdicion
         '
         Me.Label8.AutoSize = True
         Me.Label8.Font = New System.Drawing.Font("Segoe UI Semibold", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label8.Location = New System.Drawing.Point(45, 415)
+        Me.Label8.Location = New System.Drawing.Point(45, 444)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(55, 13)
         Me.Label8.TabIndex = 58
@@ -421,7 +424,7 @@ Partial Class frmEdicion
         '
         Me.Label7.AutoSize = True
         Me.Label7.Font = New System.Drawing.Font("Segoe UI Semibold", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label7.Location = New System.Drawing.Point(389, 445)
+        Me.Label7.Location = New System.Drawing.Point(389, 474)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(47, 13)
         Me.Label7.TabIndex = 57
@@ -431,7 +434,7 @@ Partial Class frmEdicion
         '
         Me.Label6.AutoSize = True
         Me.Label6.Font = New System.Drawing.Font("Segoe UI Semibold", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label6.Location = New System.Drawing.Point(46, 311)
+        Me.Label6.Location = New System.Drawing.Point(46, 340)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(86, 13)
         Me.Label6.TabIndex = 56
@@ -441,7 +444,7 @@ Partial Class frmEdicion
         '
         Me.Label5.AutoSize = True
         Me.Label5.Font = New System.Drawing.Font("Segoe UI Semibold", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label5.Location = New System.Drawing.Point(46, 338)
+        Me.Label5.Location = New System.Drawing.Point(46, 367)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(70, 13)
         Me.Label5.TabIndex = 55
@@ -492,7 +495,7 @@ Partial Class frmEdicion
         Me.ComboBox6.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox6.FormattingEnabled = True
         Me.ComboBox6.ItemHeight = 13
-        Me.ComboBox6.Location = New System.Drawing.Point(175, 386)
+        Me.ComboBox6.Location = New System.Drawing.Point(175, 415)
         Me.ComboBox6.Name = "ComboBox6"
         Me.ComboBox6.Size = New System.Drawing.Size(354, 21)
         Me.ComboBox6.Sorted = True
@@ -502,7 +505,7 @@ Partial Class frmEdicion
         '
         Me.CheckBox20.AutoSize = True
         Me.CheckBox20.ForeColor = System.Drawing.SystemColors.ActiveCaption
-        Me.CheckBox20.Location = New System.Drawing.Point(27, 390)
+        Me.CheckBox20.Location = New System.Drawing.Point(27, 419)
         Me.CheckBox20.Name = "CheckBox20"
         Me.CheckBox20.Size = New System.Drawing.Size(70, 17)
         Me.CheckBox20.TabIndex = 47
@@ -531,7 +534,7 @@ Partial Class frmEdicion
         '
         'MaskedTextBox1
         '
-        Me.MaskedTextBox1.Location = New System.Drawing.Point(173, 256)
+        Me.MaskedTextBox1.Location = New System.Drawing.Point(173, 285)
         Me.MaskedTextBox1.Name = "MaskedTextBox1"
         Me.MaskedTextBox1.Size = New System.Drawing.Size(156, 20)
         Me.MaskedTextBox1.TabIndex = 9
@@ -540,7 +543,7 @@ Partial Class frmEdicion
         '
         Me.Button4.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button4.Image = CType(resources.GetObject("Button4.Image"), System.Drawing.Image)
-        Me.Button4.Location = New System.Drawing.Point(905, 135)
+        Me.Button4.Location = New System.Drawing.Point(908, 135)
         Me.Button4.Name = "Button4"
         Me.Button4.Size = New System.Drawing.Size(102, 43)
         Me.Button4.TabIndex = 44
@@ -552,7 +555,7 @@ Partial Class frmEdicion
         '
         Me.Button3.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button3.Image = CType(resources.GetObject("Button3.Image"), System.Drawing.Image)
-        Me.Button3.Location = New System.Drawing.Point(905, 34)
+        Me.Button3.Location = New System.Drawing.Point(908, 34)
         Me.Button3.Name = "Button3"
         Me.Button3.Size = New System.Drawing.Size(102, 43)
         Me.Button3.TabIndex = 22
@@ -622,7 +625,7 @@ Partial Class frmEdicion
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(561, 23)
+        Me.Label1.Location = New System.Drawing.Point(568, 27)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(51, 13)
         Me.Label1.TabIndex = 35
@@ -640,7 +643,7 @@ Partial Class frmEdicion
         '
         'TextBox14
         '
-        Me.TextBox14.Location = New System.Drawing.Point(173, 174)
+        Me.TextBox14.Location = New System.Drawing.Point(173, 203)
         Me.TextBox14.Name = "TextBox14"
         Me.TextBox14.Size = New System.Drawing.Size(356, 20)
         Me.TextBox14.TabIndex = 6
@@ -649,7 +652,7 @@ Partial Class frmEdicion
         '
         Me.CheckBox16.AutoSize = True
         Me.CheckBox16.ForeColor = System.Drawing.SystemColors.ActiveCaption
-        Me.CheckBox16.Location = New System.Drawing.Point(24, 171)
+        Me.CheckBox16.Location = New System.Drawing.Point(24, 229)
         Me.CheckBox16.Name = "CheckBox16"
         Me.CheckBox16.Size = New System.Drawing.Size(97, 17)
         Me.CheckBox16.TabIndex = 49
@@ -669,14 +672,14 @@ Partial Class frmEdicion
         '
         'TextBox12
         '
-        Me.TextBox12.Location = New System.Drawing.Point(173, 204)
+        Me.TextBox12.Location = New System.Drawing.Point(173, 233)
         Me.TextBox12.Name = "TextBox12"
         Me.TextBox12.Size = New System.Drawing.Size(356, 20)
         Me.TextBox12.TabIndex = 7
         '
         'TextBox11
         '
-        Me.TextBox11.Location = New System.Drawing.Point(442, 414)
+        Me.TextBox11.Location = New System.Drawing.Point(442, 443)
         Me.TextBox11.Name = "TextBox11"
         Me.TextBox11.Size = New System.Drawing.Size(87, 20)
         Me.TextBox11.TabIndex = 16
@@ -685,7 +688,7 @@ Partial Class frmEdicion
         '
         Me.CheckBox14.AutoSize = True
         Me.CheckBox14.ForeColor = System.Drawing.SystemColors.ActiveCaption
-        Me.CheckBox14.Location = New System.Drawing.Point(26, 174)
+        Me.CheckBox14.Location = New System.Drawing.Point(26, 203)
         Me.CheckBox14.Name = "CheckBox14"
         Me.CheckBox14.Size = New System.Drawing.Size(73, 17)
         Me.CheckBox14.TabIndex = 47
@@ -694,7 +697,7 @@ Partial Class frmEdicion
         '
         'TextBox10
         '
-        Me.TextBox10.Location = New System.Drawing.Point(175, 442)
+        Me.TextBox10.Location = New System.Drawing.Point(175, 471)
         Me.TextBox10.Name = "TextBox10"
         Me.TextBox10.Size = New System.Drawing.Size(182, 20)
         Me.TextBox10.TabIndex = 17
@@ -703,7 +706,7 @@ Partial Class frmEdicion
         '
         Me.CheckBox13.AutoSize = True
         Me.CheckBox13.ForeColor = System.Drawing.SystemColors.ActiveCaption
-        Me.CheckBox13.Location = New System.Drawing.Point(26, 281)
+        Me.CheckBox13.Location = New System.Drawing.Point(26, 310)
         Me.CheckBox13.Name = "CheckBox13"
         Me.CheckBox13.Size = New System.Drawing.Size(86, 17)
         Me.CheckBox13.TabIndex = 55
@@ -714,7 +717,7 @@ Partial Class frmEdicion
         '
         Me.CheckBox12.AutoSize = True
         Me.CheckBox12.ForeColor = System.Drawing.SystemColors.ActiveCaption
-        Me.CheckBox12.Location = New System.Drawing.Point(26, 204)
+        Me.CheckBox12.Location = New System.Drawing.Point(26, 233)
         Me.CheckBox12.Name = "CheckBox12"
         Me.CheckBox12.Size = New System.Drawing.Size(80, 17)
         Me.CheckBox12.TabIndex = 46
@@ -723,7 +726,7 @@ Partial Class frmEdicion
         '
         'TextBox8
         '
-        Me.TextBox8.Location = New System.Drawing.Point(172, 230)
+        Me.TextBox8.Location = New System.Drawing.Point(172, 259)
         Me.TextBox8.Name = "TextBox8"
         Me.TextBox8.Size = New System.Drawing.Size(357, 20)
         Me.TextBox8.TabIndex = 8
@@ -731,14 +734,14 @@ Partial Class frmEdicion
         '
         'TextBox6
         '
-        Me.TextBox6.Location = New System.Drawing.Point(442, 442)
+        Me.TextBox6.Location = New System.Drawing.Point(442, 471)
         Me.TextBox6.Name = "TextBox6"
         Me.TextBox6.Size = New System.Drawing.Size(87, 20)
         Me.TextBox6.TabIndex = 18
         '
         'TextBox5
         '
-        Me.TextBox5.Location = New System.Drawing.Point(172, 307)
+        Me.TextBox5.Location = New System.Drawing.Point(172, 336)
         Me.TextBox5.Name = "TextBox5"
         Me.TextBox5.Size = New System.Drawing.Size(71, 20)
         Me.TextBox5.TabIndex = 12
@@ -746,7 +749,7 @@ Partial Class frmEdicion
         '
         'TextBox4
         '
-        Me.TextBox4.Location = New System.Drawing.Point(173, 333)
+        Me.TextBox4.Location = New System.Drawing.Point(173, 362)
         Me.TextBox4.Name = "TextBox4"
         Me.TextBox4.Size = New System.Drawing.Size(71, 20)
         Me.TextBox4.TabIndex = 13
@@ -754,7 +757,7 @@ Partial Class frmEdicion
         '
         'TextBox16
         '
-        Me.TextBox16.Location = New System.Drawing.Point(24, 190)
+        Me.TextBox16.Location = New System.Drawing.Point(24, 248)
         Me.TextBox16.Multiline = True
         Me.TextBox16.Name = "TextBox16"
         Me.TextBox16.Size = New System.Drawing.Size(629, 98)
@@ -798,7 +801,7 @@ Partial Class frmEdicion
         '
         Me.CheckBox11.AutoSize = True
         Me.CheckBox11.ForeColor = System.Drawing.SystemColors.ActiveCaption
-        Me.CheckBox11.Location = New System.Drawing.Point(373, 417)
+        Me.CheckBox11.Location = New System.Drawing.Point(373, 446)
         Me.CheckBox11.Name = "CheckBox11"
         Me.CheckBox11.Size = New System.Drawing.Size(53, 17)
         Me.CheckBox11.TabIndex = 54
@@ -809,7 +812,7 @@ Partial Class frmEdicion
         '
         Me.CheckBox10.AutoSize = True
         Me.CheckBox10.ForeColor = System.Drawing.SystemColors.ActiveCaption
-        Me.CheckBox10.Location = New System.Drawing.Point(26, 439)
+        Me.CheckBox10.Location = New System.Drawing.Point(26, 468)
         Me.CheckBox10.Name = "CheckBox10"
         Me.CheckBox10.Size = New System.Drawing.Size(48, 17)
         Me.CheckBox10.TabIndex = 53
@@ -820,7 +823,7 @@ Partial Class frmEdicion
         '
         Me.CheckBox9.AutoSize = True
         Me.CheckBox9.ForeColor = System.Drawing.SystemColors.ActiveCaption
-        Me.CheckBox9.Location = New System.Drawing.Point(26, 257)
+        Me.CheckBox9.Location = New System.Drawing.Point(26, 286)
         Me.CheckBox9.Name = "CheckBox9"
         Me.CheckBox9.Size = New System.Drawing.Size(56, 17)
         Me.CheckBox9.TabIndex = 52
@@ -831,7 +834,7 @@ Partial Class frmEdicion
         '
         Me.CheckBox8.AutoSize = True
         Me.CheckBox8.ForeColor = System.Drawing.SystemColors.ActiveCaption
-        Me.CheckBox8.Location = New System.Drawing.Point(26, 231)
+        Me.CheckBox8.Location = New System.Drawing.Point(26, 260)
         Me.CheckBox8.Name = "CheckBox8"
         Me.CheckBox8.Size = New System.Drawing.Size(58, 17)
         Me.CheckBox8.TabIndex = 51
@@ -842,7 +845,7 @@ Partial Class frmEdicion
         '
         Me.CheckBox7.AutoSize = True
         Me.CheckBox7.ForeColor = System.Drawing.SystemColors.ActiveCaption
-        Me.CheckBox7.Location = New System.Drawing.Point(26, 414)
+        Me.CheckBox7.Location = New System.Drawing.Point(26, 443)
         Me.CheckBox7.Name = "CheckBox7"
         Me.CheckBox7.Size = New System.Drawing.Size(71, 17)
         Me.CheckBox7.TabIndex = 45
@@ -853,7 +856,7 @@ Partial Class frmEdicion
         '
         Me.CheckBox6.AutoSize = True
         Me.CheckBox6.ForeColor = System.Drawing.SystemColors.ActiveCaption
-        Me.CheckBox6.Location = New System.Drawing.Point(373, 444)
+        Me.CheckBox6.Location = New System.Drawing.Point(373, 473)
         Me.CheckBox6.Name = "CheckBox6"
         Me.CheckBox6.Size = New System.Drawing.Size(63, 17)
         Me.CheckBox6.TabIndex = 44
@@ -864,7 +867,7 @@ Partial Class frmEdicion
         '
         Me.CheckBox5.AutoSize = True
         Me.CheckBox5.ForeColor = System.Drawing.SystemColors.ActiveCaption
-        Me.CheckBox5.Location = New System.Drawing.Point(26, 310)
+        Me.CheckBox5.Location = New System.Drawing.Point(26, 339)
         Me.CheckBox5.Name = "CheckBox5"
         Me.CheckBox5.Size = New System.Drawing.Size(73, 17)
         Me.CheckBox5.TabIndex = 43
@@ -875,7 +878,7 @@ Partial Class frmEdicion
         '
         Me.CheckBox4.AutoSize = True
         Me.CheckBox4.ForeColor = System.Drawing.SystemColors.ActiveCaption
-        Me.CheckBox4.Location = New System.Drawing.Point(26, 336)
+        Me.CheckBox4.Location = New System.Drawing.Point(26, 365)
         Me.CheckBox4.Name = "CheckBox4"
         Me.CheckBox4.Size = New System.Drawing.Size(61, 17)
         Me.CheckBox4.TabIndex = 42
@@ -907,7 +910,7 @@ Partial Class frmEdicion
         'CheckBox1
         '
         Me.CheckBox1.AutoSize = True
-        Me.CheckBox1.Location = New System.Drawing.Point(746, 25)
+        Me.CheckBox1.Location = New System.Drawing.Point(806, 26)
         Me.CheckBox1.Name = "CheckBox1"
         Me.CheckBox1.Size = New System.Drawing.Size(67, 17)
         Me.CheckBox1.TabIndex = 0
@@ -919,9 +922,9 @@ Partial Class frmEdicion
         '
         Me.StatusStrip1.BackColor = System.Drawing.Color.Gainsboro
         Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1, Me.ToolStripStatusLabel2})
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 564)
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 639)
         Me.StatusStrip1.Name = "StatusStrip1"
-        Me.StatusStrip1.Size = New System.Drawing.Size(1015, 22)
+        Me.StatusStrip1.Size = New System.Drawing.Size(1018, 22)
         Me.StatusStrip1.TabIndex = 25
         Me.StatusStrip1.Text = "StatusStrip1"
         '
@@ -1158,7 +1161,7 @@ Partial Class frmEdicion
         '
         Me.CheckBox25.AutoSize = True
         Me.CheckBox25.ForeColor = System.Drawing.SystemColors.ActiveCaption
-        Me.CheckBox25.Location = New System.Drawing.Point(26, 147)
+        Me.CheckBox25.Location = New System.Drawing.Point(26, 176)
         Me.CheckBox25.Name = "CheckBox25"
         Me.CheckBox25.Size = New System.Drawing.Size(68, 17)
         Me.CheckBox25.TabIndex = 80
@@ -1167,7 +1170,7 @@ Partial Class frmEdicion
         '
         'TextBox17
         '
-        Me.TextBox17.Location = New System.Drawing.Point(173, 144)
+        Me.TextBox17.Location = New System.Drawing.Point(173, 173)
         Me.TextBox17.Name = "TextBox17"
         Me.TextBox17.Size = New System.Drawing.Size(356, 20)
         Me.TextBox17.TabIndex = 5
@@ -1176,7 +1179,7 @@ Partial Class frmEdicion
         '
         Me.Label25.AutoSize = True
         Me.Label25.Font = New System.Drawing.Font("Segoe UI Semibold", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label25.Location = New System.Drawing.Point(46, 147)
+        Me.Label25.Location = New System.Drawing.Point(46, 176)
         Me.Label25.Name = "Label25"
         Me.Label25.Size = New System.Drawing.Size(52, 13)
         Me.Label25.TabIndex = 82
@@ -1186,7 +1189,7 @@ Partial Class frmEdicion
         '
         Me.Label26.AutoSize = True
         Me.Label26.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label26.Location = New System.Drawing.Point(24, 367)
+        Me.Label26.Location = New System.Drawing.Point(24, 396)
         Me.Label26.Name = "Label26"
         Me.Label26.Size = New System.Drawing.Size(70, 13)
         Me.Label26.TabIndex = 83
@@ -1203,12 +1206,15 @@ Partial Class frmEdicion
         Me.TabControl1.Location = New System.Drawing.Point(6, 12)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(893, 540)
+        Me.TabControl1.Size = New System.Drawing.Size(896, 615)
         Me.TabControl1.TabIndex = 53
         '
         'TabPage1
         '
         Me.TabPage1.BackColor = System.Drawing.Color.Gainsboro
+        Me.TabPage1.Controls.Add(Me.Label40)
+        Me.TabPage1.Controls.Add(Me.CheckBox33)
+        Me.TabPage1.Controls.Add(Me.cboDescripFisica)
         Me.TabPage1.Controls.Add(Me.ckkDistribuible)
         Me.TabPage1.Controls.Add(Me.cboSignatura)
         Me.TabPage1.Controls.Add(Me.Label37)
@@ -1289,15 +1295,33 @@ Partial Class frmEdicion
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(885, 514)
+        Me.TabPage1.Size = New System.Drawing.Size(888, 589)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Atributos GEODOCAT"
+        '
+        'ckkDistribuible
+        '
+        Me.ckkDistribuible.AutoSize = True
+        Me.ckkDistribuible.Location = New System.Drawing.Point(396, 18)
+        Me.ckkDistribuible.Name = "ckkDistribuible"
+        Me.ckkDistribuible.Size = New System.Drawing.Size(133, 17)
+        Me.ckkDistribuible.TabIndex = 95
+        Me.ckkDistribuible.Text = "Documento distribuible"
+        Me.ckkDistribuible.UseVisualStyleBackColor = True
+        '
+        'cboSignatura
+        '
+        Me.cboSignatura.FormattingEnabled = True
+        Me.cboSignatura.Location = New System.Drawing.Point(172, 442)
+        Me.cboSignatura.Name = "cboSignatura"
+        Me.cboSignatura.Size = New System.Drawing.Size(185, 21)
+        Me.cboSignatura.TabIndex = 94
         '
         'Label37
         '
         Me.Label37.AutoSize = True
         Me.Label37.Font = New System.Drawing.Font("Segoe UI Semibold", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label37.Location = New System.Drawing.Point(46, 469)
+        Me.Label37.Location = New System.Drawing.Point(46, 498)
         Me.Label37.Name = "Label37"
         Me.Label37.Size = New System.Drawing.Size(125, 13)
         Me.Label37.TabIndex = 93
@@ -1307,7 +1331,7 @@ Partial Class frmEdicion
         '
         Me.CheckBox32.AutoSize = True
         Me.CheckBox32.ForeColor = System.Drawing.SystemColors.ActiveCaption
-        Me.CheckBox32.Location = New System.Drawing.Point(27, 468)
+        Me.CheckBox32.Location = New System.Drawing.Point(27, 497)
         Me.CheckBox32.Name = "CheckBox32"
         Me.CheckBox32.Size = New System.Drawing.Size(133, 17)
         Me.CheckBox32.TabIndex = 92
@@ -1318,7 +1342,7 @@ Partial Class frmEdicion
         '
         Me.ComboBox7.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox7.FormattingEnabled = True
-        Me.ComboBox7.Location = New System.Drawing.Point(175, 469)
+        Me.ComboBox7.Location = New System.Drawing.Point(175, 498)
         Me.ComboBox7.Name = "ComboBox7"
         Me.ComboBox7.Size = New System.Drawing.Size(354, 21)
         Me.ComboBox7.TabIndex = 19
@@ -1327,7 +1351,7 @@ Partial Class frmEdicion
         '
         Me.Button15.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button15.Image = CType(resources.GetObject("Button15.Image"), System.Drawing.Image)
-        Me.Button15.Location = New System.Drawing.Point(676, 445)
+        Me.Button15.Location = New System.Drawing.Point(679, 520)
         Me.Button15.Name = "Button15"
         Me.Button15.Size = New System.Drawing.Size(196, 48)
         Me.Button15.TabIndex = 90
@@ -1339,7 +1363,7 @@ Partial Class frmEdicion
         '
         Me.Label33.AutoSize = True
         Me.Label33.Font = New System.Drawing.Font("Segoe UI Semibold", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label33.Location = New System.Drawing.Point(359, 258)
+        Me.Label33.Location = New System.Drawing.Point(359, 287)
         Me.Label33.Name = "Label33"
         Me.Label33.Size = New System.Drawing.Size(30, 13)
         Me.Label33.TabIndex = 86
@@ -1349,7 +1373,7 @@ Partial Class frmEdicion
         '
         Me.CheckBox31.AutoSize = True
         Me.CheckBox31.ForeColor = System.Drawing.SystemColors.ActiveCaption
-        Me.CheckBox31.Location = New System.Drawing.Point(345, 257)
+        Me.CheckBox31.Location = New System.Drawing.Point(345, 286)
         Me.CheckBox31.Name = "CheckBox31"
         Me.CheckBox31.Size = New System.Drawing.Size(47, 17)
         Me.CheckBox31.TabIndex = 85
@@ -1360,7 +1384,7 @@ Partial Class frmEdicion
         '
         Me.ComboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox3.FormattingEnabled = True
-        Me.ComboBox3.Location = New System.Drawing.Point(399, 256)
+        Me.ComboBox3.Location = New System.Drawing.Point(399, 285)
         Me.ComboBox3.Name = "ComboBox3"
         Me.ComboBox3.Size = New System.Drawing.Size(130, 21)
         Me.ComboBox3.TabIndex = 10
@@ -1396,7 +1420,7 @@ Partial Class frmEdicion
         Me.TabPage3.Location = New System.Drawing.Point(4, 22)
         Me.TabPage3.Name = "TabPage3"
         Me.TabPage3.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage3.Size = New System.Drawing.Size(885, 514)
+        Me.TabPage3.Size = New System.Drawing.Size(888, 589)
         Me.TabPage3.TabIndex = 2
         Me.TabPage3.Text = "Autoría y observaciones"
         Me.TabPage3.ToolTipText = "14"
@@ -1405,7 +1429,7 @@ Partial Class frmEdicion
         '
         Me.Button14.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button14.Image = CType(resources.GetObject("Button14.Image"), System.Drawing.Image)
-        Me.Button14.Location = New System.Drawing.Point(676, 445)
+        Me.Button14.Location = New System.Drawing.Point(679, 520)
         Me.Button14.Name = "Button14"
         Me.Button14.Size = New System.Drawing.Size(196, 48)
         Me.Button14.TabIndex = 89
@@ -1416,8 +1440,9 @@ Partial Class frmEdicion
         'TextBox24
         '
         Me.TextBox24.Location = New System.Drawing.Point(169, 98)
+        Me.TextBox24.Multiline = True
         Me.TextBox24.Name = "TextBox24"
-        Me.TextBox24.Size = New System.Drawing.Size(484, 20)
+        Me.TextBox24.Size = New System.Drawing.Size(484, 58)
         Me.TextBox24.TabIndex = 25
         '
         'Label32
@@ -1425,9 +1450,9 @@ Partial Class frmEdicion
         Me.Label32.AutoSize = True
         Me.Label32.Location = New System.Drawing.Point(44, 98)
         Me.Label32.Name = "Label32"
-        Me.Label32.Size = New System.Drawing.Size(83, 13)
+        Me.Label32.Size = New System.Drawing.Size(93, 13)
         Me.Label32.TabIndex = 86
-        Me.Label32.Text = "Autoría persona"
+        Me.Label32.Text = "Autorías personas"
         '
         'CheckBox30
         '
@@ -1442,15 +1467,16 @@ Partial Class frmEdicion
         '
         'TextBox21
         '
-        Me.TextBox21.Location = New System.Drawing.Point(169, 128)
+        Me.TextBox21.Location = New System.Drawing.Point(169, 175)
+        Me.TextBox21.Multiline = True
         Me.TextBox21.Name = "TextBox21"
-        Me.TextBox21.Size = New System.Drawing.Size(484, 20)
+        Me.TextBox21.Size = New System.Drawing.Size(484, 57)
         Me.TextBox21.TabIndex = 26
         '
         'Label30
         '
         Me.Label30.AutoSize = True
-        Me.Label30.Location = New System.Drawing.Point(43, 131)
+        Me.Label30.Location = New System.Drawing.Point(42, 175)
         Me.Label30.Name = "Label30"
         Me.Label30.Size = New System.Drawing.Size(83, 13)
         Me.Label30.TabIndex = 84
@@ -1460,7 +1486,7 @@ Partial Class frmEdicion
         '
         Me.CheckBox29.AutoSize = True
         Me.CheckBox29.ForeColor = System.Drawing.SystemColors.ActiveCaption
-        Me.CheckBox29.Location = New System.Drawing.Point(23, 131)
+        Me.CheckBox29.Location = New System.Drawing.Point(22, 175)
         Me.CheckBox29.Name = "CheckBox29"
         Me.CheckBox29.Size = New System.Drawing.Size(102, 17)
         Me.CheckBox29.TabIndex = 83
@@ -1524,7 +1550,7 @@ Partial Class frmEdicion
         'Label27
         '
         Me.Label27.AutoSize = True
-        Me.Label27.Location = New System.Drawing.Point(43, 312)
+        Me.Label27.Location = New System.Drawing.Point(43, 370)
         Me.Label27.Name = "Label27"
         Me.Label27.Size = New System.Drawing.Size(168, 13)
         Me.Label27.TabIndex = 65
@@ -1532,7 +1558,7 @@ Partial Class frmEdicion
         '
         'TextBox18
         '
-        Me.TextBox18.Location = New System.Drawing.Point(24, 334)
+        Me.TextBox18.Location = New System.Drawing.Point(24, 392)
         Me.TextBox18.Multiline = True
         Me.TextBox18.Name = "TextBox18"
         Me.TextBox18.Size = New System.Drawing.Size(629, 104)
@@ -1542,7 +1568,7 @@ Partial Class frmEdicion
         '
         Me.CheckBox26.AutoSize = True
         Me.CheckBox26.ForeColor = System.Drawing.SystemColors.ActiveCaption
-        Me.CheckBox26.Location = New System.Drawing.Point(24, 311)
+        Me.CheckBox26.Location = New System.Drawing.Point(24, 369)
         Me.CheckBox26.Name = "CheckBox26"
         Me.CheckBox26.Size = New System.Drawing.Size(146, 17)
         Me.CheckBox26.TabIndex = 64
@@ -1560,7 +1586,7 @@ Partial Class frmEdicion
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(885, 514)
+        Me.TabPage2.Size = New System.Drawing.Size(888, 589)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Ficheros"
         '
@@ -1592,7 +1618,7 @@ Partial Class frmEdicion
         '
         Me.Button13.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button13.Image = CType(resources.GetObject("Button13.Image"), System.Drawing.Image)
-        Me.Button13.Location = New System.Drawing.Point(905, 86)
+        Me.Button13.Location = New System.Drawing.Point(908, 86)
         Me.Button13.Name = "Button13"
         Me.Button13.Size = New System.Drawing.Size(102, 43)
         Me.Button13.TabIndex = 73
@@ -1604,36 +1630,47 @@ Partial Class frmEdicion
         '
         Me.PictureBox2.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PictureBox2.Image = CType(resources.GetObject("PictureBox2.Image"), System.Drawing.Image)
-        Me.PictureBox2.Location = New System.Drawing.Point(905, 456)
+        Me.PictureBox2.Location = New System.Drawing.Point(908, 531)
         Me.PictureBox2.Name = "PictureBox2"
         Me.PictureBox2.Size = New System.Drawing.Size(96, 96)
         Me.PictureBox2.TabIndex = 74
         Me.PictureBox2.TabStop = False
         '
-        'cboSignatura
+        'cboDescripFisica
         '
-        Me.cboSignatura.FormattingEnabled = True
-        Me.cboSignatura.Location = New System.Drawing.Point(172, 413)
-        Me.cboSignatura.Name = "cboSignatura"
-        Me.cboSignatura.Size = New System.Drawing.Size(185, 21)
-        Me.cboSignatura.TabIndex = 94
+        Me.cboDescripFisica.FormattingEnabled = True
+        Me.cboDescripFisica.Location = New System.Drawing.Point(172, 138)
+        Me.cboDescripFisica.Name = "cboDescripFisica"
+        Me.cboDescripFisica.Size = New System.Drawing.Size(357, 21)
+        Me.cboDescripFisica.TabIndex = 96
         '
-        'ckkDistribuible
+        'Label40
         '
-        Me.ckkDistribuible.AutoSize = True
-        Me.ckkDistribuible.Location = New System.Drawing.Point(396, 18)
-        Me.ckkDistribuible.Name = "ckkDistribuible"
-        Me.ckkDistribuible.Size = New System.Drawing.Size(133, 17)
-        Me.ckkDistribuible.TabIndex = 95
-        Me.ckkDistribuible.Text = "Documento distribuible"
-        Me.ckkDistribuible.UseVisualStyleBackColor = True
+        Me.Label40.AutoSize = True
+        Me.Label40.Font = New System.Drawing.Font("Segoe UI Semibold", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label40.Location = New System.Drawing.Point(45, 141)
+        Me.Label40.Name = "Label40"
+        Me.Label40.Size = New System.Drawing.Size(95, 13)
+        Me.Label40.TabIndex = 98
+        Me.Label40.Text = "Descripción física"
+        '
+        'CheckBox33
+        '
+        Me.CheckBox33.AutoSize = True
+        Me.CheckBox33.ForeColor = System.Drawing.SystemColors.ActiveCaption
+        Me.CheckBox33.Location = New System.Drawing.Point(26, 141)
+        Me.CheckBox33.Name = "CheckBox33"
+        Me.CheckBox33.Size = New System.Drawing.Size(111, 17)
+        Me.CheckBox33.TabIndex = 97
+        Me.CheckBox33.Text = "Descripción física"
+        Me.CheckBox33.UseVisualStyleBackColor = True
         '
         'frmEdicion
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Gainsboro
-        Me.ClientSize = New System.Drawing.Size(1015, 586)
+        Me.ClientSize = New System.Drawing.Size(1018, 661)
         Me.Controls.Add(Me.PictureBox2)
         Me.Controls.Add(Me.Button13)
         Me.Controls.Add(Me.TabControl1)
@@ -1799,4 +1836,7 @@ Partial Class frmEdicion
     Friend WithEvents Button17 As Button
     Friend WithEvents cboSignatura As ComboBox
     Friend WithEvents ckkDistribuible As CheckBox
+    Friend WithEvents Label40 As Label
+    Friend WithEvents CheckBox33 As CheckBox
+    Friend WithEvents cboDescripFisica As ComboBox
 End Class
