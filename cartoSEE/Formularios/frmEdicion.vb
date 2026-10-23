@@ -650,18 +650,23 @@
         If CheckBox4.Checked Then propsChanged.Add($"vertical={IIf(TextBox4.Text <> "", Replace(TextBox4.Text, ",", "."), 0)}")
         If CheckBox5.Checked Then propsChanged.Add($"horizontal={IIf(TextBox5.Text <> "", Replace(TextBox5.Text, ",", "."), 0)}")
 
+
+
+
         If propsChanged.ToArray.Length > 0 Then
             ListaSQL.Add($"{cadUpBase}{String.Join(",", propsChanged.ToArray)} WHERE idarchivo={editRegistro.docIndex}")
         End If
 
-
         'Territorios
         If CheckBox18.Checked And ListView1.Items.Count > 0 Then
+            Dim cadINEHisto As String = ""
             ListaSQL.Add($"DELETE FROM bdsidschema.archivo2territorios WHERE archivo_id={editRegistro.docIndex}")
             For Each itemLV As ListViewItem In ListView1.Items
-                Application.DoEvents()
                 ListaSQL.Add($"INSERT INTO bdsidschema.archivo2territorios (territorio_id,archivo_id) VALUES ({itemLV.SubItems(3).Text},{editRegistro.docIndex})")
+                cadINEHisto &= IIf(cadINEHisto = "", itemLV.SubItems(2).Text, $";{itemLV.SubItems(2).Text}")
             Next
+            Application.DoEvents()
+
         ElseIf CheckBox18.Checked And ListView1.Items.Count = 0 Then
             ModalExclamation("Debe asociar el documento al menos a un municipio")
             Exit Function

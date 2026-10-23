@@ -66,6 +66,8 @@ Partial Class frmDevel
         Me.Button3 = New System.Windows.Forms.Button()
         Me.FolderBrowserDialog1 = New System.Windows.Forms.FolderBrowserDialog()
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
+        Me.ToolStripStatusLabel2 = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.Label8 = New System.Windows.Forms.Label()
         Me.StatusStrip1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
@@ -85,7 +87,7 @@ Partial Class frmDevel
         '
         'StatusStrip1
         '
-        Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1})
+        Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1, Me.ToolStripStatusLabel2})
         Me.StatusStrip1.Location = New System.Drawing.Point(0, 712)
         Me.StatusStrip1.Name = "StatusStrip1"
         Me.StatusStrip1.Size = New System.Drawing.Size(1238, 22)
@@ -140,7 +142,7 @@ Partial Class frmDevel
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(766, 407)
+        Me.TabPage1.Size = New System.Drawing.Size(1206, 671)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Reproyectar GCPs"
         Me.TabPage1.UseVisualStyleBackColor = True
@@ -300,6 +302,7 @@ Partial Class frmDevel
         '
         'TabPage2
         '
+        Me.TabPage2.Controls.Add(Me.Label8)
         Me.TabPage2.Controls.Add(Me.Button18)
         Me.TabPage2.Controls.Add(Me.Label7)
         Me.TabPage2.Controls.Add(Me.TextBox1)
@@ -480,12 +483,28 @@ Partial Class frmDevel
         '
         'Button3
         '
-        Me.Button3.Location = New System.Drawing.Point(21, 409)
+        Me.Button3.Location = New System.Drawing.Point(21, 425)
         Me.Button3.Name = "Button3"
         Me.Button3.Size = New System.Drawing.Size(194, 46)
         Me.Button3.TabIndex = 1
         Me.Button3.Text = "TestECWExist"
         Me.Button3.UseVisualStyleBackColor = True
+        '
+        'ToolStripStatusLabel2
+        '
+        Me.ToolStripStatusLabel2.Name = "ToolStripStatusLabel2"
+        Me.ToolStripStatusLabel2.Size = New System.Drawing.Size(120, 17)
+        Me.ToolStripStatusLabel2.Text = "ToolStripStatusLabel2"
+        '
+        'Label8
+        '
+        Me.Label8.AutoSize = True
+        Me.Label8.Location = New System.Drawing.Point(18, 409)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(418, 13)
+        Me.Label8.TabIndex = 19
+        Me.Label8.Text = "Test para comprobar que cada documento tiene un fichero georreferenciado localiza" &
+    "do"
         '
         'frmDevel
         '
@@ -555,4 +574,6 @@ Partial Class frmDevel
     Friend WithEvents Label7 As Label
     Friend WithEvents TextBox1 As TextBox
     Friend WithEvents Button18 As Button
+    Friend WithEvents ToolStripStatusLabel2 As ToolStripStatusLabel
+    Friend WithEvents Label8 As Label
 End Class

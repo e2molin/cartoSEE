@@ -637,12 +637,14 @@
     End Sub
 
 
-    'Busca los ficheros georreferenciados escaneando el directorio
+    ''' <summary>
+    ''' Busca los ficheros georreferenciados escaneando el directorio
+    ''' </summary>
     Sub getGeoFiles()
 
         Dim RutaDoc As String
         Dim contador As Integer
-        If getGeoFilesConsultado = True Then Exit Sub
+        If getGeoFilesConsultado Then Exit Sub
         listaFicherosGeo.Clear()
 
         'Si no hay acceso al repositorio Base, directamente salgo
@@ -674,9 +676,14 @@
                     .EPSCode = epsgCode
                 })
             Next
-            If listaFicherosGeo.Count > 0 Then Exit Sub
+            'If listaFicherosGeo.Count > 0 Then Exit Sub
         Next
+        If listaFicherosGeo.Count > 0 Then
+            getGeoFilesConsultado = True
+            Exit Sub
+        End If
 
+        ' Si no encontramos nigún fichero, probamos a ver si tienen la nomenclatura [Sellado]_[NN].ecw
         For Each epsgCode As String In lstEPSG
             For Each Muni As String In listaCodMuniHistorico
                 RutaDoc = $"{rutaRepoGeorrefBase}\{epsgCode}\{DirRepoProvinciaByTipodoc(tipoDocumento.idTipodoc)}\{Muni.Substring(0, 2)}\{Muni}\{Sellado}_01.ecw"

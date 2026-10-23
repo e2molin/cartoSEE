@@ -154,7 +154,7 @@ Partial Class resultGEODOCAT
         Me.ToolStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow
         Me.ToolStrip1.Location = New System.Drawing.Point(0, 0)
         Me.ToolStrip1.Name = "ToolStrip1"
-        Me.ToolStrip1.Size = New System.Drawing.Size(1273, 58)
+        Me.ToolStrip1.Size = New System.Drawing.Size(1273, 77)
         Me.ToolStrip1.TabIndex = 19
         Me.ToolStrip1.Text = "ToolStrip1"
         '
@@ -601,117 +601,117 @@ Partial Class resultGEODOCAT
         '
         Me.btnOpenInventary.Image = CType(resources.GetObject("btnOpenInventary.Image"), System.Drawing.Image)
         Me.btnOpenInventary.Name = "btnOpenInventary"
-        Me.btnOpenInventary.Size = New System.Drawing.Size(335, 30)
+        Me.btnOpenInventary.Size = New System.Drawing.Size(327, 22)
         Me.btnOpenInventary.Text = "Abrir entrada en el registro de Archivo"
         '
         'mnuStripLinkCdD
         '
         Me.mnuStripLinkCdD.Image = CType(resources.GetObject("mnuStripLinkCdD.Image"), System.Drawing.Image)
         Me.mnuStripLinkCdD.Name = "mnuStripLinkCdD"
-        Me.mnuStripLinkCdD.Size = New System.Drawing.Size(335, 30)
+        Me.mnuStripLinkCdD.Size = New System.Drawing.Size(327, 22)
         Me.mnuStripLinkCdD.Text = "Enlace al Centro de Descargas / Recurso online"
         '
         'mnuStripLinkPDF
         '
         Me.mnuStripLinkPDF.Image = CType(resources.GetObject("mnuStripLinkPDF.Image"), System.Drawing.Image)
         Me.mnuStripLinkPDF.Name = "mnuStripLinkPDF"
-        Me.mnuStripLinkPDF.Size = New System.Drawing.Size(335, 30)
+        Me.mnuStripLinkPDF.Size = New System.Drawing.Size(327, 22)
         Me.mnuStripLinkPDF.Text = "Abrir documento digital en PDF"
         '
         'mnuStripLinkJPG
         '
         Me.mnuStripLinkJPG.Image = CType(resources.GetObject("mnuStripLinkJPG.Image"), System.Drawing.Image)
         Me.mnuStripLinkJPG.Name = "mnuStripLinkJPG"
-        Me.mnuStripLinkJPG.Size = New System.Drawing.Size(335, 30)
+        Me.mnuStripLinkJPG.Size = New System.Drawing.Size(327, 22)
         Me.mnuStripLinkJPG.Text = "Abrir documento digitalizado en JPG"
         '
         'mnuStripLinkABSYS
         '
         Me.mnuStripLinkABSYS.Image = CType(resources.GetObject("mnuStripLinkABSYS.Image"), System.Drawing.Image)
         Me.mnuStripLinkABSYS.Name = "mnuStripLinkABSYS"
-        Me.mnuStripLinkABSYS.Size = New System.Drawing.Size(335, 30)
+        Me.mnuStripLinkABSYS.Size = New System.Drawing.Size(327, 22)
         Me.mnuStripLinkABSYS.Text = "Enlace Catálogo ABSYS"
         '
         'btnAddingCarrito
         '
         Me.btnAddingCarrito.Image = CType(resources.GetObject("btnAddingCarrito.Image"), System.Drawing.Image)
         Me.btnAddingCarrito.Name = "btnAddingCarrito"
-        Me.btnAddingCarrito.Size = New System.Drawing.Size(335, 30)
+        Me.btnAddingCarrito.Size = New System.Drawing.Size(327, 22)
         Me.btnAddingCarrito.Text = "Añadir documento al carrito"
         '
         'btnDeletingCarrito
         '
         Me.btnDeletingCarrito.Image = CType(resources.GetObject("btnDeletingCarrito.Image"), System.Drawing.Image)
         Me.btnDeletingCarrito.Name = "btnDeletingCarrito"
-        Me.btnDeletingCarrito.Size = New System.Drawing.Size(335, 30)
+        Me.btnDeletingCarrito.Size = New System.Drawing.Size(327, 22)
         Me.btnDeletingCarrito.Text = "Eliminar documento del carrito"
         '
         'GenerarMetadatoNEMToolStripMenuItem
         '
         Me.GenerarMetadatoNEMToolStripMenuItem.Image = CType(resources.GetObject("GenerarMetadatoNEMToolStripMenuItem.Image"), System.Drawing.Image)
         Me.GenerarMetadatoNEMToolStripMenuItem.Name = "GenerarMetadatoNEMToolStripMenuItem"
-        Me.GenerarMetadatoNEMToolStripMenuItem.Size = New System.Drawing.Size(335, 30)
+        Me.GenerarMetadatoNEMToolStripMenuItem.Size = New System.Drawing.Size(327, 22)
         Me.GenerarMetadatoNEMToolStripMenuItem.Text = "Generar metadato NEM"
         '
         'mnuGenerateThumb
         '
         Me.mnuGenerateThumb.Image = CType(resources.GetObject("mnuGenerateThumb.Image"), System.Drawing.Image)
         Me.mnuGenerateThumb.Name = "mnuGenerateThumb"
-        Me.mnuGenerateThumb.Size = New System.Drawing.Size(335, 30)
+        Me.mnuGenerateThumb.Size = New System.Drawing.Size(327, 22)
         Me.mnuGenerateThumb.Text = "Generar miniatura de los documentos seleccionados"
         '
         'mnuLaunchECWCrop
         '
         Me.mnuLaunchECWCrop.Image = CType(resources.GetObject("mnuLaunchECWCrop.Image"), System.Drawing.Image)
         Me.mnuLaunchECWCrop.Name = "mnuLaunchECWCrop"
-        Me.mnuLaunchECWCrop.Size = New System.Drawing.Size(335, 30)
+        Me.mnuLaunchECWCrop.Size = New System.Drawing.Size(327, 22)
         Me.mnuLaunchECWCrop.Text = "Lanzar fichero georeferenciado recortado"
         '
         'mnuContornosExtract
         '
         Me.mnuContornosExtract.Image = CType(resources.GetObject("mnuContornosExtract.Image"), System.Drawing.Image)
         Me.mnuContornosExtract.Name = "mnuContornosExtract"
-        Me.mnuContornosExtract.Size = New System.Drawing.Size(335, 30)
+        Me.mnuContornosExtract.Size = New System.Drawing.Size(327, 22)
         Me.mnuContornosExtract.Text = "Extraer contornos"
         '
         'ToolStripSeparator3
         '
         Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
-        Me.ToolStripSeparator3.Size = New System.Drawing.Size(332, 6)
+        Me.ToolStripSeparator3.Size = New System.Drawing.Size(324, 6)
         '
         'mnuStripExportCSV
         '
         Me.mnuStripExportCSV.Image = CType(resources.GetObject("mnuStripExportCSV.Image"), System.Drawing.Image)
         Me.mnuStripExportCSV.Name = "mnuStripExportCSV"
-        Me.mnuStripExportCSV.Size = New System.Drawing.Size(335, 30)
+        Me.mnuStripExportCSV.Size = New System.Drawing.Size(327, 22)
         Me.mnuStripExportCSV.Text = "Guardar"
         '
         'mnuStripExport
         '
         Me.mnuStripExport.Image = CType(resources.GetObject("mnuStripExport.Image"), System.Drawing.Image)
         Me.mnuStripExport.Name = "mnuStripExport"
-        Me.mnuStripExport.Size = New System.Drawing.Size(335, 30)
+        Me.mnuStripExport.Size = New System.Drawing.Size(327, 22)
         Me.mnuStripExport.Text = "Exportar"
         '
         'mnuStripEditar
         '
         Me.mnuStripEditar.Image = CType(resources.GetObject("mnuStripEditar.Image"), System.Drawing.Image)
         Me.mnuStripEditar.Name = "mnuStripEditar"
-        Me.mnuStripEditar.Size = New System.Drawing.Size(335, 30)
+        Me.mnuStripEditar.Size = New System.Drawing.Size(327, 22)
         Me.mnuStripEditar.Text = "Editar"
         '
         'mnuStripRefresh
         '
         Me.mnuStripRefresh.Image = CType(resources.GetObject("mnuStripRefresh.Image"), System.Drawing.Image)
         Me.mnuStripRefresh.Name = "mnuStripRefresh"
-        Me.mnuStripRefresh.Size = New System.Drawing.Size(335, 30)
+        Me.mnuStripRefresh.Size = New System.Drawing.Size(327, 22)
         Me.mnuStripRefresh.Text = "Refrescar"
         '
         'mnuStripOpenIncidencia
         '
         Me.mnuStripOpenIncidencia.Image = CType(resources.GetObject("mnuStripOpenIncidencia.Image"), System.Drawing.Image)
         Me.mnuStripOpenIncidencia.Name = "mnuStripOpenIncidencia"
-        Me.mnuStripOpenIncidencia.Size = New System.Drawing.Size(335, 30)
+        Me.mnuStripOpenIncidencia.Size = New System.Drawing.Size(327, 22)
         Me.mnuStripOpenIncidencia.Text = "Incidencia"
         '
         'ToolStripButton1
@@ -752,7 +752,7 @@ Partial Class resultGEODOCAT
         'ToolStripStatusLabel2
         '
         Me.ToolStripStatusLabel2.Name = "ToolStripStatusLabel2"
-        Me.ToolStripStatusLabel2.Size = New System.Drawing.Size(753, 17)
+        Me.ToolStripStatusLabel2.Size = New System.Drawing.Size(762, 17)
         Me.ToolStripStatusLabel2.Spring = True
         Me.ToolStripStatusLabel2.Text = "ToolStripStatusLabel2"
         Me.ToolStripStatusLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -777,10 +777,10 @@ Partial Class resultGEODOCAT
         Me.TabControl1.Controls.Add(Me.TabPage2)
         Me.TabControl1.Controls.Add(Me.TabPage3)
         Me.TabControl1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TabControl1.Location = New System.Drawing.Point(0, 58)
+        Me.TabControl1.Location = New System.Drawing.Point(0, 77)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(1273, 681)
+        Me.TabControl1.Size = New System.Drawing.Size(1273, 662)
         Me.TabControl1.TabIndex = 22
         '
         'TabPage1
@@ -789,7 +789,7 @@ Partial Class resultGEODOCAT
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(1265, 655)
+        Me.TabPage1.Size = New System.Drawing.Size(1265, 636)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Listado de resultados"
         Me.TabPage1.UseVisualStyleBackColor = True
@@ -806,7 +806,7 @@ Partial Class resultGEODOCAT
         Me.TableLayoutPanel1.RowCount = 2
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel1.Size = New System.Drawing.Size(1259, 649)
+        Me.TableLayoutPanel1.Size = New System.Drawing.Size(1259, 630)
         Me.TableLayoutPanel1.TabIndex = 0
         '
         'DataGridView1
@@ -821,7 +821,7 @@ Partial Class resultGEODOCAT
         Me.DataGridView1.Name = "DataGridView1"
         Me.DataGridView1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.DataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.DataGridView1.Size = New System.Drawing.Size(1253, 318)
+        Me.DataGridView1.Size = New System.Drawing.Size(1253, 309)
         Me.DataGridView1.TabIndex = 0
         '
         'TableLayoutPanel2
@@ -835,11 +835,11 @@ Partial Class resultGEODOCAT
         Me.TableLayoutPanel2.Controls.Add(Me.TableLayoutPanel3, 1, 0)
         Me.TableLayoutPanel2.Controls.Add(Me.Panel1, 2, 0)
         Me.TableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TableLayoutPanel2.Location = New System.Drawing.Point(3, 327)
+        Me.TableLayoutPanel2.Location = New System.Drawing.Point(3, 318)
         Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
         Me.TableLayoutPanel2.RowCount = 1
         Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.TableLayoutPanel2.Size = New System.Drawing.Size(1253, 319)
+        Me.TableLayoutPanel2.Size = New System.Drawing.Size(1253, 309)
         Me.TableLayoutPanel2.TabIndex = 1
         '
         'PictureBox1
@@ -850,7 +850,7 @@ Partial Class resultGEODOCAT
         Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
         Me.PictureBox1.Location = New System.Drawing.Point(3, 3)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(321, 313)
+        Me.PictureBox1.Size = New System.Drawing.Size(321, 303)
         Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.PictureBox1.TabIndex = 0
         Me.PictureBox1.TabStop = False
@@ -868,7 +868,7 @@ Partial Class resultGEODOCAT
         Me.TableLayoutPanel3.Name = "TableLayoutPanel3"
         Me.TableLayoutPanel3.RowCount = 1
         Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel3.Size = New System.Drawing.Size(757, 313)
+        Me.TableLayoutPanel3.Size = New System.Drawing.Size(757, 303)
         Me.TableLayoutPanel3.TabIndex = 1
         '
         'RichTextBox1
@@ -878,7 +878,7 @@ Partial Class resultGEODOCAT
         Me.RichTextBox1.Font = New System.Drawing.Font("Segoe UI Semibold", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.RichTextBox1.Location = New System.Drawing.Point(3, 3)
         Me.RichTextBox1.Name = "RichTextBox1"
-        Me.RichTextBox1.Size = New System.Drawing.Size(370, 307)
+        Me.RichTextBox1.Size = New System.Drawing.Size(370, 297)
         Me.RichTextBox1.TabIndex = 0
         Me.RichTextBox1.Text = ""
         '
@@ -890,7 +890,7 @@ Partial Class resultGEODOCAT
         Me.lvFastView.HideSelection = False
         Me.lvFastView.Location = New System.Drawing.Point(379, 3)
         Me.lvFastView.Name = "lvFastView"
-        Me.lvFastView.Size = New System.Drawing.Size(375, 307)
+        Me.lvFastView.Size = New System.Drawing.Size(375, 297)
         Me.lvFastView.TabIndex = 1
         Me.lvFastView.UseCompatibleStateImageBehavior = False
         '
@@ -904,7 +904,7 @@ Partial Class resultGEODOCAT
         Me.Panel1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.Panel1.Location = New System.Drawing.Point(1093, 3)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(157, 313)
+        Me.Panel1.Size = New System.Drawing.Size(157, 303)
         Me.Panel1.TabIndex = 2
         '
         'btnLinkPDF
@@ -973,7 +973,7 @@ Partial Class resultGEODOCAT
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(1256, 655)
+        Me.TabPage2.Size = New System.Drawing.Size(1265, 655)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Detalle del documento"
         Me.TabPage2.UseVisualStyleBackColor = True
@@ -991,7 +991,7 @@ Partial Class resultGEODOCAT
         Me.TableLayoutPanel5.Name = "TableLayoutPanel5"
         Me.TableLayoutPanel5.RowCount = 1
         Me.TableLayoutPanel5.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel5.Size = New System.Drawing.Size(1250, 649)
+        Me.TableLayoutPanel5.Size = New System.Drawing.Size(1259, 649)
         Me.TableLayoutPanel5.TabIndex = 4
         '
         'TableLayoutPanel6
@@ -1002,12 +1002,12 @@ Partial Class resultGEODOCAT
         Me.TableLayoutPanel6.Controls.Add(Me.TableLayoutPanel7, 0, 0)
         Me.TableLayoutPanel6.Controls.Add(Me.lvDocEditions, 0, 1)
         Me.TableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TableLayoutPanel6.Location = New System.Drawing.Point(628, 3)
+        Me.TableLayoutPanel6.Location = New System.Drawing.Point(632, 3)
         Me.TableLayoutPanel6.Name = "TableLayoutPanel6"
         Me.TableLayoutPanel6.RowCount = 2
         Me.TableLayoutPanel6.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel6.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel6.Size = New System.Drawing.Size(619, 643)
+        Me.TableLayoutPanel6.Size = New System.Drawing.Size(624, 643)
         Me.TableLayoutPanel6.TabIndex = 5
         '
         'TableLayoutPanel7
@@ -1022,7 +1022,7 @@ Partial Class resultGEODOCAT
         Me.TableLayoutPanel7.Name = "TableLayoutPanel7"
         Me.TableLayoutPanel7.RowCount = 1
         Me.TableLayoutPanel7.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.TableLayoutPanel7.Size = New System.Drawing.Size(613, 315)
+        Me.TableLayoutPanel7.Size = New System.Drawing.Size(618, 315)
         Me.TableLayoutPanel7.TabIndex = 4
         '
         'RichTextBox2
@@ -1031,7 +1031,7 @@ Partial Class resultGEODOCAT
         Me.RichTextBox2.Dock = System.Windows.Forms.DockStyle.Fill
         Me.RichTextBox2.Location = New System.Drawing.Point(3, 3)
         Me.RichTextBox2.Name = "RichTextBox2"
-        Me.RichTextBox2.Size = New System.Drawing.Size(239, 309)
+        Me.RichTextBox2.Size = New System.Drawing.Size(241, 309)
         Me.RichTextBox2.TabIndex = 2
         Me.RichTextBox2.Text = "RichTextBox2"
         '
@@ -1040,9 +1040,9 @@ Partial Class resultGEODOCAT
         Me.PictureBox2.BackColor = System.Drawing.Color.DimGray
         Me.PictureBox2.Cursor = System.Windows.Forms.Cursors.Hand
         Me.PictureBox2.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.PictureBox2.Location = New System.Drawing.Point(248, 3)
+        Me.PictureBox2.Location = New System.Drawing.Point(250, 3)
         Me.PictureBox2.Name = "PictureBox2"
-        Me.PictureBox2.Size = New System.Drawing.Size(362, 309)
+        Me.PictureBox2.Size = New System.Drawing.Size(365, 309)
         Me.PictureBox2.TabIndex = 3
         Me.PictureBox2.TabStop = False
         '
@@ -1062,7 +1062,7 @@ Partial Class resultGEODOCAT
         Me.lvTagsM21.HideSelection = False
         Me.lvTagsM21.Location = New System.Drawing.Point(3, 3)
         Me.lvTagsM21.Name = "lvTagsM21"
-        Me.lvTagsM21.Size = New System.Drawing.Size(619, 643)
+        Me.lvTagsM21.Size = New System.Drawing.Size(623, 643)
         Me.lvTagsM21.TabIndex = 0
         Me.lvTagsM21.UseCompatibleStateImageBehavior = False
         '
@@ -1078,7 +1078,7 @@ Partial Class resultGEODOCAT
         Me.TabPage3.Location = New System.Drawing.Point(4, 22)
         Me.TabPage3.Name = "TabPage3"
         Me.TabPage3.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage3.Size = New System.Drawing.Size(1256, 655)
+        Me.TabPage3.Size = New System.Drawing.Size(1265, 655)
         Me.TabPage3.TabIndex = 2
         Me.TabPage3.Text = "Recursos"
         Me.TabPage3.UseVisualStyleBackColor = True

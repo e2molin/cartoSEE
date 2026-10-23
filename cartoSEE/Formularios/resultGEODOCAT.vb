@@ -883,7 +883,7 @@
         Next
 
         ' Si no hay ficheros en base de datos, no hay contornos, pero si se localiza el ECW, lo listo
-        If elemEntidadSel.rcdgeoFiles.Select().Length = 0 Then
+        If lvDocResources.Items.Count <> elemEntidadSel.listaFicherosGeo.Count Then
             For Each geoFichero As FileGeorref In elemEntidadSel.listaFicherosGeo
 
                 Application.DoEvents()
@@ -1518,7 +1518,6 @@
             ModalInfo("Selecciona un único registro para ver sus atributos")
             Exit Sub
         End If
-
         If sender.name = "btnList" Then
             TabControl1.SelectedIndex = 0
             txtFiltro.Enabled = True
@@ -1600,6 +1599,7 @@
         DataGridView1.Columns.Clear()
         idArchivoLoaded = 0
         idArchiveTagsLoaded = 0
+        idArchiveResourcesLoaded = 0
         LanzarSpinner()
         CargarConsulta()
         'DataGridView1.Refresh()

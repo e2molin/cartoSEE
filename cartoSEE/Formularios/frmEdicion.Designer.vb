@@ -129,6 +129,9 @@ Partial Class frmEdicion
         Me.Label26 = New System.Windows.Forms.Label()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.Label40 = New System.Windows.Forms.Label()
+        Me.CheckBox33 = New System.Windows.Forms.CheckBox()
+        Me.cboDescripFisica = New System.Windows.Forms.ComboBox()
         Me.ckkDistribuible = New System.Windows.Forms.CheckBox()
         Me.cboSignatura = New System.Windows.Forms.ComboBox()
         Me.Label37 = New System.Windows.Forms.Label()
@@ -161,9 +164,6 @@ Partial Class frmEdicion
         Me.ErrorProvider1 = New System.Windows.Forms.ErrorProvider(Me.components)
         Me.Button13 = New System.Windows.Forms.Button()
         Me.PictureBox2 = New System.Windows.Forms.PictureBox()
-        Me.cboDescripFisica = New System.Windows.Forms.ComboBox()
-        Me.Label40 = New System.Windows.Forms.Label()
-        Me.CheckBox33 = New System.Windows.Forms.CheckBox()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.StatusStrip1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
@@ -765,10 +765,10 @@ Partial Class frmEdicion
         '
         'TextBox15
         '
-        Me.TextBox15.Location = New System.Drawing.Point(559, 271)
+        Me.TextBox15.Location = New System.Drawing.Point(564, 271)
         Me.TextBox15.Multiline = True
         Me.TextBox15.Name = "TextBox15"
-        Me.TextBox15.Size = New System.Drawing.Size(314, 46)
+        Me.TextBox15.Size = New System.Drawing.Size(309, 46)
         Me.TextBox15.TabIndex = 22
         '
         'TextBox1
@@ -1299,6 +1299,35 @@ Partial Class frmEdicion
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Atributos GEODOCAT"
         '
+        'Label40
+        '
+        Me.Label40.AutoSize = True
+        Me.Label40.Font = New System.Drawing.Font("Segoe UI Semibold", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label40.Location = New System.Drawing.Point(45, 141)
+        Me.Label40.Name = "Label40"
+        Me.Label40.Size = New System.Drawing.Size(95, 13)
+        Me.Label40.TabIndex = 98
+        Me.Label40.Text = "Descripción física"
+        '
+        'CheckBox33
+        '
+        Me.CheckBox33.AutoSize = True
+        Me.CheckBox33.ForeColor = System.Drawing.SystemColors.ActiveCaption
+        Me.CheckBox33.Location = New System.Drawing.Point(26, 141)
+        Me.CheckBox33.Name = "CheckBox33"
+        Me.CheckBox33.Size = New System.Drawing.Size(111, 17)
+        Me.CheckBox33.TabIndex = 97
+        Me.CheckBox33.Text = "Descripción física"
+        Me.CheckBox33.UseVisualStyleBackColor = True
+        '
+        'cboDescripFisica
+        '
+        Me.cboDescripFisica.FormattingEnabled = True
+        Me.cboDescripFisica.Location = New System.Drawing.Point(172, 138)
+        Me.cboDescripFisica.Name = "cboDescripFisica"
+        Me.cboDescripFisica.Size = New System.Drawing.Size(357, 21)
+        Me.cboDescripFisica.TabIndex = 96
+        '
         'ckkDistribuible
         '
         Me.ckkDistribuible.AutoSize = True
@@ -1635,35 +1664,6 @@ Partial Class frmEdicion
         Me.PictureBox2.Size = New System.Drawing.Size(96, 96)
         Me.PictureBox2.TabIndex = 74
         Me.PictureBox2.TabStop = False
-        '
-        'cboDescripFisica
-        '
-        Me.cboDescripFisica.FormattingEnabled = True
-        Me.cboDescripFisica.Location = New System.Drawing.Point(172, 138)
-        Me.cboDescripFisica.Name = "cboDescripFisica"
-        Me.cboDescripFisica.Size = New System.Drawing.Size(357, 21)
-        Me.cboDescripFisica.TabIndex = 96
-        '
-        'Label40
-        '
-        Me.Label40.AutoSize = True
-        Me.Label40.Font = New System.Drawing.Font("Segoe UI Semibold", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label40.Location = New System.Drawing.Point(45, 141)
-        Me.Label40.Name = "Label40"
-        Me.Label40.Size = New System.Drawing.Size(95, 13)
-        Me.Label40.TabIndex = 98
-        Me.Label40.Text = "Descripción física"
-        '
-        'CheckBox33
-        '
-        Me.CheckBox33.AutoSize = True
-        Me.CheckBox33.ForeColor = System.Drawing.SystemColors.ActiveCaption
-        Me.CheckBox33.Location = New System.Drawing.Point(26, 141)
-        Me.CheckBox33.Name = "CheckBox33"
-        Me.CheckBox33.Size = New System.Drawing.Size(111, 17)
-        Me.CheckBox33.TabIndex = 97
-        Me.CheckBox33.Text = "Descripción física"
-        Me.CheckBox33.UseVisualStyleBackColor = True
         '
         'frmEdicion
         '
