@@ -854,11 +854,13 @@
 
         Dim pathGeorref As String
         Dim epsgGeorref As String
-        For Each fila As DataRow In elemEntidadSel.rcdgeoFiles.Select()
+
+
+        For Each geoFichero As FileGeorref In elemEntidadSel.listaFicherosGeo
             pathGeorref = ""
             epsgGeorref = ""
-            For Each geoFichero As FileGeorref In elemEntidadSel.listaFicherosGeo
-                If geoFichero.NameFile.ToLower = $"{fila.Item("geofilename")}" And geoFichero.EPSCode.ToLower = fila.Item("epsg") Then
+            For Each fila As DataRow In elemEntidadSel.rcdgeoFiles.Select()
+                If geoFichero.NameFile.ToLower = fila.Item("geofilename").ToString.ToLower And geoFichero.EPSCode.ToLower = fila.Item("epsg") Then
                     pathGeorref = geoFichero.PathFile
                     epsgGeorref = geoFichero.EPSCode
                     elementoLV = New ListViewItem With {
@@ -866,7 +868,7 @@
                         .ImageIndex = 4,
                         .Tag = pathGeorref,
                         .Group = docGeorref
-            }
+                    }
                     elementoLV.SubItems.Add($"{fila.Item("geofilename")}")
                     elementoLV.SubItems.Add(".ECW")
                     elementoLV.SubItems.Add(epsgGeorref)
@@ -877,22 +879,17 @@
                     elementoLV.SubItems.Add($"{fila.Item("idcontorno")}")
                     elementoLV.ForeColor = IIf(Not IO.File.Exists(pathGeorref), Color.Red, Color.DarkGreen)
                     lvDocResources.Items.Add(elementoLV) : elementoLV = Nothing
+                    Exit For
                 End If
             Next
-
-        Next
-
-        ' Si no hay ficheros en base de datos, no hay contornos, pero si se localiza el ECW, lo listo
-        If lvDocResources.Items.Count <> elemEntidadSel.listaFicherosGeo.Count Then
-            For Each geoFichero As FileGeorref In elemEntidadSel.listaFicherosGeo
-
-                Application.DoEvents()
+            If pathGeorref = "" And epsgGeorref = "" Then
+                'Hemos recorrido los contornos y no hemos encontrado ninguno válkido, pero sabemos que el fichero existe, así que
                 elementoLV = New ListViewItem With {
-                        .Text = "Georreferenciado",
-                        .ImageIndex = 4,
-                        .Tag = geoFichero.PathFile,
-                        .Group = docGeorref
-                }
+                            .Text = "Georreferenciado",
+                            .ImageIndex = 4,
+                            .Tag = geoFichero.PathFile,
+                            .Group = docGeorref
+                    }
                 elementoLV.SubItems.Add($"{geoFichero.NameFile}")
                 elementoLV.SubItems.Add(".ECW")
                 elementoLV.SubItems.Add($"{geoFichero.EPSCode}")
@@ -903,9 +900,64 @@
                 elementoLV.SubItems.Add($"0")
                 elementoLV.ForeColor = IIf(Not IO.File.Exists(geoFichero.PathFile), Color.Red, Color.DarkGreen)
                 lvDocResources.Items.Add(elementoLV) : elementoLV = Nothing
+            End If
 
-            Next
-        End If
+        Next
+
+        'For Each fila As DataRow In elemEntidadSel.rcdgeoFiles.Select()
+        '    pathGeorref = ""
+        '    epsgGeorref = ""
+        '    For Each geoFichero As FileGeorref In elemEntidadSel.listaFicherosGeo
+        '        If geoFichero.NameFile.ToLower = $"{fila.Item("geofilename")}" And geoFichero.EPSCode.ToLower = fila.Item("epsg") Then
+        '            pathGeorref = geoFichero.PathFile
+        '            epsgGeorref = geoFichero.EPSCode
+        '            elementoLV = New ListViewItem With {
+        '                .Text = "Georreferenciado",
+        '                .ImageIndex = 4,
+        '                .Tag = pathGeorref,
+        '                .Group = docGeorref
+        '    }
+        '            elementoLV.SubItems.Add($"{fila.Item("geofilename")}")
+        '            elementoLV.SubItems.Add(".ECW")
+        '            elementoLV.SubItems.Add(epsgGeorref)
+        '            elementoLV.SubItems.Add($"{fila.Item("mostrar_en_wms")}")
+        '            elementoLV.SubItems.Add($"{fila.Item("tipo_wms")}")
+        '            elementoLV.SubItems.Add($"{fila.Item("zindex")}")
+        '            elementoLV.SubItems.Add($"Sí")
+        '            elementoLV.SubItems.Add($"{fila.Item("idcontorno")}")
+        '            elementoLV.ForeColor = IIf(Not IO.File.Exists(pathGeorref), Color.Red, Color.DarkGreen)
+
+        '        Else
+
+        '        End If
+
+        '    Next
+        'Next
+
+        ' Si no hay ficheros en base de datos, no hay contornos, pero si se localiza el ECW, lo listo
+        'If lvDocResources.Items.Count <> elemEntidadSel.listaFicherosGeo.Count Then
+        '    For Each geoFichero As FileGeorref In elemEntidadSel.listaFicherosGeo
+
+        '        Application.DoEvents()
+        '        elementoLV = New ListViewItem With {
+        '                .Text = "Georreferenciado",
+        '                .ImageIndex = 4,
+        '                .Tag = geoFichero.PathFile,
+        '                .Group = docGeorref
+        '        }
+        '        elementoLV.SubItems.Add($"{geoFichero.NameFile}")
+        '        elementoLV.SubItems.Add(".ECW")
+        '        elementoLV.SubItems.Add($"{geoFichero.EPSCode}")
+        '        elementoLV.SubItems.Add($"No")
+        '        elementoLV.SubItems.Add($"No asignado")
+        '        elementoLV.SubItems.Add($"0")
+        '        elementoLV.SubItems.Add($"Sin definir")
+        '        elementoLV.SubItems.Add($"0")
+        '        elementoLV.ForeColor = IIf(Not IO.File.Exists(geoFichero.PathFile), Color.Red, Color.DarkGreen)
+        '        lvDocResources.Items.Add(elementoLV) : elementoLV = Nothing
+
+        '    Next
+        'End If
 
 
 

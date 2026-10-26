@@ -169,12 +169,16 @@
         'tienen georreferenciado al menos un ECW En el caso de los planos de población , puede tener más de 1
         Dim sqlBase As String
         Dim rcdTest As DataTable
-        Dim rutaECW23030 As String
-        Dim rutaECW25830 As String
         Dim pathProv As String
         Dim pathMuni As String
+        Dim rutaECW23030 As String
+        Dim rutaECW25830 As String
+        Dim pathECW23030 As String
+        Dim pathECW25830 As String
         Dim fileECW23030 As String
         Dim fileECW25830 As String
+        Dim lastFile23030 As String
+        Dim lastFile25830 As String
         Dim Existe_23030 As Boolean
         Dim Existe_25830 As Boolean
         Dim numgeoFiles23030 As Integer
@@ -196,6 +200,8 @@
 	                                        LEFT JOIN bdsidschema.provincias on territorios.provincia= provincias.idprovincia 
                                         WHERE archivo.provincia_id= {iBucle}
                                           group by archivo.idarchivo,archivo.numdoc,tbtipodocumento.tipodoc,archivo.subtipo,archivo.tipodoc_id order by numdoc"
+                'WHERE archivo.numdoc in ('010186','320564','320580','390356','330568','320683')
+
                 Try
                     rcdTest = New DataTable
                     If CargarRecordset(sqlBase, rcdTest) Then
@@ -228,6 +234,7 @@
                                 If Not Existe_23030 Then
                                     If IO.File.Exists(rutaECW23030) Then
                                         Existe_23030 = True
+                                        lastFile23030 = fileECW23030
                                         numgeoFiles23030 = 1
                                     End If
 
@@ -235,6 +242,7 @@
                                 If Not Existe_25830 Then
                                     If IO.File.Exists(rutaECW25830) Then
                                         Existe_25830 = True
+                                        lastFile25830 = fileECW25830
                                         numgeoFiles25830 = 1
                                     End If
 
@@ -243,9 +251,11 @@
                                 If Not Existe_23030 Then
                                     For contFich As Integer = 1 To 20
                                         fileECW23030 = $"{reg("numdoc")}_{String.Format("{0:00}", contFich)}.ecw"
+                                        pathECW23030 = $"{rutaRepoGeorrefBase}\epsg23030\{DirRepoProvinciaByTipodoc(CType(reg("tipodoc_id").ToString, Integer))}\{pathProv}\{pathMuni}\"
                                         rutaECW23030 = $"{rutaRepoGeorrefBase}\epsg23030\{DirRepoProvinciaByTipodoc(CType(reg("tipodoc_id").ToString, Integer))}\{pathProv}\{pathMuni}\{fileECW23030}"
                                         If IO.File.Exists(rutaECW23030) Then
                                             numgeoFiles23030 = contFich
+                                            lastFile23030 = fileECW23030
                                             Existe_23030 = True
                                         End If
                                     Next
@@ -253,9 +263,11 @@
                                 If Not Existe_25830 Then
                                     For contFich As Integer = 1 To 20
                                         fileECW25830 = $"{reg("numdoc")}_{String.Format("{0:00}", contFich)}.ecw"
-                                        rutaECW23030 = $"{rutaRepoGeorrefBase}\epsg25830\{DirRepoProvinciaByTipodoc(CType(reg("tipodoc_id").ToString, Integer))}\{pathProv}\{pathMuni}\{fileECW25830}"
+                                        pathECW25830 = $"{rutaRepoGeorrefBase}\epsg25830\{DirRepoProvinciaByTipodoc(CType(reg("tipodoc_id").ToString, Integer))}\{pathProv}\{pathMuni}\"
+                                        rutaECW25830 = $"{rutaRepoGeorrefBase}\epsg25830\{DirRepoProvinciaByTipodoc(CType(reg("tipodoc_id").ToString, Integer))}\{pathProv}\{pathMuni}\{fileECW25830}"
                                         If IO.File.Exists(rutaECW25830) Then
                                             numgeoFiles25830 = contFich
+                                            lastFile25830 = fileECW25830
                                             Existe_25830 = True
                                         End If
                                     Next
@@ -263,7 +275,7 @@
                                 If Existe_25830 And Existe_23030 Then Exit For
                             Next
 
-                            sw.WriteLine($"{reg("idarchivo")};{reg("numdoc")};{reg("nomprovin")};{reg("listaMuniHisto")};{reg("tipo")};{reg("subtipo")};{IIf(Existe_23030, rutaECW23030, "")};{IIf(Existe_25830, rutaECW25830, "")};{IIf(Existe_23030, fileECW23030, "")};{IIf(Existe_25830, fileECW25830, "")};{numgeoFiles23030};{numgeoFiles25830}")
+                            sw.WriteLine($"{reg("idarchivo")};{reg("numdoc")};{reg("nomprovin")};{reg("listaMuniHisto")};{reg("tipo")};{reg("subtipo")};{IIf(Existe_23030, pathECW23030, "")};{IIf(Existe_25830, pathECW25830, "")};{IIf(Existe_23030, lastFile23030, "")};{IIf(Existe_25830, lastFile25830, "")};{numgeoFiles23030};{numgeoFiles25830}")
 
                         Next
                         Application.DoEvents()

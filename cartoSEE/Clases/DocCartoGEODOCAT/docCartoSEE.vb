@@ -703,8 +703,6 @@
                                 .PathFile = RutaDoc,
                                 .EPSCode = epsgCode
                             })
-                        Else
-                            Exit Do
                         End If
                     Loop
                     Exit For
