@@ -22,9 +22,11 @@ Partial Class frmDevel
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmDevel))
         Me.Button1 = New System.Windows.Forms.Button()
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
         Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.ToolStripStatusLabel2 = New System.Windows.Forms.ToolStripStatusLabel()
         Me.Button2 = New System.Windows.Forms.Button()
         Me.ListBox1 = New System.Windows.Forms.ListBox()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
@@ -46,6 +48,20 @@ Partial Class frmDevel
         Me.txtPathGCP = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.Button24 = New System.Windows.Forms.Button()
+        Me.TextBox2 = New System.Windows.Forms.TextBox()
+        Me.Button23 = New System.Windows.Forms.Button()
+        Me.Label11 = New System.Windows.Forms.Label()
+        Me.Button22 = New System.Windows.Forms.Button()
+        Me.TextBox3 = New System.Windows.Forms.TextBox()
+        Me.Label12 = New System.Windows.Forms.Label()
+        Me.Button21 = New System.Windows.Forms.Button()
+        Me.Button20 = New System.Windows.Forms.Button()
+        Me.txtFolderPath = New System.Windows.Forms.TextBox()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.Button19 = New System.Windows.Forms.Button()
+        Me.Label8 = New System.Windows.Forms.Label()
         Me.Button18 = New System.Windows.Forms.Button()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.TextBox1 = New System.Windows.Forms.TextBox()
@@ -66,14 +82,16 @@ Partial Class frmDevel
         Me.Button3 = New System.Windows.Forms.Button()
         Me.FolderBrowserDialog1 = New System.Windows.Forms.FolderBrowserDialog()
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
-        Me.ToolStripStatusLabel2 = New System.Windows.Forms.ToolStripStatusLabel()
-        Me.Label8 = New System.Windows.Forms.Label()
+        Me.ListBox3 = New System.Windows.Forms.ListBox()
+        Me.Label10 = New System.Windows.Forms.Label()
+        Me.Button25 = New System.Windows.Forms.Button()
         Me.StatusStrip1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.TabPage2.SuspendLayout()
+        Me.GroupBox3.SuspendLayout()
         Me.SuspendLayout()
         '
         'Button1
@@ -99,6 +117,12 @@ Partial Class frmDevel
         Me.ToolStripStatusLabel1.Name = "ToolStripStatusLabel1"
         Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(120, 17)
         Me.ToolStripStatusLabel1.Text = "ToolStripStatusLabel1"
+        '
+        'ToolStripStatusLabel2
+        '
+        Me.ToolStripStatusLabel2.Name = "ToolStripStatusLabel2"
+        Me.ToolStripStatusLabel2.Size = New System.Drawing.Size(120, 17)
+        Me.ToolStripStatusLabel2.Text = "ToolStripStatusLabel2"
         '
         'Button2
         '
@@ -302,6 +326,12 @@ Partial Class frmDevel
         '
         'TabPage2
         '
+        Me.TabPage2.Controls.Add(Me.GroupBox3)
+        Me.TabPage2.Controls.Add(Me.Button21)
+        Me.TabPage2.Controls.Add(Me.Button20)
+        Me.TabPage2.Controls.Add(Me.txtFolderPath)
+        Me.TabPage2.Controls.Add(Me.Label9)
+        Me.TabPage2.Controls.Add(Me.Button19)
         Me.TabPage2.Controls.Add(Me.Label8)
         Me.TabPage2.Controls.Add(Me.Button18)
         Me.TabPage2.Controls.Add(Me.Label7)
@@ -329,6 +359,146 @@ Partial Class frmDevel
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "TabPage2"
         Me.TabPage2.UseVisualStyleBackColor = True
+        '
+        'GroupBox3
+        '
+        Me.GroupBox3.Controls.Add(Me.Button25)
+        Me.GroupBox3.Controls.Add(Me.Label10)
+        Me.GroupBox3.Controls.Add(Me.ListBox3)
+        Me.GroupBox3.Controls.Add(Me.Button24)
+        Me.GroupBox3.Controls.Add(Me.TextBox2)
+        Me.GroupBox3.Controls.Add(Me.Button23)
+        Me.GroupBox3.Controls.Add(Me.Label11)
+        Me.GroupBox3.Controls.Add(Me.Button22)
+        Me.GroupBox3.Controls.Add(Me.TextBox3)
+        Me.GroupBox3.Controls.Add(Me.Label12)
+        Me.GroupBox3.Location = New System.Drawing.Point(559, 230)
+        Me.GroupBox3.Name = "GroupBox3"
+        Me.GroupBox3.Size = New System.Drawing.Size(621, 311)
+        Me.GroupBox3.TabIndex = 32
+        Me.GroupBox3.TabStop = False
+        Me.GroupBox3.Text = "Importar ficheros georreferenciados a formato GEODOCAT II"
+        '
+        'Button24
+        '
+        Me.Button24.Image = CType(resources.GetObject("Button24.Image"), System.Drawing.Image)
+        Me.Button24.Location = New System.Drawing.Point(531, 35)
+        Me.Button24.Name = "Button24"
+        Me.Button24.Size = New System.Drawing.Size(75, 46)
+        Me.Button24.TabIndex = 32
+        Me.Button24.Text = "Proceso"
+        Me.Button24.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+        Me.Button24.UseVisualStyleBackColor = True
+        '
+        'TextBox2
+        '
+        Me.TextBox2.Location = New System.Drawing.Point(64, 35)
+        Me.TextBox2.Name = "TextBox2"
+        Me.TextBox2.Size = New System.Drawing.Size(406, 20)
+        Me.TextBox2.TabIndex = 26
+        '
+        'Button23
+        '
+        Me.Button23.Image = CType(resources.GetObject("Button23.Image"), System.Drawing.Image)
+        Me.Button23.Location = New System.Drawing.Point(480, 59)
+        Me.Button23.Name = "Button23"
+        Me.Button23.Size = New System.Drawing.Size(45, 23)
+        Me.Button23.TabIndex = 31
+        Me.Button23.UseVisualStyleBackColor = True
+        '
+        'Label11
+        '
+        Me.Label11.AutoSize = True
+        Me.Label11.Location = New System.Drawing.Point(13, 38)
+        Me.Label11.Name = "Label11"
+        Me.Label11.Size = New System.Drawing.Size(44, 13)
+        Me.Label11.TabIndex = 27
+        Me.Label11.Text = "Entrada"
+        '
+        'Button22
+        '
+        Me.Button22.Image = CType(resources.GetObject("Button22.Image"), System.Drawing.Image)
+        Me.Button22.Location = New System.Drawing.Point(480, 33)
+        Me.Button22.Name = "Button22"
+        Me.Button22.Size = New System.Drawing.Size(45, 23)
+        Me.Button22.TabIndex = 30
+        Me.Button22.UseVisualStyleBackColor = True
+        '
+        'TextBox3
+        '
+        Me.TextBox3.Location = New System.Drawing.Point(64, 61)
+        Me.TextBox3.Name = "TextBox3"
+        Me.TextBox3.Size = New System.Drawing.Size(406, 20)
+        Me.TextBox3.TabIndex = 28
+        '
+        'Label12
+        '
+        Me.Label12.AutoSize = True
+        Me.Label12.Location = New System.Drawing.Point(13, 64)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(36, 13)
+        Me.Label12.TabIndex = 29
+        Me.Label12.Text = "Salida"
+        '
+        'Button21
+        '
+        Me.Button21.Image = CType(resources.GetObject("Button21.Image"), System.Drawing.Image)
+        Me.Button21.Location = New System.Drawing.Point(442, 399)
+        Me.Button21.Name = "Button21"
+        Me.Button21.Size = New System.Drawing.Size(92, 34)
+        Me.Button21.TabIndex = 24
+        Me.Button21.Text = "Guardar"
+        Me.Button21.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.Button21.UseVisualStyleBackColor = True
+        '
+        'Button20
+        '
+        Me.Button20.Image = CType(resources.GetObject("Button20.Image"), System.Drawing.Image)
+        Me.Button20.Location = New System.Drawing.Point(459, 230)
+        Me.Button20.Name = "Button20"
+        Me.Button20.Size = New System.Drawing.Size(75, 37)
+        Me.Button20.TabIndex = 23
+        Me.Button20.Text = "Abrir"
+        Me.Button20.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.Button20.UseVisualStyleBackColor = True
+        '
+        'txtFolderPath
+        '
+        Me.txtFolderPath.Location = New System.Drawing.Point(21, 246)
+        Me.txtFolderPath.Name = "txtFolderPath"
+        Me.txtFolderPath.Size = New System.Drawing.Size(415, 20)
+        Me.txtFolderPath.TabIndex = 22
+        Me.txtFolderPath.Text = "D:\Volcados\reproyeccion"
+        '
+        'Label9
+        '
+        Me.Label9.AutoSize = True
+        Me.Label9.Location = New System.Drawing.Point(18, 230)
+        Me.Label9.Name = "Label9"
+        Me.Label9.Size = New System.Drawing.Size(97, 13)
+        Me.Label9.TabIndex = 21
+        Me.Label9.Text = "Directorio de salida"
+        '
+        'Button19
+        '
+        Me.Button19.Image = CType(resources.GetObject("Button19.Image"), System.Drawing.Image)
+        Me.Button19.Location = New System.Drawing.Point(21, 427)
+        Me.Button19.Name = "Button19"
+        Me.Button19.Size = New System.Drawing.Size(176, 72)
+        Me.Button19.TabIndex = 20
+        Me.Button19.Text = "Obtener fichero conversión 23030->25830 para Conjuntas"
+        Me.Button19.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+        Me.Button19.UseVisualStyleBackColor = True
+        '
+        'Label8
+        '
+        Me.Label8.AutoSize = True
+        Me.Label8.Location = New System.Drawing.Point(18, 573)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(418, 13)
+        Me.Label8.TabIndex = 19
+        Me.Label8.Text = "Test para comprobar que cada documento tiene un fichero georreferenciado localiza" &
+    "do"
         '
         'Button18
         '
@@ -439,16 +609,16 @@ Partial Class frmDevel
         '
         'Button8
         '
-        Me.Button8.Location = New System.Drawing.Point(21, 6)
+        Me.Button8.Location = New System.Drawing.Point(21, 89)
         Me.Button8.Name = "Button8"
-        Me.Button8.Size = New System.Drawing.Size(264, 23)
+        Me.Button8.Size = New System.Drawing.Size(264, 27)
         Me.Button8.TabIndex = 6
         Me.Button8.Text = "Obtener fichero conversión 23030->25830 para PP"
         Me.Button8.UseVisualStyleBackColor = True
         '
         'Button6
         '
-        Me.Button6.Location = New System.Drawing.Point(566, 252)
+        Me.Button6.Location = New System.Drawing.Point(845, 93)
         Me.Button6.Name = "Button6"
         Me.Button6.Size = New System.Drawing.Size(194, 46)
         Me.Button6.TabIndex = 5
@@ -467,14 +637,14 @@ Partial Class frmDevel
         'ListBox2
         '
         Me.ListBox2.FormattingEnabled = True
-        Me.ListBox2.Location = New System.Drawing.Point(21, 223)
+        Me.ListBox2.Location = New System.Drawing.Point(21, 272)
         Me.ListBox2.Name = "ListBox2"
-        Me.ListBox2.Size = New System.Drawing.Size(513, 160)
+        Me.ListBox2.Size = New System.Drawing.Size(513, 121)
         Me.ListBox2.TabIndex = 3
         '
         'Button4
         '
-        Me.Button4.Location = New System.Drawing.Point(566, 200)
+        Me.Button4.Location = New System.Drawing.Point(863, 23)
         Me.Button4.Name = "Button4"
         Me.Button4.Size = New System.Drawing.Size(194, 46)
         Me.Button4.TabIndex = 2
@@ -483,28 +653,42 @@ Partial Class frmDevel
         '
         'Button3
         '
-        Me.Button3.Location = New System.Drawing.Point(21, 425)
+        Me.Button3.Image = CType(resources.GetObject("Button3.Image"), System.Drawing.Image)
+        Me.Button3.Location = New System.Drawing.Point(21, 589)
         Me.Button3.Name = "Button3"
-        Me.Button3.Size = New System.Drawing.Size(194, 46)
+        Me.Button3.Size = New System.Drawing.Size(118, 61)
         Me.Button3.TabIndex = 1
         Me.Button3.Text = "TestECWExist"
+        Me.Button3.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         Me.Button3.UseVisualStyleBackColor = True
         '
-        'ToolStripStatusLabel2
+        'ListBox3
         '
-        Me.ToolStripStatusLabel2.Name = "ToolStripStatusLabel2"
-        Me.ToolStripStatusLabel2.Size = New System.Drawing.Size(120, 17)
-        Me.ToolStripStatusLabel2.Text = "ToolStripStatusLabel2"
+        Me.ListBox3.FormattingEnabled = True
+        Me.ListBox3.Location = New System.Drawing.Point(19, 119)
+        Me.ListBox3.Name = "ListBox3"
+        Me.ListBox3.Size = New System.Drawing.Size(451, 186)
+        Me.ListBox3.TabIndex = 33
         '
-        'Label8
+        'Label10
         '
-        Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(18, 409)
-        Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(418, 13)
-        Me.Label8.TabIndex = 19
-        Me.Label8.Text = "Test para comprobar que cada documento tiene un fichero georreferenciado localiza" &
-    "do"
+        Me.Label10.AutoSize = True
+        Me.Label10.Location = New System.Drawing.Point(16, 103)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(79, 13)
+        Me.Label10.TabIndex = 34
+        Me.Label10.Text = "No procesados"
+        '
+        'Button25
+        '
+        Me.Button25.Image = CType(resources.GetObject("Button25.Image"), System.Drawing.Image)
+        Me.Button25.Location = New System.Drawing.Point(476, 271)
+        Me.Button25.Name = "Button25"
+        Me.Button25.Size = New System.Drawing.Size(92, 34)
+        Me.Button25.TabIndex = 35
+        Me.Button25.Text = "Guardar"
+        Me.Button25.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.Button25.UseVisualStyleBackColor = True
         '
         'frmDevel
         '
@@ -526,6 +710,8 @@ Partial Class frmDevel
         Me.GroupBox1.PerformLayout()
         Me.TabPage2.ResumeLayout(False)
         Me.TabPage2.PerformLayout()
+        Me.GroupBox3.ResumeLayout(False)
+        Me.GroupBox3.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -576,4 +762,20 @@ Partial Class frmDevel
     Friend WithEvents Button18 As Button
     Friend WithEvents ToolStripStatusLabel2 As ToolStripStatusLabel
     Friend WithEvents Label8 As Label
+    Friend WithEvents Button19 As Button
+    Friend WithEvents txtFolderPath As TextBox
+    Friend WithEvents Label9 As Label
+    Friend WithEvents Button20 As Button
+    Friend WithEvents Button21 As Button
+    Friend WithEvents GroupBox3 As GroupBox
+    Friend WithEvents Button24 As Button
+    Friend WithEvents TextBox2 As TextBox
+    Friend WithEvents Button23 As Button
+    Friend WithEvents Label11 As Label
+    Friend WithEvents Button22 As Button
+    Friend WithEvents TextBox3 As TextBox
+    Friend WithEvents Label12 As Label
+    Friend WithEvents Label10 As Label
+    Friend WithEvents ListBox3 As ListBox
+    Friend WithEvents Button25 As Button
 End Class

@@ -161,6 +161,8 @@
         txtEPSGin.Text = "4230"
         txtEPSGout.Text = "25830"
 
+        GroupBox3.Text = "Transferencia de ficheros georreferenciados por sellado a estructura GEODOCAT II"
+        TextBox2.Text = "\\sbdignmad651.ign.fomento.es\ARCHIVO\ARCHIVO_Técnico\_000_PROYECTO_BORRADOR_DE_NUEVA_DISPOSICION_DE_CARPETAS\01_PROYECTOS\01_20260406_PLANIMETRIAS\23_JAEN\Georref"
     End Sub
 
     Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
@@ -198,9 +200,15 @@
 	                                        LEFT JOIN bdsidschema.archivo2territorios  ON archivo2territorios.archivo_id=archivo.idarchivo 
 	                                        LEFT JOIN bdsidschema.territorios on territorios.idterritorio= archivo2territorios.territorio_id 
 	                                        LEFT JOIN bdsidschema.provincias on territorios.provincia= provincias.idprovincia 
-                                        WHERE archivo.provincia_id= {iBucle}
+                                        WHERE archivo.numdoc in ('180591','180592','180593','180594','180595','180596')
                                           group by archivo.idarchivo,archivo.numdoc,tbtipodocumento.tipodoc,archivo.subtipo,archivo.tipodoc_id order by numdoc"
-                'WHERE archivo.numdoc in ('010186','320564','320580','390356','330568','320683')
+                'WHERE archivo.numdoc in ('180591','180592','180593','180594','180595','180596')
+                'WHERE archivo.provincia_id= {iBucle}
+
+
+
+
+
 
                 Try
                     rcdTest = New DataTable
@@ -214,6 +222,8 @@
                             pathMuni = ""
                             fileECW23030 = ""
                             fileECW25830 = ""
+                            pathECW23030 = ""
+                            pathECW25830 = ""
                             numgeoFiles23030 = 0
                             numgeoFiles25830 = 0
                             'If reg("numdoc").ToString = "010030" Then
@@ -229,8 +239,11 @@
                                 pathMuni = codMuniHisto
                                 fileECW23030 = $"{reg("numdoc")}.ecw"
                                 fileECW25830 = $"{reg("numdoc")}.ecw"
+                                pathECW23030 = $"{rutaRepoGeorrefBase}\epsg23030\{DirRepoProvinciaByTipodoc(CType(reg("tipodoc_id").ToString, Integer))}\{pathProv}\{pathMuni}\"
+                                pathECW25830 = $"{rutaRepoGeorrefBase}\epsg25830\{DirRepoProvinciaByTipodoc(CType(reg("tipodoc_id").ToString, Integer))}\{pathProv}\{pathMuni}\"
                                 rutaECW23030 = $"{rutaRepoGeorrefBase}\epsg23030\{DirRepoProvinciaByTipodoc(CType(reg("tipodoc_id").ToString, Integer))}\{pathProv}\{pathMuni}\{fileECW23030}"
                                 rutaECW25830 = $"{rutaRepoGeorrefBase}\epsg25830\{DirRepoProvinciaByTipodoc(CType(reg("tipodoc_id").ToString, Integer))}\{pathProv}\{pathMuni}\{fileECW25830}"
+
                                 If Not Existe_23030 Then
                                     If IO.File.Exists(rutaECW23030) Then
                                         Existe_23030 = True
@@ -707,6 +720,106 @@
         swMkdir.Dispose()
         swMkdir = Nothing
         MessageBox.Show("Fichero de conversión generado", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
+
+
+
+    End Sub
+
+
+    Sub generate_conversionFile_conjuntas_report()
+
+        Dim docPP2CD As DataTable
+        Dim filas() As DataRow
+        Dim contador As Integer
+        Dim LineaOUT As String
+        Dim cadsql As String
+        docPP2CD = New DataTable
+
+        Dim pathGMSFile As String
+        Dim pathProcFile As String
+        Dim pathProcess As String
+
+        Try
+            pathProcess = $"{txtFolderPath.Text}"
+            pathGMSFile = $"{txtFolderPath.Text}\conjuntas\conversionConjuntas.gms"
+            pathProcFile = $"{txtFolderPath.Text}\conjuntas\conversionConjuntas_mkdir.bat"
+            If Not IO.Directory.Exists($"{txtFolderPath.Text}\conjuntas\") Then
+                IO.Directory.CreateDirectory($"{txtFolderPath.Text}\conjuntas\")
+            End If
+        Catch ex As Exception
+            ModalError(ex.Message)
+        End Try
+
+
+        Dim swConversion As New System.IO.StreamWriter(pathGMSFile, False, System.Text.Encoding.Unicode)
+        swConversion.WriteLine("GLOBAL_MAPPER_SCRIPT VERSION=1.00 ENABLE_PROGRESS=YES")
+        swConversion.WriteLine("UNLOAD_ALL")
+        swConversion.WriteLine("SET_BG_COLOR COLOR=RGB(255, 255, 255)")
+
+        cadsql = $"SELECT archivo.idarchivo,archivo.numdoc,tbtipodocumento.tipodoc as tipo,coalesce(archivo.subtipo,'') as subtipo,archivo.tipodoc_id,
+		                    string_agg(to_char(territorios.munihisto, 'FM0000009'::text),'#') as listaCodMuniHisto,string_agg(territorios.nombre,', ') as listaMuniHisto,
+                                                string_agg(territorios.nombre,', ') as listaMuniHisto,string_agg(distinct provincias.nombreprovincia,', ') as nomprovin
+                                        FROM bdsidschema.archivo 
+	                                        LEFT JOIN bdsidschema.tbtipodocumento ON tbtipodocumento.idtipodoc=archivo.tipodoc_id 
+	                                        LEFT JOIN bdsidschema.archivo2territorios  ON archivo2territorios.archivo_id=archivo.idarchivo 
+	                                        LEFT JOIN bdsidschema.territorios on territorios.idterritorio= archivo2territorios.territorio_id 
+	                                        LEFT JOIN bdsidschema.provincias on territorios.provincia= provincias.idprovincia 
+                                        WHERE archivo.tipodoc_id = 3
+                                          group by archivo.idarchivo,archivo.numdoc,tbtipodocumento.tipodoc,archivo.subtipo,archivo.tipodoc_id order by numdoc"
+
+        ListBox2.Items.Clear()
+        If CargarDatatableMuni(cadsql, docPP2CD) = False Then
+            ModalError("No se puede acceder a los datos de BADASID")
+            Exit Sub
+        End If
+        filas = docPP2CD.Select
+        contador = 0
+        Dim pathProv As String
+        Dim fileECW23030 As String
+        Dim pathECW23030 As String
+        Dim rutaECW23030 As String
+        Dim filegeoFound As Integer = 0
+
+        For Each fila As DataRow In filas
+            contador += 1
+            ToolStripStatusLabel1.Text = "Procesando " & contador
+            Application.DoEvents()
+            filegeoFound = 0
+            For Each codmunihisto As String In fila("listaCodMuniHisto").ToString.Split("#")
+                pathProv = codmunihisto.Substring(0, 2)
+                fileECW23030 = $"{fila("numdoc")}.ecw"
+                pathECW23030 = $"{rutaRepoGeorrefBase}\epsg23030\{DirRepoProvinciaByTipodoc(CType(fila("tipodoc_id").ToString, Integer))}\{pathProv}\{codmunihisto}\"
+                rutaECW23030 = $"{rutaRepoGeorrefBase}\epsg23030\{DirRepoProvinciaByTipodoc(CType(fila("tipodoc_id").ToString, Integer))}\{pathProv}\{codmunihisto}\{fileECW23030}"
+                If IO.File.Exists(rutaECW23030) Then
+                    LineaOUT = $"IMPORT FILENAME=""{rutaECW23030}"" TYPE=AUTO ANTI_ALIAS=NO AUTO_CONTRAST=NO"
+                    swConversion.WriteLine(LineaOUT)
+                    LineaOUT = $"LOAD_PROJECTION FILENAME=""{pathProcess}\test25830.prj"""
+                    swConversion.WriteLine(LineaOUT)
+                    LineaOUT = $"EXPORT_RASTER FILENAME=""{txtFolderPath.Text}\conjuntas\epsg25830\CONJUNTAS\{pathProv}\{codmunihisto}\{fila("numdoc")}.ecw"" TYPE=ECW TARGET_COMPRESSION=1 GEN_WORLD_FILE=YES GEN_PRJ_FILE=YES"
+                    swConversion.WriteLine(LineaOUT)
+                    swConversion.WriteLine("UNLOAD_ALL")
+                    Try
+                        If Not IO.Directory.Exists($"{txtFolderPath.Text}\conjuntas\epsg25830\CONJUNTAS\{pathProv}\{codmunihisto}\") Then
+                            IO.Directory.CreateDirectory($"{txtFolderPath.Text}\conjuntas\epsg25830\CONJUNTAS\{pathProv}\{codmunihisto}\")
+                        End If
+                    Catch ex As Exception
+                        ModalError(ex.Message)
+                    End Try
+                    filegeoFound += 1
+                End If
+            Next
+            If filegeoFound = 0 Then
+                ListBox2.Items.Add($"No encuentro la georreferenciación en 23030 de la conjunta {fila("numdoc")}")
+            End If
+        Next
+
+        Erase filas
+        docPP2CD.Clear()
+        docPP2CD = Nothing
+        swConversion.Close()
+        swConversion.Dispose()
+        swConversion = Nothing
+        ModalInfo("Fichero de conversión generado")
 
 
 
@@ -1244,4 +1357,181 @@
         End Try
     End Sub
 
+    Private Sub Button19_Click(sender As Object, e As EventArgs) Handles Button19.Click
+        generate_conversionFile_conjuntas_report()
+    End Sub
+
+    Private Sub Button20_Click(sender As Object, e As EventArgs) Handles Button20.Click
+
+        If FolderBrowserDialog1.ShowDialog() = Windows.Forms.DialogResult.Cancel Then Exit Sub
+        If System.IO.Directory.Exists(FolderBrowserDialog1.SelectedPath) = False Then Exit Sub
+        txtFolderPath.Text = FolderBrowserDialog1.SelectedPath
+
+
+    End Sub
+
+    Private Sub Button21_Click(sender As Object, e As EventArgs) Handles Button21.Click
+
+        Using sw As New System.IO.StreamWriter($"{txtFolderPath.Text}\DocsNoGeorref.txt")
+            For Each elem As Object In ListBox2.Items
+                sw.WriteLine(elem.ToString())
+            Next
+        End Using
+
+        ModalInfo("Fichero generado")
+
+
+
+    End Sub
+
+    Private Sub TextBox2_LostFocus(sender As Object, e As EventArgs) Handles TextBox2.LostFocus
+        TextBox2.BackColor = Color.White
+    End Sub
+
+    Private Sub TextBox2_GotFocus(sender As Object, e As EventArgs) Handles TextBox2.GotFocus
+        TextBox2.BackColor = Color.LightYellow
+    End Sub
+
+    Private Sub TextBox3_LostFocus(sender As Object, e As EventArgs) Handles TextBox3.LostFocus
+        TextBox3.BackColor = Color.White
+    End Sub
+
+    Private Sub TextBox3_GotFocus(sender As Object, e As EventArgs) Handles TextBox3.GotFocus
+        TextBox3.BackColor = Color.LightYellow
+    End Sub
+
+    Private Sub Button24_Click(sender As Object, e As EventArgs) Handles Button24.Click
+
+        Dim lstFiles As New ArrayList
+        ListBox3.Items.Clear()
+        ToolStripStatusLabel1.Text = "Transferencia a formato GEODOCAT II"
+        ToolStripStatusLabel2.Text = ""
+        Try
+            ' 1. Agregamos los archivos encontrados en la carpeta actual al ListBox
+            For Each archivo As String In IO.Directory.EnumerateFiles(TextBox2.Text, "*.*", IO.SearchOption.AllDirectories)
+                If IO.Path.GetExtension(archivo).ToLower() = ".ecw" Then lstFiles.Add(archivo.ToLower())
+            Next
+
+        Catch ex As UnauthorizedAccessException
+            ' Si no hay permisos para una carpeta del sistema, la salta de forma segura
+            Application.DoEvents()
+        Catch ex As Exception
+            Debug.WriteLine("Error: " & ex.Message)
+        End Try
+        If lstFiles.Count = 0 Then
+            ModalExclamation("No se han encontrado ficheros ecw")
+            Exit Sub
+        Else
+            If ModalQuestion($"Se van a intentar transferir {lstFiles.Count} archivos a la  estructura de GEODOCAT II.¿Continuar?") <> DialogResult.Yes Then Exit Sub
+
+        End If
+        'Ahora vamos a interntar formatear el fichero encontrado
+        Application.DoEvents()
+        Dim pathOrigen As String
+        Dim nombreFile As String
+        Dim nombreDestino As String
+        Dim codMuniHistoList As String
+        Dim pathSalida As String
+        Dim contadorCopyFiles As Integer = 0
+        Dim copySuccess As Integer = 0
+        For Each archivo As String In lstFiles
+            contadorCopyFiles += 1
+            ToolStripStatusLabel2.Text = $"Procesando {contadorCopyFiles} de {lstFiles.Count}"
+            Application.DoEvents()
+            codMuniHistoList = ""
+            pathOrigen = archivo
+            nombreFile = IO.Path.GetFileName(archivo)
+            nombreDestino = nombreFile.Replace("_modified", "").Replace("plani", "")
+            If nombreDestino.StartsWith("00") Then
+                nombreDestino = nombreDestino.Substring(2, nombreDestino.Length - 2)
+            End If
+
+            If System.Text.RegularExpressions.Regex.IsMatch(nombreDestino, "^\d{6}_\d{2}\.ecw$", System.Text.RegularExpressions.RegexOptions.IgnoreCase) Then
+                'Se trata de un fichero con el formato XXXXXX_YY.ecw. Es válido. El número de sellado es XXXXXX
+                Application.DoEvents()
+            ElseIf System.Text.RegularExpressions.Regex.IsMatch(nombreDestino, "^\d{6}_\d{1}\.ecw$", System.Text.RegularExpressions.RegexOptions.IgnoreCase) Then
+                'Se trata de un fichero con el formato XXXXXX_Y.ecw. No es válido, pero lo apañamos. El número de sellado es XXXXXX
+                nombreDestino = nombreDestino.Replace("_", "_0")
+            ElseIf System.Text.RegularExpressions.Regex.IsMatch(nombreDestino, "^\d{6}\.ecw$", System.Text.RegularExpressions.RegexOptions.IgnoreCase) Then
+                'Se trata de un fichero con el formato XXXXXX.ecw. Es válido. El número de sellado es XXXXXX
+                Application.DoEvents()
+            Else
+                'Si no tiene el formato esperado, el fichero se devuelve
+                ListBox3.Items.Add($"{nombreFile}: formato no esperado")
+                Continue For
+            End If
+
+            Application.DoEvents()
+            codMuniHistoList = GetCodMuniHistoFromSellado(nombreDestino.Substring(0, 6))
+            If codMuniHistoList = "" Then
+                ' Si no obtenemos el municipìo histórico asociado, se devuelve el fichero
+                ListBox3.Items.Add($"{nombreFile}")
+                Continue For
+            End If
+            For Each codMuniHisto In codMuniHistoList.Split("#")
+                pathSalida = $"{TextBox3.Text}\{codMuniHisto.Substring(0, 2)}\{codMuniHisto}\"
+                Exit For ' Cogemos sólo el primero, para el caso de que haya más de uno
+            Next
+            Try
+                If Not IO.Directory.Exists(pathSalida) Then
+                    IO.Directory.CreateDirectory(pathSalida)
+                End If
+                IO.File.Copy(pathOrigen, $"{pathSalida}{nombreDestino}")
+                copySuccess += 1
+                'Ahora buscamos si existe el fichero de puntos asociado
+                If IO.File.Exists(pathOrigen.Replace("_modified", "").Replace(".ecw", ".jpg.points")) Then
+                    IO.File.Copy(pathOrigen.Replace("_modified", "").Replace(".ecw", ".jpg.points"), $"{pathSalida}{nombreDestino.Replace(".ecw", ".jpg.points")}")
+                Else
+                    ListBox3.Items.Add($"{nombreFile}: Falta GCP")
+                End If
+
+            Catch ex As Exception
+                ListBox3.Items.Add($"{nombreFile}: Error en copia: {ex.Message}")
+                ModalError(ex.Message)
+            End Try
+
+        Next
+
+        ModalInfo($"Transferencia terminada. Ficheros encontrados: {lstFiles.Count}. Ficheros copiados: {copySuccess}")
+
+
+    End Sub
+
+    Private Sub Button22_Click(sender As Object, e As EventArgs) Handles Button22.Click
+
+        Using fbd As New FolderBrowserDialog()
+            fbd.Description = "Selecciona la carpeta que deseas procesar"
+            fbd.ShowNewFolderButton = False ' Desactiva la opción de crear carpetas nuevas
+            fbd.RootFolder = Environment.SpecialFolder.MyComputer ' Carpeta de inicio (Este Equipo)
+            If fbd.ShowDialog() = DialogResult.OK Then
+                TextBox2.Text = fbd.SelectedPath
+            End If
+        End Using
+
+    End Sub
+
+    Private Sub Button23_Click(sender As Object, e As EventArgs) Handles Button23.Click
+
+        Using fbd As New FolderBrowserDialog()
+            fbd.Description = "Selecciona la carpeta donde seseas mover los datos"
+            fbd.ShowNewFolderButton = True ' Desactiva la opción de crear carpetas nuevas
+            fbd.RootFolder = Environment.SpecialFolder.MyComputer ' Carpeta de inicio (Este Equipo)
+            If fbd.ShowDialog() = DialogResult.OK Then
+                TextBox3.Text = fbd.SelectedPath
+            End If
+        End Using
+
+    End Sub
+
+    Private Sub Button25_Click(sender As Object, e As EventArgs) Handles Button25.Click
+
+        Using sw As New System.IO.StreamWriter($"{TextBox3.Text}\DocsNoCopiados.txt")
+            For Each elem As Object In ListBox3.Items
+                sw.WriteLine(elem.ToString())
+            Next
+        End Using
+
+        ModalInfo("Fichero de incidencias generado")
+
+    End Sub
 End Class

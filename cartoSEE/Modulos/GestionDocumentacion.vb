@@ -1,5 +1,27 @@
 Module GestionDocumentacion
 
+    ''' <summary>
+    ''' Dado un número de sellado, nos devuelve Los INE MuniHisto asociados separados por #
+    ''' </summary>
+    ''' <param name="numdoc">Número de sellado, seis dígitos, con ceros a la izquierda</param>
+    ''' <returns></returns>
+    Function GetCodMuniHistoFromSellado(numdoc As String) As String
+
+        Dim cadsql As String = $"SELECT string_agg(to_char(territorios.munihisto, 'FM0000009'::text),'#' ORDER BY territorios.munihisto) as listaCodMuniHisto
+	                                FROM bdsidschema.archivo 
+	                                LEFT JOIN bdsidschema.archivo2territorios  ON archivo2territorios.archivo_id=archivo.idarchivo 
+	                                LEFT JOIN bdsidschema.territorios on territorios.idterritorio= archivo2territorios.territorio_id 
+	                                WHERE archivo.numdoc = '{numdoc}'"
+        Dim resQuery As String = ""
+        ObtenerEscalar(cadsql, resQuery)
+
+        Return resQuery
+
+    End Function
+
+
+
+
     Function GenerarMetadatosNEM(ByVal docu As docSIDCARTO, ByVal xmlPathFile As String) As Boolean
 
         Dim Contenido As String
