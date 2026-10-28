@@ -1441,7 +1441,7 @@
             codMuniHistoList = ""
             pathOrigen = archivo
             nombreFile = IO.Path.GetFileName(archivo)
-            nombreDestino = nombreFile.Replace("_modified", "").Replace("plani", "")
+            nombreDestino = nombreFile.Replace("_modified", "").Replace("_original", "").Replace("_corr", "").Replace("plani", "").Replace("cc", "").Replace("_pp", "")
             If nombreDestino.StartsWith("00") Then
                 nombreDestino = nombreDestino.Substring(2, nombreDestino.Length - 2)
             End If
@@ -1476,11 +1476,20 @@
                 If Not IO.Directory.Exists(pathSalida) Then
                     IO.Directory.CreateDirectory(pathSalida)
                 End If
-                IO.File.Copy(pathOrigen, $"{pathSalida}{nombreDestino}")
+                If CheckBox1.Checked Then
+                    IO.File.Move(pathOrigen, $"{pathSalida}{nombreDestino}")
+                Else
+                    IO.File.Copy(pathOrigen, $"{pathSalida}{nombreDestino}")
+                End If
+
                 copySuccess += 1
                 'Ahora buscamos si existe el fichero de puntos asociado
                 If IO.File.Exists(pathOrigen.Replace("_modified", "").Replace(".ecw", ".jpg.points")) Then
-                    IO.File.Copy(pathOrigen.Replace("_modified", "").Replace(".ecw", ".jpg.points"), $"{pathSalida}{nombreDestino.Replace(".ecw", ".jpg.points")}")
+                    If CheckBox1.Checked Then
+                        IO.File.Move(pathOrigen.Replace("_modified", "").Replace(".ecw", ".jpg.points"), $"{pathSalida}{nombreDestino.Replace(".ecw", ".jpg.points")}")
+                    Else
+                        IO.File.Copy(pathOrigen.Replace("_modified", "").Replace(".ecw", ".jpg.points"), $"{pathSalida}{nombreDestino.Replace(".ecw", ".jpg.points")}")
+                    End If
                 Else
                     ListBox3.Items.Add($"{nombreFile}: Falta GCP")
                 End If

@@ -49,6 +49,9 @@ Partial Class frmDevel
         Me.Label1 = New System.Windows.Forms.Label()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.Button25 = New System.Windows.Forms.Button()
+        Me.Label10 = New System.Windows.Forms.Label()
+        Me.ListBox3 = New System.Windows.Forms.ListBox()
         Me.Button24 = New System.Windows.Forms.Button()
         Me.TextBox2 = New System.Windows.Forms.TextBox()
         Me.Button23 = New System.Windows.Forms.Button()
@@ -82,9 +85,7 @@ Partial Class frmDevel
         Me.Button3 = New System.Windows.Forms.Button()
         Me.FolderBrowserDialog1 = New System.Windows.Forms.FolderBrowserDialog()
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
-        Me.ListBox3 = New System.Windows.Forms.ListBox()
-        Me.Label10 = New System.Windows.Forms.Label()
-        Me.Button25 = New System.Windows.Forms.Button()
+        Me.CheckBox1 = New System.Windows.Forms.CheckBox()
         Me.StatusStrip1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
@@ -362,6 +363,7 @@ Partial Class frmDevel
         '
         'GroupBox3
         '
+        Me.GroupBox3.Controls.Add(Me.CheckBox1)
         Me.GroupBox3.Controls.Add(Me.Button25)
         Me.GroupBox3.Controls.Add(Me.Label10)
         Me.GroupBox3.Controls.Add(Me.ListBox3)
@@ -378,6 +380,34 @@ Partial Class frmDevel
         Me.GroupBox3.TabIndex = 32
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Importar ficheros georreferenciados a formato GEODOCAT II"
+        '
+        'Button25
+        '
+        Me.Button25.Image = CType(resources.GetObject("Button25.Image"), System.Drawing.Image)
+        Me.Button25.Location = New System.Drawing.Point(476, 271)
+        Me.Button25.Name = "Button25"
+        Me.Button25.Size = New System.Drawing.Size(92, 34)
+        Me.Button25.TabIndex = 35
+        Me.Button25.Text = "Guardar"
+        Me.Button25.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.Button25.UseVisualStyleBackColor = True
+        '
+        'Label10
+        '
+        Me.Label10.AutoSize = True
+        Me.Label10.Location = New System.Drawing.Point(16, 103)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(79, 13)
+        Me.Label10.TabIndex = 34
+        Me.Label10.Text = "No procesados"
+        '
+        'ListBox3
+        '
+        Me.ListBox3.FormattingEnabled = True
+        Me.ListBox3.Location = New System.Drawing.Point(19, 119)
+        Me.ListBox3.Name = "ListBox3"
+        Me.ListBox3.Size = New System.Drawing.Size(451, 186)
+        Me.ListBox3.TabIndex = 33
         '
         'Button24
         '
@@ -411,9 +441,9 @@ Partial Class frmDevel
         Me.Label11.AutoSize = True
         Me.Label11.Location = New System.Drawing.Point(13, 38)
         Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(44, 13)
+        Me.Label11.Size = New System.Drawing.Size(38, 13)
         Me.Label11.TabIndex = 27
-        Me.Label11.Text = "Entrada"
+        Me.Label11.Text = "Origen"
         '
         'Button22
         '
@@ -436,9 +466,9 @@ Partial Class frmDevel
         Me.Label12.AutoSize = True
         Me.Label12.Location = New System.Drawing.Point(13, 64)
         Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(36, 13)
+        Me.Label12.Size = New System.Drawing.Size(43, 13)
         Me.Label12.TabIndex = 29
-        Me.Label12.Text = "Salida"
+        Me.Label12.Text = "Destino"
         '
         'Button21
         '
@@ -662,33 +692,15 @@ Partial Class frmDevel
         Me.Button3.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         Me.Button3.UseVisualStyleBackColor = True
         '
-        'ListBox3
+        'CheckBox1
         '
-        Me.ListBox3.FormattingEnabled = True
-        Me.ListBox3.Location = New System.Drawing.Point(19, 119)
-        Me.ListBox3.Name = "ListBox3"
-        Me.ListBox3.Size = New System.Drawing.Size(451, 186)
-        Me.ListBox3.TabIndex = 33
-        '
-        'Label10
-        '
-        Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(16, 103)
-        Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(79, 13)
-        Me.Label10.TabIndex = 34
-        Me.Label10.Text = "No procesados"
-        '
-        'Button25
-        '
-        Me.Button25.Image = CType(resources.GetObject("Button25.Image"), System.Drawing.Image)
-        Me.Button25.Location = New System.Drawing.Point(476, 271)
-        Me.Button25.Name = "Button25"
-        Me.Button25.Size = New System.Drawing.Size(92, 34)
-        Me.Button25.TabIndex = 35
-        Me.Button25.Text = "Guardar"
-        Me.Button25.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
-        Me.Button25.UseVisualStyleBackColor = True
+        Me.CheckBox1.AutoSize = True
+        Me.CheckBox1.Location = New System.Drawing.Point(322, 96)
+        Me.CheckBox1.Name = "CheckBox1"
+        Me.CheckBox1.Size = New System.Drawing.Size(148, 17)
+        Me.CheckBox1.TabIndex = 36
+        Me.CheckBox1.Text = "Mover (Eliminar en origen)"
+        Me.CheckBox1.UseVisualStyleBackColor = True
         '
         'frmDevel
         '
@@ -778,4 +790,5 @@ Partial Class frmDevel
     Friend WithEvents Label10 As Label
     Friend WithEvents ListBox3 As ListBox
     Friend WithEvents Button25 As Button
+    Friend WithEvents CheckBox1 As CheckBox
 End Class
