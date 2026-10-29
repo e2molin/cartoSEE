@@ -23,7 +23,6 @@ Partial Class frmDevel
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmDevel))
-        Me.Button1 = New System.Windows.Forms.Button()
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
         Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
         Me.ToolStripStatusLabel2 = New System.Windows.Forms.ToolStripStatusLabel()
@@ -49,6 +48,7 @@ Partial Class frmDevel
         Me.Label1 = New System.Windows.Forms.Label()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.CheckBox1 = New System.Windows.Forms.CheckBox()
         Me.Button25 = New System.Windows.Forms.Button()
         Me.Label10 = New System.Windows.Forms.Label()
         Me.ListBox3 = New System.Windows.Forms.ListBox()
@@ -66,9 +66,6 @@ Partial Class frmDevel
         Me.Button19 = New System.Windows.Forms.Button()
         Me.Label8 = New System.Windows.Forms.Label()
         Me.Button18 = New System.Windows.Forms.Button()
-        Me.Label7 = New System.Windows.Forms.Label()
-        Me.TextBox1 = New System.Windows.Forms.TextBox()
-        Me.Button17 = New System.Windows.Forms.Button()
         Me.Button16 = New System.Windows.Forms.Button()
         Me.Button15 = New System.Windows.Forms.Button()
         Me.Button14 = New System.Windows.Forms.Button()
@@ -79,13 +76,14 @@ Partial Class frmDevel
         Me.Button9 = New System.Windows.Forms.Button()
         Me.Button8 = New System.Windows.Forms.Button()
         Me.Button6 = New System.Windows.Forms.Button()
-        Me.Button5 = New System.Windows.Forms.Button()
         Me.ListBox2 = New System.Windows.Forms.ListBox()
         Me.Button4 = New System.Windows.Forms.Button()
         Me.Button3 = New System.Windows.Forms.Button()
+        Me.TabPage3 = New System.Windows.Forms.TabPage()
+        Me.Button1 = New System.Windows.Forms.Button()
         Me.FolderBrowserDialog1 = New System.Windows.Forms.FolderBrowserDialog()
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
-        Me.CheckBox1 = New System.Windows.Forms.CheckBox()
+        Me.Button5 = New System.Windows.Forms.Button()
         Me.StatusStrip1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
@@ -93,16 +91,8 @@ Partial Class frmDevel
         Me.GroupBox1.SuspendLayout()
         Me.TabPage2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
+        Me.TabPage3.SuspendLayout()
         Me.SuspendLayout()
-        '
-        'Button1
-        '
-        Me.Button1.Location = New System.Drawing.Point(600, 6)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(160, 40)
-        Me.Button1.TabIndex = 0
-        Me.Button1.Text = "Generar script para eliminar contornos duplicados"
-        Me.Button1.UseVisualStyleBackColor = True
         '
         'StatusStrip1
         '
@@ -146,6 +136,7 @@ Partial Class frmDevel
         '
         Me.TabControl1.Controls.Add(Me.TabPage1)
         Me.TabControl1.Controls.Add(Me.TabPage2)
+        Me.TabControl1.Controls.Add(Me.TabPage3)
         Me.TabControl1.Location = New System.Drawing.Point(12, 12)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
@@ -335,9 +326,6 @@ Partial Class frmDevel
         Me.TabPage2.Controls.Add(Me.Button19)
         Me.TabPage2.Controls.Add(Me.Label8)
         Me.TabPage2.Controls.Add(Me.Button18)
-        Me.TabPage2.Controls.Add(Me.Label7)
-        Me.TabPage2.Controls.Add(Me.TextBox1)
-        Me.TabPage2.Controls.Add(Me.Button17)
         Me.TabPage2.Controls.Add(Me.Button16)
         Me.TabPage2.Controls.Add(Me.Button15)
         Me.TabPage2.Controls.Add(Me.Button14)
@@ -348,11 +336,9 @@ Partial Class frmDevel
         Me.TabPage2.Controls.Add(Me.Button9)
         Me.TabPage2.Controls.Add(Me.Button8)
         Me.TabPage2.Controls.Add(Me.Button6)
-        Me.TabPage2.Controls.Add(Me.Button5)
         Me.TabPage2.Controls.Add(Me.ListBox2)
         Me.TabPage2.Controls.Add(Me.Button4)
         Me.TabPage2.Controls.Add(Me.Button3)
-        Me.TabPage2.Controls.Add(Me.Button1)
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
@@ -363,6 +349,7 @@ Partial Class frmDevel
         '
         'GroupBox3
         '
+        Me.GroupBox3.Controls.Add(Me.Button5)
         Me.GroupBox3.Controls.Add(Me.CheckBox1)
         Me.GroupBox3.Controls.Add(Me.Button25)
         Me.GroupBox3.Controls.Add(Me.Label10)
@@ -374,17 +361,27 @@ Partial Class frmDevel
         Me.GroupBox3.Controls.Add(Me.Button22)
         Me.GroupBox3.Controls.Add(Me.TextBox3)
         Me.GroupBox3.Controls.Add(Me.Label12)
-        Me.GroupBox3.Location = New System.Drawing.Point(559, 230)
+        Me.GroupBox3.Location = New System.Drawing.Point(569, 6)
         Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(621, 311)
+        Me.GroupBox3.Size = New System.Drawing.Size(621, 427)
         Me.GroupBox3.TabIndex = 32
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Importar ficheros georreferenciados a formato GEODOCAT II"
         '
+        'CheckBox1
+        '
+        Me.CheckBox1.AutoSize = True
+        Me.CheckBox1.Location = New System.Drawing.Point(322, 201)
+        Me.CheckBox1.Name = "CheckBox1"
+        Me.CheckBox1.Size = New System.Drawing.Size(148, 17)
+        Me.CheckBox1.TabIndex = 36
+        Me.CheckBox1.Text = "Mover (Eliminar en origen)"
+        Me.CheckBox1.UseVisualStyleBackColor = True
+        '
         'Button25
         '
         Me.Button25.Image = CType(resources.GetObject("Button25.Image"), System.Drawing.Image)
-        Me.Button25.Location = New System.Drawing.Point(476, 271)
+        Me.Button25.Location = New System.Drawing.Point(476, 376)
         Me.Button25.Name = "Button25"
         Me.Button25.Size = New System.Drawing.Size(92, 34)
         Me.Button25.TabIndex = 35
@@ -395,7 +392,7 @@ Partial Class frmDevel
         'Label10
         '
         Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(16, 103)
+        Me.Label10.Location = New System.Drawing.Point(16, 208)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(79, 13)
         Me.Label10.TabIndex = 34
@@ -404,7 +401,7 @@ Partial Class frmDevel
         'ListBox3
         '
         Me.ListBox3.FormattingEnabled = True
-        Me.ListBox3.Location = New System.Drawing.Point(19, 119)
+        Me.ListBox3.Location = New System.Drawing.Point(19, 224)
         Me.ListBox3.Name = "ListBox3"
         Me.ListBox3.Size = New System.Drawing.Size(451, 186)
         Me.ListBox3.TabIndex = 33
@@ -412,12 +409,13 @@ Partial Class frmDevel
         'Button24
         '
         Me.Button24.Image = CType(resources.GetObject("Button24.Image"), System.Drawing.Image)
-        Me.Button24.Location = New System.Drawing.Point(531, 35)
+        Me.Button24.Location = New System.Drawing.Point(6, 93)
         Me.Button24.Name = "Button24"
-        Me.Button24.Size = New System.Drawing.Size(75, 46)
+        Me.Button24.Size = New System.Drawing.Size(269, 33)
         Me.Button24.TabIndex = 32
-        Me.Button24.Text = "Proceso"
-        Me.Button24.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+        Me.Button24.Text = "Estructura Sellado -> Estructura GEODOCAT II"
+        Me.Button24.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Button24.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
         Me.Button24.UseVisualStyleBackColor = True
         '
         'TextBox2
@@ -523,7 +521,7 @@ Partial Class frmDevel
         'Label8
         '
         Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(18, 573)
+        Me.Label8.Location = New System.Drawing.Point(18, 552)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(418, 13)
         Me.Label8.TabIndex = 19
@@ -538,32 +536,6 @@ Partial Class frmDevel
         Me.Button18.TabIndex = 18
         Me.Button18.Text = "Obtener fichero conversión 23030->25830 para PPc"
         Me.Button18.UseVisualStyleBackColor = True
-        '
-        'Label7
-        '
-        Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(18, 131)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(51, 13)
-        Me.Label7.TabIndex = 17
-        Me.Label7.Text = "idArchivo"
-        '
-        'TextBox1
-        '
-        Me.TextBox1.Location = New System.Drawing.Point(75, 128)
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(100, 20)
-        Me.TextBox1.TabIndex = 16
-        Me.TextBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        '
-        'Button17
-        '
-        Me.Button17.Location = New System.Drawing.Point(21, 151)
-        Me.Button17.Name = "Button17"
-        Me.Button17.Size = New System.Drawing.Size(154, 23)
-        Me.Button17.TabIndex = 15
-        Me.Button17.Text = "Edición"
-        Me.Button17.UseVisualStyleBackColor = True
         '
         'Button16
         '
@@ -648,21 +620,12 @@ Partial Class frmDevel
         '
         'Button6
         '
-        Me.Button6.Location = New System.Drawing.Point(845, 93)
+        Me.Button6.Location = New System.Drawing.Point(21, 122)
         Me.Button6.Name = "Button6"
         Me.Button6.Size = New System.Drawing.Size(194, 46)
         Me.Button6.TabIndex = 5
         Me.Button6.Text = "Test_cdd_planosedificacion_report"
         Me.Button6.UseVisualStyleBackColor = True
-        '
-        'Button5
-        '
-        Me.Button5.Location = New System.Drawing.Point(665, 119)
-        Me.Button5.Name = "Button5"
-        Me.Button5.Size = New System.Drawing.Size(82, 36)
-        Me.Button5.TabIndex = 4
-        Me.Button5.Text = "Guarda Info"
-        Me.Button5.UseVisualStyleBackColor = True
         '
         'ListBox2
         '
@@ -674,7 +637,7 @@ Partial Class frmDevel
         '
         'Button4
         '
-        Me.Button4.Location = New System.Drawing.Point(863, 23)
+        Me.Button4.Location = New System.Drawing.Point(21, 174)
         Me.Button4.Name = "Button4"
         Me.Button4.Size = New System.Drawing.Size(194, 46)
         Me.Button4.TabIndex = 2
@@ -684,7 +647,7 @@ Partial Class frmDevel
         'Button3
         '
         Me.Button3.Image = CType(resources.GetObject("Button3.Image"), System.Drawing.Image)
-        Me.Button3.Location = New System.Drawing.Point(21, 589)
+        Me.Button3.Location = New System.Drawing.Point(21, 568)
         Me.Button3.Name = "Button3"
         Me.Button3.Size = New System.Drawing.Size(118, 61)
         Me.Button3.TabIndex = 1
@@ -692,15 +655,36 @@ Partial Class frmDevel
         Me.Button3.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         Me.Button3.UseVisualStyleBackColor = True
         '
-        'CheckBox1
+        'TabPage3
         '
-        Me.CheckBox1.AutoSize = True
-        Me.CheckBox1.Location = New System.Drawing.Point(322, 96)
-        Me.CheckBox1.Name = "CheckBox1"
-        Me.CheckBox1.Size = New System.Drawing.Size(148, 17)
-        Me.CheckBox1.TabIndex = 36
-        Me.CheckBox1.Text = "Mover (Eliminar en origen)"
-        Me.CheckBox1.UseVisualStyleBackColor = True
+        Me.TabPage3.Controls.Add(Me.Button1)
+        Me.TabPage3.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage3.Name = "TabPage3"
+        Me.TabPage3.Size = New System.Drawing.Size(1206, 671)
+        Me.TabPage3.TabIndex = 2
+        Me.TabPage3.Text = "TabPage3"
+        Me.TabPage3.UseVisualStyleBackColor = True
+        '
+        'Button1
+        '
+        Me.Button1.Location = New System.Drawing.Point(20, 22)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(160, 40)
+        Me.Button1.TabIndex = 1
+        Me.Button1.Text = "Generar script para eliminar contornos duplicados"
+        Me.Button1.UseVisualStyleBackColor = True
+        '
+        'Button5
+        '
+        Me.Button5.Image = CType(resources.GetObject("Button5.Image"), System.Drawing.Image)
+        Me.Button5.Location = New System.Drawing.Point(6, 132)
+        Me.Button5.Name = "Button5"
+        Me.Button5.Size = New System.Drawing.Size(269, 33)
+        Me.Button5.TabIndex = 37
+        Me.Button5.Text = "Numdoc -> Estructura GEODOCAT II"
+        Me.Button5.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Button5.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.Button5.UseVisualStyleBackColor = True
         '
         'frmDevel
         '
@@ -724,11 +708,11 @@ Partial Class frmDevel
         Me.TabPage2.PerformLayout()
         Me.GroupBox3.ResumeLayout(False)
         Me.GroupBox3.PerformLayout()
+        Me.TabPage3.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents Button1 As System.Windows.Forms.Button
     Friend WithEvents StatusStrip1 As System.Windows.Forms.StatusStrip
     Friend WithEvents ToolStripStatusLabel1 As System.Windows.Forms.ToolStripStatusLabel
     Friend WithEvents Button2 As System.Windows.Forms.Button
@@ -754,7 +738,6 @@ Partial Class frmDevel
     Friend WithEvents Button3 As System.Windows.Forms.Button
     Friend WithEvents Button4 As System.Windows.Forms.Button
     Friend WithEvents ListBox2 As System.Windows.Forms.ListBox
-    Friend WithEvents Button5 As System.Windows.Forms.Button
     Friend WithEvents SaveFileDialog1 As System.Windows.Forms.SaveFileDialog
     Friend WithEvents Button6 As System.Windows.Forms.Button
     Friend WithEvents Label6 As System.Windows.Forms.Label
@@ -768,9 +751,6 @@ Partial Class frmDevel
     Friend WithEvents Button14 As System.Windows.Forms.Button
     Friend WithEvents Button15 As System.Windows.Forms.Button
     Friend WithEvents Button16 As System.Windows.Forms.Button
-    Friend WithEvents Button17 As Button
-    Friend WithEvents Label7 As Label
-    Friend WithEvents TextBox1 As TextBox
     Friend WithEvents Button18 As Button
     Friend WithEvents ToolStripStatusLabel2 As ToolStripStatusLabel
     Friend WithEvents Label8 As Label
@@ -791,4 +771,7 @@ Partial Class frmDevel
     Friend WithEvents ListBox3 As ListBox
     Friend WithEvents Button25 As Button
     Friend WithEvents CheckBox1 As CheckBox
+    Friend WithEvents TabPage3 As TabPage
+    Friend WithEvents Button1 As Button
+    Friend WithEvents Button5 As Button
 End Class

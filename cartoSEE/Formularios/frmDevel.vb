@@ -97,9 +97,9 @@
             ' SearchAllSubDirectories : incluye los Subdirectorios  
             ' SearchTopLevelOnly : para buscar solo en el nivel actual  
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''  
-            For Each Archivo As String In My.Computer.FileSystem.GetFiles( _
-                                    txtPathGCP.Text, _
-                                    FileIO.SearchOption.SearchTopLevelOnly, _
+            For Each Archivo As String In My.Computer.FileSystem.GetFiles(
+                                    txtPathGCP.Text,
+                                    FileIO.SearchOption.SearchTopLevelOnly,
                                     "*.gcp")
 
                 ListBox1.Items.Add(Archivo)
@@ -145,9 +145,9 @@
         If FolderBrowserDialog1.ShowDialog() = Windows.Forms.DialogResult.Cancel Then Exit Sub
         If System.IO.Directory.Exists(FolderBrowserDialog1.SelectedPath) = False Then Exit Sub
         txtPathGCP.Text = FolderBrowserDialog1.SelectedPath
-        lblInfoNumFiles.Text = "Ficheros GCP encontrados: " & My.Computer.FileSystem.GetFiles( _
-                                    FolderBrowserDialog1.SelectedPath, _
-                                    FileIO.SearchOption.SearchTopLevelOnly, _
+        lblInfoNumFiles.Text = "Ficheros GCP encontrados: " & My.Computer.FileSystem.GetFiles(
+                                    FolderBrowserDialog1.SelectedPath,
+                                    FileIO.SearchOption.SearchTopLevelOnly,
                                     "*.gcp").Count
 
 
@@ -163,6 +163,26 @@
 
         GroupBox3.Text = "Transferencia de ficheros georreferenciados por sellado a estructura GEODOCAT II"
         TextBox2.Text = "\\sbdignmad651.ign.fomento.es\ARCHIVO\ARCHIVO_Técnico\_000_PROYECTO_BORRADOR_DE_NUEVA_DISPOSICION_DE_CARPETAS\01_PROYECTOS\01_20260406_PLANIMETRIAS\23_JAEN\Georref"
+
+        ' 1. Crear una instancia del control ToolTip
+        Dim miToolTip As New ToolTip()
+
+        ' 2. (Opcional) Configurar propiedades generales del ToolTip
+        miToolTip.AutoPopDelay = 5000  ' Tiempo que permanece visible (en milisegundos)
+        miToolTip.InitialDelay = 500   ' Tiempo que tarda en aparecer tras pasar el ratón
+        miToolTip.ReshowDelay = 100    ' Tiempo de reacción al pasar de un control a otro
+        miToolTip.ShowAlways = True    ' Mostrar incluso si la ventana no está activa
+
+
+        Dim descripBtn As String
+        descripBtn = "Transforma una estructura de georreferenciación de documentos agrupados por sellado a la estructura que necesita Geodocat II"
+        miToolTip.SetToolTip(Button24, descripBtn)
+
+
+
+
+
+
     End Sub
 
     Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
@@ -200,7 +220,7 @@
 	                                        LEFT JOIN bdsidschema.archivo2territorios  ON archivo2territorios.archivo_id=archivo.idarchivo 
 	                                        LEFT JOIN bdsidschema.territorios on territorios.idterritorio= archivo2territorios.territorio_id 
 	                                        LEFT JOIN bdsidschema.provincias on territorios.provincia= provincias.idprovincia 
-                                        WHERE archivo.numdoc in ('180591','180592','180593','180594','180595','180596')
+                                        WHERE archivo.provincia_id= {iBucle}
                                           group by archivo.idarchivo,archivo.numdoc,tbtipodocumento.tipodoc,archivo.subtipo,archivo.tipodoc_id order by numdoc"
                 'WHERE archivo.numdoc in ('180591','180592','180593','180594','180595','180596')
                 'WHERE archivo.provincia_id= {iBucle}
@@ -250,7 +270,6 @@
                                         lastFile23030 = fileECW23030
                                         numgeoFiles23030 = 1
                                     End If
-
                                 End If
                                 If Not Existe_25830 Then
                                     If IO.File.Exists(rutaECW25830) Then
@@ -260,6 +279,55 @@
                                     End If
 
                                 End If
+
+                                If Not Existe_23030 Then
+                                    'Probamos si hay TIFF
+                                    fileECW23030 = $"{reg("numdoc")}.tif"
+                                    pathECW23030 = $"{rutaRepoGeorrefBase}\epsg23030\{DirRepoProvinciaByTipodoc(CType(reg("tipodoc_id").ToString, Integer))}\{pathProv}\{pathMuni}\"
+                                    rutaECW23030 = $"{rutaRepoGeorrefBase}\epsg23030\{DirRepoProvinciaByTipodoc(CType(reg("tipodoc_id").ToString, Integer))}\{pathProv}\{pathMuni}\{fileECW23030}"
+                                    If IO.File.Exists(rutaECW23030) Then
+                                        Existe_23030 = True
+                                        lastFile23030 = fileECW23030
+                                        numgeoFiles23030 = 1
+                                    End If
+                                    If Not IO.File.Exists(rutaECW23030) Then
+                                        'Pruebo una última vez por si existe con sufijo _geo
+                                        fileECW23030 = $"{reg("numdoc")}_geo.tif"
+                                        pathECW23030 = $"{rutaRepoGeorrefBase}\epsg23030\{DirRepoProvinciaByTipodoc(CType(reg("tipodoc_id").ToString, Integer))}\{pathProv}\{pathMuni}\"
+                                        rutaECW23030 = $"{rutaRepoGeorrefBase}\epsg23030\{DirRepoProvinciaByTipodoc(CType(reg("tipodoc_id").ToString, Integer))}\{pathProv}\{pathMuni}\{fileECW23030}"
+                                        If IO.File.Exists(rutaECW23030) Then
+                                            Existe_23030 = True
+                                            lastFile23030 = fileECW23030
+                                            numgeoFiles23030 = 1
+                                        End If
+                                    End If
+                                End If
+
+
+
+                                If Not Existe_25830 Then
+                                    'Probamos si hay TIFF
+                                    fileECW25830 = $"{reg("numdoc")}.tif"
+                                    pathECW25830 = $"{rutaRepoGeorrefBase}\epsg25830\{DirRepoProvinciaByTipodoc(CType(reg("tipodoc_id").ToString, Integer))}\{pathProv}\{pathMuni}\"
+                                    rutaECW25830 = $"{rutaRepoGeorrefBase}\epsg25830\{DirRepoProvinciaByTipodoc(CType(reg("tipodoc_id").ToString, Integer))}\{pathProv}\{pathMuni}\{fileECW25830}"
+                                    If IO.File.Exists(rutaECW25830) Then
+                                        Existe_25830 = True
+                                        lastFile25830 = fileECW25830
+                                        numgeoFiles25830 = 1
+                                    End If
+                                    If Not IO.File.Exists(rutaECW25830) Then
+                                        'Pruebo una última vez por si existe con sufijo _geo
+                                        fileECW25830 = $"{reg("numdoc")}_geo.tif"
+                                        pathECW25830 = $"{rutaRepoGeorrefBase}\epsg25830\{DirRepoProvinciaByTipodoc(CType(reg("tipodoc_id").ToString, Integer))}\{pathProv}\{pathMuni}\"
+                                        rutaECW25830 = $"{rutaRepoGeorrefBase}\epsg25830\{DirRepoProvinciaByTipodoc(CType(reg("tipodoc_id").ToString, Integer))}\{pathProv}\{pathMuni}\{fileECW25830}"
+                                        If IO.File.Exists(rutaECW25830) Then
+                                            Existe_25830 = True
+                                            lastFile25830 = fileECW25830
+                                            numgeoFiles25830 = 1
+                                        End If
+                                    End If
+                                End If
+
 
                                 If Not Existe_23030 Then
                                     For contFich As Integer = 1 To 20
@@ -472,44 +540,44 @@
         swConversion.WriteLine("SET_BG_COLOR COLOR=RGB(255,255,255)")
 
 
-        cadsql = "SELECT archivo.numdoc, tbtipodocumento.tipodoc, " & _
-                "to_char(min(munihisto.cod_munihisto), 'FM0000009'::text) AS codinehisto, to_char(min(munihisto.cod_muni), 'FM00009'::text) AS codigoine, " & _
-                "date_part('year'::text, archivo.fechaprincipal) AS anyo, " & _
-                "((((((('file://sbdignmad650/geodocat_ii/'::text || tbtipodocumento.dirrepo::text) || '/'::text) || " & _
-                "substring(to_char(archivo.municipiohistorico1_id, 'FM0000009'::text), 0, 3)) || '/'::text) || " & _
-                "to_char(archivo.municipiohistorico1_id, 'FM0000009'::text)) || '/'::text) || contornos.nombre::text) || '.ecw'::text AS rutaresource, 'ECW' AS extension, archivo.provincia_id AS provin " & _
-                "FROM contornos " & _
-                "INNER JOIN archivo ON archivo.idarchivo = contornos.archivo_id " & _
-                "INNER JOIN provincias ON provincias.idprovincia = archivo.provincia_id " & _
-                "INNER JOIN tbtipodocumento ON archivo.tipodoc_id = tbtipodocumento.idtipodoc " & _
-                "INNER JOIN archivo2munihisto ON archivo.idarchivo = archivo2munihisto.archivo_id " & _
-                "INNER JOIN munihisto ON archivo2munihisto.munihisto_id = munihisto.idmunihisto " & _
-                "WHERE (archivo.tipodoc_id = 7) AND archivo.municipiohistorico1_id <> 0 " & _
+        cadsql = "SELECT archivo.numdoc, tbtipodocumento.tipodoc, " &
+                "to_char(min(munihisto.cod_munihisto), 'FM0000009'::text) AS codinehisto, to_char(min(munihisto.cod_muni), 'FM00009'::text) AS codigoine, " &
+                "date_part('year'::text, archivo.fechaprincipal) AS anyo, " &
+                "((((((('file://sbdignmad650/geodocat_ii/'::text || tbtipodocumento.dirrepo::text) || '/'::text) || " &
+                "substring(to_char(archivo.municipiohistorico1_id, 'FM0000009'::text), 0, 3)) || '/'::text) || " &
+                "to_char(archivo.municipiohistorico1_id, 'FM0000009'::text)) || '/'::text) || contornos.nombre::text) || '.ecw'::text AS rutaresource, 'ECW' AS extension, archivo.provincia_id AS provin " &
+                "FROM contornos " &
+                "INNER JOIN archivo ON archivo.idarchivo = contornos.archivo_id " &
+                "INNER JOIN provincias ON provincias.idprovincia = archivo.provincia_id " &
+                "INNER JOIN tbtipodocumento ON archivo.tipodoc_id = tbtipodocumento.idtipodoc " &
+                "INNER JOIN archivo2munihisto ON archivo.idarchivo = archivo2munihisto.archivo_id " &
+                "INNER JOIN munihisto ON archivo2munihisto.munihisto_id = munihisto.idmunihisto " &
+                "WHERE (archivo.tipodoc_id = 7) AND archivo.municipiohistorico1_id <> 0 " &
                 "GROUP BY archivo.numdoc, tbtipodocumento.tipodoc, archivo.fechaprincipal, provincias.dirrepo, tbtipodocumento.dirrepo, archivo.provincia_id, archivo.municipiohistorico1_id, contornos.nombre"
 
-        cadsql = "SELECT archivo.numdoc, tbtipodocumento.tipodoc, to_char(min(munihisto.cod_munihisto), 'FM0000009'::text) AS codinehisto, to_char(min(munihisto.cod_muni), 'FM00009'::text) AS codigoine, " & _
-                "date_part('year'::text, archivo.fechaprincipal) AS anyo, ((((((('file://sbdignmad650/geodocat_ii/'::text || tbtipodocumento.dirrepo::text) || " & _
-                "'/'::text) || substring(to_char(archivo.municipiohistorico1_id, 'FM0000009'::text), 0, 3)) || '/'::text) || to_char(archivo.municipiohistorico1_id, 'FM0000009'::text)) || '/'::text) || " & _
-                "contornos.nombre::text) || '.ecw'::text AS rutaresource,'ECW' AS extension, archivo.provincia_id AS provin " & _
-                "FROM contornos " & _
-                "INNER JOIN archivo ON archivo.idarchivo = contornos.archivo_id " & _
-                "INNER JOIN provincias ON provincias.idprovincia = archivo.provincia_id " & _
-                "INNER JOIN tbtipodocumento ON archivo.tipodoc_id = tbtipodocumento.idtipodoc " & _
-                "INNER JOIN archivo2munihisto ON archivo.idarchivo = archivo2munihisto.archivo_id " & _
-                "INNER JOIN munihisto ON archivo2munihisto.munihisto_id = munihisto.idmunihisto " & _
-                "WHERE (archivo.tipodoc_id = 6) AND archivo.municipiohistorico1_id <> 0 " & _
+        cadsql = "SELECT archivo.numdoc, tbtipodocumento.tipodoc, to_char(min(munihisto.cod_munihisto), 'FM0000009'::text) AS codinehisto, to_char(min(munihisto.cod_muni), 'FM00009'::text) AS codigoine, " &
+                "date_part('year'::text, archivo.fechaprincipal) AS anyo, ((((((('file://sbdignmad650/geodocat_ii/'::text || tbtipodocumento.dirrepo::text) || " &
+                "'/'::text) || substring(to_char(archivo.municipiohistorico1_id, 'FM0000009'::text), 0, 3)) || '/'::text) || to_char(archivo.municipiohistorico1_id, 'FM0000009'::text)) || '/'::text) || " &
+                "contornos.nombre::text) || '.ecw'::text AS rutaresource,'ECW' AS extension, archivo.provincia_id AS provin " &
+                "FROM contornos " &
+                "INNER JOIN archivo ON archivo.idarchivo = contornos.archivo_id " &
+                "INNER JOIN provincias ON provincias.idprovincia = archivo.provincia_id " &
+                "INNER JOIN tbtipodocumento ON archivo.tipodoc_id = tbtipodocumento.idtipodoc " &
+                "INNER JOIN archivo2munihisto ON archivo.idarchivo = archivo2munihisto.archivo_id " &
+                "INNER JOIN munihisto ON archivo2munihisto.munihisto_id = munihisto.idmunihisto " &
+                "WHERE (archivo.tipodoc_id = 6) AND archivo.municipiohistorico1_id <> 0 " &
                 "GROUP BY archivo.numdoc, tbtipodocumento.tipodoc, archivo.fechaprincipal, provincias.dirrepo, tbtipodocumento.dirrepo, archivo.provincia_id, archivo.municipiohistorico1_id, contornos.nombre"
-        cadsql = "SELECT archivo.numdoc, tbtipodocumento.tipodoc, to_char(min(munihisto.cod_munihisto), 'FM0000009'::text) AS codinehisto, to_char(min(munihisto.cod_muni), 'FM00009'::text) AS codigoine, " & _
-                "date_part('year'::text, archivo.fechaprincipal) AS anyo, ((((((('file://sbdignmad650/geodocat_ii/'::text || tbtipodocumento.dirrepo::text) || " & _
-                "'/'::text) || substring(to_char(archivo.municipiohistorico1_id, 'FM0000009'::text), 0, 3)) || '/'::text) || to_char(archivo.municipiohistorico1_id, 'FM0000009'::text)) || '/'::text) || " & _
-                "contornos.nombre::text) || '.ecw'::text AS rutaresource,'ECW' AS extension, archivo.provincia_id AS provin " & _
-                "FROM contornos " & _
-                "INNER JOIN archivo ON archivo.idarchivo = contornos.archivo_id " & _
-                "INNER JOIN provincias ON provincias.idprovincia = archivo.provincia_id " & _
-                "INNER JOIN tbtipodocumento ON archivo.tipodoc_id = tbtipodocumento.idtipodoc " & _
-                "INNER JOIN archivo2munihisto ON archivo.idarchivo = archivo2munihisto.archivo_id " & _
-                "INNER JOIN munihisto ON archivo2munihisto.munihisto_id = munihisto.idmunihisto " & _
-                "WHERE (archivo.tipodoc_id = 5) AND archivo.municipiohistorico1_id <> 0 " & _
+        cadsql = "SELECT archivo.numdoc, tbtipodocumento.tipodoc, to_char(min(munihisto.cod_munihisto), 'FM0000009'::text) AS codinehisto, to_char(min(munihisto.cod_muni), 'FM00009'::text) AS codigoine, " &
+                "date_part('year'::text, archivo.fechaprincipal) AS anyo, ((((((('file://sbdignmad650/geodocat_ii/'::text || tbtipodocumento.dirrepo::text) || " &
+                "'/'::text) || substring(to_char(archivo.municipiohistorico1_id, 'FM0000009'::text), 0, 3)) || '/'::text) || to_char(archivo.municipiohistorico1_id, 'FM0000009'::text)) || '/'::text) || " &
+                "contornos.nombre::text) || '.ecw'::text AS rutaresource,'ECW' AS extension, archivo.provincia_id AS provin " &
+                "FROM contornos " &
+                "INNER JOIN archivo ON archivo.idarchivo = contornos.archivo_id " &
+                "INNER JOIN provincias ON provincias.idprovincia = archivo.provincia_id " &
+                "INNER JOIN tbtipodocumento ON archivo.tipodoc_id = tbtipodocumento.idtipodoc " &
+                "INNER JOIN archivo2munihisto ON archivo.idarchivo = archivo2munihisto.archivo_id " &
+                "INNER JOIN munihisto ON archivo2munihisto.munihisto_id = munihisto.idmunihisto " &
+                "WHERE (archivo.tipodoc_id = 5) AND archivo.municipiohistorico1_id <> 0 " &
                 "GROUP BY archivo.numdoc, tbtipodocumento.tipodoc, archivo.fechaprincipal, provincias.dirrepo, tbtipodocumento.dirrepo, archivo.provincia_id, archivo.municipiohistorico1_id, contornos.nombre"
 
         Application.DoEvents()
@@ -536,8 +604,8 @@
                 swConversion.WriteLine(LineaOUT)
                 LineaOUT = "LOAD_PROJECTION FILENAME=""G:\test25830.prj"""
                 swConversion.WriteLine(LineaOUT)
-                LineaOUT = "EXPORT_RASTER FILENAME=""" & _
-                            rutaFile.Replace("file:", "").Replace("/", "\").Replace("\\sbdignmad650\geodocat_ii", "g:\25830") & _
+                LineaOUT = "EXPORT_RASTER FILENAME=""" &
+                            rutaFile.Replace("file:", "").Replace("/", "\").Replace("\\sbdignmad650\geodocat_ii", "g:\25830") &
                             """ TYPE=ECW TARGET_COMPRESSION=1 GEN_WORLD_FILE=YES GEN_PRJ_FILE=YES"
                 swConversion.WriteLine(LineaOUT)
                 swConversion.WriteLine("UNLOAD_ALL")
@@ -663,19 +731,19 @@
         swConversion.WriteLine("SET_BG_COLOR COLOR=RGB(255,255,255)")
 
 
-        cadsql = "SELECT archivo.numdoc, tbtipodocumento.tipodoc, " & _
-                "to_char(min(munihisto.cod_munihisto), 'FM0000009'::text) AS codinehisto, to_char(min(munihisto.cod_muni), 'FM00009'::text) AS codigoine, " & _
-                "date_part('year'::text, archivo.fechaprincipal) AS anyo, " & _
-                "((((((('file://sbdignmad650/geodocat_ii/'::text || tbtipodocumento.dirrepo::text) || '/'::text) || " & _
-                "substring(to_char(archivo.municipiohistorico1_id, 'FM0000009'::text), 0, 3)) || '/'::text) || " & _
-                "to_char(archivo.municipiohistorico1_id, 'FM0000009'::text)) || '/'::text) || contornos.nombre::text) || '.ecw'::text AS rutaresource, 'ECW' AS extension, archivo.provincia_id AS provin " & _
-                "FROM contornos " & _
-                "INNER JOIN archivo ON archivo.idarchivo = contornos.archivo_id " & _
-                "INNER JOIN provincias ON provincias.idprovincia = archivo.provincia_id " & _
-                "INNER JOIN tbtipodocumento ON archivo.tipodoc_id = tbtipodocumento.idtipodoc " & _
-                "INNER JOIN archivo2munihisto ON archivo.idarchivo = archivo2munihisto.archivo_id " & _
-                "INNER JOIN munihisto ON archivo2munihisto.munihisto_id = munihisto.idmunihisto " & _
-                "WHERE (archivo.tipodoc_id = 7) AND archivo.municipiohistorico1_id <> 0 " & _
+        cadsql = "SELECT archivo.numdoc, tbtipodocumento.tipodoc, " &
+                "to_char(min(munihisto.cod_munihisto), 'FM0000009'::text) AS codinehisto, to_char(min(munihisto.cod_muni), 'FM00009'::text) AS codigoine, " &
+                "date_part('year'::text, archivo.fechaprincipal) AS anyo, " &
+                "((((((('file://sbdignmad650/geodocat_ii/'::text || tbtipodocumento.dirrepo::text) || '/'::text) || " &
+                "substring(to_char(archivo.municipiohistorico1_id, 'FM0000009'::text), 0, 3)) || '/'::text) || " &
+                "to_char(archivo.municipiohistorico1_id, 'FM0000009'::text)) || '/'::text) || contornos.nombre::text) || '.ecw'::text AS rutaresource, 'ECW' AS extension, archivo.provincia_id AS provin " &
+                "FROM contornos " &
+                "INNER JOIN archivo ON archivo.idarchivo = contornos.archivo_id " &
+                "INNER JOIN provincias ON provincias.idprovincia = archivo.provincia_id " &
+                "INNER JOIN tbtipodocumento ON archivo.tipodoc_id = tbtipodocumento.idtipodoc " &
+                "INNER JOIN archivo2munihisto ON archivo.idarchivo = archivo2munihisto.archivo_id " &
+                "INNER JOIN munihisto ON archivo2munihisto.munihisto_id = munihisto.idmunihisto " &
+                "WHERE (archivo.tipodoc_id = 7) AND archivo.municipiohistorico1_id <> 0 " &
                 "GROUP BY archivo.numdoc, tbtipodocumento.tipodoc, archivo.fechaprincipal, provincias.dirrepo, tbtipodocumento.dirrepo, archivo.provincia_id, archivo.municipiohistorico1_id, contornos.nombre"
 
 
@@ -699,8 +767,8 @@
                 swConversion.WriteLine(LineaOUT)
                 LineaOUT = "LOAD_PROJECTION FILENAME=""G:\test25830.prj"""
                 swConversion.WriteLine(LineaOUT)
-                LineaOUT = "EXPORT_RASTER FILENAME=""" & _
-                            rutaFile.Replace("file:", "").Replace("/", "\").Replace("\\sbdignmad650\geodocat_ii", "g:\25830") & _
+                LineaOUT = "EXPORT_RASTER FILENAME=""" &
+                            rutaFile.Replace("file:", "").Replace("/", "\").Replace("\\sbdignmad650\geodocat_ii", "g:\25830") &
                             """ TYPE=ECW TARGET_COMPRESSION=1 GEN_WORLD_FILE=YES GEN_PRJ_FILE=YES"
                 swConversion.WriteLine(LineaOUT)
                 swConversion.WriteLine("UNLOAD_ALL")
@@ -837,19 +905,19 @@
         docPP2CD = New DataTable
         Dim rutasECW As New ArrayList
 
-        cadsql = "SELECT archivo.numdoc, tbtipodocumento.tipodoc, " & _
-                "to_char(min(munihisto.cod_munihisto), 'FM0000009'::text) AS codinehisto, to_char(min(munihisto.cod_muni), 'FM00009'::text) AS codigoine, " & _
-                "date_part('year'::text, archivo.fechaprincipal) AS anyo, " & _
-                "((((((('file://sbdignmad650/geodocat_ii/'::text || tbtipodocumento.dirrepo::text) || '/'::text) || " & _
-                "substring(to_char(archivo.municipiohistorico1_id, 'FM0000009'::text), 0, 3)) || '/'::text) || " & _
-                "to_char(archivo.municipiohistorico1_id, 'FM0000009'::text)) || '/'::text) || contornos.nombre::text) || '.ecw'::text AS rutaresource, 'ECW' AS extension, archivo.provincia_id AS provin " & _
-                "FROM contornos " & _
-                "INNER JOIN archivo ON archivo.idarchivo = contornos.archivo_id " & _
-                "INNER JOIN provincias ON provincias.idprovincia = archivo.provincia_id " & _
-                "INNER JOIN tbtipodocumento ON archivo.tipodoc_id = tbtipodocumento.idtipodoc " & _
-                "INNER JOIN archivo2munihisto ON archivo.idarchivo = archivo2munihisto.archivo_id " & _
-                "INNER JOIN munihisto ON archivo2munihisto.munihisto_id = munihisto.idmunihisto " & _
-                "WHERE (archivo.tipodoc_id = " & tipodoc & ") AND archivo.municipiohistorico1_id <> 0 and archivo.provincia_id=" & codprovin & " " & _
+        cadsql = "SELECT archivo.numdoc, tbtipodocumento.tipodoc, " &
+                "to_char(min(munihisto.cod_munihisto), 'FM0000009'::text) AS codinehisto, to_char(min(munihisto.cod_muni), 'FM00009'::text) AS codigoine, " &
+                "date_part('year'::text, archivo.fechaprincipal) AS anyo, " &
+                "((((((('file://sbdignmad650/geodocat_ii/'::text || tbtipodocumento.dirrepo::text) || '/'::text) || " &
+                "substring(to_char(archivo.municipiohistorico1_id, 'FM0000009'::text), 0, 3)) || '/'::text) || " &
+                "to_char(archivo.municipiohistorico1_id, 'FM0000009'::text)) || '/'::text) || contornos.nombre::text) || '.ecw'::text AS rutaresource, 'ECW' AS extension, archivo.provincia_id AS provin " &
+                "FROM contornos " &
+                "INNER JOIN archivo ON archivo.idarchivo = contornos.archivo_id " &
+                "INNER JOIN provincias ON provincias.idprovincia = archivo.provincia_id " &
+                "INNER JOIN tbtipodocumento ON archivo.tipodoc_id = tbtipodocumento.idtipodoc " &
+                "INNER JOIN archivo2munihisto ON archivo.idarchivo = archivo2munihisto.archivo_id " &
+                "INNER JOIN munihisto ON archivo2munihisto.munihisto_id = munihisto.idmunihisto " &
+                "WHERE (archivo.tipodoc_id = " & tipodoc & ") AND archivo.municipiohistorico1_id <> 0 and archivo.provincia_id=" & codprovin & " " &
                 "GROUP BY archivo.numdoc, tbtipodocumento.tipodoc, archivo.fechaprincipal, provincias.dirrepo, tbtipodocumento.dirrepo, archivo.provincia_id, archivo.municipiohistorico1_id, contornos.nombre"
         Application.DoEvents()
 
@@ -896,20 +964,20 @@
         docPP2CD = New DataTable
         Dim rutasECW As New ArrayList
 
-        cadsql = "SELECT archivo.numdoc, tbtipodocumento.tipodoc, " & _
-                "to_char(min(munihisto.cod_munihisto), 'FM0000009'::text) AS codinehisto, to_char(min(munihisto.cod_muni), 'FM00009'::text) AS codigoine, " & _
-                "date_part('year'::text, archivo.fechaprincipal) AS anyo, " & _
-                "((((((('file://sbdignmad650/geodocat_ii/'::text || tbtipodocumento.dirrepo::text) || '/'::text) || " & _
-                "substring(to_char(archivo.municipiohistorico1_id, 'FM0000009'::text), 0, 3)) || '/'::text) || " & _
-                "to_char(archivo.municipiohistorico1_id, 'FM0000009'::text)) || '/'::text) || contornos.nombre::text) || '.ecw'::text AS rutaresource, 'ECW' AS extension, archivo.provincia_id AS provin " & _
-                "FROM contornos " & _
-                "INNER JOIN archivo ON archivo.idarchivo = contornos.archivo_id " & _
-                "INNER JOIN provincias ON provincias.idprovincia = archivo.provincia_id " & _
-                "INNER JOIN tbtipodocumento ON archivo.tipodoc_id = tbtipodocumento.idtipodoc " & _
-                "INNER JOIN archivo2munihisto ON archivo.idarchivo = archivo2munihisto.archivo_id " & _
-                "INNER JOIN munihisto ON archivo2munihisto.munihisto_id = munihisto.idmunihisto " & _
-                "WHERE (archivo.tipodoc_id = 6) AND archivo.municipiohistorico1_id <> 0 " & _
-                "GROUP BY archivo.numdoc, tbtipodocumento.tipodoc, archivo.fechaprincipal, provincias.dirrepo, tbtipodocumento.dirrepo, archivo.provincia_id, archivo.municipiohistorico1_id, contornos.nombre " & _
+        cadsql = "SELECT archivo.numdoc, tbtipodocumento.tipodoc, " &
+                "to_char(min(munihisto.cod_munihisto), 'FM0000009'::text) AS codinehisto, to_char(min(munihisto.cod_muni), 'FM00009'::text) AS codigoine, " &
+                "date_part('year'::text, archivo.fechaprincipal) AS anyo, " &
+                "((((((('file://sbdignmad650/geodocat_ii/'::text || tbtipodocumento.dirrepo::text) || '/'::text) || " &
+                "substring(to_char(archivo.municipiohistorico1_id, 'FM0000009'::text), 0, 3)) || '/'::text) || " &
+                "to_char(archivo.municipiohistorico1_id, 'FM0000009'::text)) || '/'::text) || contornos.nombre::text) || '.ecw'::text AS rutaresource, 'ECW' AS extension, archivo.provincia_id AS provin " &
+                "FROM contornos " &
+                "INNER JOIN archivo ON archivo.idarchivo = contornos.archivo_id " &
+                "INNER JOIN provincias ON provincias.idprovincia = archivo.provincia_id " &
+                "INNER JOIN tbtipodocumento ON archivo.tipodoc_id = tbtipodocumento.idtipodoc " &
+                "INNER JOIN archivo2munihisto ON archivo.idarchivo = archivo2munihisto.archivo_id " &
+                "INNER JOIN munihisto ON archivo2munihisto.munihisto_id = munihisto.idmunihisto " &
+                "WHERE (archivo.tipodoc_id = 6) AND archivo.municipiohistorico1_id <> 0 " &
+                "GROUP BY archivo.numdoc, tbtipodocumento.tipodoc, archivo.fechaprincipal, provincias.dirrepo, tbtipodocumento.dirrepo, archivo.provincia_id, archivo.municipiohistorico1_id, contornos.nombre " &
                 "having to_char(min(munihisto.cod_munihisto), 'FM0000009'::text)='" & codmuniHisto & "'"
         Application.DoEvents()
 
@@ -987,30 +1055,6 @@
     End Sub
 
 
-    Private Sub Button5_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button5.Click
-
-        Dim LineaOUT As String
-
-        If ListBox2.Items.Count = 0 Then Exit Sub
-        With SaveFileDialog1
-            .Title = "Introduzca el nombre del fichero"
-            .Filter = "Archivos CSV *.csv|*.csv"
-            .ShowDialog()
-        End With
-        If SaveFileDialog1.FileName = "" Then Exit Sub
-
-        Dim sw As New System.IO.StreamWriter(SaveFileDialog1.FileName, False, System.Text.Encoding.Unicode)
-
-        For l_index As Integer = 0 To ListBox2.Items.Count - 1
-            LineaOUT = ListBox2.Items(l_index).ToString
-            sw.WriteLine(LineaOUT)
-
-        Next
-        sw.Close()
-        sw.Dispose()
-        MessageBox.Show("Fichero de ibnformes generado", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
-
-    End Sub
 
 
     Private Sub Button7_Click(sender As System.Object, e As System.EventArgs) Handles Button7.Click
@@ -1042,9 +1086,9 @@
         ' SearchAllSubDirectories : incluye los Subdirectorios  
         ' SearchTopLevelOnly : para buscar solo en el nivel actual  
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''  
-        For Each Archivo As String In My.Computer.FileSystem.GetFiles( _
-                                txtPathGCP.Text, _
-                                FileIO.SearchOption.SearchTopLevelOnly, _
+        For Each Archivo As String In My.Computer.FileSystem.GetFiles(
+                                txtPathGCP.Text,
+                                FileIO.SearchOption.SearchTopLevelOnly,
                                 "*.gcp")
 
             ListBox1.Items.Add(Archivo)
@@ -1198,7 +1242,7 @@
     Private Sub Button10_Click(sender As System.Object, e As System.EventArgs) Handles Button10.Click
 
         Dim iBucle As Integer
-        For ibucle = 1 To 50
+        For iBucle = 1 To 50
             generate_template_cutter(System.Environment.GetFolderPath(Environment.SpecialFolder.Desktop) & "\PlanosPoblacion\" & String.Format("{0:00}", iBucle) & ".gmw", iBucle, 7)
         Next
         MessageBox.Show("Proyectos de recorte generados", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -1344,18 +1388,7 @@
         MessageBox.Show("Proyectos de recorte generados", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
     End Sub
 
-    Private Sub Button17_Click(sender As Object, e As EventArgs) Handles Button17.Click
 
-        Try
-            Dim FormularioCreacion As New frmEdicion
-            FormularioCreacion.MdiParent = MDIPrincipal
-            FormularioCreacion.ModoTrabajo("SIMPLE", TextBox1.Text)
-            FormularioCreacion.Show()
-            FormularioCreacion.Visible = True
-        Catch ex As Exception
-            ModalError(ex.Message)
-        End Try
-    End Sub
 
     Private Sub Button19_Click(sender As Object, e As EventArgs) Handles Button19.Click
         generate_conversionFile_conjuntas_report()
@@ -1541,6 +1574,84 @@
         End Using
 
         ModalInfo("Fichero de incidencias generado")
+
+    End Sub
+
+    Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
+
+        Dim lstFiles As New ArrayList
+        ListBox3.Items.Clear()
+        ToolStripStatusLabel1.Text = "Transformación de Numdoc a formato GEODOCAT II"
+        ToolStripStatusLabel2.Text = ""
+        Try
+            ' 1. Agregamos los archivos encontrados en la carpeta actual al ListBox
+            For Each archivo As String In IO.Directory.EnumerateFiles(TextBox2.Text, "*.*", IO.SearchOption.AllDirectories)
+                lstFiles.Add(archivo.ToLower())
+            Next
+
+        Catch ex As UnauthorizedAccessException
+            ' Si no hay permisos para una carpeta del sistema, la salta de forma segura
+            Application.DoEvents()
+        Catch ex As Exception
+            Debug.WriteLine("Error: " & ex.Message)
+        End Try
+        If lstFiles.Count = 0 Then
+            ModalExclamation("No se han encontrado ficheros ecw")
+            Exit Sub
+        Else
+            If ModalQuestion($"Se van a intentar transferir {lstFiles.Count} archivos a la  estructura de GEODOCAT II.¿Continuar?") <> DialogResult.Yes Then Exit Sub
+
+        End If
+        'Ahora vamos a interntar formatear el fichero encontrado
+        Dim pathOrigen As String
+        Dim nombreFile As String
+        Dim nombreDestino As String
+        Dim codMuniHistoList As String
+        Dim pathSalida As String
+        Dim contadorCopyFiles As Integer = 0
+        Dim copySuccess As Integer = 0
+        For Each archivo As String In lstFiles
+            contadorCopyFiles += 1
+            ToolStripStatusLabel2.Text = $"Procesando {contadorCopyFiles} de {lstFiles.Count}"
+            Application.DoEvents()
+            codMuniHistoList = ""
+            pathOrigen = archivo
+            nombreFile = IO.Path.GetFileName(archivo)
+            nombreDestino = nombreFile.Replace("_modified", "").Replace("_original", "").Replace("_corr", "").Replace("plani", "").Replace("cc", "").Replace("_pp", "")
+            If nombreDestino.StartsWith("00") Then
+                nombreDestino = nombreDestino.Substring(2, nombreDestino.Length - 2)
+            End If
+
+            Application.DoEvents()
+            codMuniHistoList = GetCodMuniHistoFromSellado(nombreDestino.Substring(0, 6))
+            If codMuniHistoList = "" Then
+                ' Si no obtenemos el municipìo histórico asociado, se devuelve el fichero
+                ListBox3.Items.Add($"MUnicipio no localizado: {nombreFile}")
+                Continue For
+            End If
+            For Each codMuniHisto In codMuniHistoList.Split("#")
+                pathSalida = $"{TextBox3.Text}\{codMuniHisto.Substring(0, 2)}\{codMuniHisto}\"
+                Exit For ' Cogemos sólo el primero, para el caso de que haya más de uno
+            Next
+            Try
+                If Not IO.Directory.Exists(pathSalida) Then
+                    IO.Directory.CreateDirectory(pathSalida)
+                End If
+                If CheckBox1.Checked Then
+                    IO.File.Move(pathOrigen, $"{pathSalida}{nombreDestino}")
+                Else
+                    IO.File.Copy(pathOrigen, $"{pathSalida}{nombreDestino}")
+                End If
+
+            Catch ex As Exception
+                ListBox3.Items.Add($"{nombreFile}: Error en copia: {ex.Message}")
+                ModalError(ex.Message)
+            End Try
+
+        Next
+
+        ModalInfo($"Transferencia terminada. Ficheros encontrados: {lstFiles.Count}. Ficheros copiados: {copySuccess}")
+
 
     End Sub
 End Class
