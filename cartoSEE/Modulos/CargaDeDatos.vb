@@ -78,8 +78,9 @@ Module CargaDeDatos
         ListaTiposDocumento = New DataTable
         tiposDocSIDCARTO = Nothing
         tiposDocSIDCARTO = New ArrayList
-        If CargarDatatable("SELECT idtipodoc,tipodoc,dirrepo,nombrecdd,prefijometadato FROM bdsidschema.tbtipodocumento", ListaTiposDocumento) = False Then
-            MessageBox.Show("No se puede acceder a la tabla de tipos de documentos", My.Application.Info.AssemblyName, MessageBoxButtons.OK, MessageBoxIcon.Error)
+        If CargarDatatable("SELECT idtipodoc,tipodoc,dirrepo,nombrecdd,prefijometadato,productocdd FROM bdsidschema.tbtipodocumento", ListaTiposDocumento) = False Then
+            ModalError("No se puede acceder a la tabla de tipos de documentos")
+            Exit Function
         End If
 
         ReDim RutasPlantillasMetadatos(ListaTiposDocumento.Rows.Count - 1)
@@ -99,6 +100,7 @@ Module CargaDeDatos
             item.rutaMetadatosTipo = ""
             item.prefijoNombreCDD = ListaTiposDocumento.Rows(iBucle).Item(3).ToString
             item.prefijoMetadatos = ListaTiposDocumento.Rows(iBucle).Item(4).ToString
+            item.ProductoCDD = ListaTiposDocumento.Rows(iBucle).Item(5).ToString
             tiposDocSIDCARTO.Add(item)
             item = Nothing
         Next

@@ -52,32 +52,32 @@ Partial Class frmExport
         Me.Button6 = New System.Windows.Forms.Button()
         Me.Label10 = New System.Windows.Forms.Label()
         Me.TabPage4 = New System.Windows.Forms.TabPage()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.Button7 = New System.Windows.Forms.Button()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.Button5 = New System.Windows.Forms.Button()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.Button2 = New System.Windows.Forms.Button()
         Me.TabPage3 = New System.Windows.Forms.TabPage()
-        Me.ComboBox2 = New System.Windows.Forms.ComboBox()
-        Me.Label8 = New System.Windows.Forms.Label()
-        Me.ComboBox1 = New System.Windows.Forms.ComboBox()
-        Me.Label7 = New System.Windows.Forms.Label()
         Me.cboProvincias = New System.Windows.Forms.ComboBox()
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.Button3 = New System.Windows.Forms.Button()
         Me.btnProcessProvin = New System.Windows.Forms.Button()
         Me.CheckBox1 = New System.Windows.Forms.CheckBox()
         Me.chkCopyTest = New System.Windows.Forms.CheckBox()
         Me.chkOverWrite = New System.Windows.Forms.CheckBox()
         Me.CheckBox2 = New System.Windows.Forms.CheckBox()
-        Me.Button7 = New System.Windows.Forms.Button()
-        Me.Label6 = New System.Windows.Forms.Label()
+        Me.CheckedListBox1 = New System.Windows.Forms.CheckedListBox()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.RadioButton2 = New System.Windows.Forms.RadioButton()
+        Me.RadioButton1 = New System.Windows.Forms.RadioButton()
         Me.StatusStrip1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.TabPage4.SuspendLayout()
         Me.TabPage2.SuspendLayout()
         Me.TabPage3.SuspendLayout()
+        Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
         'txtDirTarget
@@ -360,6 +360,26 @@ Partial Class frmExport
         Me.TabPage4.Text = "Cédulas catastrales de la JGE"
         Me.TabPage4.UseVisualStyleBackColor = True
         '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Location = New System.Drawing.Point(243, 59)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(240, 13)
+        Me.Label6.TabIndex = 42
+        Me.Label6.Text = "Exportación inicial de Cédulas catastrales  al CdD"
+        '
+        'Button7
+        '
+        Me.Button7.Image = CType(resources.GetObject("Button7.Image"), System.Drawing.Image)
+        Me.Button7.Location = New System.Drawing.Point(29, 47)
+        Me.Button7.Name = "Button7"
+        Me.Button7.Size = New System.Drawing.Size(202, 36)
+        Me.Button7.TabIndex = 41
+        Me.Button7.Text = "Extraer todas las cédulas"
+        Me.Button7.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.Button7.UseVisualStyleBackColor = True
+        '
         'Label5
         '
         Me.Label5.AutoSize = True
@@ -417,13 +437,10 @@ Partial Class frmExport
         '
         'TabPage3
         '
-        Me.TabPage3.Controls.Add(Me.ComboBox2)
-        Me.TabPage3.Controls.Add(Me.Label8)
-        Me.TabPage3.Controls.Add(Me.ComboBox1)
-        Me.TabPage3.Controls.Add(Me.Label7)
+        Me.TabPage3.Controls.Add(Me.GroupBox1)
+        Me.TabPage3.Controls.Add(Me.CheckedListBox1)
         Me.TabPage3.Controls.Add(Me.cboProvincias)
         Me.TabPage3.Controls.Add(Me.Label1)
-        Me.TabPage3.Controls.Add(Me.Button3)
         Me.TabPage3.Controls.Add(Me.btnProcessProvin)
         Me.TabPage3.Location = New System.Drawing.Point(4, 22)
         Me.TabPage3.Name = "TabPage3"
@@ -432,44 +449,6 @@ Partial Class frmExport
         Me.TabPage3.TabIndex = 2
         Me.TabPage3.Text = "Otra documentación"
         Me.TabPage3.UseVisualStyleBackColor = True
-        '
-        'ComboBox2
-        '
-        Me.ComboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBox2.FormattingEnabled = True
-        Me.ComboBox2.Location = New System.Drawing.Point(36, 140)
-        Me.ComboBox2.Name = "ComboBox2"
-        Me.ComboBox2.Size = New System.Drawing.Size(385, 21)
-        Me.ComboBox2.TabIndex = 36
-        '
-        'Label8
-        '
-        Me.Label8.AutoSize = True
-        Me.Label8.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label8.Location = New System.Drawing.Point(39, 124)
-        Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(164, 13)
-        Me.Label8.TabIndex = 35
-        Me.Label8.Text = "Filtro subtipo de documento"
-        '
-        'ComboBox1
-        '
-        Me.ComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBox1.FormattingEnabled = True
-        Me.ComboBox1.Location = New System.Drawing.Point(36, 88)
-        Me.ComboBox1.Name = "ComboBox1"
-        Me.ComboBox1.Size = New System.Drawing.Size(385, 21)
-        Me.ComboBox1.TabIndex = 34
-        '
-        'Label7
-        '
-        Me.Label7.AutoSize = True
-        Me.Label7.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label7.Location = New System.Drawing.Point(33, 72)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(144, 13)
-        Me.Label7.TabIndex = 33
-        Me.Label7.Text = "Filtro tipo de documento"
         '
         'cboProvincias
         '
@@ -490,28 +469,15 @@ Partial Class frmExport
         Me.Label1.TabIndex = 32
         Me.Label1.Text = "Provincia"
         '
-        'Button3
-        '
-        Me.Button3.Enabled = False
-        Me.Button3.Image = CType(resources.GetObject("Button3.Image"), System.Drawing.Image)
-        Me.Button3.Location = New System.Drawing.Point(571, 59)
-        Me.Button3.Name = "Button3"
-        Me.Button3.Size = New System.Drawing.Size(138, 36)
-        Me.Button3.TabIndex = 29
-        Me.Button3.Text = "Por tipo y provincia"
-        Me.Button3.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
-        Me.Button3.UseVisualStyleBackColor = True
-        '
         'btnProcessProvin
         '
         Me.btnProcessProvin.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnProcessProvin.Enabled = False
         Me.btnProcessProvin.Image = CType(resources.GetObject("btnProcessProvin.Image"), System.Drawing.Image)
-        Me.btnProcessProvin.Location = New System.Drawing.Point(571, 125)
+        Me.btnProcessProvin.Location = New System.Drawing.Point(581, 260)
         Me.btnProcessProvin.Name = "btnProcessProvin"
         Me.btnProcessProvin.Size = New System.Drawing.Size(138, 36)
         Me.btnProcessProvin.TabIndex = 6
-        Me.btnProcessProvin.Text = "Provincia completa"
+        Me.btnProcessProvin.Text = "Procesar"
         Me.btnProcessProvin.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
         Me.btnProcessProvin.UseVisualStyleBackColor = True
         '
@@ -555,25 +521,46 @@ Partial Class frmExport
         Me.CheckBox2.Text = "Agrupar ficheros PDF por código INE"
         Me.CheckBox2.UseVisualStyleBackColor = True
         '
-        'Button7
+        'CheckedListBox1
         '
-        Me.Button7.Image = CType(resources.GetObject("Button7.Image"), System.Drawing.Image)
-        Me.Button7.Location = New System.Drawing.Point(29, 47)
-        Me.Button7.Name = "Button7"
-        Me.Button7.Size = New System.Drawing.Size(202, 36)
-        Me.Button7.TabIndex = 41
-        Me.Button7.Text = "Extraer todas las cédulas"
-        Me.Button7.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
-        Me.Button7.UseVisualStyleBackColor = True
+        Me.CheckedListBox1.FormattingEnabled = True
+        Me.CheckedListBox1.Location = New System.Drawing.Point(36, 82)
+        Me.CheckedListBox1.Name = "CheckedListBox1"
+        Me.CheckedListBox1.Size = New System.Drawing.Size(385, 214)
+        Me.CheckedListBox1.TabIndex = 37
         '
-        'Label6
+        'GroupBox1
         '
-        Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(243, 59)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(240, 13)
-        Me.Label6.TabIndex = 42
-        Me.Label6.Text = "Exportación inicial de Cédulas catastrales  al CdD"
+        Me.GroupBox1.Controls.Add(Me.RadioButton2)
+        Me.GroupBox1.Controls.Add(Me.RadioButton1)
+        Me.GroupBox1.Location = New System.Drawing.Point(427, 82)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(292, 89)
+        Me.GroupBox1.TabIndex = 38
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "Opciones de copia"
+        '
+        'RadioButton2
+        '
+        Me.RadioButton2.AutoSize = True
+        Me.RadioButton2.Checked = True
+        Me.RadioButton2.Location = New System.Drawing.Point(27, 57)
+        Me.RadioButton2.Name = "RadioButton2"
+        Me.RadioButton2.Size = New System.Drawing.Size(256, 17)
+        Me.RadioButton2.TabIndex = 1
+        Me.RadioButton2.TabStop = True
+        Me.RadioButton2.Text = "Generar paquete ZIP de  los ficheros JPG+ECW "
+        Me.RadioButton2.UseVisualStyleBackColor = True
+        '
+        'RadioButton1
+        '
+        Me.RadioButton1.AutoSize = True
+        Me.RadioButton1.Location = New System.Drawing.Point(27, 34)
+        Me.RadioButton1.Name = "RadioButton1"
+        Me.RadioButton1.Size = New System.Drawing.Size(200, 17)
+        Me.RadioButton1.TabIndex = 0
+        Me.RadioButton1.Text = "Copiar sólo ficheros digitalizados JPG"
+        Me.RadioButton1.UseVisualStyleBackColor = True
         '
         'frmExport
         '
@@ -610,6 +597,8 @@ Partial Class frmExport
         Me.TabPage2.PerformLayout()
         Me.TabPage3.ResumeLayout(False)
         Me.TabPage3.PerformLayout()
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox1.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -636,13 +625,8 @@ Partial Class frmExport
     Friend WithEvents TabPage2 As System.Windows.Forms.TabPage
     Friend WithEvents CheckBox1 As System.Windows.Forms.CheckBox
     Friend WithEvents TabPage3 As TabPage
-    Friend WithEvents ComboBox2 As ComboBox
-    Friend WithEvents Label8 As Label
-    Friend WithEvents ComboBox1 As ComboBox
-    Friend WithEvents Label7 As Label
     Friend WithEvents cboProvincias As ComboBox
     Friend WithEvents Label1 As Label
-    Friend WithEvents Button3 As Button
     Friend WithEvents btnProcessProvin As Button
     Friend WithEvents Button6 As Button
     Friend WithEvents Label10 As Label
@@ -663,4 +647,8 @@ Partial Class frmExport
     Friend WithEvents CheckBox2 As CheckBox
     Friend WithEvents Label6 As Label
     Friend WithEvents Button7 As Button
+    Friend WithEvents CheckedListBox1 As CheckedListBox
+    Friend WithEvents GroupBox1 As GroupBox
+    Friend WithEvents RadioButton2 As RadioButton
+    Friend WithEvents RadioButton1 As RadioButton
 End Class

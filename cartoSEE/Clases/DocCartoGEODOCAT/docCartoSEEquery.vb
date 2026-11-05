@@ -4,6 +4,7 @@
     Property resumenConsultaSQL As String
     Property flag_ActualizarInfoGeom As Boolean = False
     Property flag_CargarFicherosGEO As Boolean = False
+    Property flag_CargarFicherosGEOSoloETRS89 As Boolean = False
     'Filtros
     Property Año As String = ""
     Property TipoDoc As String = ""
@@ -14,39 +15,39 @@
 
 
     Const consultaSQLBaseWithContour As String =
-        "SELECT archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal," &
-                "archivo.fechasmodificaciones,archivo.anejo,archivo.vertical,archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja," &
-                "archivo.subtipo,archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.extraprops,archivo.observaciones," &
-                "archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.titn,archivo.autor,archivo.autor_persona,archivo.encabezado," &
-                "tbtipodocumento.tipodoc as Tipo,tbestadodocumento.estadodoc as Estado, tbobservaciones.observestandar," &
-                "string_agg(territorios.nombre,'#') as listaMuniHisto,string_agg(to_char(territorios.munihisto, 'FM0000009'::text),'#') as listaCodMuniHisto," &
-                "string_agg(listamunicipios.nombre,'#') as listaMuniActual, string_agg(listamunicipios.inecorto,'#') as listaCodMuniActual, string_agg(provincias.nombreprovincia,'#') as nombreprovincia " &
-        "FROM bdsidschema.archivo " &
-            "LEFT JOIN bdsidschema.tbtipodocumento ON tbtipodocumento.idtipodoc=archivo.tipodoc_id " &
-            "LEFT JOIN bdsidschema.tbestadodocumento ON tbestadodocumento.idestadodoc=archivo.estadodoc_id " &
-            "LEFT JOIN bdsidschema.archivo2territorios ON archivo2territorios.archivo_id=archivo.idarchivo " &
-            "LEFT JOIN bdsidschema.tbobservaciones  ON tbobservaciones.idobservestandar=archivo.observestandar_id " &
-            "LEFT JOIN bdsidschema.territorios on territorios.idterritorio= archivo2munihisto.territorio_id " &
-            "LEFT JOIN ngmepschema.listamunicipios on territorios.nomen_id= listamunicipios.identidad " &
-            "LEFT JOIN bdsidschema.provincias on territorios.provincia= provincias.idprovincia " &
-            "LEFT JOIN bdsidschema.contornos ON archivo.idarchivo=contornos.archivo_id "
+        "SELECT archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal,
+                archivo.fechasmodificaciones, archivo.anejo,archivo.vertical,archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja,
+                archivo.subtipo,archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.extraprops,archivo.observaciones,
+                archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.titn,archivo.autor,archivo.autor_persona,archivo.encabezado,
+                tbtipodocumento.tipodoc As Tipo,tbestadodocumento.estadodoc As Estado, tbobservaciones.observestandar,
+                string_agg(territorios.nombre,'#') as listaMuniHisto,string_agg(to_char(territorios.munihisto, 'FM0000009'::text),'#') as listaCodMuniHisto,
+                string_agg(listamunicipios.nombre,'#') as listaMuniActual, string_agg(listamunicipios.inecorto,'#') as listaCodMuniActual, string_agg(provincias.nombreprovincia,'#') as nombreprovincia 
+        FROM bdsidschema.archivo 
+            LEFT JOIN bdsidschema.tbtipodocumento On tbtipodocumento.idtipodoc=archivo.tipodoc_id 
+            LEFT JOIN bdsidschema.tbestadodocumento On tbestadodocumento.idestadodoc=archivo.estadodoc_id 
+            LEFT JOIN bdsidschema.tbobservaciones  On tbobservaciones.idobservestandar=archivo.observestandar_id 
+            LEFT JOIN bdsidschema.archivo2territorios On archivo2territorios.archivo_id=archivo.idarchivo 
+            LEFT JOIN bdsidschema.territorios On territorios.idterritorio= archivo2territorios.territorio_id 
+            LEFT JOIN ngmepschema.listamunicipios On territorios.ngmep_muni_id= listamunicipios.identidad 
+            LEFT JOIN bdsidschema.provincias On territorios.provincia= provincias.idprovincia 
+            LEFT JOIN bdsidschema.contornos On archivo.idarchivo=contornos.archivo_id "
 
     Const consultaSQLBaseWithoutContour As String =
-        "SELECT archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal," &
-                "archivo.fechasmodificaciones,archivo.anejo,archivo.vertical,archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja," &
-                "archivo.subtipo,archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.extraprops,archivo.observaciones," &
-                "archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.titn,archivo.autor,archivo.autor_persona,archivo.encabezado," &
-                "tbtipodocumento.tipodoc as Tipo,tbestadodocumento.estadodoc as Estado, tbobservaciones.observestandar," &
-                "string_agg(territorios.nombre,'#') as listaMuniHisto,string_agg(to_char(territorios.munihisto, 'FM0000009'::text),'#') as listaCodMuniHisto," &
-                "string_agg(listamunicipios.nombre,'#') as listaMuniActual, string_agg(listamunicipios.inecorto,'#') as listaCodMuniActual, string_agg(provincias.nombreprovincia,'#') as nombreprovincia " &
-        "FROM bdsidschema.archivo " &
-            "LEFT JOIN bdsidschema.tbtipodocumento ON tbtipodocumento.idtipodoc=archivo.tipodoc_id " &
-            "LEFT JOIN bdsidschema.tbestadodocumento ON tbestadodocumento.idestadodoc=archivo.estadodoc_id " &
-            "LEFT JOIN  bdsidschema.archivo2territorios  ON archivo2territorios.archivo_id=archivo.idarchivo " &
-            "LEFT JOIN  bdsidschema.tbobservaciones  ON tbobservaciones.idobservestandar=archivo.observestandar_id " &
-            "LEFT JOIN bdsidschema.territorios on territorios.idterritorio= archivo2territorios.territorio_id " &
-            "LEFT JOIN ngmepschema.listamunicipios on territorios.nomen_id= listamunicipios.identidad " &
-            "LEFT JOIN bdsidschema.provincias on territorios.provincia= provincias.idprovincia "
+        "Select archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal,
+                archivo.fechasmodificaciones,archivo.anejo,archivo.vertical,archivo.horizontal,archivo.tipodoc_id,archivo.estadodoc_id,archivo.procecarpeta,archivo.procehoja,
+                archivo.subtipo,archivo.juntaestadistica,archivo.signatura,archivo.observestandar_id,archivo.extraprops,archivo.observaciones,
+                archivo.cdd_nomfich,archivo.cdd_url,archivo.cdd_producto,archivo.titn,archivo.autor,archivo.autor_persona,archivo.encabezado,
+                tbtipodocumento.tipodoc As Tipo,tbestadodocumento.estadodoc As Estado, tbobservaciones.observestandar,
+                string_agg(territorios.nombre,'#') as listaMuniHisto,string_agg(to_char(territorios.munihisto, 'FM0000009'::text),'#') as listaCodMuniHisto,
+                string_agg(listamunicipios.nombre,'#') as listaMuniActual, string_agg(listamunicipios.inecorto,'#') as listaCodMuniActual, string_agg(provincias.nombreprovincia,'#') as nombreprovincia 
+        FROM bdsidschema.archivo 
+            LEFT JOIN bdsidschema.tbtipodocumento ON tbtipodocumento.idtipodoc=archivo.tipodoc_id 
+            LEFT JOIN bdsidschema.tbestadodocumento ON tbestadodocumento.idestadodoc=archivo.estadodoc_id 
+            LEFT JOIN  bdsidschema.tbobservaciones  ON tbobservaciones.idobservestandar=archivo.observestandar_id 
+            LEFT JOIN  bdsidschema.archivo2territorios  ON archivo2territorios.archivo_id=archivo.idarchivo 
+            LEFT JOIN bdsidschema.territorios on territorios.idterritorio= archivo2territorios.territorio_id 
+            LEFT JOIN ngmepschema.listamunicipios on territorios.ngmep_muni_id= listamunicipios.identidad 
+            LEFT JOIN bdsidschema.provincias on territorios.provincia= provincias.idprovincia "
 
 
     Sub New()
@@ -289,10 +290,13 @@
             item.extraProps.propertyCode = dR("extraprops")
 
             If flag_CargarFicherosGEO Then
-                item.getGeoFiles()
+                If flag_CargarFicherosGEOSoloETRS89 Then
+                    item.getGeoFiles(True, False, True)
+                Else
+                    item.getGeoFiles(True, True, True)
+                End If
                 item.getGeoFilesFromDatabase()
             End If
-
             resultados.Add(item)
             item = Nothing
         Next

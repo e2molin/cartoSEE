@@ -10,6 +10,68 @@ Public Class frmExport
 
 
 
+    Private Sub procesarProvinciaGEODOCAT4CdD(ByVal cProv As Integer, ByVal folderOUT As String)
+
+        Dim listaTerris As New ArrayList
+        Dim tiposdocu2CDD As New ArrayList
+        Dim proce As procGenerateHTMLReport
+
+        Me.Cursor = Cursors.WaitCursor
+
+        If CheckedListBox1.CheckedItems.Count = 0 Then
+            ModalExclamation("No se han seleccionado los tipos de documento a procesar")
+            Me.Cursor = Cursors.Default
+            Exit Sub
+        End If
+
+        'Seleccionamos los documentos de la provincia
+        ToolStripStatusLabel1.Text = "Accediendo a la información de " & DameProvinciaByINE(cProv)
+
+        Dim seqTiposDoc As String = ""
+        tiposdocu2CDD.Clear()
+        For Each elem As itemData In CheckedListBox1.CheckedItems
+            tiposdocu2CDD.Add(CType(elem.Valor, Integer))
+            If seqTiposDoc = "" Then seqTiposDoc = CType(elem.Valor, Integer) : Continue For
+            seqTiposDoc = seqTiposDoc & "," & CType(elem.Valor, Integer)
+        Next
+
+
+        Dim resultDocumentos As New docCartoSEEquery
+        resultDocumentos.flag_ActualizarInfoGeom = True
+        resultDocumentos.flag_CargarFicherosGEO = True
+        resultDocumentos.flag_CargarFicherosGEOSoloETRS89 = True
+        'resultDocumentos.getDocsSIDDAE_ByFiltroSellado("archivo.provincia_id=" & cProv & " AND tipodoc_id IN (" & seqTiposDoc & ")")
+        resultDocumentos.getDocsSIDDAE_ByFiltroSellado("tipodoc_id=8 and cdd_fecha is null")
+
+        If resultDocumentos.resultados.Count = 0 Then
+            ModalInfo("No se han encontrado documentos para el CdD")
+            Exit Sub
+        End If
+
+        If ModalQuestion($"Se van a procesar {resultDocumentos.resultados.Count} documentos. ¿Continuar?") <> DialogResult.Yes Then
+            Me.Cursor = Cursors.Default
+            Exit Sub
+        End If
+
+        ToolStripStatusLabel1.Text = "Procesando " & DameProvinciaByINE(cProv) & ". Copiando ficheros para el CdD"
+        folderOUT = IIf(folderOUT.EndsWith("\"), folderOUT, folderOUT & "\")
+        Try
+            If Not IO.Directory.Exists(folderOUT) Then
+                IO.Directory.CreateDirectory(folderOUT)
+            End If
+        Catch ex As Exception
+            ModalExclamation(ex.Message)
+        End Try
+        proce = New procGenerateHTMLReport
+        proce.CopyFiles2DirectoryToCDD(resultDocumentos.resultados, folderOUT, tiposdocu2CDD, RadioButton2.Checked)
+        proce = Nothing
+        ToolStripProgressBar1.Visible = False
+        ToolStripStatusLabel1.Text = "Documentos procesados: " & resultDocumentos.resultados.Count
+        resultDocumentos.resultados.Clear()
+        resultDocumentos = Nothing
+        Me.Cursor = Cursors.Default
+
+    End Sub
 
     Private Sub frmExport_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
         procTilde = Nothing
@@ -23,6 +85,10 @@ Public Class frmExport
         For Each Provincia As DataRow In ListaProvincias.Select
             contadorProv += 1
             cboProvincias.Items.Add(New itemData(Provincia.ItemArray(1).ToString, contadorProv))
+        Next
+
+        For Each tipoDocu As docCartoSEETipoDocu In tiposDocSIDCARTO
+            CheckedListBox1.Items.Add(New itemData(tipoDocu.NombreTipo, tipoDocu.idTipodoc), False)
         Next
 
         txtDirTarget.Text = unidadActualizCDD
@@ -259,43 +325,6 @@ Public Class frmExport
 
     End Sub
 
-    Private Sub Button3_Click(sender As Object, e As EventArgs)
-        Dim filtroSQL As String
-        Dim cProv As Integer
-
-        If cboProvincias.SelectedIndex = -1 Then
-            ModalExclamation("Seleccione una provincia")
-            Exit Sub
-        End If
-        If ComboBox1.SelectedIndex = -1 Then
-            ModalExclamation("Seleccione un tipo de documento")
-            Exit Sub
-        End If
-        If ComboBox2.SelectedIndex = -1 Then
-            ModalExclamation("Seleccione un subtipo de documento")
-            Exit Sub
-        End If
-
-        cProv = CType(cboProvincias.SelectedItem, itemData).Valor
-        filtroSQL = "iddocsiddae in (Select iddocsiddae from bdsidschema.docsiddae where iddocsiddae>1"
-        If cboProvincias.SelectedIndex <> 0 Then
-            filtroSQL &= $" And provincia={cProv}"
-        End If
-        If ComboBox1.SelectedIndex <> 0 Then
-            filtroSQL &= $" And tipo='{ComboBox1.Text}'"
-        End If
-        If ComboBox2.SelectedIndex <> 0 Then
-            filtroSQL &= $"  and subtipo='{ComboBox2.Text}'"
-        End If
-        filtroSQL &= ")"
-
-        procesarListaDocsCdD(txtDirTarget.Text, filtroSQL, "Actas y cuadernos")
-        ModalInfo("Proceso terminado")
-
-    End Sub
-
-
-
     Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click, Button4.Click
 
         Dim filtroSQL As String
@@ -394,6 +423,40 @@ Public Class frmExport
 
 
 
+
+    End Sub
+
+    Private Sub btnProcessProvin_Click(sender As Object, e As EventArgs) Handles btnProcessProvin.Click
+
+        If cboProvincias.SelectedIndex = -1 Then
+            ModalExclamation("Selecciona una provincia")
+            Exit Sub
+        End If
+        If Not System.IO.Directory.Exists(txtDirTarget.Text.Trim) Then
+            ModalExclamation("El directorio no existe")
+            Exit Sub
+        End If
+
+        If cboProvincias.Text = "(Procesar todas)" Then
+            ToolStripProgressBar1.Minimum = 0
+            ToolStripProgressBar1.Maximum = 50
+            For ibucle = 1 To 50
+                ToolStripProgressBar1.Value = ibucle
+                Application.DoEvents()
+                procesarProvinciaGEODOCAT4CdD(ibucle, txtDirTarget.Text)
+            Next
+        Else
+            ToolStripProgressBar1.Minimum = 0
+            ToolStripProgressBar1.Maximum = 2
+            ToolStripProgressBar1.Value = 1
+            procesarProvinciaGEODOCAT4CdD(CType(cboProvincias.SelectedItem, itemData).Valor, txtDirTarget.Text)
+        End If
+
+        ModalInfo("Proceso terminado")
+
+    End Sub
+
+    Private Sub Button3_Click_1(sender As Object, e As EventArgs)
 
     End Sub
 End Class

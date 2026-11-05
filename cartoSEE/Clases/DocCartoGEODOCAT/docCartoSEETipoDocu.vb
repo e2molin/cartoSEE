@@ -5,6 +5,7 @@
     Property rutaMetadatosTipo As String
     Property prefijoMetadatos As String
     Property prefijoNombreCDD As String
+    Property ProductoCDD As String
 
     ReadOnly Property tematicaCdD As String
         Get

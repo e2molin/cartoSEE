@@ -213,6 +213,11 @@
             Dim cadOut As String = ""
             Dim elem As String
             For iterador As Integer = 0 To listaMuniHistorico.Count - 1
+                If listaMuniActual.Count = 0 Then
+                    Application.DoEvents()
+                    Return listaMuniHistorico.Item(iterador).ToString
+
+                End If
                 elem = listaMuniHistorico.Item(iterador).ToString & " (" & listaMuniActual.Item(iterador).ToString & ")"
                 If soloMuniActualSiIguales Then
                     If listaMuniHistorico.Item(iterador).ToString = listaMuniActual.Item(iterador).ToString Then
@@ -279,6 +284,8 @@
         End Get
     End Property
 
+
+
     ReadOnly Property rutaFicheroThumb() As String
 
         Get
@@ -293,15 +300,20 @@
         End Get
     End Property
 
-    ReadOnly Property nameFilePropuestoParaCDD(Optional extension As String = "") As String
+    ReadOnly Property nameFilePropuestoParaCDD(Optional extension As String = "", Optional fileIndexName As Integer = 0) As String
 
         Get
             Dim procTilde As New Destildator
-            Return _tipoDocumento.prefijoNombreCDD &
-                String.Format("{0:000000}", Sellado) & "_" &
-                _FechaPrincipal.Substring(0, 4) & "_" &
-                procTilde.destildar(municipiosHistoLiteral()).Replace(",", "-").ToUpper.Replace(" ", "_") &
-                IIf(extension <> "", "." & extension.ToLower, "")
+            'Return _tipoDocumento.prefijoNombreCDD &
+            '    String.Format("{0:000000}", Sellado) & "_" &
+            '    _FechaPrincipal.Substring(0, 4) & "_" &
+            '    procTilde.destildar(municipiosHistoLiteral()).Replace(",", "-").ToUpper.Replace(" ", "_") &
+            '    IIf(extension <> "", "." & extension.ToLower, "")
+
+            Return $"{_tipoDocumento.prefijoNombreCDD}{String.Format("{0:000000}", Sellado)}_" &
+                    $"{procTilde.destildar(municipiosHistoLiteral()).Replace(",", "-").ToUpper.Replace(" ", "_")}{IIf(fileIndexName = 0, "", $"_{String.Format("{0:00}", fileIndexName)}")}{IIf(extension <> "", "." & extension.ToLower, "")}"
+
+
         End Get
 
     End Property
@@ -319,7 +331,6 @@
             Return _tipoDocumento.NombreTipo.Substring(0, 5).Replace("ñ", "n").ToUpper & "_" & String.Format("{0:000000}", Sellado) & "_" & _FechaPrincipal.Substring(0, 4)
         End Get
     End Property
-
 
 
     ReadOnly Property nameFileNEMXML() As String
@@ -399,6 +410,8 @@
                 Return nameFilePropuestoParaCDD
             ElseIf tipoDocumento.NombreTipo = "Conjunta" Then
                 Return nameFilePropuestoParaCDD
+            ElseIf tipoDocumento.NombreTipo = "Plano de población en cuaderno" Then
+                Return $"{muniHistoLiteralConMuniActual(True)}{IIf(Anejo <> "", $". {Anejo}", "")}"
             Else
                 Return "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. " &
                        "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
@@ -461,10 +474,10 @@
                         FROM bdsidschema.archivo 
 	                        LEFT JOIN bdsidschema.tbtipodocumento ON tbtipodocumento.idtipodoc=archivo.tipodoc_id 
 	                        LEFT JOIN bdsidschema.tbestadodocumento ON tbestadodocumento.idestadodoc=archivo.estadodoc_id 
+                            LEFT JOIN bdsidschema.tbobservaciones  ON tbobservaciones.idobservestandar=archivo.observestandar_id 
 	                        LEFT JOIN bdsidschema.archivo2territorios  ON archivo2territorios.archivo_id=archivo.idarchivo 
-	                        LEFT JOIN bdsidschema.tbobservaciones  ON tbobservaciones.idobservestandar=archivo.observestandar_id 
 	                        LEFT JOIN bdsidschema.territorios on territorios.idterritorio= archivo2territorios.territorio_id 
-	                        LEFT JOIN ngmepschema.listamunicipios on territorios.nomen_id= listamunicipios.identidad 
+	                        LEFT JOIN ngmepschema.listamunicipios on territorios.ngmep_muni_id= listamunicipios.identidad 
 	                        LEFT JOIN bdsidschema.provincias on territorios.provincia= provincias.idprovincia 
                         WHERE archivo.idarchivo={idArchivo}
                           group by archivo.idarchivo,archivo.numdoc,archivo.escala,archivo.tomo,archivo.coleccion,archivo.subdivision,archivo.fechaprincipal,archivo.tipo_fechaprincipal,
@@ -603,7 +616,6 @@
             createAt = IIf(dR("fechacreacion").ToString = "", "No registrada", dR("fechacreacion").ToString)
             updateAt = IIf(dR("fechamodificacion").ToString = "", "No hay ediciones", dR("fechamodificacion").ToString)
             userCreator = dR("user_create").ToString
-
             'If flag_CargarFicherosGEO Then
             '    getGeoFiles()
             '    getGeoFilesFromDatabase()
@@ -640,11 +652,13 @@
     ''' <summary>
     ''' Busca los ficheros georreferenciados escaneando el directorio
     ''' </summary>
-    Sub getGeoFiles()
+    Sub getGeoFiles(Optional forzar As Boolean = False, Optional buscarEPSG23030 As Boolean = True, Optional buscarEPSG25830 As Boolean = True)
 
         Dim RutaDoc As String
         Dim contador As Integer
-        If getGeoFilesConsultado Then Exit Sub
+        If Not forzar Then
+            If getGeoFilesConsultado Then Exit Sub
+        End If
         listaFicherosGeo.Clear()
 
         'Si no hay acceso al repositorio Base, directamente salgo
@@ -652,8 +666,9 @@
 
         'Vamos a analizar los siguientes EPSGs
         Dim lstEPSG As New ArrayList
-        lstEPSG.Add("epsg23030")
-        lstEPSG.Add("epsg25830")
+
+        If buscarEPSG23030 Then lstEPSG.Add("epsg23030")
+        If buscarEPSG25830 Then lstEPSG.Add("epsg25830")
 
         For Each Muni As String In listaCodMuniHistorico
             For Each epsgCode As String In lstEPSG
@@ -688,12 +703,13 @@
             For Each Muni As String In listaCodMuniHistorico
                 RutaDoc = $"{rutaRepoGeorrefBase}\{epsgCode}\{DirRepoProvinciaByTipodoc(tipoDocumento.idTipodoc)}\{Muni.Substring(0, 2)}\{Muni}\{Sellado}_01.ecw"
                 If IO.File.Exists(RutaDoc) Then
-                    listaFicherosGeo.Add(New FileGeorref With {
-                        .NameFile = $"{Sellado}_01.ecw",
-                        .PathFile = RutaDoc,
-                        .EPSCode = epsgCode
-                    })
-                    contador = 1
+                    'listaFicherosGeo.Add(New FileGeorref With {
+                    '    .NameFile = $"{Sellado}_01.ecw",
+                    '    .PathFile = RutaDoc,
+                    '    .EPSCode = epsgCode,
+                    '    .Index = 1
+                    '})
+                    contador = 0
                     Do Until contador = 20
                         contador += 1
                         RutaDoc = $"{rutaRepoGeorrefBase}\{epsgCode}\{DirRepoProvinciaByTipodoc(tipoDocumento.idTipodoc)}\{Muni.Substring(0, 2)}\{Muni}\{Sellado}_{String.Format("{0:00}", contador)}.ecw"
@@ -701,7 +717,8 @@
                             listaFicherosGeo.Add(New FileGeorref With {
                                 .NameFile = $"{Sellado}_{String.Format("{0:00}", contador)}.ecw",
                                 .PathFile = RutaDoc,
-                                .EPSCode = epsgCode
+                                .EPSCode = epsgCode,
+                                .Index = contador
                             })
                         End If
                     Loop
