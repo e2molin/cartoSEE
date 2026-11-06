@@ -40,8 +40,11 @@ Public Class frmExport
         resultDocumentos.flag_ActualizarInfoGeom = True
         resultDocumentos.flag_CargarFicherosGEO = True
         resultDocumentos.flag_CargarFicherosGEOSoloETRS89 = True
-        'resultDocumentos.getDocsSIDDAE_ByFiltroSellado("archivo.provincia_id=" & cProv & " AND tipodoc_id IN (" & seqTiposDoc & ")")
-        resultDocumentos.getDocsSIDDAE_ByFiltroSellado("tipodoc_id=8 and cdd_fecha is null")
+        resultDocumentos.getDocsSIDDAE_ByFiltroSellado("archivo.provincia_id=" & cProv & " AND tipodoc_id IN (" & seqTiposDoc & ")")
+        'resultDocumentos.getDocsSIDDAE_ByFiltroSellado("tipodoc_id=8 and cdd_fecha is null")
+        'resultDocumentos.getDocsSIDDAE_ByFiltroSellado("numdoc IN ('010305','010327')")
+
+
 
         If resultDocumentos.resultados.Count = 0 Then
             ModalInfo("No se han encontrado documentos para el CdD")
@@ -63,7 +66,7 @@ Public Class frmExport
             ModalExclamation(ex.Message)
         End Try
         proce = New procGenerateHTMLReport
-        proce.CopyFiles2DirectoryToCDD(resultDocumentos.resultados, folderOUT, tiposdocu2CDD, RadioButton2.Checked)
+        proce.CopyFiles2DirectoryToCDD(resultDocumentos.resultados, folderOUT, RadioButton2.Checked)
         proce = Nothing
         ToolStripProgressBar1.Visible = False
         ToolStripStatusLabel1.Text = "Documentos procesados: " & resultDocumentos.resultados.Count
@@ -93,7 +96,7 @@ Public Class frmExport
 
         txtDirTarget.Text = unidadActualizCDD
 
-        txtDirTarget.Text = "\\10.67.32.101\cartoteca_temp\archivo\"
+
 
         DateTimePicker3.Value = CDate(Now.AddDays(-180))
         DateTimePicker4.Value = CDate(Now)
@@ -117,6 +120,9 @@ Public Class frmExport
                             WHERE subtipo='Itinerarios con brújula' 
                             GROUP BY fechafilecdd order by fechafilecdd limit 1", infoLastCdD)
         Label11.Text = infoLastCdD
+
+        txtFiltroSQL.Text = "tipodoc_id=8 and cdd_fecha is null"
+        txtDirTarget.Text = "D:\volcadosCDD\20261106_ppcuad\"
 
 
     End Sub
@@ -456,7 +462,53 @@ Public Class frmExport
 
     End Sub
 
-    Private Sub Button3_Click_1(sender As Object, e As EventArgs)
 
+
+    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+
+        Dim folderOUT As String
+        Dim proce As procGenerateHTMLReport
+
+        If Not System.IO.Directory.Exists(txtDirTarget.Text.Trim) Then
+            ModalExclamation("El directorio no existe")
+            Exit Sub
+        End If
+
+        Dim resultDocumentos As New docCartoSEEquery
+        Me.Cursor = Cursors.WaitCursor
+        resultDocumentos.flag_ActualizarInfoGeom = True
+        resultDocumentos.flag_CargarFicherosGEO = True
+        resultDocumentos.flag_CargarFicherosGEOSoloETRS89 = True
+        resultDocumentos.getDocsSIDDAE_ByFiltroSellado(txtFiltroSQL.Text)
+
+        If resultDocumentos.resultados.Count = 0 Then
+            ModalInfo("No se han encontrado documentos para el CdD")
+            Exit Sub
+        End If
+
+        If ModalQuestion($"Se van a procesar {resultDocumentos.resultados.Count} documentos. ¿Continuar?") <> DialogResult.Yes Then
+            Me.Cursor = Cursors.Default
+            Exit Sub
+        End If
+
+        ToolStripStatusLabel1.Text = "GEODOCAT. Procesando resultados del filtro."
+        folderOUT = txtDirTarget.Text.Trim
+        folderOUT = IIf(folderOUT.EndsWith("\"), folderOUT, $"{folderOUT}\")
+        Try
+            If Not IO.Directory.Exists(folderOUT) Then
+                IO.Directory.CreateDirectory(folderOUT)
+            End If
+        Catch ex As Exception
+            ModalExclamation(ex.Message)
+        End Try
+        proce = New procGenerateHTMLReport
+        proce.CopyFiles2DirectoryToCDD(resultDocumentos.resultados, folderOUT, RadioButton2.Checked)
+        proce = Nothing
+        ToolStripStatusLabel2.Text = $"Documentos procesados: {resultDocumentos.resultados.Count}"
+        resultDocumentos.resultados.Clear()
+        resultDocumentos = Nothing
+        Me.Cursor = Cursors.Default
+
+        ModalInfo("Proceso terminado")
     End Sub
 End Class

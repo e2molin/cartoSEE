@@ -60,6 +60,10 @@ Partial Class frmExport
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.Button2 = New System.Windows.Forms.Button()
         Me.TabPage3 = New System.Windows.Forms.TabPage()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.RadioButton2 = New System.Windows.Forms.RadioButton()
+        Me.RadioButton1 = New System.Windows.Forms.RadioButton()
+        Me.CheckedListBox1 = New System.Windows.Forms.CheckedListBox()
         Me.cboProvincias = New System.Windows.Forms.ComboBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.btnProcessProvin = New System.Windows.Forms.Button()
@@ -67,10 +71,10 @@ Partial Class frmExport
         Me.chkCopyTest = New System.Windows.Forms.CheckBox()
         Me.chkOverWrite = New System.Windows.Forms.CheckBox()
         Me.CheckBox2 = New System.Windows.Forms.CheckBox()
-        Me.CheckedListBox1 = New System.Windows.Forms.CheckedListBox()
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
-        Me.RadioButton2 = New System.Windows.Forms.RadioButton()
-        Me.RadioButton1 = New System.Windows.Forms.RadioButton()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.txtFiltroSQL = New System.Windows.Forms.TextBox()
+        Me.Button3 = New System.Windows.Forms.Button()
+        Me.ToolStripStatusLabel2 = New System.Windows.Forms.ToolStripStatusLabel()
         Me.StatusStrip1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
@@ -82,7 +86,7 @@ Partial Class frmExport
         '
         'txtDirTarget
         '
-        Me.txtDirTarget.Location = New System.Drawing.Point(21, 521)
+        Me.txtDirTarget.Location = New System.Drawing.Point(21, 599)
         Me.txtDirTarget.Name = "txtDirTarget"
         Me.txtDirTarget.Size = New System.Drawing.Size(495, 20)
         Me.txtDirTarget.TabIndex = 2
@@ -90,7 +94,7 @@ Partial Class frmExport
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(18, 498)
+        Me.Label2.Location = New System.Drawing.Point(18, 576)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(96, 13)
         Me.Label2.TabIndex = 3
@@ -99,7 +103,7 @@ Partial Class frmExport
         'Button1
         '
         Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
-        Me.Button1.Location = New System.Drawing.Point(522, 506)
+        Me.Button1.Location = New System.Drawing.Point(522, 584)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(187, 36)
         Me.Button1.TabIndex = 4
@@ -109,8 +113,8 @@ Partial Class frmExport
         '
         'StatusStrip1
         '
-        Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1, Me.ToolStripProgressBar1})
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 557)
+        Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1, Me.ToolStripProgressBar1, Me.ToolStripStatusLabel2})
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 644)
         Me.StatusStrip1.Name = "StatusStrip1"
         Me.StatusStrip1.Size = New System.Drawing.Size(874, 22)
         Me.StatusStrip1.TabIndex = 6
@@ -130,7 +134,7 @@ Partial Class frmExport
         'chkCreateINDEX
         '
         Me.chkCreateINDEX.AutoSize = True
-        Me.chkCreateINDEX.Location = New System.Drawing.Point(362, 461)
+        Me.chkCreateINDEX.Location = New System.Drawing.Point(362, 539)
         Me.chkCreateINDEX.Name = "chkCreateINDEX"
         Me.chkCreateINDEX.Size = New System.Drawing.Size(211, 17)
         Me.chkCreateINDEX.TabIndex = 8
@@ -140,7 +144,7 @@ Partial Class frmExport
         'chkThumb
         '
         Me.chkThumb.AutoSize = True
-        Me.chkThumb.Location = New System.Drawing.Point(362, 369)
+        Me.chkThumb.Location = New System.Drawing.Point(362, 447)
         Me.chkThumb.Name = "chkThumb"
         Me.chkThumb.Size = New System.Drawing.Size(114, 17)
         Me.chkThumb.TabIndex = 10
@@ -151,7 +155,7 @@ Partial Class frmExport
         'chkCreateNEM
         '
         Me.chkCreateNEM.AutoSize = True
-        Me.chkCreateNEM.Location = New System.Drawing.Point(362, 415)
+        Me.chkCreateNEM.Location = New System.Drawing.Point(362, 493)
         Me.chkCreateNEM.Name = "chkCreateNEM"
         Me.chkCreateNEM.Size = New System.Drawing.Size(170, 17)
         Me.chkCreateNEM.TabIndex = 11
@@ -161,7 +165,7 @@ Partial Class frmExport
         'chkHTML
         '
         Me.chkHTML.AutoSize = True
-        Me.chkHTML.Location = New System.Drawing.Point(362, 484)
+        Me.chkHTML.Location = New System.Drawing.Point(362, 562)
         Me.chkHTML.Name = "chkHTML"
         Me.chkHTML.Size = New System.Drawing.Size(306, 17)
         Me.chkHTML.TabIndex = 12
@@ -173,7 +177,7 @@ Partial Class frmExport
         Me.chkCopiaFicheros.AutoSize = True
         Me.chkCopiaFicheros.Checked = True
         Me.chkCopiaFicheros.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkCopiaFicheros.Location = New System.Drawing.Point(21, 369)
+        Me.chkCopiaFicheros.Location = New System.Drawing.Point(21, 447)
         Me.chkCopiaFicheros.Name = "chkCopiaFicheros"
         Me.chkCopiaFicheros.Size = New System.Drawing.Size(184, 17)
         Me.chkCopiaFicheros.TabIndex = 13
@@ -184,7 +188,7 @@ Partial Class frmExport
         'chkMuniIndex
         '
         Me.chkMuniIndex.AutoSize = True
-        Me.chkMuniIndex.Location = New System.Drawing.Point(362, 392)
+        Me.chkMuniIndex.Location = New System.Drawing.Point(362, 470)
         Me.chkMuniIndex.Name = "chkMuniIndex"
         Me.chkMuniIndex.Size = New System.Drawing.Size(228, 17)
         Me.chkMuniIndex.TabIndex = 14
@@ -207,7 +211,7 @@ Partial Class frmExport
         Me.TextBox1.Location = New System.Drawing.Point(6, 23)
         Me.TextBox1.Multiline = True
         Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(740, 239)
+        Me.TextBox1.Size = New System.Drawing.Size(295, 115)
         Me.TextBox1.TabIndex = 16
         '
         'Label3
@@ -223,7 +227,7 @@ Partial Class frmExport
         'chkLinkDocGeo
         '
         Me.chkLinkDocGeo.AutoSize = True
-        Me.chkLinkDocGeo.Location = New System.Drawing.Point(362, 438)
+        Me.chkLinkDocGeo.Location = New System.Drawing.Point(362, 516)
         Me.chkLinkDocGeo.Name = "chkLinkDocGeo"
         Me.chkLinkDocGeo.Size = New System.Drawing.Size(150, 17)
         Me.chkLinkDocGeo.TabIndex = 18
@@ -239,7 +243,7 @@ Partial Class frmExport
         Me.TabControl1.Location = New System.Drawing.Point(15, 11)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(816, 352)
+        Me.TabControl1.Size = New System.Drawing.Size(816, 415)
         Me.TabControl1.TabIndex = 19
         '
         'TabPage1
@@ -437,6 +441,9 @@ Partial Class frmExport
         '
         'TabPage3
         '
+        Me.TabPage3.Controls.Add(Me.Button3)
+        Me.TabPage3.Controls.Add(Me.txtFiltroSQL)
+        Me.TabPage3.Controls.Add(Me.Label7)
         Me.TabPage3.Controls.Add(Me.GroupBox1)
         Me.TabPage3.Controls.Add(Me.CheckedListBox1)
         Me.TabPage3.Controls.Add(Me.cboProvincias)
@@ -445,95 +452,16 @@ Partial Class frmExport
         Me.TabPage3.Location = New System.Drawing.Point(4, 22)
         Me.TabPage3.Name = "TabPage3"
         Me.TabPage3.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage3.Size = New System.Drawing.Size(808, 326)
+        Me.TabPage3.Size = New System.Drawing.Size(808, 389)
         Me.TabPage3.TabIndex = 2
-        Me.TabPage3.Text = "Otra documentación"
+        Me.TabPage3.Text = "GEODOCAT"
         Me.TabPage3.UseVisualStyleBackColor = True
-        '
-        'cboProvincias
-        '
-        Me.cboProvincias.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboProvincias.FormattingEnabled = True
-        Me.cboProvincias.Location = New System.Drawing.Point(36, 45)
-        Me.cboProvincias.Name = "cboProvincias"
-        Me.cboProvincias.Size = New System.Drawing.Size(385, 21)
-        Me.cboProvincias.TabIndex = 31
-        '
-        'Label1
-        '
-        Me.Label1.AutoSize = True
-        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(33, 29)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(60, 13)
-        Me.Label1.TabIndex = 32
-        Me.Label1.Text = "Provincia"
-        '
-        'btnProcessProvin
-        '
-        Me.btnProcessProvin.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnProcessProvin.Image = CType(resources.GetObject("btnProcessProvin.Image"), System.Drawing.Image)
-        Me.btnProcessProvin.Location = New System.Drawing.Point(581, 260)
-        Me.btnProcessProvin.Name = "btnProcessProvin"
-        Me.btnProcessProvin.Size = New System.Drawing.Size(138, 36)
-        Me.btnProcessProvin.TabIndex = 6
-        Me.btnProcessProvin.Text = "Procesar"
-        Me.btnProcessProvin.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
-        Me.btnProcessProvin.UseVisualStyleBackColor = True
-        '
-        'CheckBox1
-        '
-        Me.CheckBox1.AutoSize = True
-        Me.CheckBox1.Location = New System.Drawing.Point(21, 392)
-        Me.CheckBox1.Name = "CheckBox1"
-        Me.CheckBox1.Size = New System.Drawing.Size(191, 17)
-        Me.CheckBox1.TabIndex = 20
-        Me.CheckBox1.Text = "Agrupar ficheros PDF por provincia"
-        Me.CheckBox1.UseVisualStyleBackColor = True
-        '
-        'chkCopyTest
-        '
-        Me.chkCopyTest.AutoSize = True
-        Me.chkCopyTest.Location = New System.Drawing.Point(21, 438)
-        Me.chkCopyTest.Name = "chkCopyTest"
-        Me.chkCopyTest.Size = New System.Drawing.Size(121, 17)
-        Me.chkCopyTest.TabIndex = 21
-        Me.chkCopyTest.Text = "Simulación de copia"
-        Me.chkCopyTest.UseVisualStyleBackColor = True
-        '
-        'chkOverWrite
-        '
-        Me.chkOverWrite.AutoSize = True
-        Me.chkOverWrite.Location = New System.Drawing.Point(21, 461)
-        Me.chkOverWrite.Name = "chkOverWrite"
-        Me.chkOverWrite.Size = New System.Drawing.Size(164, 17)
-        Me.chkOverWrite.TabIndex = 22
-        Me.chkOverWrite.Text = "Sobreescribir ficheros previos"
-        Me.chkOverWrite.UseVisualStyleBackColor = True
-        '
-        'CheckBox2
-        '
-        Me.CheckBox2.AutoSize = True
-        Me.CheckBox2.Location = New System.Drawing.Point(21, 415)
-        Me.CheckBox2.Name = "CheckBox2"
-        Me.CheckBox2.Size = New System.Drawing.Size(201, 17)
-        Me.CheckBox2.TabIndex = 23
-        Me.CheckBox2.Text = "Agrupar ficheros PDF por código INE"
-        Me.CheckBox2.UseVisualStyleBackColor = True
-        '
-        'CheckedListBox1
-        '
-        Me.CheckedListBox1.FormattingEnabled = True
-        Me.CheckedListBox1.Location = New System.Drawing.Point(36, 82)
-        Me.CheckedListBox1.Name = "CheckedListBox1"
-        Me.CheckedListBox1.Size = New System.Drawing.Size(385, 214)
-        Me.CheckedListBox1.TabIndex = 37
         '
         'GroupBox1
         '
         Me.GroupBox1.Controls.Add(Me.RadioButton2)
         Me.GroupBox1.Controls.Add(Me.RadioButton1)
-        Me.GroupBox1.Location = New System.Drawing.Point(427, 82)
+        Me.GroupBox1.Location = New System.Drawing.Point(36, 294)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(292, 89)
         Me.GroupBox1.TabIndex = 38
@@ -562,11 +490,126 @@ Partial Class frmExport
         Me.RadioButton1.Text = "Copiar sólo ficheros digitalizados JPG"
         Me.RadioButton1.UseVisualStyleBackColor = True
         '
+        'CheckedListBox1
+        '
+        Me.CheckedListBox1.FormattingEnabled = True
+        Me.CheckedListBox1.Location = New System.Drawing.Point(36, 82)
+        Me.CheckedListBox1.Name = "CheckedListBox1"
+        Me.CheckedListBox1.Size = New System.Drawing.Size(385, 94)
+        Me.CheckedListBox1.TabIndex = 37
+        '
+        'cboProvincias
+        '
+        Me.cboProvincias.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboProvincias.FormattingEnabled = True
+        Me.cboProvincias.Location = New System.Drawing.Point(36, 45)
+        Me.cboProvincias.Name = "cboProvincias"
+        Me.cboProvincias.Size = New System.Drawing.Size(385, 21)
+        Me.cboProvincias.TabIndex = 31
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Location = New System.Drawing.Point(33, 29)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(60, 13)
+        Me.Label1.TabIndex = 32
+        Me.Label1.Text = "Provincia"
+        '
+        'btnProcessProvin
+        '
+        Me.btnProcessProvin.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnProcessProvin.Image = CType(resources.GetObject("btnProcessProvin.Image"), System.Drawing.Image)
+        Me.btnProcessProvin.Location = New System.Drawing.Point(427, 140)
+        Me.btnProcessProvin.Name = "btnProcessProvin"
+        Me.btnProcessProvin.Size = New System.Drawing.Size(138, 36)
+        Me.btnProcessProvin.TabIndex = 6
+        Me.btnProcessProvin.Text = "Procesar"
+        Me.btnProcessProvin.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.btnProcessProvin.UseVisualStyleBackColor = True
+        '
+        'CheckBox1
+        '
+        Me.CheckBox1.AutoSize = True
+        Me.CheckBox1.Location = New System.Drawing.Point(21, 470)
+        Me.CheckBox1.Name = "CheckBox1"
+        Me.CheckBox1.Size = New System.Drawing.Size(191, 17)
+        Me.CheckBox1.TabIndex = 20
+        Me.CheckBox1.Text = "Agrupar ficheros PDF por provincia"
+        Me.CheckBox1.UseVisualStyleBackColor = True
+        '
+        'chkCopyTest
+        '
+        Me.chkCopyTest.AutoSize = True
+        Me.chkCopyTest.Location = New System.Drawing.Point(21, 516)
+        Me.chkCopyTest.Name = "chkCopyTest"
+        Me.chkCopyTest.Size = New System.Drawing.Size(121, 17)
+        Me.chkCopyTest.TabIndex = 21
+        Me.chkCopyTest.Text = "Simulación de copia"
+        Me.chkCopyTest.UseVisualStyleBackColor = True
+        '
+        'chkOverWrite
+        '
+        Me.chkOverWrite.AutoSize = True
+        Me.chkOverWrite.Location = New System.Drawing.Point(21, 539)
+        Me.chkOverWrite.Name = "chkOverWrite"
+        Me.chkOverWrite.Size = New System.Drawing.Size(164, 17)
+        Me.chkOverWrite.TabIndex = 22
+        Me.chkOverWrite.Text = "Sobreescribir ficheros previos"
+        Me.chkOverWrite.UseVisualStyleBackColor = True
+        '
+        'CheckBox2
+        '
+        Me.CheckBox2.AutoSize = True
+        Me.CheckBox2.Location = New System.Drawing.Point(21, 493)
+        Me.CheckBox2.Name = "CheckBox2"
+        Me.CheckBox2.Size = New System.Drawing.Size(201, 17)
+        Me.CheckBox2.TabIndex = 23
+        Me.CheckBox2.Text = "Agrupar ficheros PDF por código INE"
+        Me.CheckBox2.UseVisualStyleBackColor = True
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label7.Location = New System.Drawing.Point(33, 208)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(196, 13)
+        Me.Label7.TabIndex = 39
+        Me.Label7.Text = "Filtro SQL  (sin cláusula WHERE)"
+        '
+        'txtFiltroSQL
+        '
+        Me.txtFiltroSQL.Location = New System.Drawing.Point(36, 224)
+        Me.txtFiltroSQL.Multiline = True
+        Me.txtFiltroSQL.Name = "txtFiltroSQL"
+        Me.txtFiltroSQL.Size = New System.Drawing.Size(518, 55)
+        Me.txtFiltroSQL.TabIndex = 40
+        '
+        'Button3
+        '
+        Me.Button3.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.Button3.Image = CType(resources.GetObject("Button3.Image"), System.Drawing.Image)
+        Me.Button3.Location = New System.Drawing.Point(560, 243)
+        Me.Button3.Name = "Button3"
+        Me.Button3.Size = New System.Drawing.Size(138, 36)
+        Me.Button3.TabIndex = 41
+        Me.Button3.Text = "Procesar SQL"
+        Me.Button3.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.Button3.UseVisualStyleBackColor = True
+        '
+        'ToolStripStatusLabel2
+        '
+        Me.ToolStripStatusLabel2.Name = "ToolStripStatusLabel2"
+        Me.ToolStripStatusLabel2.Size = New System.Drawing.Size(120, 17)
+        Me.ToolStripStatusLabel2.Text = "ToolStripStatusLabel2"
+        '
         'frmExport
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(874, 579)
+        Me.ClientSize = New System.Drawing.Size(874, 666)
         Me.Controls.Add(Me.CheckBox2)
         Me.Controls.Add(Me.chkOverWrite)
         Me.Controls.Add(Me.chkCopyTest)
@@ -651,4 +694,8 @@ Partial Class frmExport
     Friend WithEvents GroupBox1 As GroupBox
     Friend WithEvents RadioButton2 As RadioButton
     Friend WithEvents RadioButton1 As RadioButton
+    Friend WithEvents Button3 As Button
+    Friend WithEvents txtFiltroSQL As TextBox
+    Friend WithEvents Label7 As Label
+    Friend WithEvents ToolStripStatusLabel2 As ToolStripStatusLabel
 End Class

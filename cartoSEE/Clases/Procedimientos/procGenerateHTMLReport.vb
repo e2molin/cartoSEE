@@ -664,73 +664,113 @@
 
     End Function
 
-    Function CopyFiles2DirectoryToCDD(lista As ArrayList, folderOUT As String, tiposdocu2CDD As ArrayList, procesarGeorref As Boolean) As Boolean
+    Function CopyFiles2DirectoryToCDD(lista As ArrayList, folderIN As String, procesarGeorref As Boolean) As Boolean
 
 
         Dim indexProc As Integer
         Dim pathOrigen As String
         Dim pathDestino As String
         Dim pathDestinoPRJ As String
-
+        Dim folderOUT As String
         Dim folderFileOut As String
         Dim extensionFile As String
         Dim nombreFileOut As String
 
-        If Not folderOUT.EndsWith("\") Then folderOUT &= "\"
+        If Not folderIN.EndsWith("\") Then folderIN &= "\"
         Me.Text = "Copia de los ficheros JPG+ECW en ZIP para el Centro de Descargas"
         Label1.Text = "Copiando los ficheros JPG+ECW para el Centro de Descargas"
         ProgressBar1.Minimum = 0
         ProgressBar1.Maximum = lista.Count
         Me.Show()
 
-        If Not IO.Directory.Exists(folderOUT) Then
-            MessageBox.Show("La ruta destino de los ficheros no existe", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+        If Not IO.Directory.Exists(folderIN) Then
+            ModalExclamation("La ruta destino de los ficheros no existe")
             Me.Close()
             Return False
         End If
-        If Not IO.Directory.Exists(folderOUT & "archivos\") Then IO.Directory.CreateDirectory(folderOUT & "archivos\")
+        'Los archivos irán aquí
+        folderOUT &= $"{folderIN}archivos\"
+        If Not IO.Directory.Exists(folderOUT) Then IO.Directory.CreateDirectory(folderOUT)
 
-        Using archivoZIP As New IO.StreamWriter(folderOUT & "archivos\zipProc.bat", False, System.Text.Encoding.Default)
-            Using archivoLog As New IO.StreamWriter(folderOUT & "archivos\_logCopy.log", False, System.Text.Encoding.UTF8)
-                Using archivoFileToMuni As New IO.StreamWriter(folderOUT & "\files2codigosINE.txt", False, System.Text.Encoding.UTF8)
-                    Using archivoAlias As New IO.StreamWriter(folderOUT & "\files2atributos.txt", False, System.Text.Encoding.UTF8)
-                        Using sentenciaSQL As New IO.StreamWriter(folderOUT & "\database.sql", False, System.Text.Encoding.UTF8)
-                            Using docsDeleteFromCdd As New IO.StreamWriter(folderOUT & "\docsTodelete.sql", False, System.Text.Encoding.UTF8)
+        Using archivoZIP As New IO.StreamWriter(folderOUT & "zipProc.bat", False, System.Text.Encoding.Default)
+            Using archivoLog As New IO.StreamWriter(folderOUT & "_logCopy.log", False, System.Text.Encoding.UTF8)
+                Using archivoFileToMuni As New IO.StreamWriter(folderIN & "files2codigosINE.txt", False, System.Text.Encoding.UTF8)
+                    Using archivoAlias As New IO.StreamWriter(folderIN & "files2atributos.txt", False, System.Text.Encoding.UTF8)
+                        Using sentenciaSQL As New IO.StreamWriter(folderIN & "database.sql", False, System.Text.Encoding.UTF8)
+                            Using docsDeleteFromCdd As New IO.StreamWriter(folderIN & "\docsTodelete.sql", False, System.Text.Encoding.UTF8)
                                 archivoFileToMuni.WriteLine("idProductor;Códigos INE de municipio asociado")
                                 archivoAlias.WriteLine("idProductor;Fichero;Temática;Alias;Escala;Autoría;Fecha;TipoFichero")
                                 docsDeleteFromCdd.WriteLine("idProductor;Fichero")
                                 For Each documento As docCartoSEE In lista
-                                    If tiposdocu2CDD.IndexOf(documento.tipoDocumento.idTipodoc) = -1 Then Continue For
                                     indexProc += 1
                                     ProgressBar1.Value = indexProc
                                     Label2.Text = $"Procesando {indexProc} de {documento.Provincias}"
                                     Application.DoEvents()
-
-                                    'Ahora preparamos el documento digitalizado
-                                    'Probamos si existe el JPG de baja resolución
-
+                                    'Preparamos la carpeta que contendrá los ficheros de cada documento
+                                    folderFileOut = folderOUT
+                                    'Si queremos exportar sólo la digitalización
                                     If IO.File.Exists(documento.rutaFicheroPDF) Then
                                         pathOrigen = documento.rutaFicheroPDF
                                         extensionFile = "PDF"
                                         nombreFileOut = documento.nameFilePropuestoParaCDD("pdf")
-                                        If procesarGeorref Then
-                                            extensionFile = IIf(documento.listaFicherosGeo.Count = 0, "PDF", "ZIP")
-                                            nombreFileOut = IIf(documento.listaFicherosGeo.Count = 0, nombreFileOut, documento.nameFilePropuestoParaCDD("zip"))
-                                        End If
                                         pathDestino = folderFileOut & nombreFileOut
                                     ElseIf IO.File.Exists(documento.rutaFicheroBajaRes) Then
                                         pathOrigen = documento.rutaFicheroBajaRes
                                         extensionFile = "JPG"
                                         nombreFileOut = documento.nameFilePropuestoParaCDD("jpg")
-                                        If procesarGeorref Then
-                                            extensionFile = IIf(documento.listaFicherosGeo.Count = 0, "JPG", "ZIP")
-                                            nombreFileOut = IIf(documento.listaFicherosGeo.Count = 0, nombreFileOut, documento.nameFilePropuestoParaCDD("zip"))
-                                        End If
                                         pathDestino = folderFileOut & nombreFileOut
                                     Else
                                         'No encontramos el fichero digital
                                         Application.DoEvents()
+                                        archivoLog.WriteLine($"#COPIA ERRONEA#El documento {documento.Sellado} no tiene imagen digital")
+                                        Continue For
                                     End If
+
+                                    'Pero si queremos exportar la georreferenciación, si la hay
+                                    If procesarGeorref And documento.listaFicherosGeo.Count > 0 Then
+                                        extensionFile = "ZIP"
+                                        nombreFileOut = documento.nameFilePropuestoParaCDD("zip")
+                                        folderFileOut = $"{folderOUT}{documento.nameFilePropuestoParaCDD()}\"
+                                        If Not IO.Directory.Exists(folderFileOut) Then IO.Directory.CreateDirectory(folderFileOut)
+                                        If IO.File.Exists(documento.rutaFicheroPDF) Then
+                                            pathDestino = folderFileOut & documento.nameFilePropuestoParaCDD("pdf")
+                                        ElseIf IO.File.Exists(documento.rutaFicheroBajaRes) Then
+                                            pathDestino = folderFileOut & documento.nameFilePropuestoParaCDD("jpg")
+                                        End If
+                                    End If
+
+                                    '    'Ahora preparamos el documento digitalizado
+                                    '    'Probamos si existe el JPG de baja resolución
+                                    '    If IO.File.Exists(documento.rutaFicheroPDF) Then
+                                    '    pathOrigen = documento.rutaFicheroPDF
+                                    '    extensionFile = "PDF"
+                                    '    nombreFileOut = documento.nameFilePropuestoParaCDD("pdf")
+                                    '    pathDestino = folderFileOut & nombreFileOut
+                                    '    If procesarGeorref And documento.listaFicherosGeo.Count > 0 Then
+                                    '        extensionFile = IIf(documento.listaFicherosGeo.Count = 0, "PDF", "ZIP")
+                                    '        nombreFileOut = IIf(documento.listaFicherosGeo.Count = 0, nombreFileOut, documento.nameFilePropuestoParaCDD("zip"))
+                                    '        folderFileOut = $"{folderOUT}{documento.nameFilePropuestoParaCDD()}\"
+                                    '        If Not IO.Directory.Exists(folderFileOut) Then IO.Directory.CreateDirectory(folderFileOut)
+                                    '        pathDestino = folderFileOut & documento.nameFilePropuestoParaCDD("pdf")
+                                    '    End If
+                                    'ElseIf IO.File.Exists(documento.rutaFicheroBajaRes) Then
+                                    '    pathOrigen = documento.rutaFicheroBajaRes
+                                    '    extensionFile = "JPG"
+                                    '    nombreFileOut = documento.nameFilePropuestoParaCDD("jpg")
+                                    '    pathDestino = folderFileOut & nombreFileOut
+                                    '    If procesarGeorref And documento.listaFicherosGeo.Count > 0 Then
+                                    '        extensionFile = IIf(documento.listaFicherosGeo.Count = 0, "JPG", "ZIP")
+                                    '        nombreFileOut = IIf(documento.listaFicherosGeo.Count = 0, nombreFileOut, documento.nameFilePropuestoParaCDD("zip"))
+                                    '        folderFileOut = $"{folderOUT}{documento.nameFilePropuestoParaCDD()}\"
+                                    '        If Not IO.Directory.Exists(folderFileOut) Then IO.Directory.CreateDirectory(folderFileOut)
+                                    '        pathDestino = folderFileOut & documento.nameFilePropuestoParaCDD("jpg")
+                                    '    End If
+                                    'Else
+                                    '    'No encontramos el fichero digital
+                                    '    Application.DoEvents()
+                                    '    archivoLog.WriteLine($"#COPIA ERRONEA#El documento {documento.Sellado} no tiene imagen digital")
+                                    '    Continue For
+                                    'End If
 
                                     archivoAlias.WriteLine(documento.getIdProductor4CdD & ";" &
                                                    nombreFileOut & ";" &
@@ -747,16 +787,6 @@
                                                             cdd_titulo = E'{documento.getCdDAlias.Replace("'", "\'")}' 
                                                             WHERE sellado={documento.getIdProductor4CdD};")
 
-                                    'Preparamos la carpeta que contendrá los ficheros de cada documento
-                                    folderFileOut = $"{folderOUT}archivos\"
-                                    If procesarGeorref Then
-                                        If documento.listaFicherosGeo.Count > 0 Then
-                                            folderFileOut = $"{folderOUT}archivos\{documento.nameFilePropuestoParaCDD()}\"
-                                        End If
-                                    End If
-                                    If Not IO.Directory.Exists(folderFileOut) Then IO.Directory.CreateDirectory(folderFileOut)
-
-
                                     Try
                                         IO.File.Copy(pathOrigen, pathDestino, True)
                                         archivoLog.WriteLine($"*COPIA CORRECTA*{pathOrigen}#{pathDestino}")
@@ -770,7 +800,6 @@
 
                                     'Ahora preparamos georreferenciados, si se han pedido
                                     If procesarGeorref Then
-
                                         'Después copiamos el ECW si los hay
                                         For Each fileGeo As FileGeorref In documento.listaFicherosGeo
                                             pathOrigen = fileGeo.PathFile
@@ -790,7 +819,7 @@
                                             End Try
                                         Next
                                         If documento.listaFicherosGeo.Count > 0 Then
-                                            archivoZIP.WriteLine("""" & path7zUtility & """ a " & folderOUT & "archivos\" & documento.nameFilePropuestoParaCDD("zip") & " """ & folderFileOut & """")
+                                            archivoZIP.WriteLine("""" & path7zUtility & """ a " & folderOUT & documento.nameFilePropuestoParaCDD("zip") & " """ & folderFileOut & """")
                                             archivoZIP.WriteLine("del /S /Q """ & folderFileOut & """")
                                             archivoZIP.WriteLine("rd """ & folderFileOut & """")
                                         End If

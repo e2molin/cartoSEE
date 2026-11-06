@@ -118,7 +118,7 @@ Public Class frmExportCdD
             ModalExclamation(ex.Message)
         End Try
         proce = New procGenerateHTMLReport
-        proce.copyFiles2DirectoryToCDD(resultDocumentos.resultados, folderOUT, tiposdocu2CDD, RadioButton2.Checked)
+        proce.CopyFiles2DirectoryToCDD(resultDocumentos.resultados, folderOUT, RadioButton2.Checked)
         proce = Nothing
         ToolStripProgressBar1.Visible = False
         ToolStripStatusLabel1.Text = "Documentos procesados: " & resultDocumentos.resultados.Count
@@ -215,6 +215,11 @@ Public Class frmExportCdD
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click, Button3.Click
 
+        ModalExclamation("Procedimiento en revisión")
+        Exit Sub
+
+
+
         Dim listaTerris As New ArrayList
         Dim tiposdocu2CDD As New ArrayList
         Dim proce As procGenerateHTMLReport
@@ -288,7 +293,7 @@ Public Class frmExportCdD
         End Try
 
         proce = New procGenerateHTMLReport
-        proce.CopyFiles2DirectoryToCDD(resultDocumentos.resultados, folderOUT, tiposdocu2CDD, RadioButton2.Checked)
+        proce.CopyFiles2DirectoryToCDD(resultDocumentos.resultados, folderOUT, RadioButton2.Checked)
         proce = Nothing
         ToolStripProgressBar1.Visible = False
         ToolStripStatusLabel1.Text = "Documentos procesados: " & resultDocumentos.resultados.Count
