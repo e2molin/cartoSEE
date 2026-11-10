@@ -83,11 +83,9 @@ Public Class frmExport
     Private Sub frmExport_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
         Dim contadorProv As Integer = 0
-        cboProvincias.Items.Add(New itemData("(Procesar todas)", 0))
 
         For Each Provincia As DataRow In ListaProvincias.Select
-            contadorProv += 1
-            cboProvincias.Items.Add(New itemData(Provincia.ItemArray(1).ToString, contadorProv))
+            CheckedListBox2.Items.Add(New itemData(Provincia.ItemArray(1).ToString, Provincia.ItemArray(0)), False)
         Next
 
         For Each tipoDocu As docCartoSEETipoDocu In tiposDocSIDCARTO
@@ -102,7 +100,6 @@ Public Class frmExport
         DateTimePicker4.Value = CDate(Now)
         cancelar = False
         ToolStripStatusLabel1.Text = "Seleccione provincia"
-        TextBox1.Text = "iddocsiddae in (Select docsiddae_id from bdsidschema.docsiddaelog where fecha_update between'2019-02-11' and '2019-11-15') or (fecha_alta between '2019-02-11' and '2019-11-15') Or subtipo='1925'"
 
         CheckBox1.Visible = usuarioMyApp.permisos.usuarioISTARI
         chkHTML.Visible = usuarioMyApp.permisos.usuarioISTARI
@@ -110,8 +107,7 @@ Public Class frmExport
         chkMuniIndex.Visible = usuarioMyApp.permisos.usuarioISTARI
         chkCreateNEM.Visible = usuarioMyApp.permisos.usuarioISTARI
         chkLinkDocGeo.Visible = usuarioMyApp.permisos.usuarioISTARI
-        chkCreateINDEX.Visible = usuarioMyApp.permisos.usuarioISTARI
-
+        chkCreateINDEX.Visible = usuarioMyApp.Permisos.usuarioISTARI
 
         Dim infoLastCdD As String = ""
 
@@ -123,68 +119,11 @@ Public Class frmExport
 
         txtFiltroSQL.Text = "tipodoc_id=8 and cdd_fecha is null"
         txtDirTarget.Text = "D:\volcadosCDD\20261106_ppcuad\"
-
-
-    End Sub
-
-
-    Private Sub btnSpecialProc_Click(sender As System.Object, e As System.EventArgs) Handles btnSpecialProc.Click
-
-
-
-
-        Dim filtroSQL As String
-        filtroSQL = TextBox1.Text
-        If filtroSQL = "" Then
-            MessageBox.Show("Escriba un filtro SQL", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-            Exit Sub
-        End If
-        Application.DoEvents()
-        procesarListaDocsCdD(txtDirTarget.Text, filtroSQL, "Actas y cuadernos")
-        MessageBox.Show("Proceso terminado", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
-
-
-
-
-
-
-
+        ToolStripStatusLabel1.Text = ""
+        ToolStripStatusLabel2.Text = ""
 
     End Sub
 
-    Private Sub btnProcess_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-
-        If cboProvincias.SelectedIndex = -1 Then
-            MessageBox.Show("Selecciona una provincia", AplicacionTitulo, MessageBoxButtons.OK, MessageBoxIcon.Information)
-            Exit Sub
-        End If
-
-        If cboProvincias.Text = "(Procesar todas)" Then
-            ToolStripProgressBar1.Minimum = 0
-            ToolStripProgressBar1.Maximum = 50
-            For ibucle = 1 To 50
-                ToolStripProgressBar1.Value = ibucle
-                Application.DoEvents()
-                procesarListaDocsCdD(txtDirTarget.Text, "docsiddae.provincia=" & ibucle, ibucle)
-            Next
-            ModalInfo("Proceso terminado")
-            Exit Sub
-        End If
-
-        If Not IO.Directory.Exists(txtDirTarget.Text.Trim) Then
-            ModalExclamation("El directorio no existe")
-            Exit Sub
-        End If
-
-
-        ToolStripProgressBar1.Minimum = 0
-        ToolStripProgressBar1.Maximum = 2
-        ToolStripProgressBar1.Value = 1
-        procesarListaDocsCdD(txtDirTarget.Text, "docsiddae.provincia=" & CType(cboProvincias.SelectedItem, itemData).Valor, "Actas y cuadernos")
-
-        ModalInfo("Proceso terminado")
-
-    End Sub
 
     ''' <summary>
     ''' 
@@ -334,8 +273,6 @@ Public Class frmExport
     Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click, Button4.Click
 
         Dim filtroSQL As String
-        filtroSQL = TextBox1.Text
-
         Dim cadfechaDesde As String
         Dim cadfechaHasta As String
         cadfechaDesde = DateTimePicker3.Value.Year & "-" &
@@ -344,8 +281,6 @@ Public Class frmExport
         cadfechaHasta = DateTimePicker4.Value.AddDays(1).Year & "-" &
                         String.Format("{0:00}", CInt(DateTimePicker4.Value.AddDays(1).Month.ToString)) & "-" &
                         String.Format("{0:00}", CInt(DateTimePicker4.Value.AddDays(1).Day.ToString))
-
-        'filtroSQL = "iddocsiddae in (Select docsiddae_id from bdsidschema.docsiddaelog where fecha_update between'" & cadfechaDesde & "' and '" & cadfechaHasta & "') " &"or (fecha_alta between '" & cadfechaDesde & "' and '" & cadfechaHasta & "')"
 
         If sender.name = "Button4" Then
             filtroSQL = "(subtipo='Itinerarios con brújula' and create_at between '" & cadfechaDesde & "' and '" & cadfechaHasta & "') OR
@@ -372,25 +307,6 @@ Public Class frmExport
 
     End Sub
 
-    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
-
-
-        Dim filtroSQL As String
-        filtroSQL = TextBox1.Text
-        If filtroSQL = "" Then
-            ModalExclamation("Escriba un filtro SQL")
-            Exit Sub
-        End If
-        Application.DoEvents()
-
-        filtroSQL = "idparceladato>0"
-        procesarListaDocsCdD(txtDirTarget.Text, filtroSQL, "Cédulas JGE")
-        ModalInfo("Proceso terminado")
-
-
-
-
-    End Sub
 
     Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click, Button7.Click
 
@@ -434,31 +350,78 @@ Public Class frmExport
 
     Private Sub btnProcessProvin_Click(sender As Object, e As EventArgs) Handles btnProcessProvin.Click
 
-        If cboProvincias.SelectedIndex = -1 Then
-            ModalExclamation("Selecciona una provincia")
+        If CheckedListBox1.CheckedItems.Count = 0 Then
+            ModalExclamation("Selecciona al menos un tipo de documento")
             Exit Sub
         End If
+        If CheckedListBox2.CheckedItems.Count = 0 Then
+            ModalExclamation("Selecciona al menos una provincia")
+            Exit Sub
+        End If
+
         If Not System.IO.Directory.Exists(txtDirTarget.Text.Trim) Then
             ModalExclamation("El directorio no existe")
             Exit Sub
         End If
 
-        If cboProvincias.Text = "(Procesar todas)" Then
-            ToolStripProgressBar1.Minimum = 0
-            ToolStripProgressBar1.Maximum = 50
-            For ibucle = 1 To 50
-                ToolStripProgressBar1.Value = ibucle
-                Application.DoEvents()
-                procesarProvinciaGEODOCAT4CdD(ibucle, txtDirTarget.Text)
-            Next
-        Else
-            ToolStripProgressBar1.Minimum = 0
-            ToolStripProgressBar1.Maximum = 2
-            ToolStripProgressBar1.Value = 1
-            procesarProvinciaGEODOCAT4CdD(CType(cboProvincias.SelectedItem, itemData).Valor, txtDirTarget.Text)
+        Dim seqTiposDoc As String = ""
+        Dim seqProvinId As String = ""
+        Dim folderOUT As String
+        Dim filtroSQL As String
+
+        For Each elem As itemData In CheckedListBox1.CheckedItems
+            If seqTiposDoc = "" Then seqTiposDoc = CType(elem.Valor, Integer) : Continue For
+            seqTiposDoc = seqTiposDoc & "," & CType(elem.Valor, Integer)
+        Next
+        For Each elem As itemData In CheckedListBox2.CheckedItems
+            If seqProvinId = "" Then seqProvinId = CType(elem.Valor, Integer) : Continue For
+            seqProvinId = $"{seqProvinId},{CType(elem.Valor, Integer)}"
+        Next
+
+        filtroSQL = $"tipodoc_id IN ({seqTiposDoc}) AND provincia_id IN ({seqProvinId})"
+
+        Dim proce As procGenerateHTMLReport
+
+        Dim resultDocumentos As New docCartoSEEquery
+        Me.Cursor = Cursors.WaitCursor
+        resultDocumentos.flag_ActualizarInfoGeom = True
+        resultDocumentos.flag_CargarFicherosGEO = True
+        resultDocumentos.flag_CargarFicherosGEOSoloETRS89 = True
+        resultDocumentos.getDocsSIDDAE_ByFiltroSellado(filtroSQL)
+
+        If resultDocumentos.resultados.Count = 0 Then
+            ModalInfo("No se han encontrado documentos para el CdD")
+            Exit Sub
         End If
 
+        If ModalQuestion($"Se van a procesar {resultDocumentos.resultados.Count} documentos. ¿Continuar?") <> DialogResult.Yes Then
+            Me.Cursor = Cursors.Default
+            Exit Sub
+        End If
+
+        ToolStripStatusLabel1.Text = "GEODOCAT. Procesando resultados del filtro."
+        folderOUT = txtDirTarget.Text.Trim
+        folderOUT = IIf(folderOUT.EndsWith("\"), folderOUT, $"{folderOUT}\")
+        Try
+            If Not IO.Directory.Exists(folderOUT) Then
+                IO.Directory.CreateDirectory(folderOUT)
+            End If
+        Catch ex As Exception
+            ModalExclamation(ex.Message)
+        End Try
+        proce = New procGenerateHTMLReport
+        proce.CopyFiles2DirectoryToCDD(resultDocumentos.resultados, folderOUT, RadioButton2.Checked)
+        proce = Nothing
+        ToolStripStatusLabel2.Text = $"Documentos procesados: {resultDocumentos.resultados.Count}"
+        resultDocumentos.resultados.Clear()
+        resultDocumentos = Nothing
+        Me.Cursor = Cursors.Default
+
         ModalInfo("Proceso terminado")
+
+
+
+
 
     End Sub
 
@@ -510,5 +473,17 @@ Public Class frmExport
         Me.Cursor = Cursors.Default
 
         ModalInfo("Proceso terminado")
+    End Sub
+
+    Private Sub CheckBox3_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox3.CheckedChanged
+        If CheckBox3.Checked Then
+            For i As Integer = 0 To CheckedListBox2.Items.Count - 1
+                CheckedListBox2.SetItemChecked(i, True)
+            Next
+        Else
+            For i As Integer = 0 To CheckedListBox2.Items.Count - 1
+                CheckedListBox2.SetItemChecked(i, False)
+            Next
+        End If
     End Sub
 End Class

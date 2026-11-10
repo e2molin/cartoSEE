@@ -29,6 +29,7 @@ Partial Class frmExport
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
         Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
         Me.ToolStripProgressBar1 = New System.Windows.Forms.ToolStripProgressBar()
+        Me.ToolStripStatusLabel2 = New System.Windows.Forms.ToolStripStatusLabel()
         Me.FolderBrowserDialog1 = New System.Windows.Forms.FolderBrowserDialog()
         Me.chkCreateINDEX = New System.Windows.Forms.CheckBox()
         Me.chkThumb = New System.Windows.Forms.CheckBox()
@@ -36,9 +37,6 @@ Partial Class frmExport
         Me.chkHTML = New System.Windows.Forms.CheckBox()
         Me.chkCopiaFicheros = New System.Windows.Forms.CheckBox()
         Me.chkMuniIndex = New System.Windows.Forms.CheckBox()
-        Me.btnSpecialProc = New System.Windows.Forms.Button()
-        Me.TextBox1 = New System.Windows.Forms.TextBox()
-        Me.Label3 = New System.Windows.Forms.Label()
         Me.chkLinkDocGeo = New System.Windows.Forms.CheckBox()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
@@ -57,29 +55,27 @@ Partial Class frmExport
         Me.Label5 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.Button5 = New System.Windows.Forms.Button()
-        Me.TabPage2 = New System.Windows.Forms.TabPage()
-        Me.Button2 = New System.Windows.Forms.Button()
         Me.TabPage3 = New System.Windows.Forms.TabPage()
+        Me.CheckBox3 = New System.Windows.Forms.CheckBox()
+        Me.Label8 = New System.Windows.Forms.Label()
+        Me.CheckedListBox2 = New System.Windows.Forms.CheckedListBox()
+        Me.Button3 = New System.Windows.Forms.Button()
+        Me.txtFiltroSQL = New System.Windows.Forms.TextBox()
+        Me.Label7 = New System.Windows.Forms.Label()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.RadioButton2 = New System.Windows.Forms.RadioButton()
         Me.RadioButton1 = New System.Windows.Forms.RadioButton()
         Me.CheckedListBox1 = New System.Windows.Forms.CheckedListBox()
-        Me.cboProvincias = New System.Windows.Forms.ComboBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.btnProcessProvin = New System.Windows.Forms.Button()
         Me.CheckBox1 = New System.Windows.Forms.CheckBox()
         Me.chkCopyTest = New System.Windows.Forms.CheckBox()
         Me.chkOverWrite = New System.Windows.Forms.CheckBox()
         Me.CheckBox2 = New System.Windows.Forms.CheckBox()
-        Me.Label7 = New System.Windows.Forms.Label()
-        Me.txtFiltroSQL = New System.Windows.Forms.TextBox()
-        Me.Button3 = New System.Windows.Forms.Button()
-        Me.ToolStripStatusLabel2 = New System.Windows.Forms.ToolStripStatusLabel()
         Me.StatusStrip1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.TabPage4.SuspendLayout()
-        Me.TabPage2.SuspendLayout()
         Me.TabPage3.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
@@ -130,6 +126,12 @@ Partial Class frmExport
         '
         Me.ToolStripProgressBar1.Name = "ToolStripProgressBar1"
         Me.ToolStripProgressBar1.Size = New System.Drawing.Size(200, 16)
+        '
+        'ToolStripStatusLabel2
+        '
+        Me.ToolStripStatusLabel2.Name = "ToolStripStatusLabel2"
+        Me.ToolStripStatusLabel2.Size = New System.Drawing.Size(120, 17)
+        Me.ToolStripStatusLabel2.Text = "ToolStripStatusLabel2"
         '
         'chkCreateINDEX
         '
@@ -195,35 +197,6 @@ Partial Class frmExport
         Me.chkMuniIndex.Text = "Generar índice HTML para cada municipio"
         Me.chkMuniIndex.UseVisualStyleBackColor = True
         '
-        'btnSpecialProc
-        '
-        Me.btnSpecialProc.Image = CType(resources.GetObject("btnSpecialProc.Image"), System.Drawing.Image)
-        Me.btnSpecialProc.Location = New System.Drawing.Point(491, 268)
-        Me.btnSpecialProc.Name = "btnSpecialProc"
-        Me.btnSpecialProc.Size = New System.Drawing.Size(255, 36)
-        Me.btnSpecialProc.TabIndex = 15
-        Me.btnSpecialProc.Text = "Aplicar Filtro a cuadernos interiores"
-        Me.btnSpecialProc.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
-        Me.btnSpecialProc.UseVisualStyleBackColor = True
-        '
-        'TextBox1
-        '
-        Me.TextBox1.Location = New System.Drawing.Point(6, 23)
-        Me.TextBox1.Multiline = True
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(295, 115)
-        Me.TextBox1.TabIndex = 16
-        '
-        'Label3
-        '
-        Me.Label3.AutoSize = True
-        Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.Location = New System.Drawing.Point(6, 7)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(67, 13)
-        Me.Label3.TabIndex = 17
-        Me.Label3.Text = "Filtro SQL "
-        '
         'chkLinkDocGeo
         '
         Me.chkLinkDocGeo.AutoSize = True
@@ -238,7 +211,6 @@ Partial Class frmExport
         '
         Me.TabControl1.Controls.Add(Me.TabPage1)
         Me.TabControl1.Controls.Add(Me.TabPage4)
-        Me.TabControl1.Controls.Add(Me.TabPage2)
         Me.TabControl1.Controls.Add(Me.TabPage3)
         Me.TabControl1.Location = New System.Drawing.Point(15, 11)
         Me.TabControl1.Name = "TabControl1"
@@ -260,7 +232,7 @@ Partial Class frmExport
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(808, 326)
+        Me.TabPage1.Size = New System.Drawing.Size(808, 389)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Cuadernos interiores"
         Me.TabPage1.UseVisualStyleBackColor = True
@@ -359,7 +331,7 @@ Partial Class frmExport
         Me.TabPage4.Location = New System.Drawing.Point(4, 22)
         Me.TabPage4.Name = "TabPage4"
         Me.TabPage4.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage4.Size = New System.Drawing.Size(808, 326)
+        Me.TabPage4.Size = New System.Drawing.Size(808, 389)
         Me.TabPage4.TabIndex = 3
         Me.TabPage4.Text = "Cédulas catastrales de la JGE"
         Me.TabPage4.UseVisualStyleBackColor = True
@@ -414,39 +386,16 @@ Partial Class frmExport
         Me.Button5.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
         Me.Button5.UseVisualStyleBackColor = True
         '
-        'TabPage2
-        '
-        Me.TabPage2.Controls.Add(Me.Button2)
-        Me.TabPage2.Controls.Add(Me.TextBox1)
-        Me.TabPage2.Controls.Add(Me.Label3)
-        Me.TabPage2.Controls.Add(Me.btnSpecialProc)
-        Me.TabPage2.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage2.Name = "TabPage2"
-        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(808, 326)
-        Me.TabPage2.TabIndex = 1
-        Me.TabPage2.Text = "Por filtro SQL y Temporal"
-        Me.TabPage2.UseVisualStyleBackColor = True
-        '
-        'Button2
-        '
-        Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
-        Me.Button2.Location = New System.Drawing.Point(9, 268)
-        Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(255, 36)
-        Me.Button2.TabIndex = 18
-        Me.Button2.Text = "Aplicar Filtro a parcelas de la JGE"
-        Me.Button2.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
-        Me.Button2.UseVisualStyleBackColor = True
-        '
         'TabPage3
         '
+        Me.TabPage3.Controls.Add(Me.CheckBox3)
+        Me.TabPage3.Controls.Add(Me.Label8)
+        Me.TabPage3.Controls.Add(Me.CheckedListBox2)
         Me.TabPage3.Controls.Add(Me.Button3)
         Me.TabPage3.Controls.Add(Me.txtFiltroSQL)
         Me.TabPage3.Controls.Add(Me.Label7)
         Me.TabPage3.Controls.Add(Me.GroupBox1)
         Me.TabPage3.Controls.Add(Me.CheckedListBox1)
-        Me.TabPage3.Controls.Add(Me.cboProvincias)
         Me.TabPage3.Controls.Add(Me.Label1)
         Me.TabPage3.Controls.Add(Me.btnProcessProvin)
         Me.TabPage3.Location = New System.Drawing.Point(4, 22)
@@ -457,13 +406,71 @@ Partial Class frmExport
         Me.TabPage3.Text = "GEODOCAT"
         Me.TabPage3.UseVisualStyleBackColor = True
         '
+        'CheckBox3
+        '
+        Me.CheckBox3.AutoSize = True
+        Me.CheckBox3.Location = New System.Drawing.Point(498, 26)
+        Me.CheckBox3.Name = "CheckBox3"
+        Me.CheckBox3.Size = New System.Drawing.Size(56, 17)
+        Me.CheckBox3.TabIndex = 44
+        Me.CheckBox3.Text = "Todas"
+        Me.CheckBox3.UseVisualStyleBackColor = True
+        '
+        'Label8
+        '
+        Me.Label8.AutoSize = True
+        Me.Label8.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label8.Location = New System.Drawing.Point(33, 26)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(140, 13)
+        Me.Label8.TabIndex = 43
+        Me.Label8.Text = "Tipo de documentación"
+        '
+        'CheckedListBox2
+        '
+        Me.CheckedListBox2.FormattingEnabled = True
+        Me.CheckedListBox2.Location = New System.Drawing.Point(324, 52)
+        Me.CheckedListBox2.Name = "CheckedListBox2"
+        Me.CheckedListBox2.Size = New System.Drawing.Size(230, 139)
+        Me.CheckedListBox2.TabIndex = 42
+        '
+        'Button3
+        '
+        Me.Button3.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.Button3.Image = CType(resources.GetObject("Button3.Image"), System.Drawing.Image)
+        Me.Button3.Location = New System.Drawing.Point(560, 243)
+        Me.Button3.Name = "Button3"
+        Me.Button3.Size = New System.Drawing.Size(138, 36)
+        Me.Button3.TabIndex = 41
+        Me.Button3.Text = "Procesar SQL"
+        Me.Button3.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.Button3.UseVisualStyleBackColor = True
+        '
+        'txtFiltroSQL
+        '
+        Me.txtFiltroSQL.Location = New System.Drawing.Point(36, 224)
+        Me.txtFiltroSQL.Multiline = True
+        Me.txtFiltroSQL.Name = "txtFiltroSQL"
+        Me.txtFiltroSQL.Size = New System.Drawing.Size(518, 55)
+        Me.txtFiltroSQL.TabIndex = 40
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label7.Location = New System.Drawing.Point(33, 208)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(196, 13)
+        Me.Label7.TabIndex = 39
+        Me.Label7.Text = "Filtro SQL  (sin cláusula WHERE)"
+        '
         'GroupBox1
         '
         Me.GroupBox1.Controls.Add(Me.RadioButton2)
         Me.GroupBox1.Controls.Add(Me.RadioButton1)
         Me.GroupBox1.Location = New System.Drawing.Point(36, 294)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(292, 89)
+        Me.GroupBox1.Size = New System.Drawing.Size(518, 89)
         Me.GroupBox1.TabIndex = 38
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Opciones de copia"
@@ -493,25 +500,16 @@ Partial Class frmExport
         'CheckedListBox1
         '
         Me.CheckedListBox1.FormattingEnabled = True
-        Me.CheckedListBox1.Location = New System.Drawing.Point(36, 82)
+        Me.CheckedListBox1.Location = New System.Drawing.Point(36, 52)
         Me.CheckedListBox1.Name = "CheckedListBox1"
-        Me.CheckedListBox1.Size = New System.Drawing.Size(385, 94)
+        Me.CheckedListBox1.Size = New System.Drawing.Size(248, 139)
         Me.CheckedListBox1.TabIndex = 37
-        '
-        'cboProvincias
-        '
-        Me.cboProvincias.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboProvincias.FormattingEnabled = True
-        Me.cboProvincias.Location = New System.Drawing.Point(36, 45)
-        Me.cboProvincias.Name = "cboProvincias"
-        Me.cboProvincias.Size = New System.Drawing.Size(385, 21)
-        Me.cboProvincias.TabIndex = 31
         '
         'Label1
         '
         Me.Label1.AutoSize = True
         Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(33, 29)
+        Me.Label1.Location = New System.Drawing.Point(321, 26)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(60, 13)
         Me.Label1.TabIndex = 32
@@ -521,7 +519,7 @@ Partial Class frmExport
         '
         Me.btnProcessProvin.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.btnProcessProvin.Image = CType(resources.GetObject("btnProcessProvin.Image"), System.Drawing.Image)
-        Me.btnProcessProvin.Location = New System.Drawing.Point(427, 140)
+        Me.btnProcessProvin.Location = New System.Drawing.Point(560, 155)
         Me.btnProcessProvin.Name = "btnProcessProvin"
         Me.btnProcessProvin.Size = New System.Drawing.Size(138, 36)
         Me.btnProcessProvin.TabIndex = 6
@@ -569,42 +567,6 @@ Partial Class frmExport
         Me.CheckBox2.Text = "Agrupar ficheros PDF por código INE"
         Me.CheckBox2.UseVisualStyleBackColor = True
         '
-        'Label7
-        '
-        Me.Label7.AutoSize = True
-        Me.Label7.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label7.Location = New System.Drawing.Point(33, 208)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(196, 13)
-        Me.Label7.TabIndex = 39
-        Me.Label7.Text = "Filtro SQL  (sin cláusula WHERE)"
-        '
-        'txtFiltroSQL
-        '
-        Me.txtFiltroSQL.Location = New System.Drawing.Point(36, 224)
-        Me.txtFiltroSQL.Multiline = True
-        Me.txtFiltroSQL.Name = "txtFiltroSQL"
-        Me.txtFiltroSQL.Size = New System.Drawing.Size(518, 55)
-        Me.txtFiltroSQL.TabIndex = 40
-        '
-        'Button3
-        '
-        Me.Button3.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.Button3.Image = CType(resources.GetObject("Button3.Image"), System.Drawing.Image)
-        Me.Button3.Location = New System.Drawing.Point(560, 243)
-        Me.Button3.Name = "Button3"
-        Me.Button3.Size = New System.Drawing.Size(138, 36)
-        Me.Button3.TabIndex = 41
-        Me.Button3.Text = "Procesar SQL"
-        Me.Button3.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
-        Me.Button3.UseVisualStyleBackColor = True
-        '
-        'ToolStripStatusLabel2
-        '
-        Me.ToolStripStatusLabel2.Name = "ToolStripStatusLabel2"
-        Me.ToolStripStatusLabel2.Size = New System.Drawing.Size(120, 17)
-        Me.ToolStripStatusLabel2.Text = "ToolStripStatusLabel2"
-        '
         'frmExport
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -636,8 +598,6 @@ Partial Class frmExport
         Me.TabPage1.PerformLayout()
         Me.TabPage4.ResumeLayout(False)
         Me.TabPage4.PerformLayout()
-        Me.TabPage2.ResumeLayout(False)
-        Me.TabPage2.PerformLayout()
         Me.TabPage3.ResumeLayout(False)
         Me.TabPage3.PerformLayout()
         Me.GroupBox1.ResumeLayout(False)
@@ -659,16 +619,11 @@ Partial Class frmExport
     Friend WithEvents chkHTML As System.Windows.Forms.CheckBox
     Friend WithEvents chkCopiaFicheros As System.Windows.Forms.CheckBox
     Friend WithEvents chkMuniIndex As System.Windows.Forms.CheckBox
-    Friend WithEvents btnSpecialProc As System.Windows.Forms.Button
-    Friend WithEvents TextBox1 As System.Windows.Forms.TextBox
-    Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents chkLinkDocGeo As System.Windows.Forms.CheckBox
     Friend WithEvents TabControl1 As System.Windows.Forms.TabControl
     Friend WithEvents TabPage1 As System.Windows.Forms.TabPage
-    Friend WithEvents TabPage2 As System.Windows.Forms.TabPage
     Friend WithEvents CheckBox1 As System.Windows.Forms.CheckBox
     Friend WithEvents TabPage3 As TabPage
-    Friend WithEvents cboProvincias As ComboBox
     Friend WithEvents Label1 As Label
     Friend WithEvents btnProcessProvin As Button
     Friend WithEvents Button6 As Button
@@ -682,7 +637,6 @@ Partial Class frmExport
     Friend WithEvents Label9 As Label
     Friend WithEvents Label11 As Label
     Friend WithEvents Button4 As Button
-    Friend WithEvents Button2 As Button
     Friend WithEvents TabPage4 As TabPage
     Friend WithEvents Button5 As Button
     Friend WithEvents Label5 As Label
@@ -698,4 +652,7 @@ Partial Class frmExport
     Friend WithEvents txtFiltroSQL As TextBox
     Friend WithEvents Label7 As Label
     Friend WithEvents ToolStripStatusLabel2 As ToolStripStatusLabel
+    Friend WithEvents Label8 As Label
+    Friend WithEvents CheckedListBox2 As CheckedListBox
+    Friend WithEvents CheckBox3 As CheckBox
 End Class
